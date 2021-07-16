@@ -11,10 +11,10 @@ public class KickManager {
     private TextComponent layout;
 
     private ConfigManager configManager;
-    private MessagesManager messagesManager;
+    private MessageManager messageManager;
 
     public KickManager() {
-        this.messagesManager = PunishManager.getInstance().getMessagesManager();
+        this.messageManager = PunishManager.getInstance().getMessageManager();
         this.configManager = PunishManager.getInstance().getConfigManager();
     }
 
@@ -30,7 +30,7 @@ public class KickManager {
 
     // player, type, reason, operator
     public void DisconnectPlayer(ProxiedPlayer player, String type, String reason, String operator){
-        TextComponent layout = messagesManager.TextComponentBuilder(configManager.getLayout(type), type.toLowerCase(), reason, operator);
+        TextComponent layout = messageManager.TextComponentBuilder(configManager.getLayout(type), type.toLowerCase(), reason, operator);
         PunishManager.getInstance().getProxy().getLogger().info(layout.toString());
         player.disconnect(layout);
     }

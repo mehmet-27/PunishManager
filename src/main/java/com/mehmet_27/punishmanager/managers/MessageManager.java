@@ -6,7 +6,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import java.util.List;
 
 
-public class MessagesManager {
+public class MessageManager {
     public TextComponent TextComponentBuilder(List<String> messages, String type, String reason, String operator) {
         TextComponent layout = new TextComponent();
         Punishment punishment;
