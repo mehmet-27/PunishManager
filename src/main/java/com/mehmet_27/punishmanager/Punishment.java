@@ -2,8 +2,8 @@ package com.mehmet_27.punishmanager;
 
 public class Punishment {
     private static PunishType punishType;
-    private static String operator;
-    private static String reason;
+    private static String operator = "";
+    private static String reason = "none";
 
     public Punishment(PunishType punishType) {
         this.punishType = punishType;
@@ -29,7 +29,10 @@ public class Punishment {
         this.punishType = punishType;
     }
 
-    public static String getOperator() {
+    public String getOperator() {
+        if (reason.length() == 0){
+            return "null";
+        }
         return operator;
     }
 
@@ -37,7 +40,10 @@ public class Punishment {
         this.operator = operator;
     }
 
-    public static String getReason() {
+    public String getReason() {
+        if (reason.length() == 0){
+            return "null";
+        }
         return reason;
     }
 

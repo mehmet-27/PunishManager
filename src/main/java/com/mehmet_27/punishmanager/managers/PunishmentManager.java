@@ -12,7 +12,7 @@ import java.util.UUID;
 public class PunishmentManager {
     private Connection connection = com.mehmet_27.punishmanager.PunishManager.getInstance().getConnection();
 
-    public void BanPlayer(ProxiedPlayer player, String reason, String operator){
+    public void BanPlayer(ProxiedPlayer player, String reason, String operator) {
         try {
             PreparedStatement ps = connection.prepareStatement("INSERT IGNORE INTO `punishmanager_punishments` (`name`, `uuid`, `reason`, `operator`, `type`) VALUES (?,?,?,?,?)");
             ps.setString(1, player.getName());
@@ -21,71 +21,110 @@ public class PunishmentManager {
             ps.setString(4, operator);
             ps.setString(5, "ban");
             ps.executeUpdate();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    public void UnBanPlayer(String wantedPlayer){
+
+    public void UnBanPlayer(String wantedPlayer) {
         try {
             ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(wantedPlayer);
             UUID uuid;
             PreparedStatement ps;
-            if (player != null && player.isConnected()){
+            if (player != null && player.isConnected()) {
                 uuid = player.getUniqueId();
                 ps = connection.prepareStatement("DELETE FROM `punishmanager_punishments` WHERE uuid = ?");
                 ps.setString(1, uuid.toString());
-            }else{
+            } else {
                 ps = connection.prepareStatement("DELETE FROM `punishmanager_punishments` WHERE name = ?");
                 ps.setString(1, wantedPlayer);
             }
             ps.executeUpdate();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
     public boolean PlayerIsBanned(String wantedPlayer) {
         ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(wantedPlayer);
         UUID uuid;
         try {
             PreparedStatement ps;
-            if (player != null && player.isConnected()){
+            if (player != null && player.isConnected()) {
                 uuid = player.getUniqueId();
                 ps = connection.prepareStatement("SELECT * FROM `punishmanager_punishments` WHERE `uuid` = ?");
                 ps.setString(1, uuid.toString());
-            }else{
+            } else {
                 ps = connection.prepareStatement("SELECT * FROM `punishmanager_punishments` WHERE `name` = ?");
                 ps.setString(1, wantedPlayer);
             }
             ResultSet result = ps.executeQuery();
-            if (result.next()){
-                if (result.getString("type").equals("ban")){
+            if (result.next()) {
+                if (result.getString("type").equals("ban")) {
                     return true;
                 }
                 return false;
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
-    public String getReason(ProxiedPlayer player){
+
+    public String getReason(ProxiedPlayer player) {
         UUID uuid = player.getUniqueId();
         String reason = null;
-        if (!PlayerIsBanned(player.getName())){
+        if (!PlayerIsBanned(player.getName())) {
             return null;
         }
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM `punishmanager_punishments` WHERE uuid = ?");
             ps.setString(1, uuid.toString());
             ResultSet result = ps.executeQuery();
-            if (result.next()){
-                if (result.getString("type").equals("ban")){
+            if (result.next()) {
                     reason = result.getString("reason");
-                }
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return reason;
+    }
+
+    public String getOperator(ProxiedPlayer player) {
+        UUID uuid = player.getUniqueId();
+        String operator = null;
+        if (!PlayerIsBanned(player.getName())) {
+            return null;
+        }
+        try {
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM `punishmanager_punishments` WHERE uuid = ?");
+            ps.setString(1, uuid.toString());
+            ResultSet result = ps.executeQuery();
+            if (result.next()) {
+                operator = result.getString("operator");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return operator;
+    }
+
+    public String getType(ProxiedPlayer player) {
+        UUID uuid = player.getUniqueId();
+        String type = null;
+        if (!PlayerIsBanned(player.getName())) {
+            return null;
+        }
+        try {
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM `punishmanager_punishments` WHERE uuid = ?");
+            ps.setString(1, uuid.toString());
+            ResultSet result = ps.executeQuery();
+            if (result.next()) {
+                type = result.getString("type");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return type;
     }
 }

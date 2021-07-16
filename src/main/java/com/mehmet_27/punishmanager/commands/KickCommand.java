@@ -24,7 +24,7 @@ public class KickCommand extends Command {
             ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(args[0]);
             if (player != null && player.isConnected()) {
                 if (args.length == 1){
-                    kickManager.KickPlayer(player);
+                    kickManager.DisconnectPlayer(player, "kick", "", sender.getName());
                     sender.sendMessage(new TextComponent("The player was kicked from the server."));
                 }
                 else{
@@ -33,7 +33,7 @@ public class KickCommand extends Command {
                         String newReasonElement = args[i];
                         reason = reason + " " + newReasonElement;
                     }
-                    kickManager.KickPlayer(player, "kick", reason);
+                    kickManager.DisconnectPlayer(player, "kick", reason, sender.getName());
                     sender.sendMessage(new TextComponent("The player was kicked from the server."));
                 }
             } else {

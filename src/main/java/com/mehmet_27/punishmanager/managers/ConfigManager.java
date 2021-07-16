@@ -16,13 +16,14 @@ import java.util.List;
 
 public class ConfigManager {
     private static PunishManager plugin;
-    private File configFile;
+    private File configFile, messagesFile;
     private final ConfigurationProvider provider = ConfigurationProvider.getProvider(YamlConfiguration.class);
-    private static Configuration config;
+    private static Configuration config, messages;
 
     public ConfigManager(PunishManager plugin) {
         this.plugin = plugin;
         configFile = new File(plugin.getDataFolder(), "config.yml");
+        messagesFile = new File(plugin.getDataFolder(), "messages.yml");
     }
 
     public void load() {
@@ -33,7 +34,12 @@ public class ConfigManager {
                 final InputStream im = plugin.getResourceAsStream("config.yml");
                 Files.copy(im, configFile.toPath());
             }
+            if(!messagesFile.exists()){
+                final InputStream im = plugin.getResourceAsStream("messages.yml");
+                Files.copy(im, messagesFile.toPath());
+            }
             config = provider.load(configFile);
+            messages = provider.load(messagesFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -41,7 +47,7 @@ public class ConfigManager {
 
     public List<String> getLayout(String path) {
         List<String> messages = new ArrayList<>();
-        for (String message : getConfig().getStringList(path)) {
+        for (String message : getMessages().getStringList(path)) {
             messages.add(ChatColor.translateAlternateColorCodes('&', message));
         }
         plugin.getProxy().getLogger().info(messages.toString());
@@ -50,5 +56,8 @@ public class ConfigManager {
 
     public static Configuration getConfig() {
         return config;
+    }
+    public static Configuration getMessages(){
+        return messages;
     }
 }

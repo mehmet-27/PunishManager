@@ -4,8 +4,3 @@ mysql:
   database: "database"
   username: "username"
   password: "password"
-kick:
-  - '&e&lTITTLE'
-  - ' '
-  - '&6You kicked from this server.'
-  - '&2Reason: &a%reason%'

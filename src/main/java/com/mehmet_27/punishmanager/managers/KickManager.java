@@ -10,12 +10,12 @@ public class KickManager {
     private String operator;
     private TextComponent layout;
 
-    private PunishManager punishManager;
     private ConfigManager configManager;
     private MessagesManager messagesManager;
 
     public KickManager() {
         this.messagesManager = PunishManager.getInstance().getMessagesManager();
+        this.configManager = PunishManager.getInstance().getConfigManager();
     }
 
     public void setReason(String reason){
@@ -28,12 +28,13 @@ public class KickManager {
         this.layout = layout;
     }
 
-    public void KickPlayer(ProxiedPlayer player, String type, String reason){
-        TextComponent layout = messagesManager.TextComponentBuilder(configManager.getLayout("kick"), type.toLowerCase(), reason);
+    // player, type, reason, operator
+    public void DisconnectPlayer(ProxiedPlayer player, String type, String reason, String operator){
+        TextComponent layout = messagesManager.TextComponentBuilder(configManager.getLayout(type), type.toLowerCase(), reason, operator);
         PunishManager.getInstance().getProxy().getLogger().info(layout.toString());
         player.disconnect(layout);
     }
-    public void KickPlayer(ProxiedPlayer player){
+    public void DisconnectPlayer(ProxiedPlayer player){
         TextComponent layout = new TextComponent(new ComponentBuilder("TITTLE").append("You kicked the server.").append("Reason: none").create());
         setLayout(layout);
         player.disconnect(layout);

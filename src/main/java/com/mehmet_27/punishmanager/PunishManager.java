@@ -15,7 +15,7 @@ public final class PunishManager extends Plugin {
     private static PunishManager instansce;
 
     private MysqlManager sql;
-    private ConfigManager config;
+    private ConfigManager configManager;
     private static PermissionManager pm;
     private CommandManager commandManager;
     private MessagesManager messagesManager;
@@ -23,8 +23,8 @@ public final class PunishManager extends Plugin {
     @Override
     public void onEnable() {
         instansce = this;
-        config = new ConfigManager(this);
-        config.load();
+        configManager = new ConfigManager(this);
+        configManager.load();
         pm = new PermissionManager();
         commandManager = new CommandManager(this);
         messagesManager = new MessagesManager();
@@ -50,5 +50,8 @@ public final class PunishManager extends Plugin {
     }
     public MessagesManager getMessagesManager(){
         return messagesManager;
+    }
+    public ConfigManager getConfigManager(){
+        return configManager;
     }
 }
