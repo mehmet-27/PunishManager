@@ -31,7 +31,6 @@ public class KickManager {
     // player, type, reason, operator
     public void DisconnectPlayer(ProxiedPlayer player, String type, String reason, String operator){
         TextComponent layout = messageManager.TextComponentBuilder(configManager.getLayout(type), type.toLowerCase(), reason, operator);
-        PunishManager.getInstance().getProxy().getLogger().info(layout.toString());
         player.disconnect(layout);
     }
     public void DisconnectPlayer(ProxiedPlayer player){
