@@ -12,11 +12,11 @@ public class MessagesManager {
         TextComponent layout = new TextComponent();
         Punishment punishment;
         for (int i = 0; i < messages.size(); i++) {
-            if (type.toLowerCase().equals("ban")) {
+            if (type.equalsIgnoreCase("ban")) {
                 layout.addExtra(messages.get(i) + "\n");
-            } else if (type.toLowerCase().equals("kick")) {
+            } else if (type.equalsIgnoreCase("kick")) {
                 punishment = new Punishment(Punishment.PunishType.KICK, reason);
-                layout.addExtra(messages.get(i).replace("%reason%", Punishment.getReason()) + "\n");
+                layout.addExtra(messages.get(i).replace("%reason%", punishment.getReason()) + "\n");
             }
         }
         return layout;

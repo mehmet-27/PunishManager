@@ -1,7 +1,6 @@
 package com.mehmet_27.punishmanager.managers;
 
 import com.mehmet_27.punishmanager.PunishManager;
-import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -14,6 +13,10 @@ public class KickManager {
     private PunishManager punishManager;
     private ConfigManager configManager;
     private MessagesManager messagesManager;
+
+    public KickManager() {
+        this.messagesManager = PunishManager.getInstance().getMessagesManager();
+    }
 
     public void setReason(String reason){
         this.reason = reason;

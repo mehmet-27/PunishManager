@@ -4,10 +4,7 @@ import com.mehmet_27.punishmanager.commands.BanCommand;
 import com.mehmet_27.punishmanager.commands.KickCommand;
 import com.mehmet_27.punishmanager.commands.UnBanCommand;
 import com.mehmet_27.punishmanager.events.PlayerLoginEvent;
-import com.mehmet_27.punishmanager.managers.CommandManager;
-import com.mehmet_27.punishmanager.managers.ConfigManager;
-import com.mehmet_27.punishmanager.managers.MysqlManager;
-import com.mehmet_27.punishmanager.managers.PermissionManager;
+import com.mehmet_27.punishmanager.managers.*;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.sql.Connection;
@@ -21,6 +18,7 @@ public final class PunishManager extends Plugin {
     private ConfigManager config;
     private static PermissionManager pm;
     private CommandManager commandManager;
+    private MessagesManager messagesManager;
 
     @Override
     public void onEnable() {
@@ -29,6 +27,7 @@ public final class PunishManager extends Plugin {
         config.load();
         pm = new PermissionManager();
         commandManager = new CommandManager(this);
+        messagesManager = new MessagesManager();
         sql = new MysqlManager(this);
         sql.createTable();
         commandManager.LoadAllCommands();
@@ -48,5 +47,8 @@ public final class PunishManager extends Plugin {
     }
     public static PermissionManager getPermissionManager() {
         return pm;
+    }
+    public MessagesManager getMessagesManager(){
+        return messagesManager;
     }
 }
