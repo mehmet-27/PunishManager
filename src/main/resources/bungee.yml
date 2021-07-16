@@ -1,0 +1,5 @@
+name: PunishManager
+version: ${project.version}
+main: com.mehmet_27.punishmanager.PunishManager
+author: Mehmet_27
+description: Advanced punish manager.
