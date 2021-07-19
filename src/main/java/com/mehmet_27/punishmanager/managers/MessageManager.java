@@ -7,15 +7,13 @@ import java.util.List;
 
 
 public class MessageManager {
-    public TextComponent TextComponentBuilder(List<String> messages, String type, String reason, String operator) {
+    public TextComponent TextComponentBuilder(List<String> messages, Punishment punishment) {
         TextComponent layout = new TextComponent();
-        Punishment punishment;
+        Punishment.PunishType punishType = punishment.getPunishType();
         for (String message : messages) {
-            if (type.equalsIgnoreCase("ban")) {
-                punishment = new Punishment(Punishment.PunishType.BAN, reason, operator);
+            if (punishType.equals(Punishment.PunishType.BAN)) {
                 layout.addExtra(message.replace("%reason%", punishment.getReason()).replace("%operator%", punishment.getOperator()) + "\n");
-            } else if (type.equalsIgnoreCase("kick")) {
-                punishment = new Punishment(Punishment.PunishType.KICK, reason, operator);
+            } else if (punishType.equals(Punishment.PunishType.KICK)) {
                 layout.addExtra(message.replace("%reason%", punishment.getReason()).replace("%operator%", punishment.getOperator()) + "\n");
             }
         }

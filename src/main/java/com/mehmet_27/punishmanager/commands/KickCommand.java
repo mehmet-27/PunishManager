@@ -1,6 +1,7 @@
 package com.mehmet_27.punishmanager.commands;
 
 import com.mehmet_27.punishmanager.PunishManager;
+import com.mehmet_27.punishmanager.Punishment;
 import com.mehmet_27.punishmanager.managers.DisconnectManager;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -16,15 +17,22 @@ public class KickCommand extends Command {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        String operatorName = sender.getName();
         if (args.length == 0)  {
             sender.sendMessage(new TextComponent("Please specify a player."));
         }
         else {
-            ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(args[0]);
+            String playerName = args[0];
+            String uuid;
+            ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerName);
             if (player != null && player.isConnected()) {
+                uuid = player.getUniqueId().toString();
+            } else {
+                uuid = playerName;
+            }
+            if (player != null && player.isConnected()) {
+                Punishment punishment = new Punishment(playerName, uuid, Punishment.PunishType.KICK, "", sender.getName());
                 if (args.length == 1){
-                    disconnectManager.DisconnectPlayer(player, "kick", "", sender.getName());
+                    disconnectManager.DisconnectPlayer(punishment);
                     sender.sendMessage(new TextComponent("The player was kicked from the server."));
                 }
                 else{
@@ -33,12 +41,12 @@ public class KickCommand extends Command {
                         String newReasonElement = args[i];
                         reason = reason + " " + newReasonElement;
                     }
-                    disconnectManager.DisconnectPlayer(player, "kick", reason, sender.getName());
+                    punishment.setReason(reason);
+                    disconnectManager.DisconnectPlayer(punishment);
                     sender.sendMessage(new TextComponent("The player was kicked from the server."));
                 }
             } else {
-                sender.sendMessage(new TextComponent("You cant ban offline players."));
-                return;
+                sender.sendMessage(new TextComponent("You cant kick offline players."));
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.mehmet_27.punishmanager.events;
 
+import com.mehmet_27.punishmanager.Punishment;
 import com.mehmet_27.punishmanager.managers.DisconnectManager;
 import com.mehmet_27.punishmanager.managers.PunishmentManager;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -14,10 +15,8 @@ public class PlayerLoginEvent implements Listener {
     public void onLogin(PostLoginEvent event){
         ProxiedPlayer player = event.getPlayer();
         if (punishmentManager.PlayerIsBanned(player.getName())){
-            String reason = punishmentManager.getReason(player);
-            String operator = punishmentManager.getOperator(player);
-            String type = punishmentManager.getType(player);
-            disconnectManager.DisconnectPlayer(player, type, reason, operator);
+            Punishment punishment = punishmentManager.getPunishment(player.getName());
+            disconnectManager.DisconnectPlayer(punishment);
         }
     }
 

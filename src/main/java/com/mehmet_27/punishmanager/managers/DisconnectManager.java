@@ -1,15 +1,13 @@
 package com.mehmet_27.punishmanager.managers;
 
 import com.mehmet_27.punishmanager.PunishManager;
-import net.md_5.bungee.api.chat.ComponentBuilder;
+import com.mehmet_27.punishmanager.Punishment;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class DisconnectManager {
-    private String reason;
-    private String operator;
-    private TextComponent layout;
+import java.util.Locale;
 
+public class DisconnectManager {
     private ConfigManager configManager;
     private MessageManager messageManager;
 
@@ -18,24 +16,11 @@ public class DisconnectManager {
         this.configManager = PunishManager.getInstance().getConfigManager();
     }
 
-    public void setReason(String reason){
-        this.reason = reason;
-    }
-    public void setOperator(String operator){
-        this.operator = operator;
-    }
-    public void setLayout(TextComponent layout){
-        this.layout = layout;
-    }
-
     // player, type, reason, operator
-    public void DisconnectPlayer(ProxiedPlayer player, String type, String reason, String operator){
-        TextComponent layout = messageManager.TextComponentBuilder(configManager.getLayout(type), type.toLowerCase(), reason, operator);
-        player.disconnect(layout);
-    }
-    public void DisconnectPlayer(ProxiedPlayer player){
-        TextComponent layout = new TextComponent(new ComponentBuilder("TITTLE").append("You kicked the server.").append("Reason: none").create());
-        setLayout(layout);
+    public void DisconnectPlayer(Punishment punishment){
+        String path = punishment.getPunishType().toString().toLowerCase(Locale.ENGLISH);
+        TextComponent layout = messageManager.TextComponentBuilder(configManager.getLayout(path), punishment);
+        ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(punishment.getPlayerName());
         player.disconnect(layout);
     }
 }

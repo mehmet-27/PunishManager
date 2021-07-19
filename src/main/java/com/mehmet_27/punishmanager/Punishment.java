@@ -1,6 +1,8 @@
 package com.mehmet_27.punishmanager;
 
 public class Punishment {
+    private String playerName;
+    private String uuid;
     private PunishType punishType;
     private String operator = "";
     private String reason = "none";
@@ -14,7 +16,8 @@ public class Punishment {
         this.reason = reason;
     }
 
-    public Punishment(PunishType punishType, String reason, String operator) {
+    public Punishment(String playerName, String uuid, PunishType punishType, String reason, String operator) {
+        this.playerName = playerName;
         this.punishType = punishType;
         this.reason = reason;
         this.operator = operator;
@@ -52,5 +55,20 @@ public class Punishment {
 
     public void setReason(String reason) {
         this.reason = reason;
+    }
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public void setPlayerName(String player) {
+        this.playerName = player;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }

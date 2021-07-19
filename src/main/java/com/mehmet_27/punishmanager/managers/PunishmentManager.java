@@ -1,6 +1,7 @@
 package com.mehmet_27.punishmanager.managers;
 
 import com.mehmet_27.punishmanager.PunishManager;
+import com.mehmet_27.punishmanager.Punishment;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.sql.Connection;
@@ -12,14 +13,14 @@ import java.util.UUID;
 public class PunishmentManager {
     private Connection connection = com.mehmet_27.punishmanager.PunishManager.getInstance().getConnection();
 
-    public void BanPlayer(ProxiedPlayer player, String reason, String operator) {
+    public void BanPlayer(Punishment punishment) {
         try {
             PreparedStatement ps = connection.prepareStatement("INSERT IGNORE INTO `punishmanager_punishments` (`name`, `uuid`, `reason`, `operator`, `type`) VALUES (?,?,?,?,?)");
-            ps.setString(1, player.getName());
-            ps.setString(2, player.getUniqueId().toString());
-            ps.setString(3, reason);
-            ps.setString(4, operator);
-            ps.setString(5, "ban");
+            ps.setString(1, punishment.getPlayerName());
+            ps.setString(2, punishment.getUuid());
+            ps.setString(3, punishment.getReason());
+            ps.setString(4, punishment.getOperator());
+            ps.setString(5, punishment.getPunishType().toString());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -46,23 +47,15 @@ public class PunishmentManager {
     }
 
     public boolean PlayerIsBanned(String wantedPlayer) {
-        ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(wantedPlayer);
-        UUID uuid;
         try {
             PreparedStatement ps;
-            if (player != null && player.isConnected()) {
-                uuid = player.getUniqueId();
-                ps = connection.prepareStatement("SELECT * FROM `punishmanager_punishments` WHERE `uuid` = ?");
-                ps.setString(1, uuid.toString());
-            } else {
-                ps = connection.prepareStatement("SELECT * FROM `punishmanager_punishments` WHERE `name` = ?");
-                ps.setString(1, wantedPlayer);
-            }
+            ps = connection.prepareStatement("SELECT * FROM `punishmanager_punishments` WHERE `name` = ?");
+            ps.setString(1, wantedPlayer);
             ResultSet result = ps.executeQuery();
             if (result.next()) {
-                if (result.getString("type").equals("ban") ||
-                        result.getString("type").equals("ipban") ||
-                        result.getString("type").equals("tempban")) {
+                if (result.getString("type").equals("BAN") ||
+                        result.getString("type").equals("IPBAN") ||
+                        result.getString("type").equals("TEMPBAN")) {
                     return true;
                 }
                 return false;
@@ -81,7 +74,7 @@ public class PunishmentManager {
                 ps.setString(1, wantedPlayer);
                 ResultSet result = ps.executeQuery();
                 return result.getString("type");
-            }  catch (SQLException e){
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
@@ -143,5 +136,28 @@ public class PunishmentManager {
             e.printStackTrace();
         }
         return type;
+    }
+
+    public Punishment getPunishment(String wantedPlayer) {
+        if (!PlayerIsBanned(wantedPlayer)) {
+            return null;
+        }
+        try {
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM `punishmanager_punishments` WHERE name = ?");
+            ps.setString(1, wantedPlayer);
+            ResultSet result = ps.executeQuery();
+            if (result.next()) {
+                String playerName = result.getString("name");
+                String uuid = result.getString("uuid");
+                String reason = result.getString("reason");
+                String operator = result.getString("operator");
+                Punishment.PunishType punishType = Punishment.PunishType.valueOf(result.getString("type"));
+                return new Punishment(playerName, uuid, punishType, operator, reason);
+            }
+            return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

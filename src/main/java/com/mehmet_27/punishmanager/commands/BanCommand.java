@@ -1,6 +1,7 @@
 package com.mehmet_27.punishmanager.commands;
 
 import com.mehmet_27.punishmanager.PunishManager;
+import com.mehmet_27.punishmanager.Punishment;
 import com.mehmet_27.punishmanager.managers.DisconnectManager;
 import com.mehmet_27.punishmanager.managers.PunishmentManager;
 import net.md_5.bungee.api.CommandSender;
@@ -26,33 +27,34 @@ public class BanCommand extends Command implements TabExecutor {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        String operator = sender.getName();
         if (args.length == 0) {
             sender.sendMessage(new TextComponent("Please specify a player."));
-        } else if (args.length >= 1) {
-            ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(args[0]);
-            String playerName;
+        } else {
+            String playerName = args[0];
+            String uuid;
+            ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerName);
             if (player != null && player.isConnected()) {
-                playerName = player.getName();
+                uuid = player.getUniqueId().toString();
             } else {
-                sender.sendMessage(new TextComponent("You cant ban offline players."));
-                return;
+                uuid = playerName;
             }
-            //if (!player.getName().equals(sender.getName())) {
-            if (!punishmentManager.PlayerIsBanned(playerName)) {
+            //if (!playerName.equals(sender.getName())) {
+            if (!punishmentManager.PlayerIsBanned(args[0])) {
+                Punishment punishment = new Punishment(playerName, uuid, Punishment.PunishType.BAN, "", sender.getName());
                 if (args.length == 1) {
-                    punishmentManager.BanPlayer(player, "none", operator);
-                    sender.sendMessage(new TextComponent(player.getName() + " banned by " + operator + " due to " + "none"));
-                    disconnectManager.DisconnectPlayer(player, "ban", "", operator);
+                    punishmentManager.BanPlayer(punishment);
+                    sender.sendMessage(new TextComponent(punishment.getPlayerName() + " banned by " + punishment.getOperator() + " due to " + punishment.getReason()));
+                    disconnectManager.DisconnectPlayer(punishment);
                 } else {
                     String reason = "";
-                    for (int i = 1; i < args.length; i++){
+                    for (int i = 1; i < args.length; i++) {
                         String newReasonElement = args[i];
                         reason = reason + " " + newReasonElement;
                     }
-                    punishmentManager.BanPlayer(player, reason, operator);
-                    sender.sendMessage(new TextComponent(player.getName() + " banned by " + operator + " due to " + reason));
-                    disconnectManager.DisconnectPlayer(player, "ban", reason, operator);
+                    punishment.setReason(reason);
+                    punishmentManager.BanPlayer(punishment);
+                    sender.sendMessage(new TextComponent(punishment.getPlayerName() + " banned by " + punishment.getOperator() + " due to " + punishment.getReason()));
+                    disconnectManager.DisconnectPlayer(punishment);
                 }
             } else {
                 sender.sendMessage(new TextComponent("This player has already been banned."));
