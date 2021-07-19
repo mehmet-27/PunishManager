@@ -1,8 +1,7 @@
 package com.mehmet_27.punishmanager.commands;
 
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.managers.KickManager;
-import com.mehmet_27.punishmanager.managers.PermissionManager;
+import com.mehmet_27.punishmanager.managers.DisconnectManager;
 import com.mehmet_27.punishmanager.managers.PunishmentManager;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -15,12 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.mehmet_27.punishmanager.managers.PermissionManager.Permissions.COMMAND_BAN;
-import static com.mehmet_27.punishmanager.managers.PermissionManager.Permissions.COMMAND_BAN;
 
 public class BanCommand extends Command implements TabExecutor {
 
     private PunishmentManager punishmentManager = new PunishmentManager();
-    private KickManager kickManager = new KickManager();
+    private DisconnectManager disconnectManager = new DisconnectManager();
 
     public BanCommand(String name, String permission) {
         super(name, permission);
@@ -45,7 +43,7 @@ public class BanCommand extends Command implements TabExecutor {
                 if (args.length == 1) {
                     punishmentManager.BanPlayer(player, "none", operator);
                     sender.sendMessage(new TextComponent(player.getName() + " banned by " + operator + " due to " + "none"));
-                    kickManager.DisconnectPlayer(player, "ban", "", operator);
+                    disconnectManager.DisconnectPlayer(player, "ban", "", operator);
                 } else {
                     String reason = "";
                     for (int i = 1; i < args.length; i++){
@@ -54,7 +52,7 @@ public class BanCommand extends Command implements TabExecutor {
                     }
                     punishmentManager.BanPlayer(player, reason, operator);
                     sender.sendMessage(new TextComponent(player.getName() + " banned by " + operator + " due to " + reason));
-                    kickManager.DisconnectPlayer(player, "ban", reason, operator);
+                    disconnectManager.DisconnectPlayer(player, "ban", reason, operator);
                 }
             } else {
                 sender.sendMessage(new TextComponent("This player has already been banned."));

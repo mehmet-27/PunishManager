@@ -60,7 +60,9 @@ public class PunishmentManager {
             }
             ResultSet result = ps.executeQuery();
             if (result.next()) {
-                if (result.getString("type").equals("ban")) {
+                if (result.getString("type").equals("ban") ||
+                        result.getString("type").equals("ipban") ||
+                        result.getString("type").equals("tempban")) {
                     return true;
                 }
                 return false;
@@ -69,6 +71,21 @@ public class PunishmentManager {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public String getPunishType(String wantedPlayer) {
+        if (PlayerIsBanned(wantedPlayer)) {
+            try {
+                PreparedStatement ps;
+                ps = connection.prepareStatement("SELECT * FROM `punishmanager_punishments` WHERE `name` = ?");
+                ps.setString(1, wantedPlayer);
+                ResultSet result = ps.executeQuery();
+                return result.getString("type");
+            }  catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
     public String getReason(ProxiedPlayer player) {
@@ -82,7 +99,7 @@ public class PunishmentManager {
             ps.setString(1, uuid.toString());
             ResultSet result = ps.executeQuery();
             if (result.next()) {
-                    reason = result.getString("reason");
+                reason = result.getString("reason");
             }
         } catch (SQLException e) {
             e.printStackTrace();

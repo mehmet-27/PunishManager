@@ -5,7 +5,7 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class KickManager {
+public class DisconnectManager {
     private String reason;
     private String operator;
     private TextComponent layout;
@@ -13,7 +13,7 @@ public class KickManager {
     private ConfigManager configManager;
     private MessageManager messageManager;
 
-    public KickManager() {
+    public DisconnectManager() {
         this.messageManager = PunishManager.getInstance().getMessageManager();
         this.configManager = PunishManager.getInstance().getConfigManager();
     }

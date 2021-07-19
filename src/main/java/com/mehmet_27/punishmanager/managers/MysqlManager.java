@@ -70,10 +70,11 @@ public class MysqlManager {
 
     public void createTable(){
         try {
-            String query = "CREATE TABLE IF NOT EXISTS  `punishmanager_punishments` ("
+            String query = "CREATE TABLE IF NOT EXISTS `punishmanager_punishments` ("
                     + " `id` BIGINT(20) NOT NULL auto_increment,"
                     + " `name` VARCHAR(16),"
                     + " `uuid` VARCHAR(72),"
+                    + " `ip` VARCHAR(25),"
                     + " `reason` VARCHAR(255),"
                     + " `operator` VARCHAR(16),"
                     + " `type` VARCHAR(16),"

@@ -1,14 +1,14 @@
 package com.mehmet_27.punishmanager.commands;
 
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.managers.KickManager;
+import com.mehmet_27.punishmanager.managers.DisconnectManager;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
 public class KickCommand extends Command {
-    private KickManager kickManager = new KickManager();
+    private DisconnectManager disconnectManager = new DisconnectManager();
 
     public KickCommand(String name, String permission) {
         super(name, permission);
@@ -24,7 +24,7 @@ public class KickCommand extends Command {
             ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(args[0]);
             if (player != null && player.isConnected()) {
                 if (args.length == 1){
-                    kickManager.DisconnectPlayer(player, "kick", "", sender.getName());
+                    disconnectManager.DisconnectPlayer(player, "kick", "", sender.getName());
                     sender.sendMessage(new TextComponent("The player was kicked from the server."));
                 }
                 else{
@@ -33,7 +33,7 @@ public class KickCommand extends Command {
                         String newReasonElement = args[i];
                         reason = reason + " " + newReasonElement;
                     }
-                    kickManager.DisconnectPlayer(player, "kick", reason, sender.getName());
+                    disconnectManager.DisconnectPlayer(player, "kick", reason, sender.getName());
                     sender.sendMessage(new TextComponent("The player was kicked from the server."));
                 }
             } else {
