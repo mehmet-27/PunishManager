@@ -13,6 +13,8 @@ import net.md_5.bungee.event.EventHandler;
 public class PlayerLoginEvent implements Listener {
     PunishmentManager punishmentManager = new PunishmentManager();
     DisconnectManager disconnectManager = new DisconnectManager();
+    MysqlManager mysqlManager = new MysqlManager(PunishManager.getInstance());
+
     @EventHandler
     public void onLogin(PostLoginEvent event){
         ProxiedPlayer player = event.getPlayer();

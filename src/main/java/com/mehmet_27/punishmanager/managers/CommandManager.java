@@ -18,7 +18,9 @@ public class CommandManager extends BungeeCommandManager {
     public CommandManager(PunishManager plugin) {
         super(plugin);
         this.plugin = plugin;
-        this.permissionManager = PunishManager.getPermissionManager();
+        registerDependencies();
+        registerConditions();
+        registerCommands();
     }
 
     private void registerDependencies() {

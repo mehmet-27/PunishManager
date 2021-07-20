@@ -1,5 +1,7 @@
 package com.mehmet_27.punishmanager.commands;
 
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.Punishment;
 import com.mehmet_27.punishmanager.managers.DisconnectManager;
@@ -8,7 +10,9 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class BanCommand extends Command implements TabExecutor {
+@CommandAlias("ban")
+@CommandPermission("punishmanager.command.ban")
+public class BanCommand extends BaseCommand {
 
     @Dependency
     private PunishmentManager punishmentManager;
