@@ -2,6 +2,7 @@ package com.mehmet_27.punishmanager.managers;
 
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.utils.Utils;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.config.Configuration;
 
 import java.sql.Connection;
@@ -29,7 +30,7 @@ public class MysqlManager {
         database = config.getString("mysql.database");
         username = config.getString("mysql.username");
         password = config.getString("mysql.password");
-        connect();
+        if (!isConnected()) connect();
     }
 
     public void connect() {
@@ -42,7 +43,6 @@ public class MysqlManager {
 
             try {
                 connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?useSSL=false", username, password);
-                plugin.getInstance().getLogger().info(Utils.color("&aDatabase is connected."));
             } catch (SQLException e) {
                 plugin.getInstance().getLogger().info(Utils.color("&cDatabase not connected!"));
                 e.printStackTrace();
@@ -68,7 +68,7 @@ public class MysqlManager {
         return (connection == null ? false : true);
     }
 
-    public void createTable(){
+    private void createPunishmentsTable(){
         try {
             String query = "CREATE TABLE IF NOT EXISTS `punishmanager_punishments` ("
                     + " `id` BIGINT(20) NOT NULL auto_increment,"
@@ -80,6 +80,39 @@ public class MysqlManager {
                     + " `type` VARCHAR(16),"
                     + " PRIMARY KEY (`id`))";
             PreparedStatement ps = connection.prepareStatement(query);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    private void createPlayersTable(){
+        try {
+            String query = "CREATE TABLE IF NOT EXISTS `punishmanager_players` ("
+                    + " `uuid` VARCHAR(72) NOT NULL,"
+                    + " `name` VARCHAR(16),"
+                    + " `ip` VARCHAR(25),"
+                    + " PRIMARY KEY (`uuid`))";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void setup(){
+        createPlayersTable();
+        createPunishmentsTable();
+    }
+    public void addPlayer(ProxiedPlayer player){
+        String address = player.getSocketAddress().toString();
+        String withoutSlash = address.replaceAll("/", "");
+        String[] split = withoutSlash.split(":");
+        String ip = split[0];
+
+        try {
+            PreparedStatement ps = connection.prepareStatement("INSERT IGNORE INTO `punishmanager_players` (`uuid`, `name`, `ip`) VALUES (?,?,?)");
+            ps.setString(1, player.getUniqueId().toString());
+            ps.setString(2, player.getName());
+            ps.setString(3, ip);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

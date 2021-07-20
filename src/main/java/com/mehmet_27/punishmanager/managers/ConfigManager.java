@@ -1,7 +1,6 @@
 package com.mehmet_27.punishmanager.managers;
 
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.managers.PermissionManager;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;

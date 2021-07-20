@@ -21,6 +21,7 @@ public class DisconnectManager {
         String path = punishment.getPunishType().toString().toLowerCase(Locale.ENGLISH);
         TextComponent layout = messageManager.TextComponentBuilder(configManager.getLayout(path), punishment);
         ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(punishment.getPlayerName());
+        if (player == null || !player.isConnected()) return;
         player.disconnect(layout);
     }
 }

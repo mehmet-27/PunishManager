@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 public class PunishmentManager {
+
     private Connection connection = com.mehmet_27.punishmanager.PunishManager.getInstance().getConnection();
 
     public void BanPlayer(Punishment punishment) {
@@ -22,6 +23,7 @@ public class PunishmentManager {
             ps.setString(4, punishment.getOperator());
             ps.setString(5, punishment.getPunishType().toString());
             ps.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -46,7 +48,7 @@ public class PunishmentManager {
         }
     }
 
-    public boolean PlayerIsBanned(String wantedPlayer) {
+    public boolean playerIsBanned(String wantedPlayer) {
         try {
             PreparedStatement ps;
             ps = connection.prepareStatement("SELECT * FROM `punishmanager_punishments` WHERE `name` = ?");
@@ -67,7 +69,7 @@ public class PunishmentManager {
     }
 
     public Punishment getPunishment(String wantedPlayer) {
-        if (!PlayerIsBanned(wantedPlayer)) {
+        if (!playerIsBanned(wantedPlayer)) {
             return null;
         }
         try {
