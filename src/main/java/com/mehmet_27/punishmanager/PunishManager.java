@@ -1,6 +1,7 @@
 package com.mehmet_27.punishmanager;
 
 import co.aikar.commands.BungeeCommandManager;
+import com.mehmet_27.punishmanager.events.PlayerChatEvent;
 import com.mehmet_27.punishmanager.events.PlayerLoginEvent;
 import com.mehmet_27.punishmanager.managers.*;
 import com.mehmet_27.punishmanager.utils.Utils;
@@ -34,6 +35,7 @@ public final class PunishManager extends Plugin {
         punishmentManager = new PunishmentManager();
         commandManager = new CommandManager(this);
         getProxy().getPluginManager().registerListener(this, new PlayerLoginEvent());
+        getProxy().getPluginManager().registerListener(this, new PlayerChatEvent());
     }
 
     @Override

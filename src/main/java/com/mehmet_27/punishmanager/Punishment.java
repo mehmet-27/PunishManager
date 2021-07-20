@@ -15,7 +15,7 @@ public class Punishment {
     }
 
     public enum PunishType {
-        BAN, KICK, MUTE, TEMPBAN, IPBAN, NONE;
+        BAN, KICK, MUTE, TEMPMUTE, TEMPBAN, IPBAN, NONE;
     }
 
     public PunishType getPunishType() {
@@ -66,10 +66,17 @@ public class Punishment {
         this.uuid = uuid;
     }
 
-    public boolean PlayerIsBanned() {
+    public boolean playerIsBanned() {
         if (punishType.equals(PunishType.BAN) ||
                 punishType.equals(PunishType.TEMPBAN) ||
                 punishType.equals(PunishType.IPBAN)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean playerIsMuted() {
+        if (punishType.equals(PunishType.MUTE) || punishType.equals(PunishType.TEMPMUTE)) {
             return true;
         }
         return false;

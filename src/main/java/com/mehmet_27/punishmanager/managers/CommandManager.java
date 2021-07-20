@@ -52,7 +52,7 @@ public class CommandManager extends BungeeCommandManager {
     public void registerConditions() {
         getCommandConditions().addCondition(String.class, "other_player", (context, exec, value) -> {
             BungeeCommandIssuer issuer = context.getIssuer();
-            if (issuer.getPlayer().getName().equals(value)){
+            if (issuer.isPlayer() && issuer.getPlayer().getName().equals(value)){
                 throw new ConditionFailedException("You cannot use this command on yourself!");
             }
         });

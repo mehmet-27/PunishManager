@@ -1,20 +1,17 @@
 package com.mehmet_27.punishmanager.managers;
 
-import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.Punishment;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.UUID;
 
 public class PunishmentManager {
 
-    private Connection connection = com.mehmet_27.punishmanager.PunishManager.getInstance().getConnection();
+    private final Connection connection = com.mehmet_27.punishmanager.PunishManager.getInstance().getConnection();
 
-    public void BanPlayer(Punishment punishment) {
+    public void AddPunish(Punishment punishment) {
         try {
             PreparedStatement ps = connection.prepareStatement("INSERT IGNORE INTO `punishmanager_punishments` (`name`, `uuid`, `reason`, `operator`, `type`) VALUES (?,?,?,?,?)");
             ps.setString(1, punishment.getPlayerName());
@@ -29,19 +26,12 @@ public class PunishmentManager {
         }
     }
 
-    public void UnBanPlayer(String wantedPlayer) {
+    public void unPunishPlayer(Punishment punishment) {
         try {
-            ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(wantedPlayer);
-            UUID uuid;
             PreparedStatement ps;
-            if (player != null && player.isConnected()) {
-                uuid = player.getUniqueId();
-                ps = connection.prepareStatement("DELETE FROM `punishmanager_punishments` WHERE uuid = ?");
-                ps.setString(1, uuid.toString());
-            } else {
-                ps = connection.prepareStatement("DELETE FROM `punishmanager_punishments` WHERE name = ?");
-                ps.setString(1, wantedPlayer);
-            }
+            ps = connection.prepareStatement("DELETE FROM `punishmanager_punishments` WHERE name = ? and type = ?");
+            ps.setString(1, punishment.getPlayerName());
+            ps.setString(2, punishment.getPunishType().toString());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -69,9 +59,6 @@ public class PunishmentManager {
     }
 
     public Punishment getPunishment(String wantedPlayer) {
-        if (!playerIsBanned(wantedPlayer)) {
-            return null;
-        }
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM `punishmanager_punishments` WHERE name = ?");
             ps.setString(1, wantedPlayer);

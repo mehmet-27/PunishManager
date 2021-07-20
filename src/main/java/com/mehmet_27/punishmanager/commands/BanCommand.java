@@ -25,7 +25,7 @@ public class BanCommand extends Command implements TabExecutor {
             return;
         }
         Punishment punishment = new Punishment(playerName, uuid, Punishment.PunishType.BAN, reason, sender.getName());
-        punishmentManager.BanPlayer(punishment);
+        punishmentManager.AddPunish(punishment);
         sender.sendMessage(new TextComponent(punishment.getPlayerName() + " banned by " + punishment.getOperator() + " due to " + punishment.getReason()));
         disconnectManager.DisconnectPlayer(punishment);
     }

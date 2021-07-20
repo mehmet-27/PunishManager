@@ -18,7 +18,7 @@ public class PlayerLoginEvent implements Listener {
         ProxiedPlayer player = event.getPlayer();
         mysqlManager.addPlayer(player);
         Punishment punishment = punishmentManager.getPunishment(player.getName());
-        if (punishment != null && punishment.PlayerIsBanned()){
+        if (punishment != null && punishment.playerIsBanned()){
             disconnectManager.DisconnectPlayer(punishment);
         }
     }
