@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PunishmentManager {
 
@@ -73,6 +75,31 @@ public class PunishmentManager {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Punishment getPunishment(String wantedPlayer, String type) {
+        List<Punishment> punishments = new ArrayList<>();
+        try {
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM `punishmanager_punishments` WHERE name = ?");
+            ps.setString(1, wantedPlayer);
+            ResultSet result = ps.executeQuery();
+            while (result.next()) {
+                String playerName = result.getString("name");
+                String uuid = result.getString("uuid");
+                String reason = result.getString("reason");
+                String operator = result.getString("operator");
+                Punishment.PunishType punishType = Punishment.PunishType.valueOf(result.getString("type"));
+                punishments.add(new Punishment(playerName, uuid, punishType, reason, operator));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        for (Punishment punishment : punishments) {
+            if (punishment.getPunishType().toString().contains(type.toUpperCase())) {
+                return punishment;
+            }
         }
         return null;
     }

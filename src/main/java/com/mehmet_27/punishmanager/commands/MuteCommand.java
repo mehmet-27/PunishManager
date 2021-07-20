@@ -20,7 +20,7 @@ public class MuteCommand extends BaseCommand {
     public void mute(CommandSender sender, @Conditions("other_player") @Name("Player") String playerName, @Optional @Name("Reason") @Default("none") String reason) {
         ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerName);
         String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;
-        Punishment punishment = punishmentManager.getPunishment(playerName);
+        Punishment punishment = punishmentManager.getPunishment(playerName, "mute");
         if (punishment != null && punishment.playerIsMuted()) {
             sender.sendMessage(new TextComponent("This player has already been muted."));
             return;

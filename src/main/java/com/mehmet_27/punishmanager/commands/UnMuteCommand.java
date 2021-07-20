@@ -17,7 +17,7 @@ public class UnMuteCommand extends BaseCommand {
     @Default
     @CommandCompletion("@players")
     public void unmute(CommandSender sender, @Name("Player") String playerName) {
-        Punishment punishment = punishmentManager.getPunishment(playerName);
+        Punishment punishment = punishmentManager.getPunishment(playerName, "mute");
         if (punishment == null || !punishment.playerIsMuted()) {
             sender.sendMessage(new TextComponent("This player is not muted."));
             return;

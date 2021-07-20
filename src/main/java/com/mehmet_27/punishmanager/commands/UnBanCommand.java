@@ -17,7 +17,7 @@ public class UnBanCommand extends BaseCommand {
     @Default
     @CommandCompletion("@players")
     public void unban(CommandSender sender, @Name("Player") String playerName) {
-        Punishment punishment = punishmentManager.getPunishment(playerName);
+        Punishment punishment = punishmentManager.getPunishment(playerName, "ban");
         if (punishment == null || !punishment.playerIsBanned()) {
             sender.sendMessage(new TextComponent("This player is not banned."));
             return;

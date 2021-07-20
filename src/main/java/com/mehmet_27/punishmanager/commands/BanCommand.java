@@ -24,11 +24,12 @@ public class BanCommand extends BaseCommand {
     public void ban(CommandSender sender, @Conditions("other_player") @Name("Player") String playerName, @Optional @Name("Reason") @Default("none") String reason) {
         ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerName);
         String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;
-        if (punishmentManager.playerIsBanned(playerName)) {
+        Punishment punishment = punishmentManager.getPunishment(playerName, "ban");
+        if (punishment != null && punishment.playerIsBanned()) {
             sender.sendMessage(new TextComponent("This player has already been banned."));
             return;
         }
-        Punishment punishment = new Punishment(playerName, uuid, Punishment.PunishType.BAN, reason, sender.getName());
+        punishment = new Punishment(playerName, uuid, Punishment.PunishType.BAN, reason, sender.getName());
         punishmentManager.AddPunish(punishment);
         sender.sendMessage(new TextComponent(punishment.getPlayerName() + " banned by " + punishment.getOperator() + " due to " + punishment.getReason()));
         disconnectManager.DisconnectPlayer(punishment);

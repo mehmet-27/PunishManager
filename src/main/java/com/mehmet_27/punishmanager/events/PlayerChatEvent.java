@@ -15,7 +15,7 @@ public class PlayerChatEvent implements Listener {
     @EventHandler
     public void onChat(ChatEvent event){
         ProxiedPlayer player = (ProxiedPlayer) event.getSender();
-        Punishment punishment = punishmentManager.getPunishment(player.getName());
+        Punishment punishment = punishmentManager.getPunishment(player.getName(), "mute");
         if (punishment != null && punishment.playerIsMuted()){
             event.setCancelled(true);
         }
