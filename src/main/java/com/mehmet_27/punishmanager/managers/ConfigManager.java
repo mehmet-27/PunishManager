@@ -50,7 +50,6 @@ public class ConfigManager {
         for (String message : getMessages().getStringList(path)) {
             messages.add(ChatColor.translateAlternateColorCodes('&', message));
         }
-        plugin.getProxy().getLogger().info(messages.toString());
         return messages;
     }
 

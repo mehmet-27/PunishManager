@@ -14,10 +14,9 @@ public class PlayerLoginEvent implements Listener {
     @EventHandler
     public void onLogin(PostLoginEvent event){
         ProxiedPlayer player = event.getPlayer();
-        if (punishmentManager.PlayerIsBanned(player.getName())){
-            Punishment punishment = punishmentManager.getPunishment(player.getName());
+        Punishment punishment = punishmentManager.getPunishment(player.getName());
+        if (punishment != null && punishment.PlayerIsBanned()){
             disconnectManager.DisconnectPlayer(punishment);
         }
     }
-
 }

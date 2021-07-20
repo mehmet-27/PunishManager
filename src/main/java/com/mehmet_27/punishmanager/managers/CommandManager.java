@@ -4,16 +4,21 @@ import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.commands.BanCommand;
 import com.mehmet_27.punishmanager.commands.KickCommand;
 import com.mehmet_27.punishmanager.commands.UnBanCommand;
+import net.md_5.bungee.api.plugin.Command;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import static com.mehmet_27.punishmanager.managers.PermissionManager.Permissions.*;
 
 public class CommandManager {
-    private PunishManager plugin;
-    private PermissionManager permissionManager;
+    private final PunishManager plugin;
+    private final PermissionManager permissionManager;
 
     public CommandManager(PunishManager plugin) {
         this.plugin = plugin;
-        this.permissionManager = plugin.getPermissionManager();
+        this.permissionManager = PunishManager.getPermissionManager();
     }
 
     public void LoadAllCommands() {

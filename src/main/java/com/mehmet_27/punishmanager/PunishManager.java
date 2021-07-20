@@ -50,4 +50,5 @@ public final class PunishManager extends Plugin {
     public ConfigManager getConfigManager(){
         return configManager;
     }
+
 }
