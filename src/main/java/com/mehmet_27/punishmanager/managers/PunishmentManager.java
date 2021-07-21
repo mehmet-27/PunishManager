@@ -1,5 +1,6 @@
 package com.mehmet_27.punishmanager.managers;
 
+import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.Punishment;
 
 import java.sql.Connection;
@@ -11,7 +12,11 @@ import java.util.List;
 
 public class PunishmentManager {
 
-    private final Connection connection = com.mehmet_27.punishmanager.PunishManager.getInstance().getConnection();
+    private final Connection connection;
+
+    public PunishmentManager(PunishManager plugin) {
+        connection = plugin.getMySQLManager().getConnection();
+    }
 
     public void AddPunish(Punishment punishment) {
         try {
@@ -47,12 +52,9 @@ public class PunishmentManager {
             ps.setString(1, wantedPlayer);
             ResultSet result = ps.executeQuery();
             if (result.next()) {
-                if (result.getString("type").equals("BAN") ||
+                return result.getString("type").equals("BAN") ||
                         result.getString("type").equals("IPBAN") ||
-                        result.getString("type").equals("TEMPBAN")) {
-                    return true;
-                }
-                return false;
+                        result.getString("type").equals("TEMPBAN");
             }
         } catch (SQLException e) {
             e.printStackTrace();

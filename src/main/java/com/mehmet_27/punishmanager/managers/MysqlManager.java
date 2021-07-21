@@ -11,42 +11,30 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class MysqlManager {
-    private PunishManager plugin;
+
+    private final PunishManager plugin;
     private Connection connection;
-
-    private String host;
-    private String port;
-    private String database;
-    private String username;
-    private String password;
-
-    Configuration config = ConfigManager.getConfig();
 
     public MysqlManager(PunishManager plugin) {
         this.plugin = plugin;
-
-        host = config.getString("mysql.host");
-        port = config.getString("mysql.port");
-        database = config.getString("mysql.database");
-        username = config.getString("mysql.username");
-        password = config.getString("mysql.password");
-        if (!isConnected()) connect();
+        connect();
+        setup();
     }
 
     public void connect() {
-        if (!isConnected()) {
-            host = config.getString("mysql.host");
-            port = config.getString("mysql.port");
-            database = config.getString("mysql.database");
-            username = config.getString("mysql.username");
-            password = config.getString("mysql.password");
+        Configuration config = plugin.getConfigManager().getConfig();
 
-            try {
-                connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?useSSL=false", username, password);
-            } catch (SQLException e) {
-                plugin.getInstance().getLogger().info(Utils.color("&cDatabase not connected!"));
-                e.printStackTrace();
-            }
+        String host = config.getString("mysql.host");
+        String port = config.getString("mysql.port");
+        String database = config.getString("mysql.database");
+        String username = config.getString("mysql.username");
+        String password = config.getString("mysql.password");
+
+        try {
+            connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?useSSL=false", username, password);
+            plugin.getLogger().info(Utils.color("&aDatabase is connected!"));
+        } catch (SQLException e) {
+            plugin.getLogger().severe(Utils.color("&cDatabase is not connected: ") + e.getMessage());
         }
     }
 
@@ -64,11 +52,24 @@ public class MysqlManager {
         return connection;
     }
 
-    public boolean isConnected() {
-        return (connection == null ? false : true);
+    public void addPlayer(ProxiedPlayer player) {
+        String address = player.getSocketAddress().toString();
+        String withoutSlash = address.replaceAll("/", "");
+        String[] split = withoutSlash.split(":");
+        String ip = split[0];
+
+        try {
+            PreparedStatement ps = connection.prepareStatement("INSERT IGNORE INTO `punishmanager_players` (`uuid`, `name`, `ip`) VALUES (?,?,?)");
+            ps.setString(1, player.getUniqueId().toString());
+            ps.setString(2, player.getName());
+            ps.setString(3, ip);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void createPunishmentsTable(){
+    private void createPunishmentsTable() {
         try {
             String query = "CREATE TABLE IF NOT EXISTS `punishmanager_punishments` ("
                     + " `id` BIGINT(20) NOT NULL auto_increment,"
@@ -85,7 +86,8 @@ public class MysqlManager {
             e.printStackTrace();
         }
     }
-    private void createPlayersTable(){
+
+    private void createPlayersTable() {
         try {
             String query = "CREATE TABLE IF NOT EXISTS `punishmanager_players` ("
                     + " `uuid` VARCHAR(72) NOT NULL,"
@@ -98,24 +100,9 @@ public class MysqlManager {
             e.printStackTrace();
         }
     }
-    public void setup(){
+
+    private void setup() {
         createPlayersTable();
         createPunishmentsTable();
-    }
-    public void addPlayer(ProxiedPlayer player){
-        String address = player.getSocketAddress().toString();
-        String withoutSlash = address.replaceAll("/", "");
-        String[] split = withoutSlash.split(":");
-        String ip = split[0];
-
-        try {
-            PreparedStatement ps = connection.prepareStatement("INSERT IGNORE INTO `punishmanager_players` (`uuid`, `name`, `ip`) VALUES (?,?,?)");
-            ps.setString(1, player.getUniqueId().toString());
-            ps.setString(2, player.getName());
-            ps.setString(3, ip);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }

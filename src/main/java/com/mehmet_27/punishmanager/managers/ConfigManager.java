@@ -1,61 +1,63 @@
 package com.mehmet_27.punishmanager.managers;
 
 import com.mehmet_27.punishmanager.PunishManager;
-import net.md_5.bungee.api.ChatColor;
+import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ConfigManager {
-    private static PunishManager plugin;
-    private File configFile, messagesFile;
+    private final PunishManager plugin;
+
     private final ConfigurationProvider provider = ConfigurationProvider.getProvider(YamlConfiguration.class);
-    private static Configuration config, messages;
+    private final Configuration config, messages;
 
     public ConfigManager(PunishManager plugin) {
         this.plugin = plugin;
-        configFile = new File(plugin.getDataFolder(), "config.yml");
-        messagesFile = new File(plugin.getDataFolder(), "messages.yml");
-    }
-
-    public void load() {
-        try {
-            if (!plugin.getDataFolder().exists())
-                plugin.getDataFolder().mkdirs();
-            if (!configFile.exists()) {
-                final InputStream im = plugin.getResourceAsStream("config.yml");
-                Files.copy(im, configFile.toPath());
-            }
-            if(!messagesFile.exists()){
-                final InputStream im = plugin.getResourceAsStream("messages.yml");
-                Files.copy(im, messagesFile.toPath());
-            }
-            config = provider.load(configFile);
-            messages = provider.load(messagesFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        config = loadFile(new File(plugin.getDataFolder() + File.separator + "config.yml"));
+        messages = loadFile(new File(plugin.getDataFolder() + File.separator + "messages.yml"));
     }
 
     public List<String> getLayout(String path) {
         List<String> messages = new ArrayList<>();
         for (String message : getMessages().getStringList(path)) {
-            messages.add(ChatColor.translateAlternateColorCodes('&', message));
+            messages.add(Utils.color(message));
         }
         return messages;
     }
 
-    public static Configuration getConfig() {
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    private Configuration loadFile(File file) {
+        try {
+            if (!plugin.getDataFolder().exists()) {
+                file.getParentFile().mkdirs();
+            }
+
+            if (!file.exists()) {
+                Files.copy(plugin.getResourceAsStream(file.getName()), file.toPath());
+                return provider.load(file);
+            }
+
+            return provider.load(file);
+        } catch (IOException ex) {
+            plugin.getLogger().severe(String.format("Error while trying to load file {0}: " + ex.getMessage(), file.getName()));
+        }
+
+        return null;
+    }
+
+
+    public Configuration getConfig() {
         return config;
     }
-    public static Configuration getMessages(){
+
+    public Configuration getMessages() {
         return messages;
     }
 }

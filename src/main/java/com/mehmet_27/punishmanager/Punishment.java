@@ -67,18 +67,12 @@ public class Punishment {
     }
 
     public boolean playerIsBanned() {
-        if (punishType.equals(PunishType.BAN) ||
+        return punishType.equals(PunishType.BAN) ||
                 punishType.equals(PunishType.TEMPBAN) ||
-                punishType.equals(PunishType.IPBAN)) {
-            return true;
-        }
-        return false;
+                punishType.equals(PunishType.IPBAN);
     }
 
     public boolean playerIsMuted() {
-        if (punishType.equals(PunishType.MUTE) || punishType.equals(PunishType.TEMPMUTE)) {
-            return true;
-        }
-        return false;
+        return punishType.equals(PunishType.MUTE) || punishType.equals(PunishType.TEMPMUTE);
     }
 }
