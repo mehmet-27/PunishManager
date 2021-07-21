@@ -3,65 +3,51 @@ package com.mehmet_27.punishmanager;
 import co.aikar.commands.BungeeCommandManager;
 import com.mehmet_27.punishmanager.events.PlayerChatEvent;
 import com.mehmet_27.punishmanager.events.PlayerLoginEvent;
-import com.mehmet_27.punishmanager.managers.*;
-import com.mehmet_27.punishmanager.utils.Utils;
+import com.mehmet_27.punishmanager.managers.CommandManager;
+import com.mehmet_27.punishmanager.managers.ConfigManager;
+import com.mehmet_27.punishmanager.managers.MysqlManager;
+import com.mehmet_27.punishmanager.managers.PunishmentManager;
 import net.md_5.bungee.api.plugin.Plugin;
-
-import java.sql.Connection;
 
 
 public final class PunishManager extends Plugin {
-    private static PunishManager instansce;
+
+    private static PunishManager instance;
 
     private MysqlManager sql;
     private ConfigManager configManager;
-    private CommandManager commandManager;
-    private MessageManager messageManager;
-    private DisconnectManager disconnectManager;
     private PunishmentManager punishmentManager;
-    private BungeeCommandManager manager;
 
     @Override
     public void onEnable() {
-        instansce = this;
+        instance = this;
         configManager = new ConfigManager(this);
-        configManager.load();
         sql = new MysqlManager(this);
-        sql.setup();
-        getProxy().getLogger().info((!sql.isConnected() ? Utils.color("&cPlease check mysql information.") : Utils.color("&aDatabase is connected.")));
-        manager = new BungeeCommandManager(this);
-        messageManager = new MessageManager();
-        disconnectManager = new DisconnectManager();
-        punishmentManager = new PunishmentManager();
-        commandManager = new CommandManager(this);
+        new BungeeCommandManager(this);
+        punishmentManager = new PunishmentManager(this);
+        new CommandManager(this);
         getProxy().getPluginManager().registerListener(this, new PlayerLoginEvent());
         getProxy().getPluginManager().registerListener(this, new PlayerChatEvent());
     }
 
     @Override
     public void onDisable() {
-       sql.disconnect();
+        sql.disconnect();
     }
 
-    public static PunishManager getInstance(){
-        return instansce;
+    public static PunishManager getInstance() {
+        return instance;
     }
-    public Connection getConnection() {
-        return sql.getConnection();
+
+    public MysqlManager getMySQLManager() {
+        return sql;
     }
-    public MessageManager getMessageManager(){
-        return messageManager;
-    }
-    public ConfigManager getConfigManager(){
+
+    public ConfigManager getConfigManager() {
         return configManager;
     }
-    public DisconnectManager getDisconnectManager(){
-        return disconnectManager;
-    }
-    public PunishmentManager getPunishmentManager(){
+
+    public PunishmentManager getPunishmentManager() {
         return punishmentManager;
-    }
-    public BungeeCommandManager getManager(){
-        return manager;
     }
 }

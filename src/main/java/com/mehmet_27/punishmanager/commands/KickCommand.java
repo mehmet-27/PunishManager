@@ -4,7 +4,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.Punishment;
-import com.mehmet_27.punishmanager.managers.DisconnectManager;
+import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -12,8 +12,6 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 @CommandAlias("kick")
 @CommandPermission("punishmanager.command.kick")
 public class KickCommand extends BaseCommand {
-    @Dependency
-    private DisconnectManager disconnectManager;
 
     @Default
     @CommandCompletion("@players Reason")
@@ -22,7 +20,7 @@ public class KickCommand extends BaseCommand {
         String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;
         if (player != null && player.isConnected()) {
             Punishment punishment = new Punishment(playerName, uuid, Punishment.PunishType.KICK, reason, sender.getName());
-            disconnectManager.DisconnectPlayer(punishment);
+            Utils.disconnectPlayer(punishment);
             sender.sendMessage(new TextComponent("The player was kicked from the server."));
         } else {
             sender.sendMessage(new TextComponent("You cant kick offline players."));

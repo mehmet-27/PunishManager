@@ -5,7 +5,6 @@ import co.aikar.commands.BungeeCommandIssuer;
 import co.aikar.commands.BungeeCommandManager;
 import co.aikar.commands.ConditionFailedException;
 import com.mehmet_27.punishmanager.PunishManager;
-import net.md_5.bungee.api.CommandSender;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Modifier;
@@ -24,11 +23,10 @@ public class CommandManager extends BungeeCommandManager {
     }
 
     private void registerDependencies() {
-        registerDependency(DisconnectManager.class, PunishManager.getInstance().getDisconnectManager());
-        registerDependency(PunishmentManager.class, PunishManager.getInstance().getPunishmentManager());
+        registerDependency(PunishmentManager.class, plugin.getPunishmentManager());
     }
 
-    public void registerCommands() {
+    private void registerCommands() {
         // Mark a package that we want to reflect
         Reflections reflections = new Reflections("com.mehmet_27.punishmanager.commands");
         // Get all classes, which `extends BaseCommand`
@@ -51,10 +49,11 @@ public class CommandManager extends BungeeCommandManager {
             }
         }
     }
-    public void registerConditions() {
+
+    private void registerConditions() {
         getCommandConditions().addCondition(String.class, "other_player", (context, exec, value) -> {
             BungeeCommandIssuer issuer = context.getIssuer();
-            if (issuer.isPlayer() && issuer.getPlayer().getName().equals(value)){
+            if (issuer.isPlayer() && issuer.getPlayer().getName().equals(value)) {
                 throw new ConditionFailedException("You cannot use this command on yourself!");
             }
         });

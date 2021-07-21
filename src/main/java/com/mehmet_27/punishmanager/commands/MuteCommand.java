@@ -13,7 +13,8 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 @CommandPermission("punishmanager.command.mute")
 public class MuteCommand extends BaseCommand {
 
-    PunishmentManager punishmentManager = new PunishmentManager();
+    @Dependency
+    PunishmentManager punishmentManager;
 
     @Default
     @CommandCompletion("@players Reason")
