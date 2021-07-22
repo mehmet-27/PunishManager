@@ -79,6 +79,8 @@ public class MysqlManager {
                     + " `reason` VARCHAR(255),"
                     + " `operator` VARCHAR(16),"
                     + " `type` VARCHAR(16),"
+                    + " `start` LONGTEXT,"
+                    + " `end` LONGTEXT,"
                     + " PRIMARY KEY (`id`))";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.executeUpdate();

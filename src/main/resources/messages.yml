@@ -4,6 +4,13 @@ ban:
   - '&6You banned from this server.'
   - '&2Operator: &a%operator%'
   - '&2Reason: &a%reason%'
+tempban:
+  - '&e&lTITTLE'
+  - ' '
+  - '&6You banned from this server.'
+  - '&2Operator: &a%operator%'
+  - '&2Reason: &a%reason%'
+  - '&2Duration: &a%duration%'
 kick:
   - '&e&lTITTLE'
   - ' '

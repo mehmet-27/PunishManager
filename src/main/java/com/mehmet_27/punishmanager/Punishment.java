@@ -1,10 +1,13 @@
 package com.mehmet_27.punishmanager;
 
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Punishment {
-    private String playerName, uuid;
+    private String playerName, uuid, reason, operator;
     private PunishType punishType;
-    private String operator;
-    private String reason;
+    private final long start, end;
 
     public Punishment(String playerName, String uuid, PunishType punishType, String reason, String operator) {
         this.playerName = playerName;
@@ -12,6 +15,17 @@ public class Punishment {
         this.punishType = punishType;
         this.reason = reason;
         this.operator = operator;
+        this.start = new Timestamp(System.currentTimeMillis()).getTime();
+        this.end = Long.parseLong("-1");
+    }
+    public Punishment(String playerName, String uuid, PunishType punishType, String reason, String operator, Long start, Long end) {
+        this.playerName = playerName;
+        this.uuid = uuid;
+        this.punishType = punishType;
+        this.reason = reason;
+        this.operator = operator;
+        this.start = start;
+        this.end = end;
     }
 
     public enum PunishType {
@@ -74,5 +88,32 @@ public class Punishment {
 
     public boolean playerIsMuted() {
         return punishType.equals(PunishType.MUTE) || punishType.equals(PunishType.TEMPMUTE);
+    }
+
+    public long getStart() {
+        return start;
+    }
+
+    public long getEnd() {
+        return end;
+    }
+    public Map getReaminingTime() {
+        int currentTime = (int) new Timestamp(System.currentTimeMillis()).getTime();
+        int difference = (int) (getEnd() - currentTime);
+        if (difference <= 0) return null;
+        int seconds = difference % 60;
+        int minutes = difference / 60;
+        int hours = minutes / 60;
+        int days = hours / 24;
+        int weeks = days / 7;
+        int years = weeks / 52;
+        Map<String, Integer> times = new HashMap();
+        times.put("seconds", seconds);
+        times.put("minutes", minutes);
+        times.put("hours", hours);
+        times.put("days", days);
+        times.put("weeks", weeks);
+        times.put("years", years);
+        return times;
     }
 }

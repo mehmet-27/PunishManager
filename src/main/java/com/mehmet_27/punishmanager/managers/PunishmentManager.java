@@ -20,12 +20,14 @@ public class PunishmentManager {
 
     public void AddPunish(Punishment punishment) {
         try {
-            PreparedStatement ps = connection.prepareStatement("INSERT IGNORE INTO `punishmanager_punishments` (`name`, `uuid`, `reason`, `operator`, `type`) VALUES (?,?,?,?,?)");
+            PreparedStatement ps = connection.prepareStatement("INSERT IGNORE INTO `punishmanager_punishments` (`name`, `uuid`, `reason`, `operator`, `type`, `start`, `end`) VALUES (?,?,?,?,?,?,?)");
             ps.setString(1, punishment.getPlayerName());
             ps.setString(2, punishment.getUuid());
             ps.setString(3, punishment.getReason());
             ps.setString(4, punishment.getOperator());
             ps.setString(5, punishment.getPunishType().toString());
+            ps.setString(6, String.valueOf(punishment.getStart()));
+            ps.setString(7, String.valueOf(punishment.getEnd()));
             ps.executeUpdate();
 
         } catch (SQLException e) {
@@ -52,9 +54,7 @@ public class PunishmentManager {
             ps.setString(1, wantedPlayer);
             ResultSet result = ps.executeQuery();
             if (result.next()) {
-                return result.getString("type").equals("BAN") ||
-                        result.getString("type").equals("IPBAN") ||
-                        result.getString("type").equals("TEMPBAN");
+                return result.getString("type").contains("BAN");
             }
         } catch (SQLException e) {
             e.printStackTrace();

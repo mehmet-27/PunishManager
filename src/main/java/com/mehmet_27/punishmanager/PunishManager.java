@@ -9,6 +9,11 @@ import com.mehmet_27.punishmanager.managers.MysqlManager;
 import com.mehmet_27.punishmanager.managers.PunishmentManager;
 import net.md_5.bungee.api.plugin.Plugin;
 
+import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+
 
 public final class PunishManager extends Plugin {
 

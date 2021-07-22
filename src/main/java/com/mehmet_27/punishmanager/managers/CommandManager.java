@@ -7,8 +7,11 @@ import co.aikar.commands.ConditionFailedException;
 import com.mehmet_27.punishmanager.PunishManager;
 import org.reflections.Reflections;
 
+import java.io.*;
 import java.lang.reflect.Modifier;
-import java.util.Set;
+import java.util.*;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.logging.Level;
 
 public class CommandManager extends BungeeCommandManager {

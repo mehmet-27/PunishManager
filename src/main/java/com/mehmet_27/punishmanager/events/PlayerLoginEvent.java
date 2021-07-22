@@ -8,6 +8,8 @@ import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
+import java.sql.Timestamp;
+
 public class PlayerLoginEvent implements Listener {
 
     @EventHandler
@@ -16,6 +18,12 @@ public class PlayerLoginEvent implements Listener {
         PunishManager.getInstance().getMySQLManager().addPlayer(player);
         Punishment punishment = PunishManager.getInstance().getPunishmentManager().getPunishment(player.getName(), "ban");
         if (punishment != null && punishment.playerIsBanned()) {
+            if (punishment.getPunishType().equals(Punishment.PunishType.TEMPBAN)){
+                long currentTime = new Timestamp(System.currentTimeMillis()).getTime();
+                if (punishment.getEnd() >= currentTime){
+                    Utils.disconnectPlayer(punishment);
+                }
+            }
             Utils.disconnectPlayer(punishment);
         }
     }
