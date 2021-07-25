@@ -1,11 +1,19 @@
 package com.mehmet_27.punishmanager;
 
+import net.md_5.bungee.config.Configuration;
+
 import java.sql.Timestamp;
 
 public class Punishment {
     private String playerName, uuid, reason, operator;
     private PunishType punishType;
     private final long start, end;
+
+    private static final int MONTH = 60 * 60 * 24 * 7 * 4;
+    private static final int WEEK = 60 * 60 * 24 * 7;
+    private static final int DAY = 60 * 60 * 24;
+    private static final int HOUR = 60 * 60;
+    private static final int MINUTE = 60;
 
     public Punishment(String playerName, String uuid, PunishType punishType, String reason, String operator) {
         this(playerName, uuid, punishType, reason, operator, new Timestamp(System.currentTimeMillis()).getTime(), -1);
@@ -22,7 +30,7 @@ public class Punishment {
     }
 
     public enum PunishType {
-        BAN, KICK, MUTE, TEMPMUTE, TEMPBAN, IPBAN, NONE;
+        BAN, KICK, MUTE, TEMPMUTE, TEMPBAN, IPBAN, NONE
     }
 
     public PunishType getPunishType() {
@@ -34,11 +42,7 @@ public class Punishment {
     }
 
     public String getOperator() {
-        if (operator != null) {
-            return operator;
-        } else {
-            return "none";
-        }
+        return operator != null ? operator : "none";
     }
 
     public void setOperator(String operator) {
@@ -46,11 +50,7 @@ public class Punishment {
     }
 
     public String getReason() {
-        if (reason != null) {
-            return reason;
-        } else {
-            return "null";
-        }
+        return reason != null ? reason : "null";
     }
 
     public void setReason(String reason) {
@@ -92,15 +92,17 @@ public class Punishment {
     }
 
     public String getDuration() {
+        Configuration messages = PunishManager.getInstance().getConfigManager().getMessages();
         long currentTime = new Timestamp(System.currentTimeMillis()).getTime();
         long diff = (getEnd() - currentTime) / 1000;
+
         //Getting time formats
-        String monthFormat = PunishManager.getInstance().getConfigManager().getMessages().getString("main.timelayout.month");
-        String weekFormat = PunishManager.getInstance().getConfigManager().getMessages().getString("main.timelayout.week");
-        String dayFormat = PunishManager.getInstance().getConfigManager().getMessages().getString("main.timelayout.day");
-        String hourFormat = PunishManager.getInstance().getConfigManager().getMessages().getString("main.timelayout.hour");
-        String minuteFormat = PunishManager.getInstance().getConfigManager().getMessages().getString("main.timelayout.minute");
-        String secondFormat = PunishManager.getInstance().getConfigManager().getMessages().getString("main.timelayout.second");
+        String monthFormat = messages.getString("main.timelayout.month");
+        String weekFormat = messages.getString("main.timelayout.week");
+        String dayFormat = messages.getString("main.timelayout.day");
+        String hourFormat = messages.getString("main.timelayout.hour");
+        String minuteFormat = messages.getString("main.timelayout.minute");
+        String secondFormat = messages.getString("main.timelayout.second");
 
         String months = String.valueOf(diff / 60 / 60 / 24 / 7 / 4);
         String weeks = String.valueOf(diff / 60 / 60 / 24 / 7 % 4);
@@ -108,24 +110,31 @@ public class Punishment {
         String hours = String.valueOf(diff / 60 / 60 % 24);
         String minutes = String.valueOf(diff / 60 % 60);
         String seconds = String.valueOf(diff % 60);
-        // months
-        if (diff > 60 * 60 * 24 * 7 * 4) {
-            return (monthFormat + " " + weekFormat + " " + dayFormat + " " + hourFormat + " " + minuteFormat + " " + secondFormat).replaceAll("%mo%", months).replaceAll("%w%", weeks).replaceAll("%d%", days).replaceAll("%h%", hours).replaceAll("%m%", minutes).replaceAll("%s%", seconds);
+
+        if (diff > MONTH) {
+            return String.format("%s %s %s %s %s %s", monthFormat, weekFormat, dayFormat, hourFormat, minuteFormat, secondFormat).
+                    replaceAll("%mo%", months).
+                    replaceAll("%w%", weeks).
+                    replaceAll("%d%", days).
+                    replaceAll("%h%", hours).
+                    replaceAll("%m%", minutes).
+                    replaceAll("%s%", seconds);
         }
+
         // weeks
-        else if (diff > 60 * 60 * 24 * 7) {
+        else if (diff > WEEK) {
             return (weekFormat + " " + dayFormat + " " + hourFormat + " " + minuteFormat + " " + secondFormat).replaceAll("%w%", weeks).replaceAll("%d%", days).replaceAll("%h%", hours).replaceAll("%m%", minutes).replaceAll("%s%", seconds);
         }
         // days
-        else if (diff > 60 * 60 * 24) {
+        else if (diff > DAY) {
             return (dayFormat + " " + hourFormat + " " + minuteFormat + " " + secondFormat).replaceAll("%d%", days).replaceAll("%h%", hours).replaceAll("%m%", minutes).replaceAll("%s%", seconds);
         }
         // hours
-        else if (diff > 60 * 60) {
+        else if (diff > HOUR) {
             return (hourFormat + " " + minuteFormat + " " + secondFormat).replaceAll("%h%", hours).replaceAll("%m%", minutes).replaceAll("%s%", seconds);
         }
         // minutes
-        else if (diff > 60) {
+        else if (diff > MINUTE) {
             return (minuteFormat + " " + secondFormat).replaceAll("%m%", minutes).replaceAll("%s%", seconds);
         }
         // seconds
