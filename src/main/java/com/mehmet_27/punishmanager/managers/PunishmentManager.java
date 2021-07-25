@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.mehmet_27.punishmanager.Punishment.PunishType;
+import static com.mehmet_27.punishmanager.Punishment.PunishType.BAN;
 
 public class PunishmentManager {
 
@@ -55,7 +56,7 @@ public class PunishmentManager {
             ps.setString(1, wantedPlayer);
             ResultSet result = ps.executeQuery();
             if (result.next()) {
-                return PunishType.valueOf(result.getString("type")).equals(PunishType.BAN);
+                return PunishType.valueOf(result.getString("type")).equals(BAN);
             }
         } catch (SQLException e) {
             e.printStackTrace();
