@@ -44,9 +44,8 @@ public class TempBanCommand extends BaseCommand {
         }
         int number = Integer.parseInt(matcher.group("number"));
         String unit = matcher.group("unit");
-        long addingTime = Utils.convertToMillis(number, unit);
-        long start = new Timestamp(System.currentTimeMillis()).getTime();
-        long end = new Timestamp(start + TimeUnit.SECONDS.toMillis(addingTime)).getTime();
+        long start = System.currentTimeMillis();
+        long end = start + Utils.convertToMillis(number, unit);
         punishment = new Punishment(playerName, uuid, Punishment.PunishType.TEMPBAN, reason, sender.getName(), start, end);
         punishmentManager.AddPunish(punishment);
         sender.sendMessage(new TextComponent(punishment.getPlayerName() + " banned by " + punishment.getOperator() + " due to " + punishment.getReason()));

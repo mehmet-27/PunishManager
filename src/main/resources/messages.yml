@@ -1,3 +1,11 @@
+main:
+  timelayout:
+    month:  '%mo% months'
+    week: '%w% weeks'
+    day: '%d% days'
+    hour: '%h% hours'
+    minute: '%m% minutes'
+    second: '%s% seconds'
 ban:
   - '&e&lTITTLE'
   - ' '

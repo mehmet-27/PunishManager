@@ -92,8 +92,10 @@ public class PunishmentManager {
                 String uuid = result.getString("uuid");
                 String reason = result.getString("reason");
                 String operator = result.getString("operator");
+                long start = result.getLong("start");
+                long end = result.getLong("end");
                 Punishment.PunishType punishType = Punishment.PunishType.valueOf(result.getString("type"));
-                punishments.add(new Punishment(playerName, uuid, punishType, reason, operator));
+                punishments.add(new Punishment(playerName, uuid, punishType, reason, operator, start, end));
             }
         } catch (SQLException e) {
             e.printStackTrace();

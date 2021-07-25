@@ -1,8 +1,6 @@
 package com.mehmet_27.punishmanager;
 
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Punishment {
     private String playerName, uuid, reason, operator;
@@ -10,15 +8,10 @@ public class Punishment {
     private final long start, end;
 
     public Punishment(String playerName, String uuid, PunishType punishType, String reason, String operator) {
-        this.playerName = playerName;
-        this.uuid = uuid;
-        this.punishType = punishType;
-        this.reason = reason;
-        this.operator = operator;
-        this.start = new Timestamp(System.currentTimeMillis()).getTime();
-        this.end = Long.parseLong("-1");
+        this(playerName, uuid, punishType, reason, operator, new Timestamp(System.currentTimeMillis()).getTime(), -1);
     }
-    public Punishment(String playerName, String uuid, PunishType punishType, String reason, String operator, Long start, Long end) {
+
+    public Punishment(String playerName, String uuid, PunishType punishType, String reason, String operator, long start, long end) {
         this.playerName = playerName;
         this.uuid = uuid;
         this.punishType = punishType;
@@ -97,23 +90,47 @@ public class Punishment {
     public long getEnd() {
         return end;
     }
-    public Map getReaminingTime() {
-        int currentTime = (int) new Timestamp(System.currentTimeMillis()).getTime();
-        int difference = (int) (getEnd() - currentTime);
-        if (difference <= 0) return null;
-        int seconds = difference % 60;
-        int minutes = difference / 60;
-        int hours = minutes / 60;
-        int days = hours / 24;
-        int weeks = days / 7;
-        int years = weeks / 52;
-        Map<String, Integer> times = new HashMap();
-        times.put("seconds", seconds);
-        times.put("minutes", minutes);
-        times.put("hours", hours);
-        times.put("days", days);
-        times.put("weeks", weeks);
-        times.put("years", years);
-        return times;
+
+    public String getDuration() {
+        long currentTime = new Timestamp(System.currentTimeMillis()).getTime();
+        long diff = (getEnd() - currentTime) / 1000;
+        //Getting time formats
+        String monthFormat = PunishManager.getInstance().getConfigManager().getMessages().getString("main.timelayout.month");
+        String weekFormat = PunishManager.getInstance().getConfigManager().getMessages().getString("main.timelayout.week");
+        String dayFormat = PunishManager.getInstance().getConfigManager().getMessages().getString("main.timelayout.day");
+        String hourFormat = PunishManager.getInstance().getConfigManager().getMessages().getString("main.timelayout.hour");
+        String minuteFormat = PunishManager.getInstance().getConfigManager().getMessages().getString("main.timelayout.minute");
+        String secondFormat = PunishManager.getInstance().getConfigManager().getMessages().getString("main.timelayout.second");
+
+        String months = String.valueOf(diff / 60 / 60 / 24 / 7 / 4);
+        String weeks = String.valueOf(diff / 60 / 60 / 24 / 7 % 4);
+        String days = String.valueOf(diff / 60 / 60 / 24 % 7);
+        String hours = String.valueOf(diff / 60 / 60 % 24);
+        String minutes = String.valueOf(diff / 60 % 60);
+        String seconds = String.valueOf(diff % 60);
+        // months
+        if (diff > 60 * 60 * 24 * 7 * 4) {
+            return (monthFormat + " " + weekFormat + " " + dayFormat + " " + hourFormat + " " + minuteFormat + " " + secondFormat).replaceAll("%mo%", months).replaceAll("%w%", weeks).replaceAll("%d%", days).replaceAll("%h%", hours).replaceAll("%m%", minutes).replaceAll("%s%", seconds);
+        }
+        // weeks
+        else if (diff > 60 * 60 * 24 * 7) {
+            return (weekFormat + " " + dayFormat + " " + hourFormat + " " + minuteFormat + " " + secondFormat).replaceAll("%w%", weeks).replaceAll("%d%", days).replaceAll("%h%", hours).replaceAll("%m%", minutes).replaceAll("%s%", seconds);
+        }
+        // days
+        else if (diff > 60 * 60 * 24) {
+            return (dayFormat + " " + hourFormat + " " + minuteFormat + " " + secondFormat).replaceAll("%d%", days).replaceAll("%h%", hours).replaceAll("%m%", minutes).replaceAll("%s%", seconds);
+        }
+        // hours
+        else if (diff > 60 * 60) {
+            return (hourFormat + " " + minuteFormat + " " + secondFormat).replaceAll("%h%", hours).replaceAll("%m%", minutes).replaceAll("%s%", seconds);
+        }
+        // minutes
+        else if (diff > 60) {
+            return (minuteFormat + " " + secondFormat).replaceAll("%m%", minutes).replaceAll("%s%", seconds);
+        }
+        // seconds
+        else {
+            return (secondFormat).replaceAll("%s%", seconds);
+        }
     }
 }

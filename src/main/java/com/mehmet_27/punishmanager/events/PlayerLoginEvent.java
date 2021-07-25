@@ -19,12 +19,14 @@ public class PlayerLoginEvent implements Listener {
         Punishment punishment = PunishManager.getInstance().getPunishmentManager().getPunishment(player.getName(), "ban");
         if (punishment != null && punishment.playerIsBanned()) {
             if (punishment.getPunishType().equals(Punishment.PunishType.TEMPBAN)){
-                long currentTime = new Timestamp(System.currentTimeMillis()).getTime();
+                long currentTime = System.currentTimeMillis();
                 if (punishment.getEnd() >= currentTime){
                     Utils.disconnectPlayer(punishment);
                 }
             }
-            Utils.disconnectPlayer(punishment);
+            else{
+                Utils.disconnectPlayer(punishment);
+            }
         }
     }
 }

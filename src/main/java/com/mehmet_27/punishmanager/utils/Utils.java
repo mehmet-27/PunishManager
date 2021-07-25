@@ -7,12 +7,17 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.mehmet_27.punishmanager.Punishment.PunishType.*;
 
 public class Utils {
 
@@ -26,13 +31,13 @@ public class Utils {
         TextComponent layout = new TextComponent();
         Punishment.PunishType punishType = punishment.getPunishType();
         for (String message : messages) {
-            if (punishType.equals(Punishment.PunishType.BAN)) {
+            if (punishType.equals(BAN)) {
                 layout.addExtra(message.replace("%reason%", punishment.getReason()).replace("%operator%", punishment.getOperator()) + "\n");
             }
-            else if (punishType.equals(Punishment.PunishType.TEMPBAN)){
-                layout.addExtra(message.replace("%reason%", punishment.getReason()).replace("%operator%", punishment.getOperator()).replace("%duration%", "") + "\n");
+            else if (punishType.equals(TEMPBAN)){
+                layout.addExtra(message.replace("%reason%", punishment.getReason()).replace("%operator%", punishment.getOperator()).replace("%duration%", punishment.getDuration()) + "\n");
             }
-            else if (punishType.equals(Punishment.PunishType.KICK)) {
+            else if (punishType.equals(KICK)) {
                 layout.addExtra(message.replace("%reason%", punishment.getReason()).replace("%operator%", punishment.getOperator()) + "\n");
             }
         }
@@ -63,9 +68,9 @@ public class Utils {
             case "w":
                 return millis * 1000 * 60 * 60 * 24 * 7;
             case "mo":
-                return millis * 1000 * 60 * 60 * 24 * 30;
+                return millis * 1000 * 60 * 60 * 24 * 28;
             case "y":
-                return millis * 1000 * 60 * 60 * 24 * 30 * 12;
+                return millis * 1000 * 60 * 60 * 24 * 28 * 12;
             default:
                 return -1;
         }
