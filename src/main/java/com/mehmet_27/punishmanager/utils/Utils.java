@@ -6,14 +6,8 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,7 +15,7 @@ import static com.mehmet_27.punishmanager.Punishment.PunishType.*;
 
 public class Utils {
 
-    private static Pattern REGEX = Pattern.compile("(?<number>[0-9]+)(?<unit>mo|[ywdhms])");
+    public static final Pattern NumberAndUnit = Pattern.compile("(?<number>[0-9]+)(?<unit>mo|[ywdhms])");
 
     public static String color(String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
@@ -32,13 +26,22 @@ public class Utils {
         Punishment.PunishType punishType = punishment.getPunishType();
         for (String message : messages) {
             if (punishType.equals(BAN)) {
-                layout.addExtra(message.replace("%reason%", punishment.getReason()).replace("%operator%", punishment.getOperator()) + "\n");
-            }
-            else if (punishType.equals(TEMPBAN)){
+                layout.addExtra(String.format("%s %s", punishment.getReason(), punishment.getOperator()).
+                        replaceAll("%reason%", punishment.getReason()).
+                        replaceAll("%operator%", punishment.getOperator())
+                );
+            } else if (punishType.equals(TEMPBAN)) {
+                layout.addExtra(String.format("%s %s %s", punishment.getReason(), punishment.getOperator(), punishment.getDuration()).
+                        replaceAll("%reason%", punishment.getReason()).
+                        replaceAll("%operator%", punishment.getOperator()).
+                        replaceAll("%duration%", punishment.getDuration())
+                );
                 layout.addExtra(message.replace("%reason%", punishment.getReason()).replace("%operator%", punishment.getOperator()).replace("%duration%", punishment.getDuration()) + "\n");
-            }
-            else if (punishType.equals(KICK)) {
-                layout.addExtra(message.replace("%reason%", punishment.getReason()).replace("%operator%", punishment.getOperator()) + "\n");
+            } else if (punishType.equals(KICK)) {
+                layout.addExtra(String.format("%s %s", punishment.getReason(), punishment.getOperator()).
+                        replaceAll("%reason%", punishment.getReason()).
+                        replaceAll("%operator%", punishment.getOperator())
+                );
             }
         }
         return layout;
@@ -77,7 +80,7 @@ public class Utils {
     }
 
     public static boolean isMatcherFound(String time) {
-        Matcher matcher = REGEX.matcher(time.toLowerCase());
+        Matcher matcher = NumberAndUnit.matcher(time.toLowerCase());
         return matcher.find();
     }
 }

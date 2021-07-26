@@ -10,6 +10,8 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import static com.mehmet_27.punishmanager.Punishment.PunishType.BAN;
+
 @CommandAlias("ban")
 @CommandPermission("punishmanager.command.ban")
 public class BanCommand extends BaseCommand {
@@ -27,7 +29,7 @@ public class BanCommand extends BaseCommand {
             sender.sendMessage(new TextComponent("This player has already been banned."));
             return;
         }
-        punishment = new Punishment(playerName, uuid, Punishment.PunishType.BAN, reason, sender.getName());
+        punishment = new Punishment(playerName, uuid, BAN, reason, sender.getName());
         punishmentManager.AddPunish(punishment);
         sender.sendMessage(new TextComponent(punishment.getPlayerName() + " banned by " + punishment.getOperator() + " due to " + punishment.getReason()));
         Utils.disconnectPlayer(punishment);
