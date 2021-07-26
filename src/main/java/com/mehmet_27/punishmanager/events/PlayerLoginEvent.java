@@ -2,7 +2,6 @@ package com.mehmet_27.punishmanager.events;
 
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.Punishment;
-import com.mehmet_27.punishmanager.managers.MysqlManager;
 import com.mehmet_27.punishmanager.managers.PunishmentManager;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -15,27 +14,22 @@ public class PlayerLoginEvent implements Listener {
     @EventHandler
     public void onLogin(PostLoginEvent event) {
         PunishmentManager punishmentManager = PunishManager.getInstance().getPunishmentManager();
-        MysqlManager mySQLManager = PunishManager.getInstance().getMySQLManager();
         ProxiedPlayer player = event.getPlayer();
-        mySQLManager.addPlayer(player);
-        Punishment punishment = punishmentManager.getPunishment(player.getName(), "ban");
-
-        if (punishment == null || !punishment.playerIsBanned()) {
-            return;
-        }
-
-        switch (punishment.getPunishType()) {
-            case TEMPBAN:
-                if (punishment.getEnd() >= System.currentTimeMillis()) {
+        PunishManager.getInstance().getMySQLManager().addPlayer(player);
+        Punishment punishment = PunishManager.getInstance().getPunishmentManager().getPunishment(player.getName(), "ban");
+        if (punishment != null && punishment.playerIsBanned()) {
+            if (punishment.getPunishType().equals(Punishment.PunishType.TEMPBAN)){
+                long currentTime = System.currentTimeMillis();
+                if (punishment.getEnd() >= currentTime){
                     Utils.disconnectPlayer(punishment);
-                } else {
+                }else {
                     //If the ban has expired, it removes the punish from the database.
                     punishmentManager.unPunishPlayer(punishment);
                 }
-
-                break;
-            default:
+            }
+            else{
                 Utils.disconnectPlayer(punishment);
+            }
         }
     }
 }
