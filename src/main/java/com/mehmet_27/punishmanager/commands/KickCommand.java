@@ -9,8 +9,6 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import static com.mehmet_27.punishmanager.Punishment.PunishType.KICK;
-
 @CommandAlias("kick")
 @CommandPermission("punishmanager.command.kick")
 public class KickCommand extends BaseCommand {
@@ -21,7 +19,7 @@ public class KickCommand extends BaseCommand {
         ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerName);
         String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;
         if (player != null && player.isConnected()) {
-            Punishment punishment = new Punishment(playerName, uuid, KICK, reason, sender.getName());
+            Punishment punishment = new Punishment(playerName, uuid, Punishment.PunishType.KICK, reason, sender.getName());
             Utils.disconnectPlayer(punishment);
             sender.sendMessage(new TextComponent("The player was kicked from the server."));
         } else {
