@@ -10,6 +10,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mehmet_27.punishmanager.Punishment.PunishType;
+import static com.mehmet_27.punishmanager.Punishment.PunishType.BAN;
+
 public class PunishmentManager {
 
     private final Connection connection;
@@ -49,12 +52,11 @@ public class PunishmentManager {
 
     public boolean playerIsBanned(String wantedPlayer) {
         try {
-            PreparedStatement ps;
-            ps = connection.prepareStatement("SELECT * FROM `punishmanager_punishments` WHERE `name` = ?");
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM `punishmanager_punishments` WHERE `name` = ?");
             ps.setString(1, wantedPlayer);
             ResultSet result = ps.executeQuery();
             if (result.next()) {
-                return result.getString("type").contains("BAN");
+                return PunishType.valueOf(result.getString("type")).equals(BAN);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -72,7 +74,7 @@ public class PunishmentManager {
                 String uuid = result.getString("uuid");
                 String reason = result.getString("reason");
                 String operator = result.getString("operator");
-                Punishment.PunishType punishType = Punishment.PunishType.valueOf(result.getString("type"));
+                PunishType punishType = PunishType.valueOf(result.getString("type"));
                 return new Punishment(playerName, uuid, punishType, reason, operator);
             }
         } catch (SQLException e) {
@@ -94,7 +96,7 @@ public class PunishmentManager {
                 String operator = result.getString("operator");
                 long start = result.getLong("start");
                 long end = result.getLong("end");
-                Punishment.PunishType punishType = Punishment.PunishType.valueOf(result.getString("type"));
+                PunishType punishType = PunishType.valueOf(result.getString("type"));
                 punishments.add(new Punishment(playerName, uuid, punishType, reason, operator, start, end));
             }
         } catch (SQLException e) {
