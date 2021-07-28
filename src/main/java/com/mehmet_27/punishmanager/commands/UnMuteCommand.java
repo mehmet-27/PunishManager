@@ -16,7 +16,7 @@ public class UnMuteCommand extends BaseCommand {
 
     @Default
     @CommandCompletion("@players")
-    public void unmute(CommandSender sender, @Name("Player") String playerName) {
+    public void unMute(CommandSender sender, @Name("Player") String playerName) {
         Punishment punishment = punishmentManager.getPunishment(playerName, "mute");
         /* fixme: Small advice
            Replace it with ACF conditions

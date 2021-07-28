@@ -5,6 +5,7 @@ import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.Punishment;
 import com.mehmet_27.punishmanager.managers.PunishmentManager;
+import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -34,5 +35,6 @@ public class MuteCommand extends BaseCommand {
         punishment = new Punishment(playerName, uuid, MUTE, reason, sender.getName());
         punishmentManager.AddPunish(punishment);
         sender.sendMessage(new TextComponent(punishment.getPlayerName() + " muted by " + punishment.getOperator() + " due to " + punishment.getReason()));
+        Utils.sendMuteMessage(punishment);
     }
 }

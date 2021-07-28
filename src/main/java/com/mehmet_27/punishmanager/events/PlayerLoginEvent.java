@@ -23,18 +23,7 @@ public class PlayerLoginEvent implements Listener {
         if (punishment == null || !punishment.playerIsBanned()) {
             return;
         }
-
-        switch (punishment.getPunishType()) {
-            case TEMPBAN:
-                if (punishment.getEnd() >= System.currentTimeMillis()) {
-                    Utils.disconnectPlayer(punishment);
-                } else {
-                    //If the ban has expired, it removes the punish from the database.
-                    punishmentManager.unPunishPlayer(punishment);
-                }
-                break;
-            default:
-                Utils.disconnectPlayer(punishment);
-        }
+        if (!punishment.isStillPunished()) return;
+        Utils.disconnectPlayer(punishment);
     }
 }

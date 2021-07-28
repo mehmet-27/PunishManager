@@ -17,6 +17,8 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class CommandManager extends BungeeCommandManager {
@@ -27,6 +29,7 @@ public class CommandManager extends BungeeCommandManager {
         this.plugin = plugin;
         registerDependencies();
         registerConditions();
+        registerCompletions();
         registerCommands();
     }
 
@@ -65,6 +68,23 @@ public class CommandManager extends BungeeCommandManager {
         });
     }
 
+    private void registerCompletions() {
+        getCommandCompletions().registerCompletion("units", c -> {
+            String input = c.getInput();
+            Pattern numberPattern = Pattern.compile("^[0-9]+$");
+            Matcher matcher = numberPattern.matcher(input);
+            if (matcher.find()) {
+                String[] units = {"y", "mo", "w", "d", "h", "m", "s"};
+                List<String> completions = new ArrayList<>();
+                for (String u : units){
+                    completions.add(input + u);
+                }
+                return completions;
+            }
+            return Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
+        });
+    }
+
     public static Set<Class<?>> getClasses(String packageName) {
         Set<Class<?>> classes = new LinkedHashSet<>();
 
@@ -93,6 +113,7 @@ public class CommandManager extends BungeeCommandManager {
                 map(aClass -> ((Class<? extends T>) aClass)).
                 collect(Collectors.toSet());
     }
+
     public static Set<Path> getFilesPath(String path, Predicate<? super Path> filter) {
         Set<Path> files = new LinkedHashSet<>();
         String packagePath = path.replace(".", "/");

@@ -49,6 +49,16 @@ public class PunishmentManager {
             e.printStackTrace();
         }
     }
+    public void removeAllPunish(Punishment punishment) {
+        try {
+            PreparedStatement ps;
+            ps = connection.prepareStatement("DELETE FROM `punishmanager_punishments` WHERE name = ?");
+            ps.setString(1, punishment.getPlayerName());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public boolean playerIsBanned(String wantedPlayer) {
         try {

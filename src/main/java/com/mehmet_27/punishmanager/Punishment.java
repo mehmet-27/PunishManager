@@ -30,7 +30,10 @@ public class Punishment {
     }
 
     public enum PunishType {
-        BAN, KICK, MUTE, TEMPMUTE, TEMPBAN, IPBAN, NONE
+        BAN, KICK, MUTE, TEMPMUTE, TEMPBAN, IPBAN, NONE;
+        public boolean isTemp(){
+            return name().contains("TEMP");
+        }
     }
 
     public PunishType getPunishType() {
@@ -74,13 +77,14 @@ public class Punishment {
     }
 
     public boolean playerIsBanned() {
-        return punishType.equals(PunishType.BAN) ||
-                punishType.equals(PunishType.TEMPBAN) ||
-                punishType.equals(PunishType.IPBAN);
+        return punishType.name().contains("BAN");
     }
 
     public boolean playerIsMuted() {
-        return punishType.equals(PunishType.MUTE) || punishType.equals(PunishType.TEMPMUTE);
+        return punishType.name().contains("MUTE");
+    }
+    public boolean isStillPunished(){
+        return getEnd() >= System.currentTimeMillis();
     }
 
     public long getStart() {
@@ -94,7 +98,7 @@ public class Punishment {
     public String getDuration() {
         Configuration messages = PunishManager.getInstance().getConfigManager().getMessages();
         long currentTime = new Timestamp(System.currentTimeMillis()).getTime();
-        long diff = (getEnd() - currentTime) / 1000;
+        long diff = (getEnd() - currentTime) / 1000 + 1;
         //Getting time formats
         String monthFormat = messages.getString("main.timelayout.month");
         String weekFormat = messages.getString("main.timelayout.week");

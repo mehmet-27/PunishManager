@@ -15,6 +15,8 @@ import static com.mehmet_27.punishmanager.Punishment.PunishType.*;
 
 public class Utils {
 
+    public static PunishManager plugin = PunishManager.getInstance();
+
     public static final Pattern NumberAndUnit = Pattern.compile("(?<number>[0-9]+)(?<unit>mo|[ywdhms])");
 
     public static String color(String message) {
@@ -25,36 +27,31 @@ public class Utils {
         TextComponent layout = new TextComponent();
         Punishment.PunishType punishType = punishment.getPunishType();
         for (String message : messages) {
-            if (punishType.equals(BAN)) {
-                layout.addExtra(String.format("%s %s", punishment.getReason(), punishment.getOperator()).
-                        replaceAll("%reason%", punishment.getReason()).
-                        replaceAll("%operator%", punishment.getOperator())
-                );
-            } else if (punishType.equals(TEMPBAN)) {
-                layout.addExtra(String.format("%s %s %s", punishment.getReason(), punishment.getOperator(), punishment.getDuration()).
-                        replaceAll("%reason%", punishment.getReason()).
-                        replaceAll("%operator%", punishment.getOperator()).
-                        replaceAll("%duration%", punishment.getDuration())
-                );
-                layout.addExtra(message.replace("%reason%", punishment.getReason()).replace("%operator%", punishment.getOperator()).replace("%duration%", punishment.getDuration()) + "\n");
-            } else if (punishType.equals(KICK)) {
-                layout.addExtra(String.format("%s %s", punishment.getReason(), punishment.getOperator()).
-                        replaceAll("%reason%", punishment.getReason()).
-                        replaceAll("%operator%", punishment.getOperator())
-                );
+            message = message.
+                    replace("%reason%", punishment.getReason()).
+                    replace("%operator%", punishment.getOperator());
+            if (punishType.isTemp()) {
+                message = message.replace("%duration%", punishment.getDuration());
             }
+            layout.addExtra(message + "\n");
         }
         return layout;
     }
 
     public static void disconnectPlayer(Punishment punishment) {
-        PunishManager plugin = PunishManager.getInstance();
+        ProxiedPlayer player = plugin.getProxy().getPlayer(punishment.getPlayerName());
+        if (player == null || !player.isConnected()) return;
         String path = punishment.getPunishType().toString().toLowerCase(Locale.ENGLISH);
         TextComponent layout = TextComponentBuilder(plugin.getConfigManager().getLayout(path), punishment);
-        ProxiedPlayer player = plugin.getProxy().getPlayer(punishment.getPlayerName());
-
-        if (player == null || !player.isConnected()) return;
         player.disconnect(layout);
+    }
+
+    public static void sendMuteMessage(Punishment punishment) {
+        ProxiedPlayer player = plugin.getProxy().getPlayer(punishment.getPlayerName());
+        if (player == null || !player.isConnected()) return;
+        String path = punishment.getPunishType().toString().toLowerCase(Locale.ENGLISH);
+        TextComponent layout = TextComponentBuilder(plugin.getConfigManager().getLayout(path), punishment);
+        player.sendMessage(layout);
     }
 
     public static long convertToMillis(int number, String unit) {
