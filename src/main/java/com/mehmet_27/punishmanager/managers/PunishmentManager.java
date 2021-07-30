@@ -49,7 +49,8 @@ public class PunishmentManager {
             e.printStackTrace();
         }
     }
-    public void removeAllPunish(Punishment punishment) {
+
+    public void removeAllPunishes(Punishment punishment) {
         try {
             PreparedStatement ps;
             ps = connection.prepareStatement("DELETE FROM `punishmanager_punishments` WHERE name = ?");
@@ -84,13 +85,22 @@ public class PunishmentManager {
                 String uuid = result.getString("uuid");
                 String reason = result.getString("reason");
                 String operator = result.getString("operator");
+                long start = result.getLong("start");
+                long end = result.getLong("end");
                 PunishType punishType = PunishType.valueOf(result.getString("type"));
-                return new Punishment(playerName, uuid, punishType, reason, operator);
+                return new Punishment(playerName, uuid, punishType, reason, operator, start, end);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public Punishment getBan(String wantedPlayer) {
+        return getPunishment(wantedPlayer, "BAN");
+    }
+    public Punishment getMute(String wantedPlayer) {
+        return getPunishment(wantedPlayer, "MUTE");
     }
 
     public Punishment getPunishment(String wantedPlayer, String type) {
@@ -118,5 +128,51 @@ public class PunishmentManager {
             }
         }
         return null;
+    }
+    public String getOfflineIp(String wantedPlayer) {
+        try {
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM `punishmanager_players` WHERE `name` = ?");
+            ps.setString(1, wantedPlayer);
+            ResultSet result = ps.executeQuery();
+            if (result.next()) {
+                return result.getString("ip");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean isLoggedServer(String wantedPlayer) {
+        try {
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM `punishmanager_players` WHERE name = ?");
+            ps.setString(1, wantedPlayer);
+            ResultSet result = ps.executeQuery();
+            if (result.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void removeAllOutdatedPunishes() {
+        try {
+            int deleted = 0;
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM `punishmanager_punishments`");
+            ResultSet result = ps.executeQuery();
+            while (result.next()) {
+                String playerName = result.getString("name");
+                Punishment punishment = getPunishment(playerName);
+                if (punishment.getPunishType().isTemp() && !punishment.isStillPunished()) {
+                    unPunishPlayer(punishment);
+                    deleted++;
+                }
+            }
+            PunishManager.getInstance().getLogger().info(deleted + " expiring punish deleted.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

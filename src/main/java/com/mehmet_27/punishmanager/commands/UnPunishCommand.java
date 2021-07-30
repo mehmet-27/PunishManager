@@ -24,7 +24,7 @@ public class UnPunishCommand extends BaseCommand {
             sender.sendMessage(new TextComponent("This player is not punished."));
             return;
         }
-        punishmentManager.removeAllPunish(punishment);
+        punishmentManager.removeAllPunishes(punishment);
         sender.sendMessage(new TextComponent("All punishments of " + playerName + " have been removed."));
     }
 }

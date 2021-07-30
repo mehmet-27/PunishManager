@@ -113,6 +113,9 @@ public class Punishment {
         String hours = String.valueOf(diff / 60 / 60 % 24);
         String minutes = String.valueOf(diff / 60 % 60);
         String seconds = String.valueOf(diff % 60);
+        if (getEnd() == -1){
+            return "permanent";
+        }
         // months
         if (diff > MONTH) {
             return String.format("%s %s %s %s %s %s", monthFormat, weekFormat, dayFormat, hourFormat, minuteFormat, secondFormat).

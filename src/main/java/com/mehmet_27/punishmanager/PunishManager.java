@@ -24,6 +24,7 @@ public final class PunishManager extends Plugin {
         sql = new MysqlManager(this);
         new BungeeCommandManager(this);
         punishmentManager = new PunishmentManager(this);
+        punishmentManager.removeAllOutdatedPunishes();
         new CommandManager(this);
         getProxy().getPluginManager().registerListener(this, new PlayerLoginEvent());
         getProxy().getPluginManager().registerListener(this, new PlayerChatEvent());
@@ -31,6 +32,7 @@ public final class PunishManager extends Plugin {
 
     @Override
     public void onDisable() {
+        punishmentManager.removeAllOutdatedPunishes();
         sql.disconnect();
     }
 

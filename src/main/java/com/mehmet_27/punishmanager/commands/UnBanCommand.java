@@ -16,7 +16,7 @@ public class UnBanCommand extends BaseCommand {
 
     @Default
     @CommandCompletion("@players")
-    public void unban(CommandSender sender, @Name("Player") String playerName) {
+    public void unBan(CommandSender sender, @Name("Player") String playerName) {
         Punishment punishment = punishmentManager.getPunishment(playerName, "ban");
         /* fixme: Small advice
            Replace it with ACF conditions
