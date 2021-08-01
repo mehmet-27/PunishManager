@@ -34,6 +34,8 @@ public class CommandManager extends BungeeCommandManager {
     }
 
     private void registerDependencies() {
+        registerDependency(ConfigManager.class, plugin.getConfigManager());
+        registerDependency(MessageManager.class, plugin.getMessageManager());
         registerDependency(PunishmentManager.class, plugin.getPunishmentManager());
     }
 
@@ -76,7 +78,7 @@ public class CommandManager extends BungeeCommandManager {
             if (matcher.find()) {
                 String[] units = {"y", "mo", "w", "d", "h", "m", "s"};
                 List<String> completions = new ArrayList<>();
-                for (String u : units){
+                for (String u : units) {
                     completions.add(input + u);
                 }
                 return completions;

@@ -1,10 +1,12 @@
 package com.mehmet_27.punishmanager;
 
+import com.mehmet_27.punishmanager.managers.PunishmentManager;
 import net.md_5.bungee.config.Configuration;
 
 import java.sql.Timestamp;
 
 public class Punishment {
+    private final PunishmentManager punishmentManager = PunishManager.getInstance().getPunishmentManager();
     private String playerName, uuid, reason, operator;
     private PunishType punishType;
     private final long start, end;
@@ -77,11 +79,27 @@ public class Punishment {
     }
 
     public boolean playerIsBanned() {
-        return punishType.name().contains("BAN");
+        if (punishType.name().contains("BAN")){
+            if (!isStillPunished()){
+                punishmentManager.unPunishPlayer(this);
+                return false;
+            }else {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean playerIsMuted() {
-        return punishType.name().contains("MUTE");
+        if (punishType.name().contains("MUTE")){
+            if (!isStillPunished()){
+                punishmentManager.unPunishPlayer(this);
+                return false;
+            }else {
+                return true;
+            }
+        }
+        return false;
     }
     public boolean isStillPunished(){
         return getEnd() >= System.currentTimeMillis();

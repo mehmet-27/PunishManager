@@ -11,8 +11,6 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.mehmet_27.punishmanager.Punishment.PunishType.*;
-
 public class Utils {
 
     public static PunishManager plugin = PunishManager.getInstance();
@@ -21,6 +19,10 @@ public class Utils {
 
     public static String color(String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
+    }
+
+    public static TextComponent colorComponent(String message) {
+        return new TextComponent(ChatColor.translateAlternateColorCodes('&', message));
     }
 
     public static TextComponent TextComponentBuilder(List<String> messages, Punishment punishment) {
@@ -41,8 +43,8 @@ public class Utils {
     public static void disconnectPlayer(Punishment punishment) {
         ProxiedPlayer player = plugin.getProxy().getPlayer(punishment.getPlayerName());
         if (player == null || !player.isConnected()) return;
-        String path = punishment.getPunishType().toString().toLowerCase(Locale.ENGLISH);
-        TextComponent layout = TextComponentBuilder(plugin.getConfigManager().getLayout(path), punishment);
+        String path = punishment.getPunishType().toString().toLowerCase(Locale.ENGLISH) + ".layout";
+        TextComponent layout = TextComponentBuilder(plugin.getMessageManager().getLayout(path), punishment);
         player.disconnect(layout);
     }
 
@@ -50,7 +52,7 @@ public class Utils {
         ProxiedPlayer player = plugin.getProxy().getPlayer(punishment.getPlayerName());
         if (player == null || !player.isConnected()) return;
         String path = punishment.getPunishType().toString().toLowerCase(Locale.ENGLISH);
-        TextComponent layout = TextComponentBuilder(plugin.getConfigManager().getLayout(path), punishment);
+        TextComponent layout = TextComponentBuilder(plugin.getMessageManager().getLayout(path), punishment);
         player.sendMessage(layout);
     }
 

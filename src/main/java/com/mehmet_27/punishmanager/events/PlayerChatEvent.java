@@ -21,6 +21,7 @@ public class PlayerChatEvent implements Listener {
             return;
         }
         if (!punishment.isStillPunished()) return;
+        if (event.isCommand()) return;
         event.setCancelled(true);
         Utils.sendMuteMessage(punishment);
     }

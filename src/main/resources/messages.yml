@@ -1,30 +1,59 @@
+# Placeholders:
+# %reason% -> Reason of punishment.
+# %duration% -> Duration of punishment.
+# %operator% -> Operator of punishment.
 main:
   timelayout:
-    month:  '%mo% months'
+    #Variables to be used when showing the duration of the punishment.
+    month: '%mo% months'
     week: '%w% weeks'
     day: '%d% days'
     hour: '%h% hours'
     minute: '%m% minutes'
     second: '%s% seconds'
 ban:
-  - '&e&lTITTLE'
-  - ' '
-  - '&6You banned from this server.'
-  - '&2Operator: &a%operator%'
-  - '&2Reason: &a%reason%'
+  punished: '&a%name% successfully banned.'
+  alreadyPunished: '&e%name% is already banned.'
+  layout:
+    - '&e&lTITTLE'
+    - ' '
+    - '&6You banned from this server.'
+    - '&2Operator: &a%operator%'
+    - '&2Reason: &a%reason%'
 tempban:
-  - '&e&lTITTLE'
-  - ' '
-  - '&6You banned from this server.'
-  - '&2Operator: &a%operator%'
-  - '&2Reason: &a%reason%'
-  - '&2Duration: &a%duration%'
+  punished: '&a%name% successfully banned.'
+  alreadyPunished: '&e%name% is already banned.'
+  layout:
+    - '&e&lTITTLE'
+    - ' '
+    - '&6You banned from this server.'
+    - '&2Operator: &a%operator%'
+    - '&2Reason: &a%reason%'
+    - '&2Duration: &a%duration%'
 kick:
-  - '&e&lTITTLE'
-  - ' '
-  - '&6You kicked from this server.'
-  - '&2Reason: &a%reason%'
+  punished: '&a%name% successfully kicked.'
+  notOnline: '&e%name% is not online.'
+  layout:
+    - '&e&lTITTLE'
+    - ' '
+    - '&6You kicked from this server.'
+    - '&2Reason: &a%reason%'
 mute:
-  - '&eYou were muted by &a%operator% &edue to the &a%reason%.'
+  punished: '&a%name% successfully muted.'
+  alreadyPunished: '&e%name% is already muted.'
+  layout:
+    - '&eYou were muted by &a%operator% &edue to the &a%reason%.'
 tempmute:
-  - '&eYou were muted by &a%operator% &efor &a%duration% &edue to the &e%reason%.'
+  punished: '&a%name% successfully muted.'
+  alreadyPunished: '&e%name% is already muted.'
+  layout:
+    - '&eYou were muted by &a%operator% &efor &a%duration% &edue to the &e%reason%.'
+unban:
+  notPunished: '&e%name% is not banned.'
+  done: '&a%name%''s ban has been removed.'
+unmute:
+  notPunished: '&e%name% is not muted.'
+  done: '&a%name%''s mute has been removed.'
+unpunish:
+  notPunished: '&e%name% is not punished.'
+  done: '&a%name%''s punishes has been removed.'

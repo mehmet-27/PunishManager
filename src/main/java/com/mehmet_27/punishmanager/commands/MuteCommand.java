@@ -4,6 +4,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.Punishment;
+import com.mehmet_27.punishmanager.managers.MessageManager;
 import com.mehmet_27.punishmanager.managers.PunishmentManager;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
@@ -17,7 +18,8 @@ import static com.mehmet_27.punishmanager.Punishment.PunishType.MUTE;
 public class MuteCommand extends BaseCommand {
 
     @Dependency
-    PunishmentManager punishmentManager;
+    private PunishmentManager punishmentManager;
+    private final MessageManager messageManager = PunishManager.getInstance().getMessageManager();
 
     @Default
     @CommandCompletion("@players Reason")
@@ -29,12 +31,12 @@ public class MuteCommand extends BaseCommand {
            Replace it with ACF conditions
         */
         if (punishment != null && punishment.playerIsMuted()) {
-            sender.sendMessage(new TextComponent("This player has already been muted."));
+            sender.sendMessage(new TextComponent(messageManager.getAlreadyPunishedMessage(MUTE.name()).replace("%name%", playerName)));
             return;
         }
         punishment = new Punishment(playerName, uuid, MUTE, reason, sender.getName());
         punishmentManager.AddPunish(punishment);
-        sender.sendMessage(new TextComponent(punishment.getPlayerName() + " muted by " + punishment.getOperator() + " due to " + punishment.getReason()));
+        sender.sendMessage(new TextComponent(messageManager.getPunishedMessage(MUTE.name()).replace("%name%", playerName)));
         Utils.sendMuteMessage(punishment);
     }
 }

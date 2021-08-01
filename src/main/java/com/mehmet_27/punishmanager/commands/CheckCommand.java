@@ -34,13 +34,21 @@ public class CheckCommand extends BaseCommand {
         Punishment mute = punishmentManager.getMute(playerName);
         ProxiedPlayer player = plugin.getProxy().getPlayer(playerName);
 
-        String uuid = ((player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName);
-        String banStatus = ((ban != null && ban.playerIsBanned() && ban.isStillPunished()) ? ban.getDuration() : "&anot banned");
-        String muteStatus = ((mute != null && mute.playerIsMuted() && mute.isStillPunished()) ? mute.getDuration() : "&anot muted");
+        String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;
+        String banStatus = (ban != null && ban.playerIsBanned() && ban.isStillPunished()) ? ban.getDuration() : "&anot banned";
+        String muteStatus = (mute != null && mute.playerIsMuted() && mute.isStillPunished()) ? mute.getDuration() : "&anot muted";
         //Kalan süreler çok uzun olduğunda bir yerden sonrasını kırp
         sender.sendMessage(new TextComponent(Utils.color("&eUUID: &a" + uuid)));
         sender.sendMessage(new TextComponent(Utils.color("&eIP: &a" + (ip != null ? ip : "&cnot found"))));
         sender.sendMessage(new TextComponent(Utils.color("&eBan status: &c" + banStatus)));
+        if (ban != null && ban.playerIsBanned())
+            sender.sendMessage(new TextComponent(Utils.color("&e-> Reason: &a" + ban.getReason())));
+        if (ban != null && ban.playerIsBanned())
+            sender.sendMessage(new TextComponent(Utils.color("&e-> Operator: &a" + ban.getOperator())));
         sender.sendMessage(new TextComponent(Utils.color("&eMute status: &c" + muteStatus)));
+        if (mute != null && mute.playerIsMuted())
+            sender.sendMessage(new TextComponent(Utils.color("&e-> Reason: &a" + mute.getReason())));
+        if (mute != null && mute.playerIsMuted())
+            sender.sendMessage(new TextComponent(Utils.color("&e-> Operator: &a" + mute.getOperator())));
     }
 }

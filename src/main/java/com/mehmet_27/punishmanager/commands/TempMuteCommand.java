@@ -4,6 +4,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.Punishment;
+import com.mehmet_27.punishmanager.managers.MessageManager;
 import com.mehmet_27.punishmanager.managers.PunishmentManager;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
@@ -21,6 +22,7 @@ public class TempMuteCommand extends BaseCommand {
 
     @Dependency
     private PunishmentManager punishmentManager;
+    private final MessageManager messageManager = PunishManager.getInstance().getMessageManager();
 
     @Default
     @CommandCompletion("@players @units Reason")
@@ -29,7 +31,7 @@ public class TempMuteCommand extends BaseCommand {
         String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;
         Punishment punishment = punishmentManager.getPunishment(playerName, "mute");
         if (punishment != null && punishment.playerIsMuted()) {
-            sender.sendMessage(new TextComponent("This player has already been muted."));
+            sender.sendMessage(new TextComponent(messageManager.getAlreadyPunishedMessage(TEMPMUTE.name()).replace("%name%", playerName)));
             return;
         }
         if (!Utils.isMatcherFound(time)) {
@@ -46,7 +48,7 @@ public class TempMuteCommand extends BaseCommand {
         long end = start + Utils.convertToMillis(number, unit);
         punishment = new Punishment(playerName, uuid, TEMPMUTE, reason, sender.getName(), start, end);
         punishmentManager.AddPunish(punishment);
-        sender.sendMessage(new TextComponent(punishment.getPlayerName() + " muted by " + punishment.getOperator() + " due to " + punishment.getReason()));
+        sender.sendMessage(new TextComponent(messageManager.getPunishedMessage(TEMPMUTE.name()).replace("%name%", playerName)));
         Utils.sendMuteMessage(punishment);
     }
 }

@@ -4,15 +4,20 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.Punishment;
+import com.mehmet_27.punishmanager.managers.MessageManager;
 import com.mehmet_27.punishmanager.managers.PunishmentManager;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
+
+import static com.mehmet_27.punishmanager.Punishment.PunishType.MUTE;
 
 @CommandAlias("unmute")
 @CommandPermission("punishmanager.command.unmute")
 public class UnMuteCommand extends BaseCommand {
 
-    PunishmentManager punishmentManager = PunishManager.getInstance().getPunishmentManager();
+    @Dependency
+    private PunishmentManager punishmentManager;
+    private final MessageManager messageManager = PunishManager.getInstance().getMessageManager();
 
     @Default
     @CommandCompletion("@players")
@@ -22,10 +27,10 @@ public class UnMuteCommand extends BaseCommand {
            Replace it with ACF conditions
         */
         if (punishment == null || !punishment.playerIsMuted()) {
-            sender.sendMessage(new TextComponent("This player is not muted."));
+            sender.sendMessage(new TextComponent(messageManager.getNotPunishedMessage("UNMUTE").replace("%name%", playerName)));
             return;
         }
         punishmentManager.unPunishPlayer(punishment);
-        sender.sendMessage(new TextComponent(playerName + "'s mute has been lifted"));
+        sender.sendMessage(new TextComponent(messageManager.getUnPunishDoneMessage("UNMUTE").replace("%name%", playerName)));
     }
 }

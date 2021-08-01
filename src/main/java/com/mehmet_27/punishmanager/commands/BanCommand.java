@@ -4,6 +4,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.Punishment;
+import com.mehmet_27.punishmanager.managers.MessageManager;
 import com.mehmet_27.punishmanager.managers.PunishmentManager;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
@@ -18,6 +19,7 @@ public class BanCommand extends BaseCommand {
 
     @Dependency
     private PunishmentManager punishmentManager;
+    private final MessageManager messageManager = PunishManager.getInstance().getMessageManager();
 
     @Default
     @CommandCompletion("@players Reason")
@@ -26,12 +28,12 @@ public class BanCommand extends BaseCommand {
         String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;
         Punishment punishment = punishmentManager.getPunishment(playerName, "ban");
         if (punishment != null && punishment.playerIsBanned()) {
-            sender.sendMessage(new TextComponent("This player has already been banned."));
+            sender.sendMessage(new TextComponent(messageManager.getAlreadyPunishedMessage(BAN.name()).replace("%name%", playerName)));
             return;
         }
         punishment = new Punishment(playerName, uuid, BAN, reason, sender.getName());
         punishmentManager.AddPunish(punishment);
-        sender.sendMessage(new TextComponent(punishment.getPlayerName() + " banned by " + punishment.getOperator() + " due to " + punishment.getReason()));
+        sender.sendMessage(new TextComponent(messageManager.getPunishedMessage(BAN.name()).replace("%name%", playerName)));
         Utils.disconnectPlayer(punishment);
     }
 }

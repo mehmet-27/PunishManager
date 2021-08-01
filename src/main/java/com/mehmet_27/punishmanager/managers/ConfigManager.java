@@ -24,14 +24,6 @@ public class ConfigManager {
         messages = loadFile(new File(plugin.getDataFolder() + File.separator + "messages.yml"));
     }
 
-    public List<String> getLayout(String path) {
-        List<String> messages = new ArrayList<>();
-        for (String message : getMessages().getStringList(path)) {
-            messages.add(Utils.color(message));
-        }
-        return messages;
-    }
-
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private Configuration loadFile(File file) {
         try {
