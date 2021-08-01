@@ -6,6 +6,8 @@ import com.mehmet_27.punishmanager.events.PlayerLoginEvent;
 import com.mehmet_27.punishmanager.managers.*;
 import net.md_5.bungee.api.plugin.Plugin;
 
+import java.util.List;
+
 public final class PunishManager extends Plugin {
 
     private static PunishManager instance;
@@ -15,16 +17,20 @@ public final class PunishManager extends Plugin {
     private MessageManager messageManager;
     private PunishmentManager punishmentManager;
 
+    private List<String> bannedIps;
+
     @Override
     public void onEnable() {
         instance = this;
         configManager = new ConfigManager(this);
-        messageManager = new MessageManager();
+        messageManager = new MessageManager(this);
         sql = new MysqlManager(this);
         new BungeeCommandManager(this);
         punishmentManager = new PunishmentManager(this);
         punishmentManager.removeAllOutdatedPunishes();
         new CommandManager(this);
+        bannedIps = punishmentManager.getBannedIps();
+        getProxy().getLogger().info("Banned ips: " + bannedIps.toString());
         getProxy().getPluginManager().registerListener(this, new PlayerLoginEvent());
         getProxy().getPluginManager().registerListener(this, new PlayerChatEvent());
     }
@@ -52,5 +58,8 @@ public final class PunishManager extends Plugin {
     }
     public MessageManager getMessageManager() {
         return messageManager;
+    }
+    public List<String> getBannedIps(){
+        return bannedIps;
     }
 }

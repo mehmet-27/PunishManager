@@ -2,53 +2,63 @@ package com.mehmet_27.punishmanager.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
+import com.mehmet_27.punishmanager.OfflinePlayer;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.Punishment;
+import com.mehmet_27.punishmanager.managers.MessageManager;
 import com.mehmet_27.punishmanager.managers.PunishmentManager;
-import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-
-import static com.mehmet_27.punishmanager.Punishment.PunishType.KICK;
 
 @CommandAlias("check")
 @CommandPermission("punishmanager.command.check")
 public class CheckCommand extends BaseCommand {
 
     @Dependency
-    private final PunishManager plugin = PunishManager.getInstance();
-    private final PunishmentManager punishmentManager = plugin.getPunishmentManager();
+    private PunishmentManager punishmentManager;
+    @Dependency
+    private MessageManager messageManager;
 
     @Default
     @CommandCompletion("@players")
     public void check(CommandSender sender, @Name("Player") String playerName) {
-        sender.sendMessage(new TextComponent(Utils.color("&eChecking &a" + playerName)));
+        sender.sendMessage(new TextComponent(messageManager.getMessage("check.checking").
+                replace("%name%", playerName)));
         if (!punishmentManager.isLoggedServer(playerName)) {
-            sender.sendMessage(new TextComponent(Utils.color("&cPlayer not found!")));
+            sender.sendMessage(new TextComponent(messageManager.getMessage("check.playerNotFound").
+                    replace("%name%", playerName)));
             return;
         }
 
         String ip = punishmentManager.getOfflineIp(playerName);
         Punishment ban = punishmentManager.getBan(playerName);
         Punishment mute = punishmentManager.getMute(playerName);
-        ProxiedPlayer player = plugin.getProxy().getPlayer(playerName);
+        OfflinePlayer player = punishmentManager.getOfflinePlayer(playerName);
 
-        String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;
-        String banStatus = (ban != null && ban.playerIsBanned() && ban.isStillPunished()) ? ban.getDuration() : "&anot banned";
-        String muteStatus = (mute != null && mute.playerIsMuted() && mute.isStillPunished()) ? mute.getDuration() : "&anot muted";
+        String uuid = player != null ? player.getUuid() : playerName;
+        String banStatus = (ban != null && ban.playerIsBanned() && ban.isStillPunished()) ? ban.getDuration() : messageManager.getMessage("check.notPunished");
+        String muteStatus = (mute != null && mute.playerIsMuted() && mute.isStillPunished()) ? mute.getDuration() : messageManager.getMessage("check.notPunished");
         //Kalan süreler çok uzun olduğunda bir yerden sonrasını kırp
-        sender.sendMessage(new TextComponent(Utils.color("&eUUID: &a" + uuid)));
-        sender.sendMessage(new TextComponent(Utils.color("&eIP: &a" + (ip != null ? ip : "&cnot found"))));
-        sender.sendMessage(new TextComponent(Utils.color("&eBan status: &c" + banStatus)));
+        sender.sendMessage(new TextComponent(messageManager.getMessage("check.uuid").
+                replace("%uuid%", uuid)));
+        sender.sendMessage(new TextComponent(messageManager.getMessage("check.ip").
+                replace("%ip%", ip)));
+        sender.sendMessage(new TextComponent(messageManager.getMessage("check.banStatus").
+                replace("%status%", banStatus)));
         if (ban != null && ban.playerIsBanned())
-            sender.sendMessage(new TextComponent(Utils.color("&e-> Reason: &a" + ban.getReason())));
+            sender.sendMessage(new TextComponent(messageManager.getMessage("check.banReason").
+                    replace("%reason%", ban.getReason())));
         if (ban != null && ban.playerIsBanned())
-            sender.sendMessage(new TextComponent(Utils.color("&e-> Operator: &a" + ban.getOperator())));
-        sender.sendMessage(new TextComponent(Utils.color("&eMute status: &c" + muteStatus)));
+            sender.sendMessage(new TextComponent(messageManager.getMessage("check.banOperator").
+                    replace("%operator%", ban.getOperator())));
+        sender.sendMessage(new TextComponent(messageManager.getMessage("check.muteStatus").
+                replace("%status%", muteStatus)));
         if (mute != null && mute.playerIsMuted())
-            sender.sendMessage(new TextComponent(Utils.color("&e-> Reason: &a" + mute.getReason())));
+            sender.sendMessage(new TextComponent(messageManager.getMessage("check.muteReason").
+                    replace("%reason%", mute.getReason())));
         if (mute != null && mute.playerIsMuted())
-            sender.sendMessage(new TextComponent(Utils.color("&e-> Operator: &a" + mute.getOperator())));
+            sender.sendMessage(new TextComponent(messageManager.getMessage("check.muteOperator").
+                    replace("%operator%", mute.getOperator())));
     }
 }

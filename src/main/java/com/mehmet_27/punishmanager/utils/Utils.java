@@ -2,6 +2,7 @@ package com.mehmet_27.punishmanager.utils;
 
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.Punishment;
+import com.mehmet_27.punishmanager.managers.MessageManager;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -13,16 +14,13 @@ import java.util.regex.Pattern;
 
 public class Utils {
 
-    public static PunishManager plugin = PunishManager.getInstance();
+    private static final PunishManager plugin = PunishManager.getInstance();
+    private static final MessageManager messageManager = plugin.getMessageManager();
 
     public static final Pattern NumberAndUnit = Pattern.compile("(?<number>[0-9]+)(?<unit>mo|[ywdhms])");
 
     public static String color(String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
-    }
-
-    public static TextComponent colorComponent(String message) {
-        return new TextComponent(ChatColor.translateAlternateColorCodes('&', message));
     }
 
     public static TextComponent TextComponentBuilder(List<String> messages, Punishment punishment) {
@@ -31,7 +29,8 @@ public class Utils {
         for (String message : messages) {
             message = message.
                     replace("%reason%", punishment.getReason()).
-                    replace("%operator%", punishment.getOperator());
+                    replace("%operator%", punishment.getOperator()).
+                    replace("%name%", punishment.getPlayerName());
             if (punishType.isTemp()) {
                 message = message.replace("%duration%", punishment.getDuration());
             }
@@ -44,15 +43,15 @@ public class Utils {
         ProxiedPlayer player = plugin.getProxy().getPlayer(punishment.getPlayerName());
         if (player == null || !player.isConnected()) return;
         String path = punishment.getPunishType().toString().toLowerCase(Locale.ENGLISH) + ".layout";
-        TextComponent layout = TextComponentBuilder(plugin.getMessageManager().getLayout(path), punishment);
+        TextComponent layout = TextComponentBuilder(messageManager.getLayout(path), punishment);
         player.disconnect(layout);
     }
 
     public static void sendMuteMessage(Punishment punishment) {
         ProxiedPlayer player = plugin.getProxy().getPlayer(punishment.getPlayerName());
         if (player == null || !player.isConnected()) return;
-        String path = punishment.getPunishType().toString().toLowerCase(Locale.ENGLISH);
-        TextComponent layout = TextComponentBuilder(plugin.getMessageManager().getLayout(path), punishment);
+        String path = punishment.getPunishType().toString().toLowerCase(Locale.ENGLISH) + ".layout";
+        TextComponent layout = TextComponentBuilder(messageManager.getLayout(path), punishment);
         player.sendMessage(layout);
     }
 
@@ -76,10 +75,5 @@ public class Utils {
             default:
                 return -1;
         }
-    }
-
-    public static boolean isMatcherFound(String time) {
-        Matcher matcher = NumberAndUnit.matcher(time.toLowerCase());
-        return matcher.find();
     }
 }

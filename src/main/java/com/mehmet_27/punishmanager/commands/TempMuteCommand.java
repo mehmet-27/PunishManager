@@ -1,15 +1,19 @@
 package com.mehmet_27.punishmanager.commands;
 
 import co.aikar.commands.BaseCommand;
+import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.Punishment;
+import com.mehmet_27.punishmanager.Reason;
+import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.managers.MessageManager;
 import com.mehmet_27.punishmanager.managers.PunishmentManager;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.config.Configuration;
 
 import java.util.regex.Matcher;
 
@@ -22,33 +26,35 @@ public class TempMuteCommand extends BaseCommand {
 
     @Dependency
     private PunishmentManager punishmentManager;
-    private final MessageManager messageManager = PunishManager.getInstance().getMessageManager();
+    @Dependency
+    private MessageManager messageManager;
+    @Dependency
+    private ConfigManager configManager;
 
     @Default
     @CommandCompletion("@players @units Reason")
-    public void tempMute(CommandSender sender, @Conditions("other_player") @Name("Player") String playerName, @Name("Time") String time, @Optional @Name("Reason") @Default("none") String reason) {
+    public void tempMute(CommandSender sender, @Conditions("other_player") @Name("Player") String playerName, @Name("Time") String time, @Optional @Name("Reason") String reason) {
         ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerName);
         String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;
         Punishment punishment = punishmentManager.getPunishment(playerName, "mute");
         if (punishment != null && punishment.playerIsMuted()) {
-            sender.sendMessage(new TextComponent(messageManager.getAlreadyPunishedMessage(TEMPMUTE.name()).replace("%name%", playerName)));
-            return;
-        }
-        if (!Utils.isMatcherFound(time)) {
-            sender.sendMessage(new TextComponent("Please specify a valid time."));
+            sender.sendMessage(new TextComponent(messageManager.getMessage("tempmute.alreadyPunished").
+                    replace("%name%", playerName)));
             return;
         }
         Matcher matcher = NumberAndUnit.matcher(time.toLowerCase());
         if (!matcher.find()) {
-            return;
+            throw new InvalidCommandArgument();
         }
         int number = Integer.parseInt(matcher.group("number"));
         String unit = matcher.group("unit");
         long start = System.currentTimeMillis();
         long end = start + Utils.convertToMillis(number, unit);
-        punishment = new Punishment(playerName, uuid, TEMPMUTE, reason, sender.getName(), start, end);
+        String ip = player != null && player.isConnected() ? player.getSocketAddress().toString().substring(1).split(":")[0] : punishmentManager.getOfflineIp(playerName);
+        punishment = new Punishment(playerName, uuid, ip, TEMPMUTE, new Reason(reason).getReason(), sender.getName(), start, end);
         punishmentManager.AddPunish(punishment);
-        sender.sendMessage(new TextComponent(messageManager.getPunishedMessage(TEMPMUTE.name()).replace("%name%", playerName)));
+        sender.sendMessage(new TextComponent(messageManager.getMessage("tempmute.punished").
+                replace("%name%", playerName)));
         Utils.sendMuteMessage(punishment);
     }
 }

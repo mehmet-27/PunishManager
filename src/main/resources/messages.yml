@@ -2,7 +2,9 @@
 # %reason% -> Reason of punishment.
 # %duration% -> Duration of punishment.
 # %operator% -> Operator of punishment.
+# %name% -> Name of the player being punished.
 main:
+  defaultReason: 'none'
   timelayout:
     #Variables to be used when showing the duration of the punishment.
     month: '%mo% months'
@@ -30,6 +32,15 @@ tempban:
     - '&2Operator: &a%operator%'
     - '&2Reason: &a%reason%'
     - '&2Duration: &a%duration%'
+ipban:
+  punished: '&a%name% successfully banned.'
+  alreadyPunished: '&e%name% is already banned.'
+  layout:
+    - '&e&lTITTLE'
+    - ' '
+    - '&6You banned from this server.'
+    - '&2Operator: &a%operator%'
+    - '&2Reason: &a%reason%'
 kick:
   punished: '&a%name% successfully kicked.'
   notOnline: '&e%name% is not online.'
@@ -42,12 +53,12 @@ mute:
   punished: '&a%name% successfully muted.'
   alreadyPunished: '&e%name% is already muted.'
   layout:
-    - '&eYou were muted by &a%operator% &edue to the &a%reason%.'
+    - '&eYou were muted by &a%operator% &edue to the &a%reason%&e.'
 tempmute:
   punished: '&a%name% successfully muted.'
   alreadyPunished: '&e%name% is already muted.'
   layout:
-    - '&eYou were muted by &a%operator% &efor &a%duration% &edue to the &e%reason%.'
+    - '&eYou were muted by &a%operator% &efor &a%duration% &edue to the &a%reason%&e.'
 unban:
   notPunished: '&e%name% is not banned.'
   done: '&a%name%''s ban has been removed.'
@@ -57,3 +68,15 @@ unmute:
 unpunish:
   notPunished: '&e%name% is not punished.'
   done: '&a%name%''s punishes has been removed.'
+check:
+  checking: '&eChecking &a%name%'
+  playerNotFound: '&c%name% not found!'
+  uuid: '&eUUID: &a%uuid%'
+  ip: '&eIP: &a%ip%'
+  banStatus: '&eBan status: &c%status%'
+  banReason: '&e-> Ban reason: &c%reason%'
+  banOperator: '&e-> Ban operator: &c%operator%'
+  muteStatus: '&eMute status: &c%status%'
+  muteReason: '&e-> Mute reason: &c%reason%'
+  muteOperator: '&e-> Mute operator: &c%operator%'
+  notPunished: '&anot punished'

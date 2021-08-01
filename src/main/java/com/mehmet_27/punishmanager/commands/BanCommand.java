@@ -4,6 +4,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.Punishment;
+import com.mehmet_27.punishmanager.Reason;
 import com.mehmet_27.punishmanager.managers.MessageManager;
 import com.mehmet_27.punishmanager.managers.PunishmentManager;
 import com.mehmet_27.punishmanager.utils.Utils;
@@ -19,7 +20,8 @@ public class BanCommand extends BaseCommand {
 
     @Dependency
     private PunishmentManager punishmentManager;
-    private final MessageManager messageManager = PunishManager.getInstance().getMessageManager();
+    @Dependency
+    private MessageManager messageManager;
 
     @Default
     @CommandCompletion("@players Reason")
@@ -28,12 +30,15 @@ public class BanCommand extends BaseCommand {
         String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;
         Punishment punishment = punishmentManager.getPunishment(playerName, "ban");
         if (punishment != null && punishment.playerIsBanned()) {
-            sender.sendMessage(new TextComponent(messageManager.getAlreadyPunishedMessage(BAN.name()).replace("%name%", playerName)));
+            sender.sendMessage(new TextComponent(messageManager.getMessage("ban.alreadyPunished").
+                    replace("%name%", playerName)));
             return;
         }
-        punishment = new Punishment(playerName, uuid, BAN, reason, sender.getName());
+        String ip = player != null && player.isConnected() ? player.getSocketAddress().toString().substring(1).split(":")[0] : punishmentManager.getOfflineIp(playerName);
+        punishment = new Punishment(playerName, uuid, ip, BAN, new Reason(reason).getReason(), sender.getName());
         punishmentManager.AddPunish(punishment);
-        sender.sendMessage(new TextComponent(messageManager.getPunishedMessage(BAN.name()).replace("%name%", playerName)));
+        sender.sendMessage(new TextComponent(messageManager.getMessage("ban.punished").
+                replace("%name%", playerName)));
         Utils.disconnectPlayer(punishment);
     }
 }

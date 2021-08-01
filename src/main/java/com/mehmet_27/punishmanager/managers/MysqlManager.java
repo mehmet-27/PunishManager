@@ -21,10 +21,6 @@ public class MysqlManager {
         setup();
     }
 
-    public boolean isConnected(){
-        return (connection != null);
-    }
-
     public void connect() {
         Configuration config = plugin.getConfigManager().getConfig();
 

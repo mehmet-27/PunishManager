@@ -1,5 +1,6 @@
 package com.mehmet_27.punishmanager.managers;
 
+import com.mehmet_27.punishmanager.OfflinePlayer;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.Punishment;
 
@@ -23,14 +24,15 @@ public class PunishmentManager {
 
     public void AddPunish(Punishment punishment) {
         try {
-            PreparedStatement ps = connection.prepareStatement("INSERT IGNORE INTO `punishmanager_punishments` (`name`, `uuid`, `reason`, `operator`, `type`, `start`, `end`) VALUES (?,?,?,?,?,?,?)");
+            PreparedStatement ps = connection.prepareStatement("INSERT IGNORE INTO `punishmanager_punishments` (`name`, `uuid`, `ip`, `reason`, `operator`, `type`, `start`, `end`) VALUES (?,?,?,?,?,?,?,?)");
             ps.setString(1, punishment.getPlayerName());
             ps.setString(2, punishment.getUuid());
-            ps.setString(3, punishment.getReason());
-            ps.setString(4, punishment.getOperator());
-            ps.setString(5, punishment.getPunishType().toString());
-            ps.setString(6, String.valueOf(punishment.getStart()));
-            ps.setString(7, String.valueOf(punishment.getEnd()));
+            ps.setString(3, punishment.getIp());
+            ps.setString(4, punishment.getReason());
+            ps.setString(5, punishment.getOperator());
+            ps.setString(6, punishment.getPunishType().toString());
+            ps.setString(7, String.valueOf(punishment.getStart()));
+            ps.setString(8, String.valueOf(punishment.getEnd()));
             ps.executeUpdate();
 
         } catch (SQLException e) {
@@ -83,12 +85,30 @@ public class PunishmentManager {
             if (result.next()) {
                 String playerName = result.getString("name");
                 String uuid = result.getString("uuid");
+                String ip = result.getString("ip");
                 String reason = result.getString("reason");
                 String operator = result.getString("operator");
                 long start = result.getLong("start");
                 long end = result.getLong("end");
                 PunishType punishType = PunishType.valueOf(result.getString("type"));
-                return new Punishment(playerName, uuid, punishType, reason, operator, start, end);
+                return new Punishment(playerName, uuid, ip, punishType, reason, operator, start, end);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public OfflinePlayer getOfflinePlayer(String wantedPlayer) {
+        try {
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM `punishmanager_players` WHERE name = ?");
+            ps.setString(1, wantedPlayer);
+            ResultSet result = ps.executeQuery();
+            if (result.next()) {
+                String uuid = result.getString("uuid");
+                String playerName = result.getString("name");
+                String ip = result.getString("ip");
+                return new OfflinePlayer(uuid, playerName, ip);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -99,6 +119,7 @@ public class PunishmentManager {
     public Punishment getBan(String wantedPlayer) {
         return getPunishment(wantedPlayer, "BAN");
     }
+
     public Punishment getMute(String wantedPlayer) {
         return getPunishment(wantedPlayer, "MUTE");
     }
@@ -112,12 +133,13 @@ public class PunishmentManager {
             while (result.next()) {
                 String playerName = result.getString("name");
                 String uuid = result.getString("uuid");
+                String ip = result.getString("ip");
                 String reason = result.getString("reason");
                 String operator = result.getString("operator");
                 long start = result.getLong("start");
                 long end = result.getLong("end");
                 PunishType punishType = PunishType.valueOf(result.getString("type"));
-                punishments.add(new Punishment(playerName, uuid, punishType, reason, operator, start, end));
+                punishments.add(new Punishment(playerName, uuid, ip, punishType, reason, operator, start, end));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -129,6 +151,7 @@ public class PunishmentManager {
         }
         return null;
     }
+
     public String getOfflineIp(String wantedPlayer) {
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM `punishmanager_players` WHERE `name` = ?");
@@ -155,6 +178,22 @@ public class PunishmentManager {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public List<String> getBannedIps() {
+        List<String> ips = new ArrayList<>();
+        try {
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM `punishmanager_punishments`");
+            ResultSet result = ps.executeQuery();
+            if (result.next()) {
+                if (result.getString("type").equals("IPBAN")) {
+                    ips.add(result.getString("ip"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ips;
     }
 
     public void removeAllOutdatedPunishes() {

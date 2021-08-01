@@ -1,10 +1,9 @@
 package com.mehmet_27.punishmanager.managers;
 
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.BungeeCommandIssuer;
-import co.aikar.commands.BungeeCommandManager;
-import co.aikar.commands.ConditionFailedException;
+import co.aikar.commands.*;
 import com.mehmet_27.punishmanager.PunishManager;
+import com.mehmet_27.punishmanager.Reason;
+import net.md_5.bungee.config.Configuration;
 
 import java.io.*;
 import java.nio.file.FileSystem;
@@ -23,13 +22,16 @@ import java.util.stream.Collectors;
 
 public class CommandManager extends BungeeCommandManager {
     private final PunishManager plugin;
+    private final Configuration config;
 
     public CommandManager(PunishManager plugin) {
         super(plugin);
         this.plugin = plugin;
+        config = plugin.getConfigManager().getConfig();
         registerDependencies();
         registerConditions();
         registerCompletions();
+        registerContexts();
         registerCommands();
     }
 
@@ -39,10 +41,16 @@ public class CommandManager extends BungeeCommandManager {
         registerDependency(PunishmentManager.class, plugin.getPunishmentManager());
     }
 
+    private void registerContexts() {
+        getCommandContexts().registerOptionalContext(Reason.class, c -> {
+            List<String> args = c.getArgs();
+            String arg = args != null ? String.join(" ", c.getArgs()) : null;
+            return arg != null ? new Reason(arg) : new Reason(config.getString("defaultReason"));
+        });
+    }
+
     private void registerCommands() {
-        // Get all classes, which `extends BaseCommand`
         Set<Class<? extends BaseCommand>> commands = getClassesBySubType("com.mehmet_27.punishmanager.commands", BaseCommand.class);
-        // Just to make sure, that all commands were registered
         plugin.getLogger().info(String.format("Registering %d base commands...", commands.size()));
 
         for (Class<? extends BaseCommand> c : commands) {

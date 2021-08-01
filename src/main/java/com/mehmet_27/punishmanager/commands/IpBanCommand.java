@@ -1,7 +1,6 @@
 package com.mehmet_27.punishmanager.commands;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.Punishment;
@@ -13,17 +12,11 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.sql.Timestamp;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import static com.mehmet_27.punishmanager.Punishment.PunishType.IPBAN;
 
-import static com.mehmet_27.punishmanager.Punishment.PunishType.TEMPBAN;
-import static com.mehmet_27.punishmanager.utils.Utils.NumberAndUnit;
-
-@CommandAlias("tempban")
-@CommandPermission("punishmanager.command.tempban")
-public class TempBanCommand extends BaseCommand {
+@CommandAlias("banip")
+@CommandPermission("punishmanager.command.banip")
+public class IpBanCommand extends BaseCommand {
 
     @Dependency
     private PunishmentManager punishmentManager;
@@ -31,28 +24,20 @@ public class TempBanCommand extends BaseCommand {
     private MessageManager messageManager;
 
     @Default
-    @CommandCompletion("@players @units Reason")
-    public void tempBan(CommandSender sender, @Conditions("other_player") @Name("Player") String playerName, @Name("Time") String time, @Optional @Name("Reason") String reason) {
+    @CommandCompletion("@players Reason")
+    public void banIp(CommandSender sender, @Conditions("other_player") @Name("Player") String playerName, @Optional @Name("Reason") String reason) {
         ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerName);
         String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;
         Punishment punishment = punishmentManager.getPunishment(playerName, "ban");
         if (punishment != null && punishment.playerIsBanned()) {
-            sender.sendMessage(new TextComponent(messageManager.getMessage("tempban.alreadyPunished").
+            sender.sendMessage(new TextComponent(messageManager.getMessage("ipban.alreadyPunished").
                     replace("%name%", playerName)));
             return;
         }
-        Matcher matcher = NumberAndUnit.matcher(time.toLowerCase());
-        if (!matcher.find()) {
-            throw new InvalidCommandArgument();
-        }
-        int number = Integer.parseInt(matcher.group("number"));
-        String unit = matcher.group("unit");
-        long start = System.currentTimeMillis();
-        long end = start + Utils.convertToMillis(number, unit);
         String ip = player != null && player.isConnected() ? player.getSocketAddress().toString().substring(1).split(":")[0] : punishmentManager.getOfflineIp(playerName);
-        punishment = new Punishment(playerName, uuid, ip, TEMPBAN, new Reason(reason).getReason(), sender.getName(), start, end);
+        punishment = new Punishment(playerName, uuid, ip, IPBAN, new Reason(reason).getReason(), sender.getName());
         punishmentManager.AddPunish(punishment);
-        sender.sendMessage(new TextComponent(messageManager.getMessage("tempban.punished").
+        sender.sendMessage(new TextComponent(messageManager.getMessage("ipban.punished").
                 replace("%name%", playerName)));
         Utils.disconnectPlayer(punishment);
     }

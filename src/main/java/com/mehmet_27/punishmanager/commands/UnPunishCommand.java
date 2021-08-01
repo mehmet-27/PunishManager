@@ -18,17 +18,20 @@ public class UnPunishCommand extends BaseCommand {
 
     @Dependency
     private PunishmentManager punishmentManager;
-    private final MessageManager messageManager = PunishManager.getInstance().getMessageManager();
+    @Dependency
+    private MessageManager messageManager;
 
     @Default
     @CommandCompletion("@players")
     public void unPunish(CommandSender sender, @Name("Player") String playerName) {
         Punishment punishment = punishmentManager.getPunishment(playerName);
         if (punishment == null || punishment.getPunishType().equals(NONE)) {
-            sender.sendMessage(new TextComponent(messageManager.getNotPunishedMessage("UNPUNISH").replace("%name%", playerName)));
+            sender.sendMessage(new TextComponent(messageManager.getMessage("unpunish.notPunished").
+                    replace("%name%", playerName)));
             return;
         }
         punishmentManager.removeAllPunishes(punishment);
-        sender.sendMessage(new TextComponent(messageManager.getUnPunishDoneMessage("UNPUNISH").replace("%name%", playerName)));
+        sender.sendMessage(new TextComponent(messageManager.getMessage("unpunish.done").
+                replace("%name%", playerName)));
     }
 }

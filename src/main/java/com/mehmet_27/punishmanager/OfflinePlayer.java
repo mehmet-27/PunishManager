@@ -5,10 +5,10 @@ public class OfflinePlayer {
     private String uuid;
     private String playerIp;
 
-    public OfflinePlayer(String playerName, String uuid, String playerIp) {
+    public OfflinePlayer(String uuid, String playerName, String playerIp) {
+        this.uuid = uuid;
         this.playerName = playerName;
         this.playerIp = playerIp;
-        this.uuid = uuid;
     }
 
     public String getPlayerName() {

@@ -17,7 +17,8 @@ public class UnMuteCommand extends BaseCommand {
 
     @Dependency
     private PunishmentManager punishmentManager;
-    private final MessageManager messageManager = PunishManager.getInstance().getMessageManager();
+    @Dependency
+    private MessageManager messageManager;
 
     @Default
     @CommandCompletion("@players")
@@ -27,10 +28,12 @@ public class UnMuteCommand extends BaseCommand {
            Replace it with ACF conditions
         */
         if (punishment == null || !punishment.playerIsMuted()) {
-            sender.sendMessage(new TextComponent(messageManager.getNotPunishedMessage("UNMUTE").replace("%name%", playerName)));
+            sender.sendMessage(new TextComponent(messageManager.getMessage("unmute.notPunished").
+                    replace("%name%", playerName)));
             return;
         }
         punishmentManager.unPunishPlayer(punishment);
-        sender.sendMessage(new TextComponent(messageManager.getUnPunishDoneMessage("UNMUTE").replace("%name%", playerName)));
+        sender.sendMessage(new TextComponent(messageManager.getMessage("unmute.done").
+                replace("%name%", playerName)));
     }
 }

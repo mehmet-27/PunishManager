@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 
 public class Punishment {
     private final PunishmentManager punishmentManager = PunishManager.getInstance().getPunishmentManager();
-    private String playerName, uuid, reason, operator;
+    private String playerName, uuid, ip, reason, operator;
     private PunishType punishType;
     private final long start, end;
 
@@ -17,13 +17,14 @@ public class Punishment {
     private static final int HOUR = 60 * 60;
     private static final int MINUTE = 60;
 
-    public Punishment(String playerName, String uuid, PunishType punishType, String reason, String operator) {
-        this(playerName, uuid, punishType, reason, operator, new Timestamp(System.currentTimeMillis()).getTime(), -1);
+    public Punishment(String playerName, String uuid, String ip, PunishType punishType, String reason, String operator) {
+        this(playerName, uuid, ip, punishType, reason, operator, new Timestamp(System.currentTimeMillis()).getTime(), -1);
     }
 
-    public Punishment(String playerName, String uuid, PunishType punishType, String reason, String operator, long start, long end) {
+    public Punishment(String playerName, String uuid, String ip, PunishType punishType, String reason, String operator, long start, long end) {
         this.playerName = playerName;
         this.uuid = uuid;
+        this.ip = ip;
         this.punishType = punishType;
         this.reason = reason;
         this.operator = operator;
@@ -33,7 +34,8 @@ public class Punishment {
 
     public enum PunishType {
         BAN, KICK, MUTE, TEMPMUTE, TEMPBAN, IPBAN, NONE;
-        public boolean isTemp(){
+
+        public boolean isTemp() {
             return name().contains("TEMP");
         }
     }
@@ -74,16 +76,24 @@ public class Punishment {
         return uuid;
     }
 
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp() {
+        this.ip = ip;
+    }
+
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
 
     public boolean playerIsBanned() {
-        if (punishType.name().contains("BAN")){
-            if (!isStillPunished()){
+        if (punishType.name().contains("BAN")) {
+            if (!isStillPunished()) {
                 punishmentManager.unPunishPlayer(this);
                 return false;
-            }else {
+            } else {
                 return true;
             }
         }
@@ -91,18 +101,21 @@ public class Punishment {
     }
 
     public boolean playerIsMuted() {
-        if (punishType.name().contains("MUTE")){
-            if (!isStillPunished()){
+        if (punishType.name().contains("MUTE")) {
+            if (!isStillPunished()) {
                 punishmentManager.unPunishPlayer(this);
                 return false;
-            }else {
+            } else {
                 return true;
             }
         }
         return false;
     }
-    public boolean isStillPunished(){
-        return getEnd() >= System.currentTimeMillis();
+
+    public boolean isStillPunished() {
+        if (getEnd() == -1) {
+            return true;
+        } else return getEnd() >= System.currentTimeMillis();
     }
 
     public long getStart() {
@@ -131,7 +144,7 @@ public class Punishment {
         String hours = String.valueOf(diff / 60 / 60 % 24);
         String minutes = String.valueOf(diff / 60 % 60);
         String seconds = String.valueOf(diff % 60);
-        if (getEnd() == -1){
+        if (getEnd() == -1) {
             return "permanent";
         }
         // months

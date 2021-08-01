@@ -4,6 +4,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.Punishment;
+import com.mehmet_27.punishmanager.Reason;
 import com.mehmet_27.punishmanager.managers.MessageManager;
 import com.mehmet_27.punishmanager.managers.PunishmentManager;
 import com.mehmet_27.punishmanager.utils.Utils;
@@ -19,11 +20,12 @@ public class MuteCommand extends BaseCommand {
 
     @Dependency
     private PunishmentManager punishmentManager;
-    private final MessageManager messageManager = PunishManager.getInstance().getMessageManager();
+    @Dependency
+    private MessageManager messageManager;
 
     @Default
     @CommandCompletion("@players Reason")
-    public void mute(CommandSender sender, @Conditions("other_player") @Name("Player") String playerName, @Optional @Name("Reason") @Default("none") String reason) {
+    public void mute(CommandSender sender, @Conditions("other_player") @Name("Player") String playerName, @Optional @Name("Reason") String reason) {
         ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerName);
         String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;
         Punishment punishment = punishmentManager.getPunishment(playerName, "mute");
@@ -31,12 +33,15 @@ public class MuteCommand extends BaseCommand {
            Replace it with ACF conditions
         */
         if (punishment != null && punishment.playerIsMuted()) {
-            sender.sendMessage(new TextComponent(messageManager.getAlreadyPunishedMessage(MUTE.name()).replace("%name%", playerName)));
+            sender.sendMessage(new TextComponent(messageManager.getMessage("mute.alreadyPunished").
+                    replace("%name%", playerName)));
             return;
         }
-        punishment = new Punishment(playerName, uuid, MUTE, reason, sender.getName());
+        String ip = player != null && player.isConnected() ? player.getSocketAddress().toString().substring(1).split(":")[0] : punishmentManager.getOfflineIp(playerName);
+        punishment = new Punishment(playerName, uuid, ip, MUTE, new Reason(reason).getReason(), sender.getName());
         punishmentManager.AddPunish(punishment);
-        sender.sendMessage(new TextComponent(messageManager.getPunishedMessage(MUTE.name()).replace("%name%", playerName)));
+        sender.sendMessage(new TextComponent(messageManager.getMessage("mute.punished").
+                replace("%name%", playerName)));
         Utils.sendMuteMessage(punishment);
     }
 }

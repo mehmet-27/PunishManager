@@ -10,7 +10,10 @@ import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
+import java.util.List;
+
 public class PlayerLoginEvent implements Listener {
+    List<String> bannedIps = PunishManager.getInstance().getBannedIps();
 
     @EventHandler
     public void onLogin(PostLoginEvent event) {
@@ -19,7 +22,11 @@ public class PlayerLoginEvent implements Listener {
         ProxiedPlayer player = event.getPlayer();
         mySQLManager.addPlayer(player);
         Punishment punishment = punishmentManager.getPunishment(player.getName(), "ban");
-
+        String playerIp = player.getSocketAddress().toString().substring(1).split(":")[0];
+        if (bannedIps.contains(playerIp)){
+            Utils.disconnectPlayer(punishment);
+            return;
+        }
         if (punishment == null || !punishment.playerIsBanned()) {
             return;
         }
