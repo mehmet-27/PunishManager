@@ -2,14 +2,13 @@ package com.mehmet_27.punishmanager.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
-import com.mehmet_27.punishmanager.OfflinePlayer;
-import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.Punishment;
+import com.mehmet_27.punishmanager.objects.Ip;
+import com.mehmet_27.punishmanager.objects.OfflinePlayer;
+import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.managers.MessageManager;
 import com.mehmet_27.punishmanager.managers.PunishmentManager;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 @CommandAlias("check")
 @CommandPermission("punishmanager.command.check")
@@ -31,7 +30,7 @@ public class CheckCommand extends BaseCommand {
             return;
         }
 
-        String ip = punishmentManager.getOfflineIp(playerName);
+        String ip = new Ip(playerName).getPlayerIp();
         Punishment ban = punishmentManager.getBan(playerName);
         Punishment mute = punishmentManager.getMute(playerName);
         OfflinePlayer player = punishmentManager.getOfflinePlayer(playerName);

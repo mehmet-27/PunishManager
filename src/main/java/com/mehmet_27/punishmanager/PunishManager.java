@@ -4,6 +4,7 @@ import co.aikar.commands.BungeeCommandManager;
 import com.mehmet_27.punishmanager.events.PlayerChatEvent;
 import com.mehmet_27.punishmanager.events.PlayerLoginEvent;
 import com.mehmet_27.punishmanager.managers.*;
+import com.mehmet_27.punishmanager.utils.SqlQuery;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public final class PunishManager extends Plugin {
     private ConfigManager configManager;
     private MessageManager messageManager;
     private PunishmentManager punishmentManager;
+    private DiscordManager discordManager;
 
     private List<String> bannedIps;
 
@@ -30,7 +32,8 @@ public final class PunishManager extends Plugin {
         punishmentManager.removeAllOutdatedPunishes();
         new CommandManager(this);
         bannedIps = punishmentManager.getBannedIps();
-        getProxy().getLogger().info("Banned ips: " + bannedIps.toString());
+        discordManager = new DiscordManager();
+        discordManager.buildBot();
         getProxy().getPluginManager().registerListener(this, new PlayerLoginEvent());
         getProxy().getPluginManager().registerListener(this, new PlayerChatEvent());
     }
@@ -39,6 +42,7 @@ public final class PunishManager extends Plugin {
     public void onDisable() {
         punishmentManager.removeAllOutdatedPunishes();
         sql.disconnect();
+        discordManager.disconnectBot();
     }
 
     public static PunishManager getInstance() {
@@ -61,5 +65,8 @@ public final class PunishManager extends Plugin {
     }
     public List<String> getBannedIps(){
         return bannedIps;
+    }
+    public DiscordManager getDiscordManager(){
+        return discordManager;
     }
 }

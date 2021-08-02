@@ -4,8 +4,9 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.Punishment;
-import com.mehmet_27.punishmanager.Reason;
+import com.mehmet_27.punishmanager.objects.Ip;
+import com.mehmet_27.punishmanager.objects.Punishment;
+import com.mehmet_27.punishmanager.objects.Reason;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.managers.MessageManager;
 import com.mehmet_27.punishmanager.managers.PunishmentManager;
@@ -13,11 +14,10 @@ import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.md_5.bungee.config.Configuration;
 
 import java.util.regex.Matcher;
 
-import static com.mehmet_27.punishmanager.Punishment.PunishType.TEMPMUTE;
+import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.TEMPMUTE;
 import static com.mehmet_27.punishmanager.utils.Utils.NumberAndUnit;
 
 @CommandAlias("tempmute")
@@ -50,7 +50,7 @@ public class TempMuteCommand extends BaseCommand {
         String unit = matcher.group("unit");
         long start = System.currentTimeMillis();
         long end = start + Utils.convertToMillis(number, unit);
-        String ip = player != null && player.isConnected() ? player.getSocketAddress().toString().substring(1).split(":")[0] : punishmentManager.getOfflineIp(playerName);
+        String ip = new Ip(playerName).getPlayerIp();
         punishment = new Punishment(playerName, uuid, ip, TEMPMUTE, new Reason(reason).getReason(), sender.getName(), start, end);
         punishmentManager.AddPunish(punishment);
         sender.sendMessage(new TextComponent(messageManager.getMessage("tempmute.punished").

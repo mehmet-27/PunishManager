@@ -1,20 +1,21 @@
 package com.mehmet_27.punishmanager.utils;
 
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.Punishment;
+import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.managers.MessageManager;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.config.Configuration;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Utils {
 
     private static final PunishManager plugin = PunishManager.getInstance();
+    private final Configuration config = plugin.getConfigManager().getConfig();
     private static final MessageManager messageManager = plugin.getMessageManager();
 
     public static final Pattern NumberAndUnit = Pattern.compile("(?<number>[0-9]+)(?<unit>mo|[ywdhms])");
@@ -75,5 +76,9 @@ public class Utils {
             default:
                 return -1;
         }
+    }
+    public void debug(String message){
+        if (!config.getBoolean("debug")) return;
+        plugin.getLogger().info(message);
     }
 }

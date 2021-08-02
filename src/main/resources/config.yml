@@ -4,3 +4,16 @@ mysql:
   database: "database"
   username: "username"
   password: "password"
+
+discord:
+  enabled: false
+  token: 'token'
+  punishedRoleId: 'roleId'
+  discordsrv:
+    host: "localhost"
+    port: "3306"
+    database: "database"
+    username: "username"
+    password: "password"
+
+debug: false

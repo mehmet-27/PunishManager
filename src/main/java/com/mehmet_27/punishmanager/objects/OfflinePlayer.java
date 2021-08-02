@@ -1,4 +1,4 @@
-package com.mehmet_27.punishmanager;
+package com.mehmet_27.punishmanager.objects;
 
 public class OfflinePlayer {
     private String playerName;

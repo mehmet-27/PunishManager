@@ -1,7 +1,7 @@
 package com.mehmet_27.punishmanager.events;
 
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.Punishment;
+import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.managers.PunishmentManager;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.connection.ProxiedPlayer;

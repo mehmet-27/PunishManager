@@ -2,7 +2,7 @@ package com.mehmet_27.punishmanager.managers;
 
 import co.aikar.commands.*;
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.Reason;
+import com.mehmet_27.punishmanager.objects.Reason;
 import net.md_5.bungee.config.Configuration;
 
 import java.io.*;

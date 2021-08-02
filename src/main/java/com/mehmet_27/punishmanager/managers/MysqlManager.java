@@ -1,6 +1,7 @@
 package com.mehmet_27.punishmanager.managers;
 
 import com.mehmet_27.punishmanager.PunishManager;
+import com.mehmet_27.punishmanager.utils.SqlQuery;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.config.Configuration;
@@ -53,13 +54,10 @@ public class MysqlManager {
     }
 
     public void addPlayer(ProxiedPlayer player) {
-        String address = player.getSocketAddress().toString();
-        String withoutSlash = address.replaceAll("/", "");
-        String[] split = withoutSlash.split(":");
-        String ip = split[0];
+        String ip = player.getSocketAddress().toString().substring(1).split(":")[0];
 
         try {
-            PreparedStatement ps = connection.prepareStatement("INSERT IGNORE INTO `punishmanager_players` (`uuid`, `name`, `ip`) VALUES (?,?,?)");
+            PreparedStatement ps = connection.prepareStatement(SqlQuery.ADD_PLAYER_TO_PLAYERS_TABLE.toString());
             ps.setString(1, player.getUniqueId().toString());
             ps.setString(2, player.getName());
             ps.setString(3, ip);
@@ -71,18 +69,7 @@ public class MysqlManager {
 
     private void createPunishmentsTable() {
         try {
-            String query = "CREATE TABLE IF NOT EXISTS `punishmanager_punishments` ("
-                    + " `id` BIGINT(20) NOT NULL auto_increment,"
-                    + " `name` VARCHAR(16),"
-                    + " `uuid` VARCHAR(72),"
-                    + " `ip` VARCHAR(25),"
-                    + " `reason` VARCHAR(255),"
-                    + " `operator` VARCHAR(16),"
-                    + " `type` VARCHAR(16),"
-                    + " `start` LONGTEXT,"
-                    + " `end` LONGTEXT,"
-                    + " PRIMARY KEY (`id`))";
-            PreparedStatement ps = connection.prepareStatement(query);
+            PreparedStatement ps = connection.prepareStatement(SqlQuery.CREATE_PUNISHMENTS_TABLE.getQuery());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -91,12 +78,7 @@ public class MysqlManager {
 
     private void createPlayersTable() {
         try {
-            String query = "CREATE TABLE IF NOT EXISTS `punishmanager_players` ("
-                    + " `uuid` VARCHAR(72) NOT NULL,"
-                    + " `name` VARCHAR(16),"
-                    + " `ip` VARCHAR(25),"
-                    + " PRIMARY KEY (`uuid`))";
-            PreparedStatement ps = connection.prepareStatement(query);
+            PreparedStatement ps = connection.prepareStatement(SqlQuery.CREATE_PLAYERS_TABLE.getQuery());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

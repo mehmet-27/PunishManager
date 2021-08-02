@@ -1,5 +1,6 @@
-package com.mehmet_27.punishmanager;
+package com.mehmet_27.punishmanager.objects;
 
+import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.PunishmentManager;
 import net.md_5.bungee.config.Configuration;
 

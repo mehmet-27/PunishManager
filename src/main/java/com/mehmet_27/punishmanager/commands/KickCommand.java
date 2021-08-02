@@ -3,16 +3,15 @@ package com.mehmet_27.punishmanager.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.Punishment;
-import com.mehmet_27.punishmanager.Reason;
+import com.mehmet_27.punishmanager.objects.Punishment;
+import com.mehmet_27.punishmanager.objects.Reason;
 import com.mehmet_27.punishmanager.managers.MessageManager;
-import com.mehmet_27.punishmanager.managers.PunishmentManager;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import static com.mehmet_27.punishmanager.Punishment.PunishType.KICK;
+import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.KICK;
 
 @CommandAlias("kick")
 @CommandPermission("punishmanager.command.kick")

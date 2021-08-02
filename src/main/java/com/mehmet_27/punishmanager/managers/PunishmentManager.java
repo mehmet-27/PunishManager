@@ -1,8 +1,9 @@
 package com.mehmet_27.punishmanager.managers;
 
-import com.mehmet_27.punishmanager.OfflinePlayer;
+import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.Punishment;
+import com.mehmet_27.punishmanager.objects.Punishment;
+import com.mehmet_27.punishmanager.utils.SqlQuery;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,12 +12,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.mehmet_27.punishmanager.Punishment.PunishType;
-import static com.mehmet_27.punishmanager.Punishment.PunishType.BAN;
+import static com.mehmet_27.punishmanager.objects.Punishment.PunishType;
+import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.BAN;
+import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.IPBAN;
 
 public class PunishmentManager {
 
     private final Connection connection;
+    private final DiscordManager discordManager = PunishManager.getInstance().getDiscordManager();
 
     public PunishmentManager(PunishManager plugin) {
         connection = plugin.getMySQLManager().getConnection();
@@ -24,7 +27,7 @@ public class PunishmentManager {
 
     public void AddPunish(Punishment punishment) {
         try {
-            PreparedStatement ps = connection.prepareStatement("INSERT IGNORE INTO `punishmanager_punishments` (`name`, `uuid`, `ip`, `reason`, `operator`, `type`, `start`, `end`) VALUES (?,?,?,?,?,?,?,?)");
+            PreparedStatement ps = connection.prepareStatement(SqlQuery.ADD_PUNISH_TO_PUNISHMENTS.getQuery());
             ps.setString(1, punishment.getPlayerName());
             ps.setString(2, punishment.getUuid());
             ps.setString(3, punishment.getIp());
@@ -34,10 +37,10 @@ public class PunishmentManager {
             ps.setString(7, String.valueOf(punishment.getStart()));
             ps.setString(8, String.valueOf(punishment.getEnd()));
             ps.executeUpdate();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        discordManager.givePunishedRole(punishment);
     }
 
     public void unPunishPlayer(Punishment punishment) {
@@ -50,6 +53,9 @@ public class PunishmentManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        if (punishment.getPunishType().equals(IPBAN)){
+            PunishManager.getInstance().getBannedIps().remove(punishment.getIp());
+        }
     }
 
     public void removeAllPunishes(Punishment punishment) {
@@ -61,20 +67,6 @@ public class PunishmentManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    public boolean playerIsBanned(String wantedPlayer) {
-        try {
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM `punishmanager_punishments` WHERE `name` = ?");
-            ps.setString(1, wantedPlayer);
-            ResultSet result = ps.executeQuery();
-            if (result.next()) {
-                return result.getString("type").contains(BAN.name());
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 
     public Punishment getPunishment(String wantedPlayer) {

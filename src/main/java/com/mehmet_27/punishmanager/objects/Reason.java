@@ -1,5 +1,6 @@
-package com.mehmet_27.punishmanager;
+package com.mehmet_27.punishmanager.objects;
 
+import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.MessageManager;
 
 public class Reason {

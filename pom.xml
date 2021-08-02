@@ -54,6 +54,16 @@
                                     <shadedPattern>com.mehmet_27.punishmanager.lib.locales</shadedPattern> <!-- Replace this -->
                                 </relocation>
                             </relocations>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
                         </configuration>
                     </execution>
                 </executions>
@@ -89,6 +99,13 @@
             <groupId>co.aikar</groupId>
             <artifactId>acf-bungee</artifactId>
             <version>0.5.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.javacord</groupId>
+            <artifactId>javacord</artifactId>
+            <version>3.3.2</version>
+            <type>pom</type>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
