@@ -25,12 +25,12 @@ public class UnBanCommand extends BaseCommand {
            Replace it with ACF conditions
         */
         if (punishment == null || !punishment.playerIsBanned()) {
-            sender.sendMessage(new TextComponent(messageManager.getMessage("unban.notPunished").
+            sender.sendMessage(new TextComponent(messageManager.getMessage("unban.notPunished", sender.getName()).
                     replace("%name%", playerName)));
             return;
         }
         punishmentManager.unPunishPlayer(punishment);
-        sender.sendMessage(new TextComponent(messageManager.getMessage("unban.done").
+        sender.sendMessage(new TextComponent(messageManager.getMessage("unban.done", sender.getName()).
                 replace("%name%", playerName)));
 
     }

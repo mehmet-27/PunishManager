@@ -24,12 +24,12 @@ public class UnPunishCommand extends BaseCommand {
     public void unPunish(CommandSender sender, @Name("Player") String playerName) {
         Punishment punishment = punishmentManager.getPunishment(playerName);
         if (punishment == null || punishment.getPunishType().equals(NONE)) {
-            sender.sendMessage(new TextComponent(messageManager.getMessage("unpunish.notPunished").
+            sender.sendMessage(new TextComponent(messageManager.getMessage("unpunish.notPunished", sender.getName()).
                     replace("%name%", playerName)));
             return;
         }
         punishmentManager.removeAllPunishes(punishment);
-        sender.sendMessage(new TextComponent(messageManager.getMessage("unpunish.done").
+        sender.sendMessage(new TextComponent(messageManager.getMessage("unpunish.done", sender.getName()).
                 replace("%name%", playerName)));
     }
 }

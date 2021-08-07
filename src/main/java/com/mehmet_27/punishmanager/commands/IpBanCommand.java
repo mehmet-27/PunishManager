@@ -31,14 +31,14 @@ public class IpBanCommand extends BaseCommand {
         String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;
         Punishment punishment = punishmentManager.getPunishment(playerName, "ban");
         if (punishment != null && punishment.playerIsBanned()) {
-            sender.sendMessage(new TextComponent(messageManager.getMessage("ipban.alreadyPunished").
+            sender.sendMessage(new TextComponent(messageManager.getMessage("ipban.alreadyPunished", sender.getName()).
                     replace("%name%", playerName)));
             return;
         }
         String ip = new Ip(playerName).getPlayerIp();
-        punishment = new Punishment(playerName, uuid, ip, IPBAN, new Reason(reason).getReason(), sender.getName());
+        punishment = new Punishment(playerName, uuid, ip, IPBAN, new Reason(reason, playerName).getReason(), sender.getName());
         punishmentManager.AddPunish(punishment);
-        sender.sendMessage(new TextComponent(messageManager.getMessage("ipban.punished").
+        sender.sendMessage(new TextComponent(messageManager.getMessage("ipban.punished", sender.getName()).
                 replace("%name%", playerName)));
         Utils.disconnectPlayer(punishment);
     }

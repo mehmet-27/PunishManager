@@ -34,14 +34,14 @@ public class MuteCommand extends BaseCommand {
            Replace it with ACF conditions
         */
         if (punishment != null && punishment.playerIsMuted()) {
-            sender.sendMessage(new TextComponent(messageManager.getMessage("mute.alreadyPunished").
+            sender.sendMessage(new TextComponent(messageManager.getMessage("mute.alreadyPunished", sender.getName()).
                     replace("%name%", playerName)));
             return;
         }
         String ip = new Ip(playerName).getPlayerIp();
-        punishment = new Punishment(playerName, uuid, ip, MUTE, new Reason(reason).getReason(), sender.getName());
+        punishment = new Punishment(playerName, uuid, ip, MUTE, new Reason(reason, playerName).getReason(), sender.getName());
         punishmentManager.AddPunish(punishment);
-        sender.sendMessage(new TextComponent(messageManager.getMessage("mute.punished").
+        sender.sendMessage(new TextComponent(messageManager.getMessage("mute.punished", sender.getName()).
                 replace("%name%", playerName)));
         Utils.sendMuteMessage(punishment);
     }

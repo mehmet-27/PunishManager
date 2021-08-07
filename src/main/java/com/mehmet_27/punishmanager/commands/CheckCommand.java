@@ -22,10 +22,10 @@ public class CheckCommand extends BaseCommand {
     @Default
     @CommandCompletion("@players")
     public void check(CommandSender sender, @Name("Player") String playerName) {
-        sender.sendMessage(new TextComponent(messageManager.getMessage("check.checking").
+        sender.sendMessage(new TextComponent(messageManager.getMessage("check.checking", sender.getName()).
                 replace("%name%", playerName)));
         if (!punishmentManager.isLoggedServer(playerName)) {
-            sender.sendMessage(new TextComponent(messageManager.getMessage("check.playerNotFound").
+            sender.sendMessage(new TextComponent(messageManager.getMessage("check.playerNotFound", sender.getName()).
                     replace("%name%", playerName)));
             return;
         }
@@ -36,28 +36,28 @@ public class CheckCommand extends BaseCommand {
         OfflinePlayer player = punishmentManager.getOfflinePlayer(playerName);
 
         String uuid = player != null ? player.getUuid() : playerName;
-        String banStatus = (ban != null && ban.playerIsBanned() && ban.isStillPunished()) ? ban.getDuration() : messageManager.getMessage("check.notPunished");
-        String muteStatus = (mute != null && mute.playerIsMuted() && mute.isStillPunished()) ? mute.getDuration() : messageManager.getMessage("check.notPunished");
+        String banStatus = (ban != null && ban.playerIsBanned() && ban.isStillPunished()) ? ban.getDuration() : messageManager.getMessage("check.notPunished", sender.getName());
+        String muteStatus = (mute != null && mute.playerIsMuted() && mute.isStillPunished()) ? mute.getDuration() : messageManager.getMessage("check.notPunished", sender.getName());
         //Kalan süreler çok uzun olduğunda bir yerden sonrasını kırp
-        sender.sendMessage(new TextComponent(messageManager.getMessage("check.uuid").
+        sender.sendMessage(new TextComponent(messageManager.getMessage("check.uuid", sender.getName()).
                 replace("%uuid%", uuid)));
-        sender.sendMessage(new TextComponent(messageManager.getMessage("check.ip").
+        sender.sendMessage(new TextComponent(messageManager.getMessage("check.ip", sender.getName()).
                 replace("%ip%", ip)));
-        sender.sendMessage(new TextComponent(messageManager.getMessage("check.banStatus").
+        sender.sendMessage(new TextComponent(messageManager.getMessage("check.banStatus", sender.getName()).
                 replace("%status%", banStatus)));
         if (ban != null && ban.playerIsBanned())
-            sender.sendMessage(new TextComponent(messageManager.getMessage("check.banReason").
+            sender.sendMessage(new TextComponent(messageManager.getMessage("check.banReason", sender.getName()).
                     replace("%reason%", ban.getReason())));
         if (ban != null && ban.playerIsBanned())
-            sender.sendMessage(new TextComponent(messageManager.getMessage("check.banOperator").
+            sender.sendMessage(new TextComponent(messageManager.getMessage("check.banOperator", sender.getName()).
                     replace("%operator%", ban.getOperator())));
-        sender.sendMessage(new TextComponent(messageManager.getMessage("check.muteStatus").
+        sender.sendMessage(new TextComponent(messageManager.getMessage("check.muteStatus", sender.getName()).
                 replace("%status%", muteStatus)));
         if (mute != null && mute.playerIsMuted())
-            sender.sendMessage(new TextComponent(messageManager.getMessage("check.muteReason").
+            sender.sendMessage(new TextComponent(messageManager.getMessage("check.muteReason", sender.getName()).
                     replace("%reason%", mute.getReason())));
         if (mute != null && mute.playerIsMuted())
-            sender.sendMessage(new TextComponent(messageManager.getMessage("check.muteOperator").
+            sender.sendMessage(new TextComponent(messageManager.getMessage("check.muteOperator", sender.getName()).
                     replace("%operator%", mute.getOperator())));
     }
 }

@@ -35,7 +35,7 @@ public class TempBanCommand extends BaseCommand {
         String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;
         Punishment punishment = punishmentManager.getPunishment(playerName, "ban");
         if (punishment != null && punishment.playerIsBanned()) {
-            sender.sendMessage(new TextComponent(messageManager.getMessage("tempban.alreadyPunished").
+            sender.sendMessage(new TextComponent(messageManager.getMessage("tempban.alreadyPunished", sender.getName()).
                     replace("%name%", playerName)));
             return;
         }
@@ -48,9 +48,9 @@ public class TempBanCommand extends BaseCommand {
         long start = System.currentTimeMillis();
         long end = start + Utils.convertToMillis(number, unit);
         String ip = new Ip(playerName).getPlayerIp();
-        punishment = new Punishment(playerName, uuid, ip, TEMPBAN, new Reason(reason).getReason(), sender.getName(), start, end);
+        punishment = new Punishment(playerName, uuid, ip, TEMPBAN, new Reason(reason, playerName).getReason(), sender.getName(), start, end);
         punishmentManager.AddPunish(punishment);
-        sender.sendMessage(new TextComponent(messageManager.getMessage("tempban.punished").
+        sender.sendMessage(new TextComponent(messageManager.getMessage("tempban.punished", sender.getName()).
                 replace("%name%", playerName)));
         Utils.disconnectPlayer(punishment);
     }

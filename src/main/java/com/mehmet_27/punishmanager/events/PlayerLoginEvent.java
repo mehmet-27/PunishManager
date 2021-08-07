@@ -22,9 +22,8 @@ public class PlayerLoginEvent implements Listener {
     @EventHandler
     public void onLogin(PostLoginEvent event) {
         ProxiedPlayer player = event.getPlayer();
-        mySQLManager.addPlayer(player);
+        punishmentManager.addPlayer(player);
         Punishment punishment = punishmentManager.getPunishment(player.getName(), "ban");
-        PunishManager.getInstance().getDiscordManager().givePunishedRole(punishment);
         String playerIp = new Ip(player.getName()).getPlayerIp();
         if (bannedIps.contains(playerIp)) {
             Utils.disconnectPlayer(punishment);

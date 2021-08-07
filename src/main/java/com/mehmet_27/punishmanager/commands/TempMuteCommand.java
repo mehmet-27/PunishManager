@@ -38,7 +38,7 @@ public class TempMuteCommand extends BaseCommand {
         String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;
         Punishment punishment = punishmentManager.getPunishment(playerName, "mute");
         if (punishment != null && punishment.playerIsMuted()) {
-            sender.sendMessage(new TextComponent(messageManager.getMessage("tempmute.alreadyPunished").
+            sender.sendMessage(new TextComponent(messageManager.getMessage("tempmute.alreadyPunished", sender.getName()).
                     replace("%name%", playerName)));
             return;
         }
@@ -51,9 +51,9 @@ public class TempMuteCommand extends BaseCommand {
         long start = System.currentTimeMillis();
         long end = start + Utils.convertToMillis(number, unit);
         String ip = new Ip(playerName).getPlayerIp();
-        punishment = new Punishment(playerName, uuid, ip, TEMPMUTE, new Reason(reason).getReason(), sender.getName(), start, end);
+        punishment = new Punishment(playerName, uuid, ip, TEMPMUTE, new Reason(reason, playerName).getReason(), sender.getName(), start, end);
         punishmentManager.AddPunish(punishment);
-        sender.sendMessage(new TextComponent(messageManager.getMessage("tempmute.punished").
+        sender.sendMessage(new TextComponent(messageManager.getMessage("tempmute.punished", sender.getName()).
                 replace("%name%", playerName)));
         Utils.sendMuteMessage(punishment);
     }

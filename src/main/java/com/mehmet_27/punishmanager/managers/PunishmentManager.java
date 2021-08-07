@@ -3,7 +3,7 @@ package com.mehmet_27.punishmanager.managers;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
-import com.mehmet_27.punishmanager.utils.SqlQuery;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType;
-import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.BAN;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.IPBAN;
 
 public class PunishmentManager {
@@ -27,7 +26,9 @@ public class PunishmentManager {
 
     public void AddPunish(Punishment punishment) {
         try {
-            PreparedStatement ps = connection.prepareStatement(SqlQuery.ADD_PUNISH_TO_PUNISHMENTS.getQuery());
+            PreparedStatement ps = connection.prepareStatement("INSERT IGNORE INTO `punishmanager_punishments` (" +
+                    "`name`, `uuid`, `ip`, `reason`, `operator`, `type`, `start`, `end`)" +
+                    " VALUES (?,?,?,?,?,?,?,?)");
             ps.setString(1, punishment.getPlayerName());
             ps.setString(2, punishment.getUuid());
             ps.setString(3, punishment.getIp());
@@ -40,7 +41,6 @@ public class PunishmentManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        discordManager.givePunishedRole(punishment);
     }
 
     public void unPunishPlayer(Punishment punishment) {
@@ -53,7 +53,7 @@ public class PunishmentManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        if (punishment.getPunishType().equals(IPBAN)){
+        if (punishment.getPunishType().equals(IPBAN)) {
             PunishManager.getInstance().getBannedIps().remove(punishment.getIp());
         }
     }
@@ -93,14 +93,14 @@ public class PunishmentManager {
 
     public OfflinePlayer getOfflinePlayer(String wantedPlayer) {
         try {
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM `punishmanager_players` WHERE name = ?");
-            ps.setString(1, wantedPlayer);
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM `punishmanager_players` WHERE `name` = ?".replace("?", "'" + wantedPlayer + "'"));
             ResultSet result = ps.executeQuery();
             if (result.next()) {
                 String uuid = result.getString("uuid");
                 String playerName = result.getString("name");
                 String ip = result.getString("ip");
-                return new OfflinePlayer(uuid, playerName, ip);
+                String language = result.getString("language");
+                return new OfflinePlayer(uuid, playerName, ip, language);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -140,20 +140,6 @@ public class PunishmentManager {
             if (punishment.getPunishType().toString().contains(type.toUpperCase())) {
                 return punishment;
             }
-        }
-        return null;
-    }
-
-    public String getOfflineIp(String wantedPlayer) {
-        try {
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM `punishmanager_players` WHERE `name` = ?");
-            ps.setString(1, wantedPlayer);
-            ResultSet result = ps.executeQuery();
-            if (result.next()) {
-                return result.getString("ip");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return null;
     }
@@ -202,6 +188,33 @@ public class PunishmentManager {
                 }
             }
             PunishManager.getInstance().getLogger().info(deleted + " expiring punish deleted.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addPlayer(ProxiedPlayer player) {
+        String ip = player.getSocketAddress().toString().substring(1).split(":")[0];
+        try {
+            PreparedStatement ps = connection.prepareStatement("INSERT IGNORE INTO `punishmanager_players` (" +
+                    " `uuid`, `name`, `ip`, `language`)" +
+                    " VALUES (?,?,?,?)");
+            ps.setString(1, player.getUniqueId().toString());
+            ps.setString(2, player.getName());
+            ps.setString(3, ip);
+            ps.setString(4, "en");
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateLanguage(String playerName, String language) {
+        try {
+            PreparedStatement ps = connection.prepareStatement("UPDATE `punishmanager_players` SET `language` = ? WHERE `name` = ?");
+            ps.setString(1, language);
+            ps.setString(2, playerName);
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

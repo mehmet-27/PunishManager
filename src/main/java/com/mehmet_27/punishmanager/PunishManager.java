@@ -3,10 +3,12 @@ package com.mehmet_27.punishmanager;
 import co.aikar.commands.BungeeCommandManager;
 import com.mehmet_27.punishmanager.events.PlayerChatEvent;
 import com.mehmet_27.punishmanager.events.PlayerLoginEvent;
+import com.mehmet_27.punishmanager.events.PlayerSettingsChangeEvent;
 import com.mehmet_27.punishmanager.managers.*;
 import com.mehmet_27.punishmanager.utils.SqlQuery;
 import net.md_5.bungee.api.plugin.Plugin;
 
+import java.io.File;
 import java.util.List;
 
 public final class PunishManager extends Plugin {
@@ -36,6 +38,7 @@ public final class PunishManager extends Plugin {
         discordManager.buildBot();
         getProxy().getPluginManager().registerListener(this, new PlayerLoginEvent());
         getProxy().getPluginManager().registerListener(this, new PlayerChatEvent());
+        getProxy().getPluginManager().registerListener(this, new PlayerSettingsChangeEvent());
     }
 
     @Override

@@ -6,8 +6,10 @@ import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.*;
 
 public class ConfigManager {
     private final PunishManager plugin;
@@ -18,7 +20,9 @@ public class ConfigManager {
     public ConfigManager(PunishManager plugin) {
         this.plugin = plugin;
         config = loadFile(new File(plugin.getDataFolder() + File.separator + "config.yml"));
-        messages = loadFile(new File(plugin.getDataFolder() + File.separator + "messages.yml"));
+        loadFolder(new File(plugin.getDataFolder() + File.separator + "locales"));
+        messages = loadFile(new File(plugin.getDataFolder() + File.separator + "locales" + File.separator + "en.yml"));
+        plugin.getLogger().info("Found " + getLocales().size() + " language files.");
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -27,20 +31,47 @@ public class ConfigManager {
             if (!plugin.getDataFolder().exists()) {
                 file.getParentFile().mkdirs();
             }
-
-            if (!file.exists()) {
+            if (!file.exists() && !file.isDirectory()) {
                 Files.copy(plugin.getResourceAsStream(file.getName()), file.toPath());
                 return provider.load(file);
             }
-
             return provider.load(file);
         } catch (IOException ex) {
             plugin.getLogger().severe(String.format("Error while trying to load file {0}: " + ex.getMessage(), file.getName()));
         }
-
         return null;
     }
 
+    private void loadFolder(File file) {
+        if (!file.exists()) {
+            boolean create = file.mkdirs();
+        }
+    }
+
+    public Map<String, Configuration> getLocales() {
+        Map<String, Configuration> locales = new HashMap<>();
+        Set<File> localeFiles = getLocaleFiles();
+        for (File file : localeFiles) {
+            locales.put(file.getName().split("\\.")[0], new Configuration(loadFile(file)));
+        }
+        return locales;
+    }
+
+    public Set<File> getLocaleFiles() {
+        Set<File> files = new HashSet<>();
+        File directoryPath = new File(plugin.getDataFolder().getAbsolutePath() + File.separator + "locales");
+        FilenameFilter ymlFilter = (dir, name) -> {
+            String lowercaseName = name.toLowerCase();
+            return lowercaseName.endsWith(".yml");
+        };
+        File[] filesList = directoryPath.listFiles(ymlFilter);
+        if (filesList == null) {
+            plugin.getLogger().severe("Locales folder not found!");
+            return null;
+        }
+        Collections.addAll(files, filesList);
+        return files;
+    }
 
     public Configuration getConfig() {
         return config;

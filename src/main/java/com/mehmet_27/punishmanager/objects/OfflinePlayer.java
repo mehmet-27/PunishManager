@@ -1,14 +1,13 @@
 package com.mehmet_27.punishmanager.objects;
 
 public class OfflinePlayer {
-    private String playerName;
-    private String uuid;
-    private String playerIp;
+    private String playerName, uuid, playerIp, language;
 
-    public OfflinePlayer(String uuid, String playerName, String playerIp) {
+    public OfflinePlayer(String uuid, String playerName, String playerIp, String language) {
         this.uuid = uuid;
         this.playerName = playerName;
         this.playerIp = playerIp;
+        this.language = language;
     }
 
     public String getPlayerName() {
@@ -33,5 +32,13 @@ public class OfflinePlayer {
 
     public void setPlayerIp(String playerIp) {
         this.playerIp = playerIp;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 }

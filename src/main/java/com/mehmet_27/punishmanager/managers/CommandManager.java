@@ -31,7 +31,6 @@ public class CommandManager extends BungeeCommandManager {
         registerDependencies();
         registerConditions();
         registerCompletions();
-        registerContexts();
         registerCommands();
     }
 
@@ -39,14 +38,6 @@ public class CommandManager extends BungeeCommandManager {
         registerDependency(ConfigManager.class, plugin.getConfigManager());
         registerDependency(MessageManager.class, plugin.getMessageManager());
         registerDependency(PunishmentManager.class, plugin.getPunishmentManager());
-    }
-
-    private void registerContexts() {
-        getCommandContexts().registerOptionalContext(Reason.class, c -> {
-            List<String> args = c.getArgs();
-            String arg = args != null ? String.join(" ", c.getArgs()) : null;
-            return arg != null ? new Reason(arg) : new Reason(config.getString("defaultReason"));
-        });
     }
 
     private void registerCommands() {

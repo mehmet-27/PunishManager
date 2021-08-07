@@ -19,12 +19,13 @@ public enum SqlQuery {
                     " `uuid` VARCHAR(72) NOT NULL," +
                     " `name` VARCHAR(16)," +
                     " `ip` VARCHAR(25)," +
+                    " `language` VARCHAR(10)," +
                     " PRIMARY KEY (`uuid`))"
     ),
     ADD_PLAYER_TO_PLAYERS_TABLE(
-            "INSERT IGNORE INTO `punishmanager_players` (" +
-                    "`uuid`, `name`, `ip`)" +
-                    " VALUES (?,?,?)"
+            "INSERT IGNORE INTO `punishmanager_players` ("+
+                    " `uuid`, `name`, `ip`, `language`)" +
+                    " VALUES (?,?,?,?)"
     ),
     ADD_PUNISH_TO_PUNISHMENTS(
             "INSERT IGNORE INTO `punishmanager_punishments` (" +

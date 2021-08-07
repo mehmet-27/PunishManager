@@ -53,20 +53,6 @@ public class MysqlManager {
         return connection;
     }
 
-    public void addPlayer(ProxiedPlayer player) {
-        String ip = player.getSocketAddress().toString().substring(1).split(":")[0];
-
-        try {
-            PreparedStatement ps = connection.prepareStatement(SqlQuery.ADD_PLAYER_TO_PLAYERS_TABLE.toString());
-            ps.setString(1, player.getUniqueId().toString());
-            ps.setString(2, player.getName());
-            ps.setString(3, ip);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void createPunishmentsTable() {
         try {
             PreparedStatement ps = connection.prepareStatement(SqlQuery.CREATE_PUNISHMENTS_TABLE.getQuery());
