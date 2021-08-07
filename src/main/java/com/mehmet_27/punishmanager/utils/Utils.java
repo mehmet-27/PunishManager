@@ -16,7 +16,6 @@ public class Utils {
 
     private static final PunishManager plugin = PunishManager.getInstance();
     private final Configuration config = plugin.getConfigManager().getConfig();
-    private static final MessageManager messageManager = plugin.getMessageManager();
 
     public static final Pattern NumberAndUnit = Pattern.compile("(?<number>[0-9]+)(?<unit>mo|[ywdhms])");
 
@@ -44,7 +43,8 @@ public class Utils {
         ProxiedPlayer player = plugin.getProxy().getPlayer(punishment.getPlayerName());
         if (player == null || !player.isConnected()) return;
         String path = punishment.getPunishType().toString().toLowerCase(Locale.ENGLISH) + ".layout";
-        TextComponent layout = TextComponentBuilder(messageManager.getLayout(path), punishment);
+        MessageManager messageManager = PunishManager.getInstance().getMessageManager();
+        TextComponent layout = TextComponentBuilder(messageManager.getLayout(path, punishment.getPlayerName()), punishment);
         player.disconnect(layout);
     }
 
@@ -52,7 +52,8 @@ public class Utils {
         ProxiedPlayer player = plugin.getProxy().getPlayer(punishment.getPlayerName());
         if (player == null || !player.isConnected()) return;
         String path = punishment.getPunishType().toString().toLowerCase(Locale.ENGLISH) + ".layout";
-        TextComponent layout = TextComponentBuilder(messageManager.getLayout(path), punishment);
+        MessageManager messageManager = PunishManager.getInstance().getMessageManager();
+        TextComponent layout = TextComponentBuilder(messageManager.getLayout(path, punishment.getPlayerName()), punishment);
         player.sendMessage(layout);
     }
 

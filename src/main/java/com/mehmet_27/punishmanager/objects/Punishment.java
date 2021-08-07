@@ -1,6 +1,7 @@
 package com.mehmet_27.punishmanager.objects;
 
 import com.mehmet_27.punishmanager.PunishManager;
+import com.mehmet_27.punishmanager.managers.MessageManager;
 import com.mehmet_27.punishmanager.managers.PunishmentManager;
 import net.md_5.bungee.config.Configuration;
 
@@ -8,6 +9,7 @@ import java.sql.Timestamp;
 
 public class Punishment {
     private final PunishmentManager punishmentManager = PunishManager.getInstance().getPunishmentManager();
+    private final MessageManager messageManager = PunishManager.getInstance().getMessageManager();
     private String playerName, uuid, ip, reason, operator;
     private PunishType punishType;
     private final long start, end;
@@ -132,12 +134,12 @@ public class Punishment {
         long currentTime = new Timestamp(System.currentTimeMillis()).getTime();
         long diff = (getEnd() - currentTime) / 1000 + 1;
         //Getting time formats
-        String monthFormat = messages.getString("main.timelayout.month");
-        String weekFormat = messages.getString("main.timelayout.week");
-        String dayFormat = messages.getString("main.timelayout.day");
-        String hourFormat = messages.getString("main.timelayout.hour");
-        String minuteFormat = messages.getString("main.timelayout.minute");
-        String secondFormat = messages.getString("main.timelayout.second");
+        String monthFormat = messageManager.getMessage("main.timelayout.month", this.playerName);
+        String weekFormat = messageManager.getMessage("main.timelayout.week", this.playerName);
+        String dayFormat = messageManager.getMessage("main.timelayout.day", this.playerName);
+        String hourFormat = messageManager.getMessage("main.timelayout.hour", this.playerName);
+        String minuteFormat = messageManager.getMessage("main.timelayout.minute", this.playerName);
+        String secondFormat = messageManager.getMessage("main.timelayout.second", this.playerName);
 
         String months = String.valueOf(diff / 60 / 60 / 24 / 7 / 4);
         String weeks = String.valueOf(diff / 60 / 60 / 24 / 7 % 4);

@@ -93,7 +93,8 @@ public class PunishmentManager {
 
     public OfflinePlayer getOfflinePlayer(String wantedPlayer) {
         try {
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM `punishmanager_players` WHERE `name` = ?".replace("?", "'" + wantedPlayer + "'"));
+            String query = "SELECT * FROM `punishmanager_players` WHERE `name` = ?".replace("?", "'" + wantedPlayer + "'");
+            PreparedStatement ps = connection.prepareStatement(query);
             ResultSet result = ps.executeQuery();
             if (result.next()) {
                 String uuid = result.getString("uuid");
