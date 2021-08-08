@@ -7,7 +7,8 @@ mysql:
 
 discord:
   enabled: false
-  token: 'token'
+  token: 'botToken'
+  serverId: 'serverId'
   punishedRoleId: 'roleId'
   discordsrv:
     host: "localhost"

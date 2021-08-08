@@ -5,13 +5,9 @@ import com.mehmet_27.punishmanager.events.PlayerChatEvent;
 import com.mehmet_27.punishmanager.events.PlayerLoginEvent;
 import com.mehmet_27.punishmanager.events.PlayerSettingsChangeEvent;
 import com.mehmet_27.punishmanager.managers.*;
-import com.mehmet_27.punishmanager.utils.SqlQuery;
-import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.plugin.Plugin;
 
-import java.io.File;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public final class PunishManager extends Plugin {
 
@@ -36,7 +32,7 @@ public final class PunishManager extends Plugin {
         messageManager = new MessageManager(this);
         new CommandManager(this);
         bannedIps = punishmentManager.getBannedIps();
-        discordManager = new DiscordManager();
+        discordManager = new DiscordManager(this);
         discordManager.buildBot();
         getProxy().getPluginManager().registerListener(this, new PlayerLoginEvent());
         getProxy().getPluginManager().registerListener(this, new PlayerChatEvent());

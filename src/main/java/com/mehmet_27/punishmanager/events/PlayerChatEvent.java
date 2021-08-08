@@ -20,7 +20,10 @@ public class PlayerChatEvent implements Listener {
         if (punishment == null || !punishment.playerIsMuted()) {
             return;
         }
-        if (!punishment.isStillPunished()) return;
+        if (!punishment.isExpired()){
+            PunishManager.getInstance().getDiscordManager().removePunishedRole(punishment);
+            return;
+        }
         if (event.isCommand()) return;
         event.setCancelled(true);
         Utils.sendMuteMessage(punishment);

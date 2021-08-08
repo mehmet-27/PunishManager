@@ -32,7 +32,7 @@ public class PlayerLoginEvent implements Listener {
         if (punishment == null || !punishment.playerIsBanned()) {
             return;
         }
-        if (!punishment.isStillPunished()) return;
+        if (!punishment.isExpired()) return;
         Utils.disconnectPlayer(punishment);
     }
 }

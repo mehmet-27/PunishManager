@@ -43,6 +43,7 @@ public class MuteCommand extends BaseCommand {
         punishmentManager.AddPunish(punishment);
         sender.sendMessage(new TextComponent(messageManager.getMessage("mute.punished", sender.getName()).
                 replace("%name%", playerName)));
+        PunishManager.getInstance().getDiscordManager().givePunishedRole(punishment);
         Utils.sendMuteMessage(punishment);
     }
 }

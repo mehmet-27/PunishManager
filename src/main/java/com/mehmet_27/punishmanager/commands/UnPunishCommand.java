@@ -2,6 +2,7 @@ package com.mehmet_27.punishmanager.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
+import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.managers.MessageManager;
 import com.mehmet_27.punishmanager.managers.PunishmentManager;
@@ -29,6 +30,7 @@ public class UnPunishCommand extends BaseCommand {
             return;
         }
         punishmentManager.removeAllPunishes(punishment);
+        PunishManager.getInstance().getDiscordManager().removePunishedRole(punishment);
         sender.sendMessage(new TextComponent(messageManager.getMessage("unpunish.done", sender.getName()).
                 replace("%name%", playerName)));
     }

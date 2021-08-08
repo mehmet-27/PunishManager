@@ -5,7 +5,11 @@ import com.mehmet_27.punishmanager.objects.Punishment;
 import net.md_5.bungee.config.Configuration;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
+import org.javacord.api.entity.intent.Intent;
 import org.javacord.api.entity.permission.Role;
+import org.javacord.api.entity.server.Server;
+import org.javacord.api.entity.user.User;
+import org.javacord.api.util.logging.ExceptionLogger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,18 +18,27 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class DiscordManager {
-    private final PunishManager plugin = PunishManager.getInstance();
-    private final Configuration config = plugin.getConfigManager().getConfig();
-    private final MysqlManager mysqlManager = new MysqlManager(plugin);
-    private final Connection discordSrvData = mysqlManager.getConnection();
+    private final PunishManager plugin;
+    private final Configuration config;
+    private final Connection discordSrvData;
     private DiscordApi api;
+    public DiscordManager(PunishManager plugin){
+        this.plugin = plugin;
+        this.config = plugin.getConfigManager().getConfig();
+        MysqlManager mysqlManager = new MysqlManager(plugin);
+        this.discordSrvData = mysqlManager.getConnection();
+    }
 
     public void buildBot() {
         //Return if feature is disabled.
         if (!config.getBoolean("discord.enabled")) return;
+        if (discordSrvData == null){
+            plugin.getLogger().severe("Discord feature will not work because DiscordSRV could not connect to database.");
+        }
 
         new DiscordApiBuilder()
                 .setToken(config.getString("discord.token"))
+                .setAllIntentsExcept(Intent.GUILD_PRESENCES, Intent.GUILD_WEBHOOKS)
                 .login()
                 .thenAccept(this::onConnectToDiscord)
                 .exceptionally(error -> {
@@ -35,6 +48,7 @@ public class DiscordManager {
     }
 
     public void onConnectToDiscord(DiscordApi api) {
+        this.api = api;
         PunishManager.getInstance().getLogger().info("Bot connected to discord with name " + api.getYourself().getDiscriminatedName());
     }
 
@@ -46,11 +60,22 @@ public class DiscordManager {
     }
 
     public void givePunishedRole(Punishment punishment) {
-        Optional<Role> role = api.getRoleById(config.getString("discord.punishedRoleId"));
-        //use getUserId method
-        api.getCachedUserById("366508088108253184").ifPresent(user ->
-                role.ifPresent(user::addRole)
-        );
+        Optional<Server> server = api.getServerById(config.getString("discord.serverId"));
+        if (!server.isPresent()) return;
+        Optional<Role> role = server.flatMap(serverById -> serverById.getRoleById(config.getString("discord.punishedRoleId")));
+        if (!role.isPresent()) return;
+        Optional<User> user = server.flatMap(serverById -> serverById.getMemberById(getUserId(punishment.getUuid())));
+        if (!user.isPresent()) return;
+        user.get().addRole(role.get()).exceptionally(ExceptionLogger.get());
+    }
+    public void removePunishedRole(Punishment punishment){
+        Optional<Server> server = api.getServerById(config.getString("discord.serverId"));
+        if (!server.isPresent()) return;
+        Optional<Role> role = server.flatMap(serverById -> serverById.getRoleById(config.getString("discord.punishedRoleId")));
+        if (!role.isPresent()) return;
+        Optional<User> user = server.flatMap(serverById -> serverById.getMemberById(getUserId(punishment.getUuid())));
+        if (!user.isPresent()) return;
+        user.get().removeRole(role.get()).exceptionally(ExceptionLogger.get());
     }
 
     public String getUserId(String uuid) {
