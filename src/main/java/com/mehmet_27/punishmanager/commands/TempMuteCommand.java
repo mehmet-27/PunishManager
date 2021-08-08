@@ -56,6 +56,6 @@ public class TempMuteCommand extends BaseCommand {
         sender.sendMessage(new TextComponent(messageManager.getMessage("tempmute.punished", sender.getName()).
                 replace("%name%", playerName)));
         PunishManager.getInstance().getDiscordManager().givePunishedRole(punishment);
-        Utils.sendMuteMessage(punishment);
+        Utils.sendLayout(punishment);
     }
 }

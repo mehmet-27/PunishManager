@@ -183,7 +183,7 @@ public class PunishmentManager {
             while (result.next()) {
                 String playerName = result.getString("name");
                 Punishment punishment = getPunishment(playerName);
-                if (punishment.getPunishType().isTemp() && !punishment.isExpired()) {
+                if (punishment.getPunishType().isTemp() && !punishment.isStillPunished()) {
                     unPunishPlayer(punishment);
                     deleted++;
                 }

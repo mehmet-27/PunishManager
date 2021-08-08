@@ -41,17 +41,14 @@ public class ConfigManager {
         }
         return null;
     }
-
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private void loadFolder(File file) {
-        if (!file.exists()) {
-            boolean create = file.mkdirs();
-        }
+        file.mkdirs();
     }
 
     public Map<String, Configuration> getLocales() {
         Map<String, Configuration> locales = new HashMap<>();
-        Set<File> localeFiles = getLocaleFiles();
-        for (File file : localeFiles) {
+        for (File file : getLocaleFiles()) {
             locales.put(file.getName().split("\\.")[0], new Configuration(loadFile(file)));
         }
         return locales;
@@ -65,10 +62,7 @@ public class ConfigManager {
             return lowercaseName.endsWith(".yml");
         };
         File[] filesList = directoryPath.listFiles(ymlFilter);
-        if (filesList == null) {
-            plugin.getLogger().severe("Locales folder not found!");
-            return null;
-        }
+        Objects.requireNonNull(filesList, "Locales folder not found!");
         Collections.addAll(files, filesList);
         return files;
     }

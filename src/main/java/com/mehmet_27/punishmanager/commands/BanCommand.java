@@ -40,6 +40,6 @@ public class BanCommand extends BaseCommand {
         punishmentManager.AddPunish(punishment);
         sender.sendMessage(new TextComponent(messageManager.getMessage("ban.punished", sender.getName()).
                 replace("%name%", playerName)));
-        Utils.disconnectPlayer(punishment);
+        Utils.sendLayout(punishment);
     }
 }

@@ -35,7 +35,7 @@ public class OfflinePlayer {
     }
 
     public String getLanguage() {
-        return language;
+        return language.split("_")[0];
     }
 
     public void setLanguage(String language) {

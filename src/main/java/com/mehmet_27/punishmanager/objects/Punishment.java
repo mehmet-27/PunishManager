@@ -93,7 +93,7 @@ public class Punishment {
 
     public boolean playerIsBanned() {
         if (punishType.name().contains("BAN")) {
-            if (!isExpired()) {
+            if (!isStillPunished()) {
                 punishmentManager.unPunishPlayer(this);
                 return false;
             } else {
@@ -105,7 +105,7 @@ public class Punishment {
 
     public boolean playerIsMuted() {
         if (punishType.name().contains("MUTE")) {
-            if (!isExpired()) {
+            if (!isStillPunished()) {
                 punishmentManager.unPunishPlayer(this);
                 return false;
             } else {
@@ -115,7 +115,7 @@ public class Punishment {
         return false;
     }
 
-    public boolean isExpired() {
+    public boolean isStillPunished() {
         if (getEnd() == -1) {
             return true;
         } else return getEnd() >= System.currentTimeMillis();

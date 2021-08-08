@@ -39,22 +39,18 @@ public class Utils {
         return layout;
     }
 
-    public static void disconnectPlayer(Punishment punishment) {
+    public static void sendLayout(Punishment punishment) {
         ProxiedPlayer player = plugin.getProxy().getPlayer(punishment.getPlayerName());
         if (player == null || !player.isConnected()) return;
         String path = punishment.getPunishType().toString().toLowerCase(Locale.ENGLISH) + ".layout";
         MessageManager messageManager = PunishManager.getInstance().getMessageManager();
         TextComponent layout = TextComponentBuilder(messageManager.getLayout(path, punishment.getPlayerName()), punishment);
-        player.disconnect(layout);
-    }
-
-    public static void sendMuteMessage(Punishment punishment) {
-        ProxiedPlayer player = plugin.getProxy().getPlayer(punishment.getPlayerName());
-        if (player == null || !player.isConnected()) return;
-        String path = punishment.getPunishType().toString().toLowerCase(Locale.ENGLISH) + ".layout";
-        MessageManager messageManager = PunishManager.getInstance().getMessageManager();
-        TextComponent layout = TextComponentBuilder(messageManager.getLayout(path, punishment.getPlayerName()), punishment);
-        player.sendMessage(layout);
+        if (punishment.playerIsBanned()) {
+            player.disconnect(layout);
+        }
+        if (punishment.playerIsMuted()){
+            player.sendMessage(layout);
+        }
     }
 
     public static long convertToMillis(int number, String unit) {

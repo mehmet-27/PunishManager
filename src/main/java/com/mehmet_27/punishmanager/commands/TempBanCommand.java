@@ -52,6 +52,6 @@ public class TempBanCommand extends BaseCommand {
         punishmentManager.AddPunish(punishment);
         sender.sendMessage(new TextComponent(messageManager.getMessage("tempban.punished", sender.getName()).
                 replace("%name%", playerName)));
-        Utils.disconnectPlayer(punishment);
+        Utils.sendLayout(punishment);
     }
 }

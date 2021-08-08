@@ -36,8 +36,8 @@ public class CheckCommand extends BaseCommand {
         OfflinePlayer player = punishmentManager.getOfflinePlayer(playerName);
 
         String uuid = player != null ? player.getUuid() : playerName;
-        String banStatus = (ban != null && ban.playerIsBanned() && ban.isExpired()) ? ban.getDuration() : messageManager.getMessage("check.notPunished", sender.getName());
-        String muteStatus = (mute != null && mute.playerIsMuted() && mute.isExpired()) ? mute.getDuration() : messageManager.getMessage("check.notPunished", sender.getName());
+        String banStatus = (ban != null && ban.playerIsBanned() && ban.isStillPunished()) ? ban.getDuration() : messageManager.getMessage("check.notPunished", sender.getName());
+        String muteStatus = (mute != null && mute.playerIsMuted() && mute.isStillPunished()) ? mute.getDuration() : messageManager.getMessage("check.notPunished", sender.getName());
         //Kalan süreler çok uzun olduğunda bir yerden sonrasını kırp
         sender.sendMessage(new TextComponent(messageManager.getMessage("check.uuid", sender.getName()).
                 replace("%uuid%", uuid)));

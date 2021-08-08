@@ -6,42 +6,44 @@ import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.config.Configuration;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MessageManager {
-    private final ConfigManager configManager;
     private final PunishmentManager punishmentManager;
+    private final Map<String, Configuration> locales;
 
     public MessageManager(PunishManager plugin) {
-        configManager = plugin.getConfigManager();
+        ConfigManager configManager = plugin.getConfigManager();
         punishmentManager = plugin.getPunishmentManager();
+        this.locales = configManager.getLocales();
     }
 
     public List<String> getLayout(String path, String playerName) {
         String language = punishmentManager.getOfflinePlayer(playerName).getLanguage();
-        if (configManager.getLocales().containsKey(language)) {
-            List<String> messages = configManager.getLocales().get(language).getStringList(path);
+        if (locales.containsKey(language)) {
+            List<String> messages = locales.get(language).getStringList(path);
             if (messages.size() != 0) {
-                return configManager.getLocales().get(language).getStringList(path).stream().map(Utils::color).collect(Collectors.toList());
+                return locales.get(language).getStringList(path).stream().map(Utils::color).collect(Collectors.toList());
             } else {
-                return configManager.getLocales().get("en").getStringList(path).stream().map(Utils::color).collect(Collectors.toList());
+                return locales.get("en").getStringList(path).stream().map(Utils::color).collect(Collectors.toList());
             }
         } else {
-            return configManager.getLocales().get("en").getStringList(path).stream().map(Utils::color).collect(Collectors.toList());
+            return locales.get("en").getStringList(path).stream().map(Utils::color).collect(Collectors.toList());
         }
     }
 
     public String getMessage(String path, @Optional String playerName) {
         String language = !"CONSOLE".equals(playerName) ? punishmentManager.getOfflinePlayer(playerName).getLanguage() : "en";
-        if (configManager.getLocales().containsKey(language)) {
-            String msg = configManager.getLocales().get(language).getString(path);
+        if (locales.containsKey(language)) {
+            String msg = locales.get(language).getString(path);
             if (msg != null && msg.length() != 0) {
-                return Utils.color(configManager.getLocales().get(language).getString(path));
+                return Utils.color(locales.get(language).getString(path));
             } else {
-                return Utils.color(configManager.getLocales().get("en").getString(path));
+                return Utils.color(locales.get("en").getString(path));
             }
         } else {
-            return Utils.color(configManager.getLocales().get("en").getString(path));
+            return Utils.color(locales.get("en").getString(path));
         }
     }
 }
