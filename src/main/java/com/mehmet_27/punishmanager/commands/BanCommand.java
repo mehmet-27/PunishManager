@@ -2,6 +2,7 @@ package com.mehmet_27.punishmanager.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
+import com.mehmet_27.punishmanager.PlayerPunishEvent;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.objects.Ip;
 import com.mehmet_27.punishmanager.objects.Punishment;
@@ -30,16 +31,17 @@ public class BanCommand extends BaseCommand {
         ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerName);
         String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;
         Punishment punishment = punishmentManager.getPunishment(playerName, "ban");
-        if (punishment != null && punishment.playerIsBanned()) {
+        if (punishment != null && punishment.isBanned()) {
             sender.sendMessage(new TextComponent(messageManager.getMessage("ban.alreadyPunished", sender.getName()).
-                    replace("%name%", playerName)));
+                    replace("%player%", playerName)));
             return;
         }
         String ip = new Ip(playerName).getPlayerIp();
         punishment = new Punishment(playerName, uuid, ip, BAN, new Reason(reason, playerName).getReason(), sender.getName());
         punishmentManager.AddPunish(punishment);
         sender.sendMessage(new TextComponent(messageManager.getMessage("ban.punished", sender.getName()).
-                replace("%name%", playerName)));
+                replace("%player%", playerName)));
         Utils.sendLayout(punishment);
+        PunishManager.getInstance().getProxy().getPluginManager().callEvent(new PlayerPunishEvent(punishment));
     }
 }

@@ -5,16 +5,18 @@ mysql:
   username: "username"
   password: "password"
 
+default-server-language: 'en'
+
+banned-commands-while-mute:
+  - command1
+  - command2
+
+# NOTE: If you want to use the role cast feature in discord,
+# discordsrv's table must be in the same database as this plugin's table.
 discord:
   enabled: false
   token: 'botToken'
   serverId: 'serverId'
   punishedRoleId: 'roleId'
-  discordsrv:
-    host: "localhost"
-    port: "3306"
-    database: "database"
-    username: "username"
-    password: "password"
 
 debug: false

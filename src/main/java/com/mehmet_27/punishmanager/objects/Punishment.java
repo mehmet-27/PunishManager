@@ -83,7 +83,7 @@ public class Punishment {
         return ip;
     }
 
-    public void setIp() {
+    public void setIp(String ip) {
         this.ip = ip;
     }
 
@@ -91,9 +91,9 @@ public class Punishment {
         this.uuid = uuid;
     }
 
-    public boolean playerIsBanned() {
+    public boolean isBanned() {
         if (punishType.name().contains("BAN")) {
-            if (!isStillPunished()) {
+            if (isExpired()) {
                 punishmentManager.unPunishPlayer(this);
                 return false;
             } else {
@@ -103,9 +103,9 @@ public class Punishment {
         return false;
     }
 
-    public boolean playerIsMuted() {
+    public boolean isMuted() {
         if (punishType.name().contains("MUTE")) {
-            if (!isStillPunished()) {
+            if (isExpired()) {
                 punishmentManager.unPunishPlayer(this);
                 return false;
             } else {
@@ -115,10 +115,10 @@ public class Punishment {
         return false;
     }
 
-    public boolean isStillPunished() {
+    public boolean isExpired() {
         if (getEnd() == -1) {
-            return true;
-        } else return getEnd() >= System.currentTimeMillis();
+            return false;
+        } else return getEnd() <= System.currentTimeMillis();
     }
 
     public long getStart() {

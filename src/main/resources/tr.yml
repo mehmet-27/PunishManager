@@ -1,0 +1,91 @@
+# Placeholders:
+# %reason% -> Cezanın sebebi.
+# %duration% -> Cezanın süresi.
+# %operator% -> Cezayı veren yetkili.
+# %name% -> Cezalandırılan oyuncunun adı.
+main:
+  defaultReason: 'yok'
+  timelayout:
+    #Cezanın süresini gösterirken kullanılacak değişkenler.
+    month: '%mo% ay'
+    week: '%w% hafta'
+    day: '%d% gün'
+    hour: '%h% saat'
+    minute: '%m% dakika'
+    second: '%s% saniye'
+ban:
+  punished: '&a%player% başarıyla yasaklandı.'
+  alreadyPunished: '&e%player% zaten yasaklı.'
+  layout:
+    - '&6&lSUNUCUADI'
+    - '&eSunucularından Kalıcı Yasaklandınız!'
+    - '&eYasaklayan: &a%operator%'
+    - "&eSebep &7» &2%reason%"
+    - '&7'
+    - '&eDestek İçin'
+    - "&6Site &7» &ewww.sunucusite.com"
+    - "&6Discord &7» &ehttps://discord.gg/sunucudiscord"
+tempban:
+  punished: '&a%player% başarıyla yasaklandı.'
+  alreadyPunished: '&e%player% zaten yasaklı.'
+  layout:
+    - '&6&lSUNUCUADI'
+    - '&eSunucularından Yasaklandınız!'
+    - '&eYasaklayan: &a%operator%'
+    - '&7'
+    - "&eSebep &7» &a%reason%"
+    - "&eKalan süre &7» &a%duration%"
+    - '&7'
+    - '&eDestek İçin'
+    - "&6Site &7» &ewww.sunucusite.com"
+    - "&6Discord &7» &ehttps://discord.gg/sunucudiscord"
+ipban:
+  punished: '&a%player% başarıyla yasaklandı.'
+  alreadyPunished: '&e%player% zaten yasaklı.'
+  layout:
+    - '&6&lSUNUCUADI'
+    - '&eSunucularından Kalıcı Yasaklandınız!'
+    - '&eYasaklayan: &a%operator%'
+    - "&eSebep &7» &2%reason%"
+    - '&7'
+    - '&eDestek İçin'
+    - "&6Site &7» &ewww.sunucusite.com"
+    - "&6Discord &7» &ehttps://discord.gg/sunucudiscord"
+kick:
+  punished: '&a%player% başarıyla atıldı.'
+  notOnline: '&e%player% çevrimiçi değil.'
+  layout:
+    - '&eSunucudan Atıldın'
+    - '&7'
+    - "&cSebep &7» &r%reason%"
+mute:
+  punished: '&a%player% başarıyla susturuldu.'
+  alreadyPunished: '&e%player% zaten susturulmuş.'
+  layout:
+    - '&a%operator% &etarafından &a%reason% &esebebiyle susuturuldun.'
+tempmute:
+  punished: '&a%player% başarıyla susturuldu.'
+  alreadyPunished: '&e%player% zaten susturulmuş.'
+  layout:
+    - '&a%operator% &eadlı yetkili tarafından &a%reason% &esebebiyle &a%duration% &esüre boyunca susturuldun.'
+unban:
+  notPunished: '&e%player% yasaklı değil.'
+  done: '&a%player% adlı oyuncunun yasağı kaldırıldı.'
+unmute:
+  notPunished: '&e%player% susturulmamış.'
+  done: '&a%player% adlı oyuncunun susturulması açıldı.'
+unpunish:
+  notPunished: '&e%player% cezalandırılmamış.'
+  done: '&a%player% adlı oyuncunun tüm cezaları kaldırıldı.'
+check:
+  checking: '&e%player% &akontrol ediliyor'
+  playerNotFound: '&c%name% bulunamadı!'
+  uuid: '&eUUID: &a%uuid%'
+  ip: '&eIP: &a%ip%'
+  banStatus: '&eYasaklanma durumu: &c%status%'
+  banReason: '&e-> Yasaklanma sebebi: &c%reason%'
+  banOperator: '&e-> Yasaklayan yetkili: &c%operator%'
+  muteStatus: '&eSusturulma durumu: &c%status%'
+  muteReason: '&e-> Susturulma sebebi: &c%reason%'
+  muteOperator: '&e-> Susturan yetkili: &c%operator%'
+  notPunished: '&acezalandırılmamış'

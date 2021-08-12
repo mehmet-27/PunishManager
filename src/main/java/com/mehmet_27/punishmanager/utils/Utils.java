@@ -45,11 +45,14 @@ public class Utils {
         String path = punishment.getPunishType().toString().toLowerCase(Locale.ENGLISH) + ".layout";
         MessageManager messageManager = PunishManager.getInstance().getMessageManager();
         TextComponent layout = TextComponentBuilder(messageManager.getLayout(path, punishment.getPlayerName()), punishment);
-        if (punishment.playerIsBanned()) {
+        if (punishment.isBanned()) {
             player.disconnect(layout);
         }
-        if (punishment.playerIsMuted()){
+        if (punishment.isMuted()){
             player.sendMessage(layout);
+        }
+        if (punishment.getPunishType().equals(Punishment.PunishType.KICK)){
+            player.disconnect(layout);
         }
     }
 

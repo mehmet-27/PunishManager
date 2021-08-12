@@ -14,6 +14,7 @@ import java.util.List;
 
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.IPBAN;
+import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.TEMPMUTE;
 
 public class PunishmentManager {
 
@@ -183,7 +184,11 @@ public class PunishmentManager {
             while (result.next()) {
                 String playerName = result.getString("name");
                 Punishment punishment = getPunishment(playerName);
-                if (punishment.getPunishType().isTemp() && !punishment.isStillPunished()) {
+                if (punishment.getPunishType().isTemp() && punishment.isExpired()) {
+                    if(punishment.getPunishType().equals(TEMPMUTE)){
+                        //TODO: fix the null pointer ex. (bad dependency installation)
+                        //discordManager.removePunishedRole(punishment);
+                    }
                     unPunishPlayer(punishment);
                     deleted++;
                 }

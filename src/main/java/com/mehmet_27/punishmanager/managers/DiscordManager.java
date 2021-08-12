@@ -25,8 +25,7 @@ public class DiscordManager {
     public DiscordManager(PunishManager plugin){
         this.plugin = plugin;
         this.config = plugin.getConfigManager().getConfig();
-        MysqlManager mysqlManager = new MysqlManager(plugin);
-        this.discordSrvData = mysqlManager.getConnection();
+        this.discordSrvData = plugin.getMySQLManager().getConnection();
     }
 
     public void buildBot() {

@@ -13,10 +13,13 @@ public class MessageManager {
     private final PunishmentManager punishmentManager;
     private final Map<String, Configuration> locales;
 
+    private final String defaultLanguage;
+
     public MessageManager(PunishManager plugin) {
         ConfigManager configManager = plugin.getConfigManager();
         punishmentManager = plugin.getPunishmentManager();
         this.locales = configManager.getLocales();
+        defaultLanguage = configManager.getConfig().getString("default-server-language");
     }
 
     public List<String> getLayout(String path, String playerName) {
@@ -26,24 +29,33 @@ public class MessageManager {
             if (messages.size() != 0) {
                 return locales.get(language).getStringList(path).stream().map(Utils::color).collect(Collectors.toList());
             } else {
-                return locales.get("en").getStringList(path).stream().map(Utils::color).collect(Collectors.toList());
+                return locales.get(defaultLanguage).getStringList(path).stream().map(Utils::color).collect(Collectors.toList());
             }
         } else {
-            return locales.get("en").getStringList(path).stream().map(Utils::color).collect(Collectors.toList());
+            return locales.get(defaultLanguage).getStringList(path).stream().map(Utils::color).collect(Collectors.toList());
         }
     }
 
     public String getMessage(String path, @Optional String playerName) {
-        String language = !"CONSOLE".equals(playerName) ? punishmentManager.getOfflinePlayer(playerName).getLanguage() : "en";
+        String language = !"CONSOLE".equals(playerName) ? punishmentManager.getOfflinePlayer(playerName).getLanguage() : defaultLanguage;
         if (locales.containsKey(language)) {
             String msg = locales.get(language).getString(path);
             if (msg != null && msg.length() != 0) {
                 return Utils.color(locales.get(language).getString(path));
             } else {
-                return Utils.color(locales.get("en").getString(path));
+                return Utils.color(locales.get(defaultLanguage).getString(path));
             }
         } else {
-            return Utils.color(locales.get("en").getString(path));
+            return Utils.color(locales.get(defaultLanguage).getString(path));
         }
+    }
+    public String getMessage(String path) {
+        if (locales.containsKey(defaultLanguage)) {
+            String msg = locales.get(defaultLanguage).getString(path);
+            if (msg != null && msg.length() != 0) {
+                return Utils.color(locales.get(defaultLanguage).getString(path));
+            }
+        }
+        return null;
     }
 }

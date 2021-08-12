@@ -29,10 +29,10 @@ public class KickCommand extends BaseCommand {
             Punishment punishment = new Punishment(playerName, uuid, player.getSocketAddress().toString().substring(1).split(":")[0], KICK, new Reason(reason, playerName).getReason(), sender.getName());
             Utils.sendLayout(punishment);
             sender.sendMessage(new TextComponent(messageManager.getMessage("kick.punished", sender.getName()).
-                    replace("%name%", playerName)));
+                    replace("%player%", playerName)));
         } else {
             sender.sendMessage(new TextComponent(messageManager.getMessage("kick.notOnline", sender.getName()).
-                    replace("%name%", playerName)));
+                    replace("%player%", playerName)));
         }
     }
 }

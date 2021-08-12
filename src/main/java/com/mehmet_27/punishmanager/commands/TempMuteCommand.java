@@ -3,6 +3,7 @@ package com.mehmet_27.punishmanager.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.annotation.*;
+import com.mehmet_27.punishmanager.PlayerPunishEvent;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.objects.Ip;
 import com.mehmet_27.punishmanager.objects.Punishment;
@@ -37,9 +38,9 @@ public class TempMuteCommand extends BaseCommand {
         ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerName);
         String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;
         Punishment punishment = punishmentManager.getPunishment(playerName, "mute");
-        if (punishment != null && punishment.playerIsMuted()) {
+        if (punishment != null && punishment.isMuted()) {
             sender.sendMessage(new TextComponent(messageManager.getMessage("tempmute.alreadyPunished", sender.getName()).
-                    replace("%name%", playerName)));
+                    replace("%player%", playerName)));
             return;
         }
         Matcher matcher = NumberAndUnit.matcher(time.toLowerCase());
@@ -54,8 +55,9 @@ public class TempMuteCommand extends BaseCommand {
         punishment = new Punishment(playerName, uuid, ip, TEMPMUTE, new Reason(reason, playerName).getReason(), sender.getName(), start, end);
         punishmentManager.AddPunish(punishment);
         sender.sendMessage(new TextComponent(messageManager.getMessage("tempmute.punished", sender.getName()).
-                replace("%name%", playerName)));
+                replace("%player%", playerName)));
         PunishManager.getInstance().getDiscordManager().givePunishedRole(punishment);
         Utils.sendLayout(punishment);
+        PunishManager.getInstance().getProxy().getPluginManager().callEvent(new PlayerPunishEvent(punishment));
     }
 }

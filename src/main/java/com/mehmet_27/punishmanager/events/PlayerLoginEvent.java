@@ -29,10 +29,10 @@ public class PlayerLoginEvent implements Listener {
             Utils.sendLayout(punishment);
             return;
         }
-        if (punishment == null || !punishment.playerIsBanned()) {
+        if (punishment == null || !punishment.isBanned()) {
             return;
         }
-        if (!punishment.isStillPunished()) return;
+        if (punishment.isExpired()) return;
         Utils.sendLayout(punishment);
     }
 }

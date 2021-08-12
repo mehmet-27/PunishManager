@@ -4,6 +4,7 @@ import co.aikar.commands.BungeeCommandManager;
 import com.mehmet_27.punishmanager.events.PlayerChatEvent;
 import com.mehmet_27.punishmanager.events.PlayerLoginEvent;
 import com.mehmet_27.punishmanager.events.PlayerSettingsChangeEvent;
+import com.mehmet_27.punishmanager.events.PunishEvent;
 import com.mehmet_27.punishmanager.managers.*;
 import net.md_5.bungee.api.plugin.Plugin;
 
@@ -37,6 +38,7 @@ public final class PunishManager extends Plugin {
         getProxy().getPluginManager().registerListener(this, new PlayerLoginEvent());
         getProxy().getPluginManager().registerListener(this, new PlayerChatEvent());
         getProxy().getPluginManager().registerListener(this, new PlayerSettingsChangeEvent());
+        getProxy().getPluginManager().registerListener(this , new PunishEvent());
     }
 
     @Override

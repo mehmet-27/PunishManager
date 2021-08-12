@@ -26,12 +26,12 @@ public class UnPunishCommand extends BaseCommand {
         Punishment punishment = punishmentManager.getPunishment(playerName);
         if (punishment == null || punishment.getPunishType().equals(NONE)) {
             sender.sendMessage(new TextComponent(messageManager.getMessage("unpunish.notPunished", sender.getName()).
-                    replace("%name%", playerName)));
+                    replace("%player%", playerName)));
             return;
         }
         punishmentManager.removeAllPunishes(punishment);
         PunishManager.getInstance().getDiscordManager().removePunishedRole(punishment);
         sender.sendMessage(new TextComponent(messageManager.getMessage("unpunish.done", sender.getName()).
-                replace("%name%", playerName)));
+                replace("%player%", playerName)));
     }
 }

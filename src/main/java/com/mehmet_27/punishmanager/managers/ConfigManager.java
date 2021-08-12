@@ -22,6 +22,7 @@ public class ConfigManager {
         config = loadFile(new File(plugin.getDataFolder() + File.separator + "config.yml"));
         loadFolder(new File(plugin.getDataFolder() + File.separator + "locales"));
         messages = loadFile(new File(plugin.getDataFolder() + File.separator + "locales" + File.separator + "en.yml"));
+        loadFile(new File(plugin.getDataFolder() + File.separator + "locales" + File.separator + "tr.yml"));
         plugin.getLogger().info("Found " + getLocales().size() + " language files.");
     }
 

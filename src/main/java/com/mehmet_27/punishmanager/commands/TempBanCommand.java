@@ -3,6 +3,7 @@ package com.mehmet_27.punishmanager.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.annotation.*;
+import com.mehmet_27.punishmanager.PlayerPunishEvent;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.objects.Ip;
 import com.mehmet_27.punishmanager.objects.Punishment;
@@ -34,9 +35,9 @@ public class TempBanCommand extends BaseCommand {
         ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerName);
         String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;
         Punishment punishment = punishmentManager.getPunishment(playerName, "ban");
-        if (punishment != null && punishment.playerIsBanned()) {
+        if (punishment != null && punishment.isBanned()) {
             sender.sendMessage(new TextComponent(messageManager.getMessage("tempban.alreadyPunished", sender.getName()).
-                    replace("%name%", playerName)));
+                    replace("%player%", playerName)));
             return;
         }
         Matcher matcher = NumberAndUnit.matcher(time.toLowerCase());
@@ -51,7 +52,8 @@ public class TempBanCommand extends BaseCommand {
         punishment = new Punishment(playerName, uuid, ip, TEMPBAN, new Reason(reason, playerName).getReason(), sender.getName(), start, end);
         punishmentManager.AddPunish(punishment);
         sender.sendMessage(new TextComponent(messageManager.getMessage("tempban.punished", sender.getName()).
-                replace("%name%", playerName)));
+                replace("%player%", playerName)));
         Utils.sendLayout(punishment);
+        PunishManager.getInstance().getProxy().getPluginManager().callEvent(new PlayerPunishEvent(punishment));
     }
 }

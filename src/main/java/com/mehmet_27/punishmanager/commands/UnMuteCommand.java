@@ -25,14 +25,14 @@ public class UnMuteCommand extends BaseCommand {
         /* fixme: Small advice
            Replace it with ACF conditions
         */
-        if (punishment == null || !punishment.playerIsMuted()) {
+        if (punishment == null || !punishment.isMuted()) {
             sender.sendMessage(new TextComponent(messageManager.getMessage("unmute.notPunished", sender.getName()).
-                    replace("%name%", playerName)));
+                    replace("%player%", playerName)));
             return;
         }
         punishmentManager.unPunishPlayer(punishment);
         PunishManager.getInstance().getDiscordManager().removePunishedRole(punishment);
         sender.sendMessage(new TextComponent(messageManager.getMessage("unmute.done", sender.getName()).
-                replace("%name%", playerName)));
+                replace("%player%", playerName)));
     }
 }

@@ -2,6 +2,7 @@ package com.mehmet_27.punishmanager.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
+import com.mehmet_27.punishmanager.PlayerPunishEvent;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.objects.Ip;
 import com.mehmet_27.punishmanager.objects.Punishment;
@@ -33,17 +34,18 @@ public class MuteCommand extends BaseCommand {
         /* fixme: Small advice
            Replace it with ACF conditions
         */
-        if (punishment != null && punishment.playerIsMuted()) {
+        if (punishment != null && punishment.isMuted()) {
             sender.sendMessage(new TextComponent(messageManager.getMessage("mute.alreadyPunished", sender.getName()).
-                    replace("%name%", playerName)));
+                    replace("%player%", playerName)));
             return;
         }
         String ip = new Ip(playerName).getPlayerIp();
         punishment = new Punishment(playerName, uuid, ip, MUTE, new Reason(reason, playerName).getReason(), sender.getName());
         punishmentManager.AddPunish(punishment);
         sender.sendMessage(new TextComponent(messageManager.getMessage("mute.punished", sender.getName()).
-                replace("%name%", playerName)));
+                replace("%player%", playerName)));
         PunishManager.getInstance().getDiscordManager().givePunishedRole(punishment);
         Utils.sendLayout(punishment);
+        PunishManager.getInstance().getProxy().getPluginManager().callEvent(new PlayerPunishEvent(punishment));
     }
 }
