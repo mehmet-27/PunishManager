@@ -1,7 +1,7 @@
 package com.mehmet_27.punishmanager.objects;
 
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.managers.MessageManager;
+import com.mehmet_27.punishmanager.managers.ConfigManager;
 
 public class Reason {
     private final String reason;
@@ -10,8 +10,8 @@ public class Reason {
         if (context != null) {
             this.reason = context;
         } else {
-            MessageManager messageManager = PunishManager.getInstance().getMessageManager();
-            this.reason = messageManager.getMessage("main.defaultReason", playerName);
+            ConfigManager configManager = PunishManager.getInstance().getConfigManager();
+            this.reason = configManager.getMessage("main.defaultReason", playerName);
         }
     }
 

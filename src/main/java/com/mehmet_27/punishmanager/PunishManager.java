@@ -16,7 +16,6 @@ public final class PunishManager extends Plugin {
 
     private MysqlManager sql;
     private ConfigManager configManager;
-    private MessageManager messageManager;
     private PunishmentManager punishmentManager;
     private DiscordManager discordManager;
 
@@ -29,7 +28,6 @@ public final class PunishManager extends Plugin {
         sql = new MysqlManager(this);
         new BungeeCommandManager(this);
         punishmentManager = new PunishmentManager(this);
-        messageManager = new MessageManager(this);
         new CommandManager(this);
         bannedIps = punishmentManager.getBannedIps();
         discordManager = new DiscordManager(this);
@@ -61,10 +59,6 @@ public final class PunishManager extends Plugin {
 
     public PunishmentManager getPunishmentManager() {
         return punishmentManager;
-    }
-
-    public MessageManager getMessageManager() {
-        return messageManager;
     }
 
     public List<String> getBannedIps() {

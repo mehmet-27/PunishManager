@@ -1,6 +1,6 @@
 package com.mehmet_27.punishmanager;
 
-import com.mehmet_27.punishmanager.managers.MessageManager;
+import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import net.md_5.bungee.api.plugin.Cancellable;
 import net.md_5.bungee.api.plugin.Event;
@@ -8,7 +8,7 @@ import net.md_5.bungee.api.plugin.Event;
 import java.util.Locale;
 
 public class PlayerPunishEvent extends Event implements Cancellable {
-    MessageManager messageManager = PunishManager.getInstance().getMessageManager();
+    ConfigManager configManager = PunishManager.getInstance().getConfigManager();
 
     private boolean isCancel;
 
@@ -18,7 +18,7 @@ public class PlayerPunishEvent extends Event implements Cancellable {
     public PlayerPunishEvent(Punishment punishment) {
         this.punishment = punishment;
         String path = punishment.getPunishType().name().toLowerCase(Locale.ENGLISH) + ".announce";
-        this.announceMessage = messageManager.getMessage(path);
+        this.announceMessage = configManager.getMessage(path);
     }
 
     public String getAnnounceMessage() {

@@ -2,7 +2,7 @@ package com.mehmet_27.punishmanager.events;
 
 import com.mehmet_27.punishmanager.PlayerPunishEvent;
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.managers.MessageManager;
+import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
@@ -16,7 +16,7 @@ import static net.md_5.bungee.event.EventPriority.HIGHEST;
 
 public class PunishEvent implements Listener {
     private final PunishManager plugin = PunishManager.getInstance();
-    private final MessageManager messageManager = plugin.getMessageManager();
+    private final ConfigManager configManager = plugin.getConfigManager();
 
     @EventHandler(priority = HIGHEST)
     public void onPunish(PlayerPunishEvent event) {
@@ -28,7 +28,7 @@ public class PunishEvent implements Listener {
 
         //Sending successfully punished message to operator
         String path = punishment.getPunishType().name().toLowerCase(Locale.ENGLISH) + ".punished";
-        operator.sendMessage(new TextComponent(messageManager.getMessage(path, operator.getName()).
+        operator.sendMessage(new TextComponent(configManager.getMessage(path, operator.getName()).
                 replace("%player%", punishment.getPlayerName())));
 
         //Sends the punish message

@@ -9,7 +9,6 @@ import com.mehmet_27.punishmanager.objects.Ip;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.objects.Reason;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
-import com.mehmet_27.punishmanager.managers.MessageManager;
 import com.mehmet_27.punishmanager.managers.PunishmentManager;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
@@ -28,8 +27,6 @@ public class TempMuteCommand extends BaseCommand {
     @Dependency
     private PunishmentManager punishmentManager;
     @Dependency
-    private MessageManager messageManager;
-    @Dependency
     private ConfigManager configManager;
 
     @Default
@@ -39,7 +36,7 @@ public class TempMuteCommand extends BaseCommand {
         String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;
         Punishment punishment = punishmentManager.getMute(playerName);
         if (punishment != null && punishment.isMuted()) {
-            sender.sendMessage(new TextComponent(messageManager.getMessage("tempmute.alreadyPunished", sender.getName()).
+            sender.sendMessage(new TextComponent(configManager.getMessage("tempmute.alreadyPunished", sender.getName()).
                     replace("%player%", playerName)));
             return;
         }

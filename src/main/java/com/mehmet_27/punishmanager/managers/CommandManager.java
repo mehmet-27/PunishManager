@@ -2,8 +2,6 @@ package com.mehmet_27.punishmanager.managers;
 
 import co.aikar.commands.*;
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.objects.Reason;
-import net.md_5.bungee.config.Configuration;
 
 import java.io.*;
 import java.nio.file.FileSystem;
@@ -22,21 +20,15 @@ import java.util.stream.Collectors;
 
 public class CommandManager extends BungeeCommandManager {
     private final PunishManager plugin;
-    private final Configuration config;
 
     public CommandManager(PunishManager plugin) {
         super(plugin);
         this.plugin = plugin;
-        config = plugin.getConfigManager().getConfig();
-        registerDependencies();
-        registerConditions();
-        registerCompletions();
-        registerCommands();
+        registerAll();
     }
 
     private void registerDependencies() {
         registerDependency(ConfigManager.class, plugin.getConfigManager());
-        registerDependency(MessageManager.class, plugin.getMessageManager());
         registerDependency(PunishmentManager.class, plugin.getPunishmentManager());
     }
 
@@ -132,5 +124,11 @@ public class CommandManager extends BungeeCommandManager {
         }
 
         return files;
+    }
+    public void registerAll(){
+        registerDependencies();
+        registerConditions();
+        registerCompletions();
+        registerCommands();
     }
 }

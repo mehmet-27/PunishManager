@@ -19,10 +19,11 @@ import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.IPBAN;
 public class PunishmentManager {
 
     private final Connection connection;
-    private final DiscordManager discordManager = PunishManager.getInstance().getDiscordManager();
+    private final DiscordManager discordManager;
 
     public PunishmentManager(PunishManager plugin) {
         connection = plugin.getMySQLManager().getConnection();
+        discordManager = plugin.getDiscordManager();
     }
 
     public void AddPunish(Punishment punishment) {

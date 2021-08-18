@@ -1,6 +1,9 @@
 package com.mehmet_27.punishmanager.managers;
 
+import co.aikar.commands.annotation.Optional;
 import com.mehmet_27.punishmanager.PunishManager;
+import com.mehmet_27.punishmanager.objects.Language;
+import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
@@ -10,20 +13,18 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ConfigManager {
     private final PunishManager plugin;
-
     private final ConfigurationProvider provider = ConfigurationProvider.getProvider(YamlConfiguration.class);
-    private final Configuration config, messages;
+    private Configuration config, messages;
+    private Map<String, Configuration> locales;
+    private String defaultLanguage;
 
     public ConfigManager(PunishManager plugin) {
         this.plugin = plugin;
-        config = loadFile(new File(plugin.getDataFolder() + File.separator + "config.yml"));
-        loadFolder(new File(plugin.getDataFolder() + File.separator + "locales"));
-        messages = loadFile(new File(plugin.getDataFolder() + File.separator + "locales" + File.separator + "en.yml"));
-        loadFile(new File(plugin.getDataFolder() + File.separator + "locales" + File.separator + "tr.yml"));
-        plugin.getLogger().info("Found " + getLocales().size() + " language files.");
+        setup();
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -69,11 +70,60 @@ public class ConfigManager {
         return files;
     }
 
+    public List<String> getLayout(String path, String playerName) {
+        String language = new Language(playerName).getLanguage();
+        if (locales.containsKey(language)) {
+            List<String> messages = locales.get(language).getStringList(path);
+            if (messages.size() != 0) {
+                return locales.get(language).getStringList(path).stream().map(Utils::color).collect(Collectors.toList());
+            } else {
+                return locales.get(defaultLanguage).getStringList(path).stream().map(Utils::color).collect(Collectors.toList());
+            }
+        } else {
+            return locales.get(defaultLanguage).getStringList(path).stream().map(Utils::color).collect(Collectors.toList());
+        }
+    }
+
+    public String getMessage(String path, @Optional String playerName) {
+        String language = new Language(playerName).getLanguage();
+        if (locales.containsKey(language)) {
+            String msg = locales.get(language).getString(path);
+            if (msg != null && msg.length() != 0) {
+                return Utils.color(locales.get(language).getString(path));
+            } else {
+                return Utils.color(locales.get(defaultLanguage).getString(path));
+            }
+        } else {
+            return Utils.color(locales.get(defaultLanguage).getString(path));
+        }
+    }
+    public String getMessage(String path) {
+        if (locales.containsKey(defaultLanguage)) {
+            String msg = locales.get(defaultLanguage).getString(path);
+            if (msg != null && msg.length() != 0) {
+                return Utils.color(locales.get(defaultLanguage).getString(path));
+            }
+        }
+        return null;
+    }
     public Configuration getConfig() {
         return config;
     }
 
     public Configuration getMessages() {
         return messages;
+    }
+
+    public void setup() {
+        config = loadFile(new File(plugin.getDataFolder() + File.separator + "config.yml"));
+        loadFolder(new File(plugin.getDataFolder() + File.separator + "locales"));
+        messages = loadFile(new File(plugin.getDataFolder() + File.separator + "locales" + File.separator + "en.yml"));
+        loadFile(new File(plugin.getDataFolder() + File.separator + "locales" + File.separator + "tr.yml"));
+        plugin.getLogger().info("Found " + getLocales().size() + " language files.");
+        this.locales = getLocales();
+        defaultLanguage = getConfig().getString("default-server-language");
+    }
+    public String getDefaultLanguage(){
+        return defaultLanguage;
     }
 }

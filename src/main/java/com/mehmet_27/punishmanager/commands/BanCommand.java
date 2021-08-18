@@ -4,12 +4,11 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PlayerPunishEvent;
 import com.mehmet_27.punishmanager.PunishManager;
+import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.objects.Ip;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.objects.Reason;
-import com.mehmet_27.punishmanager.managers.MessageManager;
 import com.mehmet_27.punishmanager.managers.PunishmentManager;
-import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -23,7 +22,7 @@ public class BanCommand extends BaseCommand {
     @Dependency
     private PunishmentManager punishmentManager;
     @Dependency
-    private MessageManager messageManager;
+    private ConfigManager configManager;
 
     @Default
     @CommandCompletion("@players Reason")
@@ -32,7 +31,7 @@ public class BanCommand extends BaseCommand {
         String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;
         Punishment punishment = punishmentManager.getBan(playerName);
         if (punishment != null && punishment.isBanned()) {
-            sender.sendMessage(new TextComponent(messageManager.getMessage("ban.alreadyPunished", sender.getName()).
+            sender.sendMessage(new TextComponent(configManager.getMessage("ban.alreadyPunished", sender.getName()).
                     replace("%player%", playerName)));
             return;
         }
