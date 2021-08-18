@@ -3,6 +3,7 @@ package com.mehmet_27.punishmanager.managers;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
+import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.sql.Connection;
@@ -33,7 +34,7 @@ public class PunishmentManager {
             ps.setString(2, punishment.getUuid());
             ps.setString(3, punishment.getIp());
             ps.setString(4, punishment.getReason());
-            ps.setString(5, punishment.getOperator());
+            ps.setString(5, punishment.getOperator().getName());
             ps.setString(6, punishment.getPunishType().toString());
             ps.setString(7, String.valueOf(punishment.getStart()));
             ps.setString(8, String.valueOf(punishment.getEnd()));
@@ -80,7 +81,7 @@ public class PunishmentManager {
                 String uuid = result.getString("uuid");
                 String ip = result.getString("ip");
                 String reason = result.getString("reason");
-                String operator = result.getString("operator");
+                CommandSender operator = PunishManager.getInstance().getProxy().getPlayer(result.getString("operator"));
                 long start = result.getLong("start");
                 long end = result.getLong("end");
                 PunishType punishType = PunishType.valueOf(result.getString("type"));
@@ -129,7 +130,7 @@ public class PunishmentManager {
                 String uuid = result.getString("uuid");
                 String ip = result.getString("ip");
                 String reason = result.getString("reason");
-                String operator = result.getString("operator");
+                CommandSender operator = PunishManager.getInstance().getProxy().getPlayer(result.getString("operator"));
                 long start = result.getLong("start");
                 long end = result.getLong("end");
                 PunishType punishType = PunishType.valueOf(result.getString("type"));
@@ -201,7 +202,7 @@ public class PunishmentManager {
     public void addPlayer(ProxiedPlayer player) {
         String ip = player.getSocketAddress().toString().substring(1).split(":")[0];
         try {
-            PreparedStatement ps = connection.prepareStatement("INSERT INTO `punishmanager_players` (" +
+            PreparedStatement ps = connection.prepareStatement("INSERT IGNORE INTO `punishmanager_players` (" +
                     " `uuid`, `name`, `ip`, `language`)" +
                     " VALUES (?,?,?,?)");
             ps.setString(1, player.getUniqueId().toString());

@@ -2,6 +2,7 @@ package com.mehmet_27.punishmanager.managers;
 
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
+import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.config.Configuration;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
@@ -70,6 +71,7 @@ public class DiscordManager {
         Optional<User> user = server.flatMap(serverById -> serverById.getMemberById(getUserId(punishment.getUuid())));
         if (!user.isPresent()) return;
         user.get().addRole(role.get()).exceptionally(ExceptionLogger.get());
+        Utils.debug("Added the " + role.get().getName() + " role to " + punishment.getPlayerName() + " in Discord.");
     }
 
     public void removePunishedRole(Punishment punishment) {
@@ -81,6 +83,7 @@ public class DiscordManager {
         Optional<User> user = server.flatMap(serverById -> serverById.getMemberById(getUserId(punishment.getUuid())));
         if (!user.isPresent()) return;
         user.get().removeRole(role.get()).exceptionally(ExceptionLogger.get());
+        Utils.debug("Removed the " + role.get().getName() + " role to " + punishment.getPlayerName() + " in Discord.");
     }
 
     public String getUserId(String uuid) {

@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 public class Utils {
 
     private static final PunishManager plugin = PunishManager.getInstance();
-    private final Configuration config = plugin.getConfigManager().getConfig();
+    private static final Configuration config = plugin.getConfigManager().getConfig();
 
     public static final Pattern NumberAndUnit = Pattern.compile("(?<number>[0-9]+)(?<unit>mo|[ywdhms])");
 
@@ -29,7 +29,7 @@ public class Utils {
         for (String message : messages) {
             message = message.
                     replace("%reason%", punishment.getReason()).
-                    replace("%operator%", punishment.getOperator()).
+                    replace("%operator%", punishment.getOperator().getName()).
                     replace("%name%", punishment.getPlayerName());
             if (punishType.isTemp()) {
                 message = message.replace("%duration%", punishment.getDuration());
@@ -57,27 +57,26 @@ public class Utils {
     }
 
     public static long convertToMillis(int number, String unit) {
-        long millis = number;
         switch (unit) {
             case "s":
-                return millis * 1000;
+                return (long) number * 1000;
             case "m":
-                return millis * 1000 * 60;
+                return (long) number * 1000 * 60;
             case "h":
-                return millis * 1000 * 60 * 60;
+                return (long) number * 1000 * 60 * 60;
             case "d":
-                return millis * 1000 * 60 * 60 * 24;
+                return (long) number * 1000 * 60 * 60 * 24;
             case "w":
-                return millis * 1000 * 60 * 60 * 24 * 7;
+                return (long) number * 1000 * 60 * 60 * 24 * 7;
             case "mo":
-                return millis * 1000 * 60 * 60 * 24 * 28;
+                return (long) number * 1000 * 60 * 60 * 24 * 28;
             case "y":
-                return millis * 1000 * 60 * 60 * 24 * 28 * 12;
+                return (long) number * 1000 * 60 * 60 * 24 * 28 * 12;
             default:
                 return -1;
         }
     }
-    public void debug(String message){
+    public static void debug(String message){
         if (!config.getBoolean("debug")) return;
         plugin.getLogger().info(message);
     }

@@ -15,7 +15,6 @@ import java.util.List;
 
 public class PlayerLoginEvent implements Listener {
     private final PunishmentManager punishmentManager = PunishManager.getInstance().getPunishmentManager();
-    private final MysqlManager mySQLManager = PunishManager.getInstance().getMySQLManager();
 
     List<String> bannedIps = PunishManager.getInstance().getBannedIps();
 

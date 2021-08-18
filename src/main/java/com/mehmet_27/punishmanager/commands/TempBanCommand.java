@@ -34,7 +34,7 @@ public class TempBanCommand extends BaseCommand {
     public void tempBan(CommandSender sender, @Conditions("other_player") @Name("Player") String playerName, @Name("Time") String time, @Optional @Name("Reason") String reason) {
         ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerName);
         String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;
-        Punishment punishment = punishmentManager.getPunishment(playerName, "ban");
+        Punishment punishment = punishmentManager.getBan(playerName);
         if (punishment != null && punishment.isBanned()) {
             sender.sendMessage(new TextComponent(messageManager.getMessage("tempban.alreadyPunished", sender.getName()).
                     replace("%player%", playerName)));
@@ -49,7 +49,7 @@ public class TempBanCommand extends BaseCommand {
         long start = System.currentTimeMillis();
         long end = start + Utils.convertToMillis(number, unit);
         String ip = new Ip(playerName).getPlayerIp();
-        punishment = new Punishment(playerName, uuid, ip, TEMPBAN, new Reason(reason, playerName).getReason(), sender.getName(), start, end);
+        punishment = new Punishment(playerName, uuid, ip, TEMPBAN, new Reason(reason, playerName).getReason(), sender, start, end);
         PunishManager.getInstance().getProxy().getPluginManager().callEvent(new PlayerPunishEvent(punishment));
     }
 }

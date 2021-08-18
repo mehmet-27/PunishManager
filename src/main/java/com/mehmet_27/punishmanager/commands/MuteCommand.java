@@ -30,7 +30,7 @@ public class MuteCommand extends BaseCommand {
     public void mute(CommandSender sender, @Conditions("other_player") @Name("Player") String playerName, @Optional @Name("Reason") String reason) {
         ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerName);
         String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;
-        Punishment punishment = punishmentManager.getPunishment(playerName, "mute");
+        Punishment punishment = punishmentManager.getMute(playerName);
         /* fixme: Small advice
            Replace it with ACF conditions
         */
@@ -40,7 +40,7 @@ public class MuteCommand extends BaseCommand {
             return;
         }
         String ip = new Ip(playerName).getPlayerIp();
-        punishment = new Punishment(playerName, uuid, ip, MUTE, new Reason(reason, playerName).getReason(), sender.getName());
+        punishment = new Punishment(playerName, uuid, ip, MUTE, new Reason(reason, playerName).getReason(), sender);
         PunishManager.getInstance().getProxy().getPluginManager().callEvent(new PlayerPunishEvent(punishment));
     }
 }

@@ -20,10 +20,8 @@ public class UnBanCommand extends BaseCommand {
     @Default
     @CommandCompletion("@players")
     public void unBan(CommandSender sender, @Name("Player") String playerName) {
-        Punishment punishment = punishmentManager.getPunishment(playerName, "ban");
-        /* fixme: Small advice
-           Replace it with ACF conditions
-        */
+        Punishment punishment = punishmentManager.getBan(playerName);
+
         if (punishment == null || !punishment.isBanned()) {
             sender.sendMessage(new TextComponent(messageManager.getMessage("unban.notPunished", sender.getName()).
                     replace("%player%", playerName)));

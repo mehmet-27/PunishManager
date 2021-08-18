@@ -26,7 +26,7 @@ public class KickCommand extends BaseCommand {
         ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerName);
         String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;
         if (player != null && player.isConnected()) {
-            Punishment punishment = new Punishment(playerName, uuid, player.getSocketAddress().toString().substring(1).split(":")[0], KICK, new Reason(reason, playerName).getReason(), sender.getName());
+            Punishment punishment = new Punishment(playerName, uuid, player.getSocketAddress().toString().substring(1).split(":")[0], KICK, new Reason(reason, playerName).getReason(), sender);
             Utils.sendLayout(punishment);
             sender.sendMessage(new TextComponent(messageManager.getMessage("kick.punished", sender.getName()).
                     replace("%player%", playerName)));

@@ -50,7 +50,7 @@ public class CheckCommand extends BaseCommand {
                     replace("%reason%", ban.getReason())));
         if (ban != null && ban.isBanned())
             sender.sendMessage(new TextComponent(messageManager.getMessage("check.banOperator", sender.getName()).
-                    replace("%operator%", ban.getOperator())));
+                    replace("%operator%", ban.getOperator().getName())));
         sender.sendMessage(new TextComponent(messageManager.getMessage("check.muteStatus", sender.getName()).
                 replace("%status%", muteStatus)));
         if (mute != null && mute.isMuted())
@@ -58,6 +58,6 @@ public class CheckCommand extends BaseCommand {
                     replace("%reason%", mute.getReason())));
         if (mute != null && mute.isMuted())
             sender.sendMessage(new TextComponent(messageManager.getMessage("check.muteOperator", sender.getName()).
-                    replace("%operator%", mute.getOperator())));
+                    replace("%operator%", mute.getOperator().getName())));
     }
 }
