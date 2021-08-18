@@ -42,6 +42,7 @@ public class ConfigManager {
         }
         return null;
     }
+
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private void loadFolder(File file) {
         file.mkdirs();

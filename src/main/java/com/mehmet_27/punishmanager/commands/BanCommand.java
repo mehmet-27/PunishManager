@@ -30,7 +30,7 @@ public class BanCommand extends BaseCommand {
     public void ban(CommandSender sender, @Conditions("other_player") @Name("Player") String playerName, @Optional @Name("Reason") @Default("none") String reason) {
         ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerName);
         String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;
-        Punishment punishment = punishmentManager.getPunishment(playerName, "ban");
+        Punishment punishment = punishmentManager.getBan(playerName);
         if (punishment != null && punishment.isBanned()) {
             sender.sendMessage(new TextComponent(messageManager.getMessage("ban.alreadyPunished", sender.getName()).
                     replace("%player%", playerName)));
@@ -38,10 +38,6 @@ public class BanCommand extends BaseCommand {
         }
         String ip = new Ip(playerName).getPlayerIp();
         punishment = new Punishment(playerName, uuid, ip, BAN, new Reason(reason, playerName).getReason(), sender.getName());
-        punishmentManager.AddPunish(punishment);
-        sender.sendMessage(new TextComponent(messageManager.getMessage("ban.punished", sender.getName()).
-                replace("%player%", playerName)));
-        Utils.sendLayout(punishment);
         PunishManager.getInstance().getProxy().getPluginManager().callEvent(new PlayerPunishEvent(punishment));
     }
 }

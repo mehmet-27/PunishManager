@@ -21,17 +21,20 @@ public class DiscordManager {
     private final PunishManager plugin;
     private final Configuration config;
     private final Connection discordSrvData;
+    private final PunishmentManager punishmentManager;
     private DiscordApi api;
-    public DiscordManager(PunishManager plugin){
+
+    public DiscordManager(PunishManager plugin) {
         this.plugin = plugin;
         this.config = plugin.getConfigManager().getConfig();
         this.discordSrvData = plugin.getMySQLManager().getConnection();
+        this.punishmentManager = plugin.getPunishmentManager();
     }
 
     public void buildBot() {
         //Return if feature is disabled.
-        if (!config.getBoolean("discord.enabled")) return;
-        if (discordSrvData == null){
+        if (!config.getBoolean("discord.enable")) return;
+        if (discordSrvData == null) {
             plugin.getLogger().severe("Discord feature will not work because DiscordSRV could not connect to database.");
         }
 
@@ -59,6 +62,7 @@ public class DiscordManager {
     }
 
     public void givePunishedRole(Punishment punishment) {
+        if (!config.getBoolean("discord.enable")) return;
         Optional<Server> server = api.getServerById(config.getString("discord.serverId"));
         if (!server.isPresent()) return;
         Optional<Role> role = server.flatMap(serverById -> serverById.getRoleById(config.getString("discord.punishedRoleId")));
@@ -67,7 +71,9 @@ public class DiscordManager {
         if (!user.isPresent()) return;
         user.get().addRole(role.get()).exceptionally(ExceptionLogger.get());
     }
-    public void removePunishedRole(Punishment punishment){
+
+    public void removePunishedRole(Punishment punishment) {
+        if (!config.getBoolean("discord.enable")) return;
         Optional<Server> server = api.getServerById(config.getString("discord.serverId"));
         if (!server.isPresent()) return;
         Optional<Role> role = server.flatMap(serverById -> serverById.getRoleById(config.getString("discord.punishedRoleId")));

@@ -2,23 +2,51 @@ package com.mehmet_27.punishmanager.events;
 
 import com.mehmet_27.punishmanager.PlayerPunishEvent;
 import com.mehmet_27.punishmanager.PunishManager;
+import com.mehmet_27.punishmanager.managers.MessageManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
+import com.mehmet_27.punishmanager.utils.Utils;
+import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
-public class PunishEvent implements Listener {
+import java.util.Locale;
 
-    @EventHandler
-    public void onPunish(PlayerPunishEvent event){
+import static net.md_5.bungee.event.EventPriority.HIGHEST;
+
+public class PunishEvent implements Listener {
+    private final PunishManager plugin = PunishManager.getInstance();
+    private final MessageManager messageManager = plugin.getMessageManager();
+
+    @EventHandler(priority = HIGHEST)
+    public void onPunish(PlayerPunishEvent event) {
         Punishment punishment = event.getPunishment();
-        String announceMessage = event.getAnnounceMessage();
-        if (announceMessage == null || announceMessage.isEmpty()) return;
-        announceMessage = announceMessage.
+        CommandSender operator = punishment.getOperator().equals("CONSOLE") ? plugin.getProxy().getConsole() :plugin.getProxy().getPlayer(punishment.getOperator());
+
+        //Adding punish to database
+        plugin.getPunishmentManager().AddPunish(punishment);
+
+        //Sending successfully punished message to operator
+        String path = punishment.getPunishType().name().toLowerCase(Locale.ENGLISH) + ".punished";
+        operator.sendMessage(new TextComponent(messageManager.getMessage(path, operator.getName()).
+                replace("%player%", punishment.getPlayerName())));
+
+        //Sends the punish message
+        Utils.sendLayout(punishment);
+
+        //Sending the punish announcement
+        String announcement = event.getAnnounceMessage();
+        if (announcement == null || announcement.isEmpty()) return;
+        announcement = announcement.
                 replace("%reason%", punishment.getReason()).
                 replace("%operator%", punishment.getOperator()).
                 replace("%player%", punishment.getPlayerName()).
                 replace("%duration%", punishment.getDuration());
-        PunishManager.getInstance().getProxy().broadcast(new TextComponent(announceMessage));
+        plugin.getProxy().broadcast(new TextComponent(announcement));
+
+        //Give "punished role" on Discord
+        if (punishment.getPunishType().isMute()) {
+            plugin.getDiscordManager().givePunishedRole(punishment);
+        }
     }
 }

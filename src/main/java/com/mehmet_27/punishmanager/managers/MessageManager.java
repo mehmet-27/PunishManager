@@ -49,6 +49,7 @@ public class MessageManager {
             return Utils.color(locales.get(defaultLanguage).getString(path));
         }
     }
+
     public String getMessage(String path) {
         if (locales.containsKey(defaultLanguage)) {
             String msg = locales.get(defaultLanguage).getString(path);

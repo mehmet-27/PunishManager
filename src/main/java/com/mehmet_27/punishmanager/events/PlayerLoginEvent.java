@@ -23,16 +23,17 @@ public class PlayerLoginEvent implements Listener {
     public void onLogin(PostLoginEvent event) {
         ProxiedPlayer player = event.getPlayer();
         punishmentManager.addPlayer(player);
-        Punishment punishment = punishmentManager.getPunishment(player.getName(), "ban");
+        Punishment punishment = punishmentManager.getBan(player.getName());
         String playerIp = new Ip(player.getName()).getPlayerIp();
         if (bannedIps.contains(playerIp)) {
             Utils.sendLayout(punishment);
             return;
         }
-        if (punishment == null || !punishment.isBanned()) {
+        if (punishment == null) return;
+        if (punishment.isExpired()) {
+            punishmentManager.unPunishPlayer(punishment);
             return;
         }
-        if (punishment.isExpired()) return;
         Utils.sendLayout(punishment);
     }
 }

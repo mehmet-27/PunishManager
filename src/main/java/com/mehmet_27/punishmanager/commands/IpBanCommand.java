@@ -9,7 +9,6 @@ import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.objects.Reason;
 import com.mehmet_27.punishmanager.managers.MessageManager;
 import com.mehmet_27.punishmanager.managers.PunishmentManager;
-import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -38,10 +37,6 @@ public class IpBanCommand extends BaseCommand {
         }
         String ip = new Ip(playerName).getPlayerIp();
         punishment = new Punishment(playerName, uuid, ip, IPBAN, new Reason(reason, playerName).getReason(), sender.getName());
-        punishmentManager.AddPunish(punishment);
-        sender.sendMessage(new TextComponent(messageManager.getMessage("ipban.punished", sender.getName()).
-                replace("%player%", playerName)));
-        Utils.sendLayout(punishment);
         PunishManager.getInstance().getProxy().getPluginManager().callEvent(new PlayerPunishEvent(punishment));
     }
 }

@@ -29,7 +29,6 @@ public final class PunishManager extends Plugin {
         sql = new MysqlManager(this);
         new BungeeCommandManager(this);
         punishmentManager = new PunishmentManager(this);
-        punishmentManager.removeAllOutdatedPunishes();
         messageManager = new MessageManager(this);
         new CommandManager(this);
         bannedIps = punishmentManager.getBannedIps();
@@ -38,7 +37,7 @@ public final class PunishManager extends Plugin {
         getProxy().getPluginManager().registerListener(this, new PlayerLoginEvent());
         getProxy().getPluginManager().registerListener(this, new PlayerChatEvent());
         getProxy().getPluginManager().registerListener(this, new PlayerSettingsChangeEvent());
-        getProxy().getPluginManager().registerListener(this , new PunishEvent());
+        getProxy().getPluginManager().registerListener(this, new PunishEvent());
     }
 
     @Override
@@ -63,13 +62,16 @@ public final class PunishManager extends Plugin {
     public PunishmentManager getPunishmentManager() {
         return punishmentManager;
     }
+
     public MessageManager getMessageManager() {
         return messageManager;
     }
-    public List<String> getBannedIps(){
+
+    public List<String> getBannedIps() {
         return bannedIps;
     }
-    public DiscordManager getDiscordManager(){
+
+    public DiscordManager getDiscordManager() {
         return discordManager;
     }
 }

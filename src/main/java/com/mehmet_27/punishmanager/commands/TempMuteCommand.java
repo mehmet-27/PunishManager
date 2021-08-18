@@ -53,11 +53,6 @@ public class TempMuteCommand extends BaseCommand {
         long end = start + Utils.convertToMillis(number, unit);
         String ip = new Ip(playerName).getPlayerIp();
         punishment = new Punishment(playerName, uuid, ip, TEMPMUTE, new Reason(reason, playerName).getReason(), sender.getName(), start, end);
-        punishmentManager.AddPunish(punishment);
-        sender.sendMessage(new TextComponent(messageManager.getMessage("tempmute.punished", sender.getName()).
-                replace("%player%", playerName)));
-        PunishManager.getInstance().getDiscordManager().givePunishedRole(punishment);
-        Utils.sendLayout(punishment);
         PunishManager.getInstance().getProxy().getPluginManager().callEvent(new PlayerPunishEvent(punishment));
     }
 }

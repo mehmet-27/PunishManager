@@ -41,11 +41,6 @@ public class MuteCommand extends BaseCommand {
         }
         String ip = new Ip(playerName).getPlayerIp();
         punishment = new Punishment(playerName, uuid, ip, MUTE, new Reason(reason, playerName).getReason(), sender.getName());
-        punishmentManager.AddPunish(punishment);
-        sender.sendMessage(new TextComponent(messageManager.getMessage("mute.punished", sender.getName()).
-                replace("%player%", playerName)));
-        PunishManager.getInstance().getDiscordManager().givePunishedRole(punishment);
-        Utils.sendLayout(punishment);
         PunishManager.getInstance().getProxy().getPluginManager().callEvent(new PlayerPunishEvent(punishment));
     }
 }

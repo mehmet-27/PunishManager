@@ -41,6 +41,14 @@ public class Punishment {
         public boolean isTemp() {
             return name().contains("TEMP");
         }
+
+        public boolean isMute() {
+            return name().contains("MUTE");
+        }
+
+        public boolean isBan() {
+            return name().contains("BAN");
+        }
     }
 
     public PunishType getPunishType() {
@@ -93,24 +101,14 @@ public class Punishment {
 
     public boolean isBanned() {
         if (punishType.name().contains("BAN")) {
-            if (isExpired()) {
-                punishmentManager.unPunishPlayer(this);
-                return false;
-            } else {
-                return true;
-            }
+            return !isExpired();
         }
         return false;
     }
 
     public boolean isMuted() {
         if (punishType.name().contains("MUTE")) {
-            if (isExpired()) {
-                punishmentManager.unPunishPlayer(this);
-                return false;
-            } else {
-                return true;
-            }
+            return !isExpired();
         }
         return false;
     }

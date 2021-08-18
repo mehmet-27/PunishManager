@@ -14,7 +14,7 @@ banned-commands-while-mute:
 # NOTE: If you want to use the role cast feature in discord,
 # discordsrv's table must be in the same database as this plugin's table.
 discord:
-  enabled: false
+  enable: false
   token: 'botToken'
   serverId: 'serverId'
   punishedRoleId: 'roleId'

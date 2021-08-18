@@ -11,7 +11,7 @@ public class PlayerSettingsChangeEvent implements Listener {
     private final PunishmentManager punishmentManager = PunishManager.getInstance().getPunishmentManager();
 
     @EventHandler
-    public void onChange(SettingsChangedEvent event){
+    public void onChange(SettingsChangedEvent event) {
         ProxiedPlayer player = event.getPlayer();
         event.postCall();
         punishmentManager.updateLanguage(player.getName(), player.getLocale().getLanguage());

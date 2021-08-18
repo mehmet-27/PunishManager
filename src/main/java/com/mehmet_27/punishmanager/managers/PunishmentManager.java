@@ -14,7 +14,6 @@ import java.util.List;
 
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.IPBAN;
-import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.TEMPMUTE;
 
 public class PunishmentManager {
 
@@ -27,7 +26,7 @@ public class PunishmentManager {
 
     public void AddPunish(Punishment punishment) {
         try {
-            PreparedStatement ps = connection.prepareStatement("INSERT IGNORE INTO `punishmanager_punishments` (" +
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO `punishmanager_punishments` (" +
                     "`name`, `uuid`, `ip`, `reason`, `operator`, `type`, `start`, `end`)" +
                     " VALUES (?,?,?,?,?,?,?,?)");
             ps.setString(1, punishment.getPlayerName());
@@ -57,6 +56,7 @@ public class PunishmentManager {
         if (punishment.getPunishType().equals(IPBAN)) {
             PunishManager.getInstance().getBannedIps().remove(punishment.getIp());
         }
+        PunishManager.getInstance().getDiscordManager().removePunishedRole(punishment);
     }
 
     public void removeAllPunishes(Punishment punishment) {
@@ -185,9 +185,8 @@ public class PunishmentManager {
                 String playerName = result.getString("name");
                 Punishment punishment = getPunishment(playerName);
                 if (punishment.getPunishType().isTemp() && punishment.isExpired()) {
-                    if(punishment.getPunishType().equals(TEMPMUTE)){
-                        //TODO: fix the null pointer ex. (bad dependency installation)
-                        //discordManager.removePunishedRole(punishment);
+                    if (punishment.getPunishType().isMute()) {
+                        discordManager.removePunishedRole(punishment);
                     }
                     unPunishPlayer(punishment);
                     deleted++;
@@ -202,7 +201,7 @@ public class PunishmentManager {
     public void addPlayer(ProxiedPlayer player) {
         String ip = player.getSocketAddress().toString().substring(1).split(":")[0];
         try {
-            PreparedStatement ps = connection.prepareStatement("INSERT IGNORE INTO `punishmanager_players` (" +
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO `punishmanager_players` (" +
                     " `uuid`, `name`, `ip`, `language`)" +
                     " VALUES (?,?,?,?)");
             ps.setString(1, player.getUniqueId().toString());
