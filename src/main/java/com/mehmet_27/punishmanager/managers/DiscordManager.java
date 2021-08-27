@@ -21,21 +21,19 @@ import java.util.Optional;
 public class DiscordManager {
     private final PunishManager plugin;
     private final Configuration config;
-    private final Connection discordSrvData;
-    private final PunishmentManager punishmentManager;
+    private final DataBaseManager dataBaseManager;
     private DiscordApi api;
 
     public DiscordManager(PunishManager plugin) {
         this.plugin = plugin;
         this.config = plugin.getConfigManager().getConfig();
-        this.discordSrvData = plugin.getMySQLManager().getConnection();
-        this.punishmentManager = plugin.getPunishmentManager();
+        this.dataBaseManager = plugin.getDataBaseManager();
     }
 
     public void buildBot() {
         //Return if feature is disabled.
         if (!config.getBoolean("discord.enable")) return;
-        if (discordSrvData == null) {
+        if (dataBaseManager.getSource() == null) {
             plugin.getLogger().severe("Discord feature will not work because DiscordSRV could not connect to database.");
         }
 
@@ -63,10 +61,10 @@ public class DiscordManager {
     }
 
     public void givePunishedRole(Punishment punishment) {
-        if (!config.getBoolean("discord.enable")) return;
+        if (!config.getBoolean("discord.enable") || !config.getBoolean("discord.punish-role.enable")) return;
         Optional<Server> server = api.getServerById(config.getString("discord.serverId"));
         if (!server.isPresent()) return;
-        Optional<Role> role = server.flatMap(serverById -> serverById.getRoleById(config.getString("discord.punishedRoleId")));
+        Optional<Role> role = server.flatMap(serverById -> serverById.getRoleById(config.getString("discord.punish-role.punishedRoleId")));
         if (!role.isPresent()) return;
         Optional<User> user = server.flatMap(serverById -> serverById.getMemberById(getUserId(punishment.getUuid())));
         if (!user.isPresent()) return;
@@ -75,10 +73,10 @@ public class DiscordManager {
     }
 
     public void removePunishedRole(Punishment punishment) {
-        if (!config.getBoolean("discord.enable")) return;
+        if (!config.getBoolean("discord.enable") || !config.getBoolean("discord.punish-role.enable")) return;
         Optional<Server> server = api.getServerById(config.getString("discord.serverId"));
         if (!server.isPresent()) return;
-        Optional<Role> role = server.flatMap(serverById -> serverById.getRoleById(config.getString("discord.punishedRoleId")));
+        Optional<Role> role = server.flatMap(serverById -> serverById.getRoleById(config.getString("discord.punish-role.punishedRoleId")));
         if (!role.isPresent()) return;
         Optional<User> user = server.flatMap(serverById -> serverById.getMemberById(getUserId(punishment.getUuid())));
         if (!user.isPresent()) return;
@@ -87,8 +85,8 @@ public class DiscordManager {
     }
 
     public String getUserId(String uuid) {
-        try {
-            PreparedStatement ps = discordSrvData.prepareStatement("SELECT * FROM `discordsrv_accounts` WHERE uuid = ?");
+        try (Connection connection = dataBaseManager.getSource().getConnection()){
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM `discordsrv_accounts` WHERE uuid = ?");
             ps.setString(1, uuid);
             ResultSet result = ps.executeQuery();
             if (result.next()) {
@@ -99,5 +97,4 @@ public class DiscordManager {
         }
         return null;
     }
-
 }

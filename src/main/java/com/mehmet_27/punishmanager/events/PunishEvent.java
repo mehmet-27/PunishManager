@@ -21,10 +21,10 @@ public class PunishEvent implements Listener {
     @EventHandler(priority = HIGHEST)
     public void onPunish(PlayerPunishEvent event) {
         Punishment punishment = event.getPunishment();
-        CommandSender operator = punishment.getOperator();
+        CommandSender operator = "CONSOLE".equals(punishment.getOperator()) ? plugin.getProxy().getConsole() : plugin.getProxy().getPlayer(punishment.getOperator());
 
         //Adding punish to database
-        plugin.getPunishmentManager().AddPunish(punishment);
+        plugin.getDataBaseManager().AddPunish(punishment);
 
         //Sending successfully punished message to operator
         String path = punishment.getPunishType().name().toLowerCase(Locale.ENGLISH) + ".punished";
@@ -39,7 +39,7 @@ public class PunishEvent implements Listener {
         if (announcement == null || announcement.isEmpty()) return;
         announcement = announcement.
                 replace("%reason%", punishment.getReason()).
-                replace("%operator%", punishment.getOperator().getName()).
+                replace("%operator%", punishment.getOperator()).
                 replace("%player%", punishment.getPlayerName()).
                 replace("%duration%", punishment.getDuration());
         plugin.getProxy().broadcast(new TextComponent(announcement));

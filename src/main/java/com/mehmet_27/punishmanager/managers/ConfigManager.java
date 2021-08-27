@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class ConfigManager {
     private final PunishManager plugin;
     private final ConfigurationProvider provider = ConfigurationProvider.getProvider(YamlConfiguration.class);
-    private Configuration config, messages;
+    private Configuration config, messages, embeds;
     private Map<String, Configuration> locales;
     private String defaultLanguage;
 
@@ -117,8 +117,9 @@ public class ConfigManager {
     public void setup() {
         config = loadFile(new File(plugin.getDataFolder() + File.separator + "config.yml"));
         loadFolder(new File(plugin.getDataFolder() + File.separator + "locales"));
-        messages = loadFile(new File(plugin.getDataFolder() + File.separator + "locales" + File.separator + "en.yml"));
-        loadFile(new File(plugin.getDataFolder() + File.separator + "locales" + File.separator + "tr.yml"));
+        messages = loadFile(new File(plugin.getDataFolder() + File.separator + "locales" + File.separator + "en_US.yml"));
+        loadFile(new File(plugin.getDataFolder() + File.separator + "locales" + File.separator + "tr_TR.yml"));
+        embeds = loadFile(new File(plugin.getDataFolder() + File.separator + "discordEmbeds.yml"));
         plugin.getLogger().info("Found " + getLocales().size() + " language files.");
         this.locales = getLocales();
         defaultLanguage = getConfig().getString("default-server-language");

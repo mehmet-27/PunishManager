@@ -14,9 +14,8 @@ public final class PunishManager extends Plugin {
 
     private static PunishManager instance;
 
-    private MysqlManager sql;
     private ConfigManager configManager;
-    private PunishmentManager punishmentManager;
+    private DataBaseManager dataBaseManager;
     private DiscordManager discordManager;
 
     private List<String> bannedIps;
@@ -25,11 +24,10 @@ public final class PunishManager extends Plugin {
     public void onEnable() {
         instance = this;
         configManager = new ConfigManager(this);
-        sql = new MysqlManager(this);
         new BungeeCommandManager(this);
-        punishmentManager = new PunishmentManager(this);
+        dataBaseManager = new DataBaseManager(this);
         new CommandManager(this);
-        bannedIps = punishmentManager.getBannedIps();
+        bannedIps = dataBaseManager.getBannedIps();
         discordManager = new DiscordManager(this);
         discordManager.buildBot();
         getProxy().getPluginManager().registerListener(this, new PlayerLoginEvent());
@@ -40,8 +38,7 @@ public final class PunishManager extends Plugin {
 
     @Override
     public void onDisable() {
-        punishmentManager.removeAllOutdatedPunishes();
-        sql.disconnect();
+        dataBaseManager.removeAllOutdatedPunishes();
         discordManager.disconnectBot();
     }
 
@@ -49,16 +46,12 @@ public final class PunishManager extends Plugin {
         return instance;
     }
 
-    public MysqlManager getMySQLManager() {
-        return sql;
-    }
-
     public ConfigManager getConfigManager() {
         return configManager;
     }
 
-    public PunishmentManager getPunishmentManager() {
-        return punishmentManager;
+    public DataBaseManager getDataBaseManager() {
+        return dataBaseManager;
     }
 
     public List<String> getBannedIps() {

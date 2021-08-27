@@ -2,7 +2,7 @@ package com.mehmet_27.punishmanager.utils;
 
 public enum SqlQuery {
     CREATE_PUNISHMENTS_TABLE(
-            "CREATE TABLE IF NOT EXISTS `asdddd` (" +
+            "CREATE TABLE IF NOT EXISTS `punishmanager_punishments` (" +
                     " `id` BIGINT(20) NOT NULL auto_increment," +
                     " `name` VARCHAR(16)," +
                     " `uuid` VARCHAR(72)," +
@@ -16,7 +16,7 @@ public enum SqlQuery {
                     " CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
     ),
     CREATE_PLAYERS_TABLE(
-            "CREATE TABLE IF NOT EXISTS `asda` (" +
+            "CREATE TABLE IF NOT EXISTS `punishmanager_players` (" +
                     " `uuid` VARCHAR(72) NOT NULL," +
                     " `name` VARCHAR(16)," +
                     " `ip` VARCHAR(25)," +
@@ -33,7 +33,12 @@ public enum SqlQuery {
             "INSERT IGNORE INTO `punishmanager_punishments` (" +
                     "`name`, `uuid`, `ip`, `reason`, `operator`, `type`, `start`, `end`)" +
                     " VALUES (?,?,?,?,?,?,?,?)"
-    );
+    ),
+    GET_PUNISHMENT("SELECT * FROM `punishmanager_punishments` WHERE name = ?"),
+    DELETE_PUNISHMENT("DELETE FROM `punishmanager_punishments` WHERE name = ?"),
+    DELETE_PUNISHMENT_WITH_TYPE("DELETE FROM `punishmanager_punishments` WHERE name = ? and type = ?"),
+    SELECT_ALL_PUNISHMENTS("SELECT * FROM `punishmanager_punishments`"),
+    UPDATE_PLAYER_LOCALE("UPDATE `punishmanager_players` SET `language` = ? WHERE `name` = ?");
     private final String query;
 
     SqlQuery(String query) {

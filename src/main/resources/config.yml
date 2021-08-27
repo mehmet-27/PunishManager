@@ -5,7 +5,7 @@ mysql:
   username: "username"
   password: "password"
 
-default-server-language: 'en'
+default-server-language: 'en_US'
 
 banned-commands-while-mute:
   - command1
@@ -17,6 +17,11 @@ discord:
   enable: false
   token: 'botToken'
   serverId: 'serverId'
-  punishedRoleId: 'roleId'
+  punish-role:
+    enable: false
+    punishedRoleId: 'roleId'
+  punish-announce:
+    enable: false
+    channel-id: 'channelId'
 
 debug: false

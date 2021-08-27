@@ -6,7 +6,7 @@ import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.objects.Ip;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
-import com.mehmet_27.punishmanager.managers.PunishmentManager;
+import com.mehmet_27.punishmanager.managers.DataBaseManager;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 
@@ -15,7 +15,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 public class CheckCommand extends BaseCommand {
 
     @Dependency
-    private PunishmentManager punishmentManager;
+    private DataBaseManager dataBaseManager;
     @Dependency
     private ConfigManager configManager;
 
@@ -24,16 +24,16 @@ public class CheckCommand extends BaseCommand {
     public void check(CommandSender sender, @Name("Player") String playerName) {
         sender.sendMessage(new TextComponent(configManager.getMessage("check.checking", sender.getName()).
                 replace("%player%", playerName)));
-        if (!punishmentManager.isLoggedServer(playerName)) {
+        if (!dataBaseManager.isLoggedServer(playerName)) {
             sender.sendMessage(new TextComponent(configManager.getMessage("check.playerNotFound", sender.getName()).
                     replace("%player%", playerName)));
             return;
         }
 
         String ip = new Ip(playerName).getPlayerIp();
-        Punishment ban = punishmentManager.getBan(playerName);
-        Punishment mute = punishmentManager.getMute(playerName);
-        OfflinePlayer player = punishmentManager.getOfflinePlayer(playerName);
+        Punishment ban = dataBaseManager.getBan(playerName);
+        Punishment mute = dataBaseManager.getMute(playerName);
+        OfflinePlayer player = dataBaseManager.getOfflinePlayer(playerName);
 
         String uuid = player != null ? player.getUuid() : playerName;
         String banStatus = (ban != null && ban.isBanned() && !ban.isExpired()) ? ban.getDuration() : configManager.getMessage("check.notPunished", sender.getName());
@@ -50,7 +50,7 @@ public class CheckCommand extends BaseCommand {
                     replace("%reason%", ban.getReason())));
         if (ban != null && ban.isBanned())
             sender.sendMessage(new TextComponent(configManager.getMessage("check.banOperator", sender.getName()).
-                    replace("%operator%", ban.getOperator().getName())));
+                    replace("%operator%", ban.getOperator())));
         sender.sendMessage(new TextComponent(configManager.getMessage("check.muteStatus", sender.getName()).
                 replace("%status%", muteStatus)));
         if (mute != null && mute.isMuted())
@@ -58,6 +58,6 @@ public class CheckCommand extends BaseCommand {
                     replace("%reason%", mute.getReason())));
         if (mute != null && mute.isMuted())
             sender.sendMessage(new TextComponent(configManager.getMessage("check.muteOperator", sender.getName()).
-                    replace("%operator%", mute.getOperator().getName())));
+                    replace("%operator%", mute.getOperator())));
     }
 }

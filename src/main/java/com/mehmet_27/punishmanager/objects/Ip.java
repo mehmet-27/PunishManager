@@ -1,7 +1,7 @@
 package com.mehmet_27.punishmanager.objects;
 
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.managers.PunishmentManager;
+import com.mehmet_27.punishmanager.managers.DataBaseManager;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class Ip {
@@ -9,8 +9,8 @@ public class Ip {
 
     public Ip(String playerName) {
         ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerName);
-        PunishmentManager punishmentManager = PunishManager.getInstance().getPunishmentManager();
-        this.playerIp = (player != null && player.isConnected()) ? player.getSocketAddress().toString().substring(1).split(":")[0] : punishmentManager.getOfflinePlayer(playerName).getPlayerIp();
+        DataBaseManager dataBaseManager = PunishManager.getInstance().getDataBaseManager();
+        this.playerIp = (player != null && player.isConnected()) ? player.getSocketAddress().toString().substring(1).split(":")[0] : dataBaseManager.getOfflinePlayer(playerName).getPlayerIp();
     }
 
     public String getPlayerIp() {

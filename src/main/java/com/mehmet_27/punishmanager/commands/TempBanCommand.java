@@ -9,7 +9,7 @@ import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.objects.Ip;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.objects.Reason;
-import com.mehmet_27.punishmanager.managers.PunishmentManager;
+import com.mehmet_27.punishmanager.managers.DataBaseManager;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -25,7 +25,7 @@ import static com.mehmet_27.punishmanager.utils.Utils.NumberAndUnit;
 public class TempBanCommand extends BaseCommand {
 
     @Dependency
-    private PunishmentManager punishmentManager;
+    private DataBaseManager dataBaseManager;
     @Dependency
     private ConfigManager configManager;
 
@@ -34,7 +34,7 @@ public class TempBanCommand extends BaseCommand {
     public void tempBan(CommandSender sender, @Conditions("other_player") @Name("Player") String playerName, @Name("Time") String time, @Optional @Name("Reason") String reason) {
         ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerName);
         String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;
-        Punishment punishment = punishmentManager.getBan(playerName);
+        Punishment punishment = dataBaseManager.getBan(playerName);
         if (punishment != null && punishment.isBanned()) {
             sender.sendMessage(new TextComponent(configManager.getMessage("tempban.alreadyPunished", sender.getName()).
                     replace("%player%", playerName)));
@@ -49,7 +49,7 @@ public class TempBanCommand extends BaseCommand {
         long start = System.currentTimeMillis();
         long end = start + Utils.convertToMillis(number, unit);
         String ip = new Ip(playerName).getPlayerIp();
-        punishment = new Punishment(playerName, uuid, ip, TEMPBAN, new Reason(reason, playerName).getReason(), sender, start, end);
+        punishment = new Punishment(playerName, uuid, ip, TEMPBAN, new Reason(reason, playerName).getReason(), sender.getName(), start, end);
         PunishManager.getInstance().getProxy().getPluginManager().callEvent(new PlayerPunishEvent(punishment));
     }
 }

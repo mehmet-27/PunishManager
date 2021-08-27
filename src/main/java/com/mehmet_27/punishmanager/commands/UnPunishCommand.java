@@ -5,7 +5,7 @@ import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
-import com.mehmet_27.punishmanager.managers.PunishmentManager;
+import com.mehmet_27.punishmanager.managers.DataBaseManager;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 
@@ -16,20 +16,20 @@ import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.NONE;
 public class UnPunishCommand extends BaseCommand {
 
     @Dependency
-    private PunishmentManager punishmentManager;
+    private DataBaseManager dataBaseManager;
     @Dependency
     private ConfigManager configManager;
 
     @Default
     @CommandCompletion("@players")
     public void unPunish(CommandSender sender, @Name("Player") String playerName) {
-        Punishment punishment = punishmentManager.getPunishment(playerName);
+        Punishment punishment = dataBaseManager.getPunishment(playerName);
         if (punishment == null || punishment.getPunishType().equals(NONE)) {
             sender.sendMessage(new TextComponent(configManager.getMessage("unpunish.notPunished", sender.getName()).
                     replace("%player%", playerName)));
             return;
         }
-        punishmentManager.removeAllPunishes(punishment);
+        dataBaseManager.removeAllPunishes(punishment);
         PunishManager.getInstance().getDiscordManager().removePunishedRole(punishment);
         sender.sendMessage(new TextComponent(configManager.getMessage("unpunish.done", sender.getName()).
                 replace("%player%", playerName)));

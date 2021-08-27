@@ -30,7 +30,7 @@ public class Utils {
         for (String message : messages) {
             message = message.
                     replace("%reason%", punishment.getReason()).
-                    replace("%operator%", punishment.getOperator().getName()).
+                    replace("%operator%", punishment.getOperator()).
                     replace("%name%", punishment.getPlayerName());
             if (punishType.isTemp()) {
                 message = message.replace("%duration%", punishment.getDuration());

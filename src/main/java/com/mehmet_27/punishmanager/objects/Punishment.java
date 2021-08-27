@@ -2,17 +2,15 @@ package com.mehmet_27.punishmanager.objects;
 
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
-import com.mehmet_27.punishmanager.managers.PunishmentManager;
-import net.md_5.bungee.api.CommandSender;
+import com.mehmet_27.punishmanager.managers.DataBaseManager;
 import net.md_5.bungee.config.Configuration;
 
 import java.sql.Timestamp;
 
 public class Punishment {
-    private final PunishmentManager punishmentManager = PunishManager.getInstance().getPunishmentManager();
+    private final DataBaseManager dataBaseManager = PunishManager.getInstance().getDataBaseManager();
     private final ConfigManager configManager = PunishManager.getInstance().getConfigManager();
-    private String playerName, uuid, ip, reason;
-    private CommandSender operator;
+    private String playerName, uuid, ip, reason, operator;
     private PunishType punishType;
     private final long start, end;
 
@@ -22,11 +20,11 @@ public class Punishment {
     private static final int HOUR = 60 * 60;
     private static final int MINUTE = 60;
 
-    public Punishment(String playerName, String uuid, String ip, PunishType punishType, String reason, CommandSender operator) {
+    public Punishment(String playerName, String uuid, String ip, PunishType punishType, String reason, String operator) {
         this(playerName, uuid, ip, punishType, reason, operator, new Timestamp(System.currentTimeMillis()).getTime(), -1);
     }
 
-    public Punishment(String playerName, String uuid, String ip, PunishType punishType, String reason, CommandSender operator, long start, long end) {
+    public Punishment(String playerName, String uuid, String ip, PunishType punishType, String reason, String operator, long start, long end) {
         this.playerName = playerName;
         this.uuid = uuid;
         this.ip = ip;
@@ -61,11 +59,11 @@ public class Punishment {
         this.punishType = punishType;
     }
 
-    public CommandSender getOperator() {
+    public String getOperator() {
         return operator;
     }
 
-    public void setOperator(CommandSender operator) {
+    public void setOperator(String operator) {
         this.operator = operator;
     }
 

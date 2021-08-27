@@ -3,8 +3,10 @@ package com.mehmet_27.punishmanager.managers;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
-import net.md_5.bungee.api.CommandSender;
+import com.mehmet_27.punishmanager.utils.SqlQuery;
+import com.zaxxer.hikari.HikariDataSource;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.config.Configuration;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,26 +18,57 @@ import java.util.List;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.IPBAN;
 
-public class PunishmentManager {
+public class DataBaseManager {
 
-    private final Connection connection;
     private final DiscordManager discordManager;
+    private final HikariDataSource source = new HikariDataSource();
 
-    public PunishmentManager(PunishManager plugin) {
-        connection = plugin.getMySQLManager().getConnection();
+    public DataBaseManager(PunishManager plugin) {
+        Configuration config = plugin.getConfigManager().getConfig();
+
+        source.setPoolName("PunishManager-Hikari");
+        source.setJdbcUrl("jdbc:mysql://" + config.getString("mysql.host") + ":" + config.getString("mysql.port") + "/" + config.getString("mysql.database") + "?useSSL=false&characterEncoding=utf-8&autoReconnect=true");
+        source.setUsername(config.getString("mysql.username"));
+        source.setPassword(config.getString("mysql.password"));
+
+        setup();
         discordManager = plugin.getDiscordManager();
     }
 
+    public HikariDataSource getSource() {
+        return source;
+    }
+
+    private void createPunishmentsTable() {
+        try (Connection connection = source.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(SqlQuery.CREATE_PUNISHMENTS_TABLE.getQuery());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createPlayersTable() {
+        try (Connection connection = source.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(SqlQuery.CREATE_PLAYERS_TABLE.getQuery());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setup() {
+        createPlayersTable();
+        createPunishmentsTable();
+    }
+
     public void AddPunish(Punishment punishment) {
-        try {
-            PreparedStatement ps = connection.prepareStatement("INSERT INTO `punishmanager_punishments` (" +
-                    "`name`, `uuid`, `ip`, `reason`, `operator`, `type`, `start`, `end`)" +
-                    " VALUES (?,?,?,?,?,?,?,?)");
+        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.ADD_PUNISH_TO_PUNISHMENTS.getQuery())) {
             ps.setString(1, punishment.getPlayerName());
             ps.setString(2, punishment.getUuid());
             ps.setString(3, punishment.getIp());
             ps.setString(4, punishment.getReason());
-            ps.setString(5, punishment.getOperator().getName());
+            ps.setString(5, punishment.getOperator());
             ps.setString(6, punishment.getPunishType().toString());
             ps.setString(7, String.valueOf(punishment.getStart()));
             ps.setString(8, String.valueOf(punishment.getEnd()));
@@ -46,9 +79,7 @@ public class PunishmentManager {
     }
 
     public void unPunishPlayer(Punishment punishment) {
-        try {
-            PreparedStatement ps;
-            ps = connection.prepareStatement("DELETE FROM `punishmanager_punishments` WHERE name = ? and type = ?");
+        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.DELETE_PUNISHMENT_WITH_TYPE.getQuery())) {
             ps.setString(1, punishment.getPlayerName());
             ps.setString(2, punishment.getPunishType().toString());
             ps.executeUpdate();
@@ -62,9 +93,7 @@ public class PunishmentManager {
     }
 
     public void removeAllPunishes(Punishment punishment) {
-        try {
-            PreparedStatement ps;
-            ps = connection.prepareStatement("DELETE FROM `punishmanager_punishments` WHERE name = ?");
+        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.DELETE_PUNISHMENT.getQuery())) {
             ps.setString(1, punishment.getPlayerName());
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -73,8 +102,7 @@ public class PunishmentManager {
     }
 
     public Punishment getPunishment(String wantedPlayer) {
-        try {
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM `punishmanager_punishments` WHERE name = ?");
+        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.GET_PUNISHMENT.getQuery())) {
             ps.setString(1, wantedPlayer);
             ResultSet result = ps.executeQuery();
             if (result.next()) {
@@ -82,7 +110,7 @@ public class PunishmentManager {
                 String uuid = result.getString("uuid");
                 String ip = result.getString("ip");
                 String reason = result.getString("reason");
-                CommandSender operator = PunishManager.getInstance().getProxy().getPlayer(result.getString("operator"));
+                String operator = result.getString("operator");
                 long start = result.getLong("start");
                 long end = result.getLong("end");
                 PunishType punishType = PunishType.valueOf(result.getString("type"));
@@ -95,7 +123,7 @@ public class PunishmentManager {
     }
 
     public OfflinePlayer getOfflinePlayer(String wantedPlayer) {
-        try {
+        try (Connection connection = source.getConnection()) {
             String query = "SELECT * FROM `punishmanager_players` WHERE `name` = ?".replace("?", "'" + wantedPlayer + "'");
             PreparedStatement ps = connection.prepareStatement(query);
             ResultSet result = ps.executeQuery();
@@ -122,8 +150,7 @@ public class PunishmentManager {
 
     public Punishment getPunishment(String wantedPlayer, String type) {
         List<Punishment> punishments = new ArrayList<>();
-        try {
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM `punishmanager_punishments` WHERE name = ?");
+        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.GET_PUNISHMENT.getQuery())) {
             ps.setString(1, wantedPlayer);
             ResultSet result = ps.executeQuery();
             while (result.next()) {
@@ -131,7 +158,7 @@ public class PunishmentManager {
                 String uuid = result.getString("uuid");
                 String ip = result.getString("ip");
                 String reason = result.getString("reason");
-                CommandSender operator = PunishManager.getInstance().getProxy().getPlayer(result.getString("operator"));
+                String operator = result.getString("operator");
                 long start = result.getLong("start");
                 long end = result.getLong("end");
                 PunishType punishType = PunishType.valueOf(result.getString("type"));
@@ -149,7 +176,7 @@ public class PunishmentManager {
     }
 
     public boolean isLoggedServer(String wantedPlayer) {
-        try {
+        try (Connection connection = source.getConnection()) {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM `punishmanager_players` WHERE name = ?");
             ps.setString(1, wantedPlayer);
             ResultSet result = ps.executeQuery();
@@ -164,7 +191,7 @@ public class PunishmentManager {
 
     public List<String> getBannedIps() {
         List<String> ips = new ArrayList<>();
-        try {
+        try (Connection connection = source.getConnection()) {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM `punishmanager_punishments`");
             ResultSet result = ps.executeQuery();
             if (result.next()) {
@@ -179,9 +206,8 @@ public class PunishmentManager {
     }
 
     public void removeAllOutdatedPunishes() {
-        try {
+        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.SELECT_ALL_PUNISHMENTS.getQuery())) {
             int deleted = 0;
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM `punishmanager_punishments`");
             ResultSet result = ps.executeQuery();
             while (result.next()) {
                 String playerName = result.getString("name");
@@ -202,14 +228,11 @@ public class PunishmentManager {
 
     public void addPlayer(ProxiedPlayer player) {
         String ip = player.getSocketAddress().toString().substring(1).split(":")[0];
-        try {
-            PreparedStatement ps = connection.prepareStatement("INSERT IGNORE INTO `punishmanager_players` (" +
-                    " `uuid`, `name`, `ip`, `language`)" +
-                    " VALUES (?,?,?,?)");
+        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.ADD_PLAYER_TO_PLAYERS_TABLE.getQuery())) {
             ps.setString(1, player.getUniqueId().toString());
             ps.setString(2, player.getName());
             ps.setString(3, ip);
-            ps.setString(4, "en");
+            ps.setString(4, "en_US");
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -217,8 +240,7 @@ public class PunishmentManager {
     }
 
     public void updateLanguage(String playerName, String language) {
-        try {
-            PreparedStatement ps = connection.prepareStatement("UPDATE `punishmanager_players` SET `language` = ? WHERE `name` = ?");
+        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.UPDATE_PLAYER_LOCALE.getQuery())) {
             ps.setString(1, language);
             ps.setString(2, playerName);
             ps.executeUpdate();
