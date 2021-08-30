@@ -2,13 +2,11 @@ package com.mehmet_27.punishmanager.objects;
 
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
-import com.mehmet_27.punishmanager.managers.DataBaseManager;
 import net.md_5.bungee.config.Configuration;
 
 import java.sql.Timestamp;
 
 public class Punishment {
-    private final DataBaseManager dataBaseManager = PunishManager.getInstance().getDataBaseManager();
     private final ConfigManager configManager = PunishManager.getInstance().getConfigManager();
     private String playerName, uuid, ip, reason, operator;
     private PunishType punishType;

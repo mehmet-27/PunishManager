@@ -1,32 +1,34 @@
 package com.mehmet_27.punishmanager.managers;
 
+import com.google.gson.Gson;
 import com.mehmet_27.punishmanager.PunishManager;
+import com.mehmet_27.punishmanager.events.DiscordBotReady;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.utils.Utils;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.utils.ChunkingFilter;
+import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.md_5.bungee.config.Configuration;
-import org.javacord.api.DiscordApi;
-import org.javacord.api.DiscordApiBuilder;
-import org.javacord.api.entity.intent.Intent;
-import org.javacord.api.entity.permission.Role;
-import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
-import org.javacord.api.util.logging.ExceptionLogger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Optional;
+import javax.security.auth.login.LoginException;
+import java.util.Map;
 
 public class DiscordManager {
     private final PunishManager plugin;
+    private final Map<String, String> embeds;
     private final Configuration config;
-    private final DataBaseManager dataBaseManager;
-    private DiscordApi api;
+    private final DatabaseManager dataBaseManager;
+    private JDA api;
+    private Guild guild;
+    private TextChannel announceChannel;
 
     public DiscordManager(PunishManager plugin) {
         this.plugin = plugin;
         this.config = plugin.getConfigManager().getConfig();
+        this.embeds = plugin.getConfigManager().getEmbeds();
         this.dataBaseManager = plugin.getDataBaseManager();
     }
 
@@ -36,65 +38,79 @@ public class DiscordManager {
         if (dataBaseManager.getSource() == null) {
             plugin.getLogger().severe("Discord feature will not work because DiscordSRV could not connect to database.");
         }
-
-        new DiscordApiBuilder()
-                .setToken(config.getString("discord.token"))
-                .setAllIntentsExcept(Intent.GUILD_PRESENCES, Intent.GUILD_WEBHOOKS)
-                .login()
-                .thenAccept(this::onConnectToDiscord)
-                .exceptionally(error -> {
-                    plugin.getLogger().warning("Failed to connect to Discord!");
-                    return null;
-                });
-    }
-
-    public void onConnectToDiscord(DiscordApi api) {
-        this.api = api;
-        PunishManager.getInstance().getLogger().info("Bot connected to discord with name " + api.getYourself().getDiscriminatedName());
+        try {
+            api = JDABuilder.createDefault(config.getString("discord.token"))
+                    .addEventListeners(new DiscordBotReady())
+                    .setMemberCachePolicy(MemberCachePolicy.ALL)
+                    .enableIntents(GatewayIntent.GUILD_MEMBERS)
+                    .setChunkingFilter(ChunkingFilter.ALL)
+                    .build();
+        } catch (LoginException e) {
+            plugin.getLogger().severe("Discord bot failed to connect!");
+            e.printStackTrace();
+        }
     }
 
     public void disconnectBot() {
         if (api != null) {
-            api.disconnect();
+            api.shutdown();
             api = null;
         }
     }
 
     public void givePunishedRole(Punishment punishment) {
-        if (!config.getBoolean("discord.enable") || !config.getBoolean("discord.punish-role.enable")) return;
-        Optional<Server> server = api.getServerById(config.getString("discord.serverId"));
-        if (!server.isPresent()) return;
-        Optional<Role> role = server.flatMap(serverById -> serverById.getRoleById(config.getString("discord.punish-role.punishedRoleId")));
-        if (!role.isPresent()) return;
-        Optional<User> user = server.flatMap(serverById -> serverById.getMemberById(getUserId(punishment.getUuid())));
-        if (!user.isPresent()) return;
-        user.get().addRole(role.get()).exceptionally(ExceptionLogger.get());
-        Utils.debug("Added the " + role.get().getName() + " role to " + punishment.getPlayerName() + " in Discord.");
+        if (!(config.getBoolean("discord.enable") && config.getBoolean("discord.punish-role.enable"))) return;
+
+        Role role = guild.getRoleById(config.getString("discord.punish-role.punishedRoleId"));
+        if (role == null) {
+            plugin.getLogger().severe("Discord role not found!");
+            return;
+        }
+        Member member = guild.getMemberById(dataBaseManager.getUserDiscordId(punishment.getUuid()));
+        if (member == null) {
+            plugin.getLogger().severe("Discord member not found!");
+            return;
+        }
+        guild.addRoleToMember(member, role).queue();
+        Utils.debug("Added the " + role.getName() + " role to " + punishment.getPlayerName() + " in Discord.");
     }
 
     public void removePunishedRole(Punishment punishment) {
-        if (!config.getBoolean("discord.enable") || !config.getBoolean("discord.punish-role.enable")) return;
-        Optional<Server> server = api.getServerById(config.getString("discord.serverId"));
-        if (!server.isPresent()) return;
-        Optional<Role> role = server.flatMap(serverById -> serverById.getRoleById(config.getString("discord.punish-role.punishedRoleId")));
-        if (!role.isPresent()) return;
-        Optional<User> user = server.flatMap(serverById -> serverById.getMemberById(getUserId(punishment.getUuid())));
-        if (!user.isPresent()) return;
-        user.get().removeRole(role.get()).exceptionally(ExceptionLogger.get());
-        Utils.debug("Removed the " + role.get().getName() + " role to " + punishment.getPlayerName() + " in Discord.");
+        if (!(config.getBoolean("discord.enable") && config.getBoolean("discord.punish-role.enable"))) return;
+
+        Role role = guild.getRoleById(config.getString("discord.punish-role.punishedRoleId"));
+        if (role == null) {
+            plugin.getLogger().severe("Discord role not found!");
+            return;
+        }
+        Member member = guild.getMemberById(dataBaseManager.getUserDiscordId(punishment.getUuid()));
+        if (member == null) {
+            plugin.getLogger().severe("Discord member not found!");
+            return;
+        }
+        guild.removeRoleFromMember(member, role).queue();
+        Utils.debug("Removed the " + role.getName() + " role to " + punishment.getPlayerName() + " in Discord.");
     }
 
-    public String getUserId(String uuid) {
-        try (Connection connection = dataBaseManager.getSource().getConnection()){
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM `discordsrv_accounts` WHERE uuid = ?");
-            ps.setString(1, uuid);
-            ResultSet result = ps.executeQuery();
-            if (result.next()) {
-                return result.getString("discord");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public void sendEmbed(Punishment punishment) {
+        Gson gson = new Gson();
+        MessageEmbed embed = gson.fromJson(embeds.get(punishment.getPunishType().name())
+                .replace("%player%", punishment.getPlayerName())
+                .replace("%operator%", punishment.getOperator())
+                .replace("%reason%", punishment.getReason())
+                .replace("%duration%", punishment.getDuration()), MessageEmbed.class);
+        announceChannel.sendMessageEmbeds(embed).queue();
+    }
+
+    public void setApi(JDA api) {
+        this.api = api;
+    }
+
+    public void setGuild(Guild guild) {
+        this.guild = guild;
+    }
+
+    public void setAnnounceChannel(TextChannel channel) {
+        this.announceChannel = channel;
     }
 }

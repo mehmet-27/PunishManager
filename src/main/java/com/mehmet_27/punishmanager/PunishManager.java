@@ -15,7 +15,7 @@ public final class PunishManager extends Plugin {
     private static PunishManager instance;
 
     private ConfigManager configManager;
-    private DataBaseManager dataBaseManager;
+    private DatabaseManager dataBaseManager;
     private DiscordManager discordManager;
 
     private List<String> bannedIps;
@@ -25,7 +25,7 @@ public final class PunishManager extends Plugin {
         instance = this;
         configManager = new ConfigManager(this);
         new BungeeCommandManager(this);
-        dataBaseManager = new DataBaseManager(this);
+        dataBaseManager = new DatabaseManager(this);
         new CommandManager(this);
         bannedIps = dataBaseManager.getBannedIps();
         discordManager = new DiscordManager(this);
@@ -50,7 +50,7 @@ public final class PunishManager extends Plugin {
         return configManager;
     }
 
-    public DataBaseManager getDataBaseManager() {
+    public DatabaseManager getDataBaseManager() {
         return dataBaseManager;
     }
 

@@ -1,0 +1,18 @@
+{
+  "title": "New Punish",
+  "description": "`%player%` muted by `%staff%`.",
+  "color": 5540790,
+  "footer": {
+    "text": "PunishManager"
+  },
+  "fields": [
+    {
+      "name": "Reason",
+      "value": "`%reason%`"
+    },
+    {
+      "name": "Duration",
+      "value": "`%duration%`"
+    }
+  ]
+}

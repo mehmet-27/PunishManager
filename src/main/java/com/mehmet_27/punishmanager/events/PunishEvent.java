@@ -3,6 +3,7 @@ package com.mehmet_27.punishmanager.events;
 import com.mehmet_27.punishmanager.PlayerPunishEvent;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
+import com.mehmet_27.punishmanager.managers.DiscordManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
@@ -17,6 +18,7 @@ import static net.md_5.bungee.event.EventPriority.HIGHEST;
 public class PunishEvent implements Listener {
     private final PunishManager plugin = PunishManager.getInstance();
     private final ConfigManager configManager = plugin.getConfigManager();
+    private final DiscordManager discordManager = plugin.getDiscordManager();
 
     @EventHandler(priority = HIGHEST)
     public void onPunish(PlayerPunishEvent event) {
@@ -48,5 +50,6 @@ public class PunishEvent implements Listener {
         if (punishment.getPunishType().isMute()) {
             plugin.getDiscordManager().givePunishedRole(punishment);
         }
+        discordManager.sendEmbed(punishment);
     }
 }

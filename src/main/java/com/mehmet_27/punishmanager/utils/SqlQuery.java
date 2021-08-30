@@ -38,7 +38,9 @@ public enum SqlQuery {
     DELETE_PUNISHMENT("DELETE FROM `punishmanager_punishments` WHERE name = ?"),
     DELETE_PUNISHMENT_WITH_TYPE("DELETE FROM `punishmanager_punishments` WHERE name = ? and type = ?"),
     SELECT_ALL_PUNISHMENTS("SELECT * FROM `punishmanager_punishments`"),
-    UPDATE_PLAYER_LOCALE("UPDATE `punishmanager_players` SET `language` = ? WHERE `name` = ?");
+    SELECT_PLAYER_WITH_NAME("SELECT * FROM `punishmanager_players` WHERE name = ?"),
+    UPDATE_PLAYER_LOCALE("UPDATE `punishmanager_players` SET `language` = ? WHERE `name` = ?"),
+    SELECT_DISCORDSRV_WITH_UUID("SELECT * FROM `discordsrv_accounts` WHERE uuid = ?");
     private final String query;
 
     SqlQuery(String query) {

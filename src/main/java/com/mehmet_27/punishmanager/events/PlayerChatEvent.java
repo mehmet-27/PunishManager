@@ -3,7 +3,7 @@ package com.mehmet_27.punishmanager.events;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.DiscordManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
-import com.mehmet_27.punishmanager.managers.DataBaseManager;
+import com.mehmet_27.punishmanager.managers.DatabaseManager;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
@@ -16,7 +16,7 @@ import java.util.List;
 public class PlayerChatEvent implements Listener {
 
     Configuration config = PunishManager.getInstance().getConfigManager().getConfig();
-    DataBaseManager dataBaseManager = PunishManager.getInstance().getDataBaseManager();
+    DatabaseManager dataBaseManager = PunishManager.getInstance().getDataBaseManager();
     DiscordManager discordManager = PunishManager.getInstance().getDiscordManager();
 
     @EventHandler

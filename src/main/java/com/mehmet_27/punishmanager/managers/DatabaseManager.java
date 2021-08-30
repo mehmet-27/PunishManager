@@ -18,15 +18,17 @@ import java.util.List;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.IPBAN;
 
-public class DataBaseManager {
+public class DatabaseManager {
 
     private final DiscordManager discordManager;
     private final HikariDataSource source = new HikariDataSource();
+    private final ConfigManager configManager;
 
-    public DataBaseManager(PunishManager plugin) {
-        Configuration config = plugin.getConfigManager().getConfig();
+    public DatabaseManager(PunishManager plugin) {
+        configManager = plugin.getConfigManager();
+        Configuration config = configManager.getConfig();
 
-        source.setPoolName("PunishManager-Hikari");
+        source.setPoolName(plugin.getDescription().getName() + "-Hikari");
         source.setJdbcUrl("jdbc:mysql://" + config.getString("mysql.host") + ":" + config.getString("mysql.port") + "/" + config.getString("mysql.database") + "?useSSL=false&characterEncoding=utf-8&autoReconnect=true");
         source.setUsername(config.getString("mysql.username"));
         source.setPassword(config.getString("mysql.password"));
@@ -39,18 +41,8 @@ public class DataBaseManager {
         return source;
     }
 
-    private void createPunishmentsTable() {
-        try (Connection connection = source.getConnection()) {
-            PreparedStatement ps = connection.prepareStatement(SqlQuery.CREATE_PUNISHMENTS_TABLE.getQuery());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void createPlayersTable() {
-        try (Connection connection = source.getConnection()) {
-            PreparedStatement ps = connection.prepareStatement(SqlQuery.CREATE_PLAYERS_TABLE.getQuery());
+    private void createTable(String query) {
+        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(query)) {
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -58,8 +50,8 @@ public class DataBaseManager {
     }
 
     public void setup() {
-        createPlayersTable();
-        createPunishmentsTable();
+        createTable(SqlQuery.CREATE_PUNISHMENTS_TABLE.getQuery());
+        createTable(SqlQuery.CREATE_PLAYERS_TABLE.getQuery());
     }
 
     public void AddPunish(Punishment punishment) {
@@ -176,8 +168,7 @@ public class DataBaseManager {
     }
 
     public boolean isLoggedServer(String wantedPlayer) {
-        try (Connection connection = source.getConnection()) {
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM `punishmanager_players` WHERE name = ?");
+        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.SELECT_PLAYER_WITH_NAME.getQuery())) {
             ps.setString(1, wantedPlayer);
             ResultSet result = ps.executeQuery();
             if (result.next()) {
@@ -191,8 +182,7 @@ public class DataBaseManager {
 
     public List<String> getBannedIps() {
         List<String> ips = new ArrayList<>();
-        try (Connection connection = source.getConnection()) {
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM `punishmanager_punishments`");
+        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.SELECT_ALL_PUNISHMENTS.getQuery())) {
             ResultSet result = ps.executeQuery();
             if (result.next()) {
                 if (result.getString("type").equals("IPBAN")) {
@@ -232,7 +222,7 @@ public class DataBaseManager {
             ps.setString(1, player.getUniqueId().toString());
             ps.setString(2, player.getName());
             ps.setString(3, ip);
-            ps.setString(4, "en_US");
+            ps.setString(4, configManager.getDefaultLanguage());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -247,5 +237,17 @@ public class DataBaseManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    public String getUserDiscordId(String uuid) {
+        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.SELECT_DISCORDSRV_WITH_UUID.getQuery())) {
+            ps.setString(1, uuid);
+            ResultSet result = ps.executeQuery();
+            if (result.next()) {
+                return result.getString("discord");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

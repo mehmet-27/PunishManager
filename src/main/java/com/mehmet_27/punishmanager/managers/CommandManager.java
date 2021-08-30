@@ -29,7 +29,7 @@ public class CommandManager extends BungeeCommandManager {
 
     private void registerDependencies() {
         registerDependency(ConfigManager.class, plugin.getConfigManager());
-        registerDependency(DataBaseManager.class, plugin.getDataBaseManager());
+        registerDependency(DatabaseManager.class, plugin.getDataBaseManager());
     }
 
     private void registerCommands() {

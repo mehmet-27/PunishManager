@@ -5,7 +5,7 @@ import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
-import com.mehmet_27.punishmanager.managers.DataBaseManager;
+import com.mehmet_27.punishmanager.managers.DatabaseManager;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 
@@ -14,7 +14,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 public class UnMuteCommand extends BaseCommand {
 
     @Dependency
-    private DataBaseManager dataBaseManager;
+    private DatabaseManager dataBaseManager;
     @Dependency
     private ConfigManager configManager;
 

@@ -7,18 +7,19 @@ import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
+import org.apache.commons.io.IOUtils;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class ConfigManager {
     private final PunishManager plugin;
     private final ConfigurationProvider provider = ConfigurationProvider.getProvider(YamlConfiguration.class);
-    private Configuration config, messages, embeds;
+    private Configuration config, messages;
     private Map<String, Configuration> locales;
     private String defaultLanguage;
 
@@ -97,6 +98,7 @@ public class ConfigManager {
             return Utils.color(locales.get(defaultLanguage).getString(path));
         }
     }
+
     public String getMessage(String path) {
         if (locales.containsKey(defaultLanguage)) {
             String msg = locales.get(defaultLanguage).getString(path);
@@ -106,6 +108,7 @@ public class ConfigManager {
         }
         return null;
     }
+
     public Configuration getConfig() {
         return config;
     }
@@ -117,14 +120,46 @@ public class ConfigManager {
     public void setup() {
         config = loadFile(new File(plugin.getDataFolder() + File.separator + "config.yml"));
         loadFolder(new File(plugin.getDataFolder() + File.separator + "locales"));
+        loadFolder(new File(plugin.getDataFolder() + File.separator + "embeds"));
+        /*loadFile(new File(plugin.getDataFolder() + File.separator + "embeds" + File.separator + "ban.json"));
+        loadFile(new File(plugin.getDataFolder() + File.separator + "embeds" + File.separator + "mute.json"));
+        loadFile(new File(plugin.getDataFolder() + File.separator + "embeds" + File.separator + "tempban.json"));
+        loadFile(new File(plugin.getDataFolder() + File.separator + "embeds" + File.separator + "tempmute.json"));
+        loadFile(new File(plugin.getDataFolder() + File.separator + "embeds" + File.separator + "ipban.json"));
+        loadFile(new File(plugin.getDataFolder() + File.separator + "embeds" + File.separator + "kick.json"));*/
         messages = loadFile(new File(plugin.getDataFolder() + File.separator + "locales" + File.separator + "en_US.yml"));
         loadFile(new File(plugin.getDataFolder() + File.separator + "locales" + File.separator + "tr_TR.yml"));
-        embeds = loadFile(new File(plugin.getDataFolder() + File.separator + "discordEmbeds.yml"));
         plugin.getLogger().info("Found " + getLocales().size() + " language files.");
         this.locales = getLocales();
         defaultLanguage = getConfig().getString("default-server-language");
     }
-    public String getDefaultLanguage(){
+
+    public Set<File> getEmbedFiles() {
+        Set<File> files = new HashSet<>();
+        File directoryPath = new File(plugin.getDataFolder().getAbsolutePath() + File.separator + "embeds");
+        FilenameFilter jsonFilter = (dir, name) -> {
+            String lowercaseName = name.toLowerCase();
+            return lowercaseName.endsWith(".json");
+        };
+        File[] filesList = directoryPath.listFiles(jsonFilter);
+        Objects.requireNonNull(filesList, "Embeds folder not found!");
+        Collections.addAll(files, filesList);
+        return files;
+    }
+
+    public Map<String, String> getEmbeds() {
+        Map<String, String> embeds = new HashMap<>();
+        for (File file : getEmbedFiles()) {
+            try {
+                embeds.put(file.getName().split("\\.")[0].toUpperCase(Locale.ENGLISH), IOUtils.toString(new FileInputStream(file), StandardCharsets.UTF_8));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return embeds;
+    }
+
+    public String getDefaultLanguage() {
         return defaultLanguage;
     }
 }

@@ -9,7 +9,7 @@ import com.mehmet_27.punishmanager.objects.Ip;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.objects.Reason;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
-import com.mehmet_27.punishmanager.managers.DataBaseManager;
+import com.mehmet_27.punishmanager.managers.DatabaseManager;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -25,7 +25,7 @@ import static com.mehmet_27.punishmanager.utils.Utils.NumberAndUnit;
 public class TempMuteCommand extends BaseCommand {
 
     @Dependency
-    private DataBaseManager dataBaseManager;
+    private DatabaseManager dataBaseManager;
     @Dependency
     private ConfigManager configManager;
 

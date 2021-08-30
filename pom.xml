@@ -13,7 +13,7 @@
 
     <description>Advanced punish manager.</description>
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>1.9</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -25,8 +25,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <compilerArgs>
                         <arg>-parameters</arg>
                     </compilerArgs>
@@ -47,23 +47,17 @@
                             <relocations>
                                 <relocation>
                                     <pattern>co.aikar.commands</pattern>
-                                    <shadedPattern>com.mehmet_27.punishmanager.lib.acf</shadedPattern> <!-- Replace this -->
+                                    <shadedPattern>com.mehmet_27.punishmanager.lib.acf</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>co.aikar.locales</pattern>
-                                    <shadedPattern>com.mehmet_27.punishmanager.lib.locales</shadedPattern> <!-- Replace this -->
+                                    <shadedPattern>com.mehmet_27.punishmanager.lib.locales</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.zaxxer.hikari</pattern>
+                                    <shadedPattern>com.mehmet_27.punishmanager.lib.hikari</shadedPattern>
                                 </relocation>
                             </relocations>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/*.SF</exclude>
-                                        <exclude>META-INF/*.DSA</exclude>
-                                        <exclude>META-INF/*.RSA</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
                         </configuration>
                     </execution>
                 </executions>
@@ -86,6 +80,11 @@
             <id>aikar</id>
             <url>https://repo.aikar.co/content/groups/aikar/</url>
         </repository>
+        <repository>
+            <id>dv8tion</id>
+            <name>m2-dv8tion</name>
+            <url>https://m2.dv8tion.net/releases</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -101,16 +100,24 @@
             <version>0.5.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>org.javacord</groupId>
-            <artifactId>javacord</artifactId>
-            <version>3.3.2</version>
-            <type>pom</type>
-            <scope>compile</scope>
+            <groupId>net.dv8tion</groupId>
+            <artifactId>JDA</artifactId>
+            <version>4.3.0_310</version>
         </dependency>
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
             <version>4.0.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.5</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.11.0</version>
         </dependency>
     </dependencies>
 </project>
