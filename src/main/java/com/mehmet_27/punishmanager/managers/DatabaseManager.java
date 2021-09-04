@@ -28,7 +28,7 @@ public class DatabaseManager {
         configManager = plugin.getConfigManager();
         Configuration config = configManager.getConfig();
 
-        source.setPoolName(plugin.getDescription().getName() + "-Hikari");
+        source.setPoolName("[" + plugin.getDescription().getName() + "]" + " Hikari");
         source.setJdbcUrl("jdbc:mysql://" + config.getString("mysql.host") + ":" + config.getString("mysql.port") + "/" + config.getString("mysql.database") + "?useSSL=false&characterEncoding=utf-8&autoReconnect=true");
         source.setUsername(config.getString("mysql.username"));
         source.setPassword(config.getString("mysql.password"));

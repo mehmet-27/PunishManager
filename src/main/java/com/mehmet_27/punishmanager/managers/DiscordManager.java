@@ -1,6 +1,5 @@
 package com.mehmet_27.punishmanager.managers;
 
-import com.google.gson.Gson;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.events.DiscordBotReady;
 import com.mehmet_27.punishmanager.objects.Punishment;
@@ -11,14 +10,16 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
+import net.dv8tion.jda.api.utils.data.DataObject;
+import net.dv8tion.jda.internal.JDAImpl;
 import net.md_5.bungee.config.Configuration;
 
 import javax.security.auth.login.LoginException;
-import java.util.Map;
+import java.util.Locale;
 
 public class DiscordManager {
     private final PunishManager plugin;
-    private final Map<String, String> embeds;
+    private final ConfigManager configManager;
     private final Configuration config;
     private final DatabaseManager dataBaseManager;
     private JDA api;
@@ -27,8 +28,8 @@ public class DiscordManager {
 
     public DiscordManager(PunishManager plugin) {
         this.plugin = plugin;
-        this.config = plugin.getConfigManager().getConfig();
-        this.embeds = plugin.getConfigManager().getEmbeds();
+        this.configManager = plugin.getConfigManager();
+        this.config = configManager.getConfig();
         this.dataBaseManager = plugin.getDataBaseManager();
     }
 
@@ -93,13 +94,18 @@ public class DiscordManager {
     }
 
     public void sendEmbed(Punishment punishment) {
-        Gson gson = new Gson();
-        MessageEmbed embed = gson.fromJson(embeds.get(punishment.getPunishType().name())
+        String path = "discord.punish-announce.embeds." + punishment.getPunishType().name().toLowerCase(Locale.ENGLISH);
+        if (!configManager.getConfig().getBoolean("discord.punish-announce.enable")){
+            return;
+        } else if (!configManager.getConfig().getBoolean(path)){
+            return;
+        }
+        String json = configManager.getEmbed(punishment.getPunishType().name())
                 .replace("%player%", punishment.getPlayerName())
                 .replace("%operator%", punishment.getOperator())
                 .replace("%reason%", punishment.getReason())
-                .replace("%duration%", punishment.getDuration()), MessageEmbed.class);
-        announceChannel.sendMessageEmbeds(embed).queue();
+                .replace("%duration%", punishment.getDuration());
+        announceChannel.sendMessageEmbeds(((JDAImpl)api).getEntityBuilder().createMessageEmbed(DataObject.fromJson(json))).queue();
     }
 
     public void setApi(JDA api) {
@@ -113,4 +119,5 @@ public class DiscordManager {
     public void setAnnounceChannel(TextChannel channel) {
         this.announceChannel = channel;
     }
+
 }

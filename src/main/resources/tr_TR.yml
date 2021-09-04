@@ -4,6 +4,7 @@
 # %operator% -> Cezayı veren yetkili.
 # %name% -> Cezalandırılan oyuncunun adı.
 main:
+  exempt-player: 'Bu oyuncuyu cezalandıramazsınız.'
   defaultReason: 'yok'
   timelayout:
     #Cezanın süresini gösterirken kullanılacak değişkenler.

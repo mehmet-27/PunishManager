@@ -20,7 +20,7 @@ public class PunishManagerCommand extends BaseCommand {
         sender.sendMessage(new TextComponent(Utils.color("&6Contact")));
         sender.sendMessage(new TextComponent(Utils.color("&eDiscord: &7Mehmet#5073")));
         sender.sendMessage(new TextComponent(Utils.color("&a&m+                                                        +")));
-        sender.sendMessage(new TextComponent(Utils.color("&eUse &a/pm help &efor help.")));
+        sender.sendMessage(new TextComponent(Utils.color("&eUse &a/punishmanager help &efor help.")));
     }
     @Subcommand("reload")
     public void reload(CommandSender sender){

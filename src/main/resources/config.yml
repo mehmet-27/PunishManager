@@ -7,6 +7,10 @@ mysql:
 
 default-server-language: 'en_US'
 
+# You can enter the names of the players you want to protect from all punish commands.
+exempt-players:
+  - examplePlayer
+
 banned-commands-while-mute:
   - command1
   - command2
@@ -23,5 +27,12 @@ discord:
   punish-announce:
     enable: false
     channel-id: 'channelId'
+    embeds:
+      ban: true
+      ipban: true
+      kick: true
+      mute: true
+      tempban: true
+      tempmute: true
 
 debug: false

@@ -4,6 +4,7 @@
 # %operator% -> Operator of punishment.
 # %name% -> Name of the player being punished.
 main:
+  exempt-player: 'You can''t punish this player.'
   defaultReason: 'none'
   timelayout:
     #Variables to be used when showing the duration of the punishment.

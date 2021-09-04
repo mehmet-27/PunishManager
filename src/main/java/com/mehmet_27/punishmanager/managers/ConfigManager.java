@@ -12,7 +12,6 @@ import org.apache.commons.io.IOUtils;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -21,7 +20,9 @@ public class ConfigManager {
     private final ConfigurationProvider provider = ConfigurationProvider.getProvider(YamlConfiguration.class);
     private Configuration config, messages;
     private Map<String, Configuration> locales;
+    private Map<String, String> embeds;
     private String defaultLanguage;
+    private List<String> exemptPlayers;
 
     public ConfigManager(PunishManager plugin) {
         this.plugin = plugin;
@@ -29,7 +30,7 @@ public class ConfigManager {
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    private Configuration loadFile(File file) {
+    private Configuration loadConfigFile(File file) {
         try {
             if (!plugin.getDataFolder().exists()) {
                 file.getParentFile().mkdirs();
@@ -44,6 +45,19 @@ public class ConfigManager {
         }
         return null;
     }
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    private void loadFile(File file) {
+        try {
+            if (!plugin.getDataFolder().exists()) {
+                file.getParentFile().mkdirs();
+            }
+            if (!file.exists() && !file.isDirectory()) {
+                Files.copy(plugin.getResourceAsStream(file.getName()), file.toPath());
+            }
+        } catch (IOException ex) {
+            plugin.getLogger().severe(String.format("Error while trying to load file {0}: " + ex.getMessage(), file.getName()));
+        }
+    }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private void loadFolder(File file) {
@@ -53,7 +67,7 @@ public class ConfigManager {
     public Map<String, Configuration> getLocales() {
         Map<String, Configuration> locales = new HashMap<>();
         for (File file : getLocaleFiles()) {
-            locales.put(file.getName().split("\\.")[0], new Configuration(loadFile(file)));
+            locales.put(file.getName().split("\\.")[0], new Configuration(loadConfigFile(file)));
         }
         return locales;
     }
@@ -118,23 +132,25 @@ public class ConfigManager {
     }
 
     public void setup() {
-        config = loadFile(new File(plugin.getDataFolder() + File.separator + "config.yml"));
+        config = loadConfigFile(new File(plugin.getDataFolder() + File.separator + "config.yml"));
         loadFolder(new File(plugin.getDataFolder() + File.separator + "locales"));
         loadFolder(new File(plugin.getDataFolder() + File.separator + "embeds"));
-        /*loadFile(new File(plugin.getDataFolder() + File.separator + "embeds" + File.separator + "ban.json"));
+        loadFile(new File(plugin.getDataFolder() + File.separator + "embeds" + File.separator + "ban.json"));
         loadFile(new File(plugin.getDataFolder() + File.separator + "embeds" + File.separator + "mute.json"));
         loadFile(new File(plugin.getDataFolder() + File.separator + "embeds" + File.separator + "tempban.json"));
         loadFile(new File(plugin.getDataFolder() + File.separator + "embeds" + File.separator + "tempmute.json"));
         loadFile(new File(plugin.getDataFolder() + File.separator + "embeds" + File.separator + "ipban.json"));
-        loadFile(new File(plugin.getDataFolder() + File.separator + "embeds" + File.separator + "kick.json"));*/
-        messages = loadFile(new File(plugin.getDataFolder() + File.separator + "locales" + File.separator + "en_US.yml"));
+        loadFile(new File(plugin.getDataFolder() + File.separator + "embeds" + File.separator + "kick.json"));
+        messages = loadConfigFile(new File(plugin.getDataFolder() + File.separator + "locales" + File.separator + "en_US.yml"));
         loadFile(new File(plugin.getDataFolder() + File.separator + "locales" + File.separator + "tr_TR.yml"));
-        plugin.getLogger().info("Found " + getLocales().size() + " language files.");
         this.locales = getLocales();
+        plugin.getLogger().info("Found " + locales.size() + " language files.");
+        this.embeds = getEmbeds();
         defaultLanguage = getConfig().getString("default-server-language");
+        this.exemptPlayers = getConfig().getStringList("exempt-players");
     }
 
-    public Set<File> getEmbedFiles() {
+    private Set<File> getEmbedFiles() {
         Set<File> files = new HashSet<>();
         File directoryPath = new File(plugin.getDataFolder().getAbsolutePath() + File.separator + "embeds");
         FilenameFilter jsonFilter = (dir, name) -> {
@@ -147,7 +163,7 @@ public class ConfigManager {
         return files;
     }
 
-    public Map<String, String> getEmbeds() {
+    private Map<String, String> getEmbeds() {
         Map<String, String> embeds = new HashMap<>();
         for (File file : getEmbedFiles()) {
             try {
@@ -159,7 +175,13 @@ public class ConfigManager {
         return embeds;
     }
 
+    public String getEmbed(String path){
+        return embeds.get(path);
+    }
     public String getDefaultLanguage() {
         return defaultLanguage;
+    }
+    public List<String> getExemptPlayers(){
+        return exemptPlayers;
     }
 }
