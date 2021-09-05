@@ -4,15 +4,18 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.events.PlayerPunishEvent;
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.managers.ConfigManager;
+import com.mehmet_27.punishmanager.managers.DatabaseManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.managers.DatabaseManager;
 import com.mehmet_27.punishmanager.utils.Utils;
+import com.mehmet_27.punishmanager.objects.Reason;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.util.UUID;
+
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.IPBAN;
+import static com.mehmet_27.punishmanager.utils.Utils.sendTextComponent;
 
 @CommandAlias("punishmanager")
 @CommandPermission("punishmanager.command.banip")
@@ -21,22 +24,26 @@ public class IpBanCommand extends BaseCommand {
     @Dependency
     private DatabaseManager dataBaseManager;
     @Dependency
-    private ConfigManager configManager;
-
+    private PunishManager punishManager;
     @CommandCompletion("@players Reason")
     @Description("{@@command.ipban.description}")
     @CommandAlias("ipban")
     public void banIp(CommandSender sender, @Conditions("other_player") @Name("Player") String playerName, @Optional @Name("Reason") String reason) {
-        ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerName);
-        String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;
-        Punishment punishment = dataBaseManager.getBan(playerName);
-        if (punishment != null && punishment.isBanned()) {
-            sender.sendMessage(new TextComponent(configManager.getMessage("ipban.alreadyPunished", sender.getName()).
-                    replace("%player%", playerName)));
+        ProxiedPlayer player = punishManager.getProxy().getPlayer(playerName);
+        if (player == null || !player.isConnected()) {
             return;
         }
+
+        UUID uuid = player.getUniqueId();
+
+        Punishment punishment = dataBaseManager.getBan(playerName);
+        if (punishment != null && punishment.isBanned()) {
+            sendTextComponent(sender, "ipban.alreadyPunished");
+            return;
+        }
+
         String ip = Utils.getPlayerIp(playerName);
         punishment = new Punishment(playerName, uuid, ip, IPBAN, reason, sender.getName());
-        PunishManager.getInstance().getProxy().getPluginManager().callEvent(new PlayerPunishEvent(punishment));
+        punishManager.getProxy().getPluginManager().callEvent(new PlayerPunishEvent(punishment));
     }
 }

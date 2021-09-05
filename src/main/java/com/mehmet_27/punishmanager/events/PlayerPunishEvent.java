@@ -9,12 +9,10 @@ import net.md_5.bungee.api.plugin.Event;
 import java.util.Locale;
 
 public class PlayerPunishEvent extends Event implements Cancellable {
-    ConfigManager configManager = PunishManager.getInstance().getConfigManager();
-
-    private boolean isCancel;
-
     private final Punishment punishment;
     private final String announceMessage;
+    ConfigManager configManager = PunishManager.getInstance().getConfigManager();
+    private boolean isCancel;
 
     public PlayerPunishEvent(Punishment punishment) {
         this.punishment = punishment;

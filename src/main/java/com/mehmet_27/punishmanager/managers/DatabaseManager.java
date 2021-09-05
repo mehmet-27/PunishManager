@@ -1,7 +1,7 @@
 package com.mehmet_27.punishmanager.managers;
 
-import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.PunishManager;
+import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.utils.SqlQuery;
 import com.zaxxer.hikari.HikariDataSource;
@@ -14,7 +14,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import static com.mehmet_27.punishmanager.managers.DiscordAction.REMOVE;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.IPBAN;
 
@@ -29,11 +31,11 @@ public class DatabaseManager {
         Configuration config = configManager.getConfig();
 
         source.setPoolName("[" + plugin.getDescription().getName() + "]" + " Hikari");
-        if (config.getBoolean("mysql.enable")){
+        if (config.getBoolean("mysql.enable")) {
             source.setJdbcUrl("jdbc:mysql://" + config.getString("mysql.host") + ":" + config.getString("mysql.port") + "/" + config.getString("mysql.database") + "?useSSL=false&characterEncoding=utf-8");
             source.setUsername(config.getString("mysql.username"));
             source.setPassword(config.getString("mysql.password"));
-        }else {
+        } else {
             String pluginName = plugin.getDescription().getName();
             source.setDriverClassName("org.h2.Driver");
             source.setJdbcUrl("jdbc:h2:./plugins/" + pluginName + "/" + pluginName + ".db;MODE=MySQL");
@@ -62,7 +64,7 @@ public class DatabaseManager {
     public void AddPunish(Punishment punishment) {
         try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.ADD_PUNISH_TO_PUNISHMENTS.getQuery())) {
             ps.setString(1, punishment.getPlayerName());
-            ps.setString(2, punishment.getUuid());
+            ps.setString(2, punishment.getUuid().toString());
             ps.setString(3, punishment.getIp());
             ps.setString(4, punishment.getReason());
             ps.setString(5, punishment.getOperator());
@@ -86,7 +88,7 @@ public class DatabaseManager {
         if (punishment.getPunishType().equals(IPBAN)) {
             PunishManager.getInstance().getBannedIps().remove(punishment.getIp());
         }
-        PunishManager.getInstance().getDiscordManager().removePunishedRole(punishment);
+        PunishManager.getInstance().getDiscordManager().updateRole(punishment, REMOVE);
     }
 
     public void removeAllPunishes(Punishment punishment) {
@@ -111,7 +113,7 @@ public class DatabaseManager {
                 long start = result.getLong("start");
                 long end = result.getLong("end");
                 PunishType punishType = PunishType.valueOf(result.getString("type"));
-                return new Punishment(playerName, uuid, ip, punishType, reason, operator, start, end);
+                return new Punishment(playerName, UUID.fromString(uuid), ip, punishType, reason, operator, start, end);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -159,7 +161,7 @@ public class DatabaseManager {
                 long start = result.getLong("start");
                 long end = result.getLong("end");
                 PunishType punishType = PunishType.valueOf(result.getString("type"));
-                punishments.add(new Punishment(playerName, uuid, ip, punishType, reason, operator, start, end));
+                punishments.add(new Punishment(playerName, UUID.fromString(uuid), ip, punishType, reason, operator, start, end));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -209,7 +211,7 @@ public class DatabaseManager {
                 Punishment punishment = getPunishment(playerName);
                 if (punishment.getPunishType().isTemp() && punishment.isExpired()) {
                     if (punishment.getPunishType().isMute()) {
-                        discordManager.removePunishedRole(punishment);
+                        discordManager.updateRole(punishment, REMOVE);
                     }
                     unPunishPlayer(punishment);
                     deleted++;
@@ -243,9 +245,10 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
-    public String getUserDiscordId(String uuid) {
+
+    public String getUserDiscordId(UUID uuid) {
         try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.SELECT_DISCORDSRV_WITH_UUID.getQuery())) {
-            ps.setString(1, uuid);
+            ps.setString(1, uuid.toString());
             ResultSet result = ps.executeQuery();
             if (result.next()) {
                 return result.getString("discord");
@@ -255,11 +258,12 @@ public class DatabaseManager {
         }
         return null;
     }
-    public List<String> getAllLoggedNames(){
+
+    public List<String> getAllLoggedNames() {
         List<String> names = new ArrayList<>();
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.GET_ALL_LOGGED_NAMES.getQuery())){
+        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.GET_ALL_LOGGED_NAMES.getQuery())) {
             ResultSet result = ps.executeQuery();
-            while (result.next()){
+            while (result.next()) {
                 names.add(result.getString("name"));
             }
             PunishManager.getInstance().getLogger().info(names.size() + " player names loaded.");

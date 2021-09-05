@@ -5,21 +5,22 @@ import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.managers.DatabaseManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.config.Configuration;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 
 public class Utils {
 
+    public static final Pattern NumberAndUnit = Pattern.compile("(?<number>[0-9]+)(?<unit>mo|[ywdhms])");
     private static final PunishManager plugin = PunishManager.getInstance();
     private static final ConfigManager configManager = plugin.getConfigManager();
     private static final Configuration config = configManager.getConfig();
-
-    public static final Pattern NumberAndUnit = Pattern.compile("(?<number>[0-9]+)(?<unit>mo|[ywdhms])");
 
     public static String color(String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
@@ -49,10 +50,10 @@ public class Utils {
         if (punishment.isBanned()) {
             player.disconnect(layout);
         }
-        if (punishment.isMuted()){
+        if (punishment.isMuted()) {
             player.sendMessage(layout);
         }
-        if (punishment.getPunishType().equals(Punishment.PunishType.KICK)){
+        if (punishment.getPunishType().equals(Punishment.PunishType.KICK)) {
             player.disconnect(layout);
         }
     }
@@ -77,9 +78,23 @@ public class Utils {
                 return -1;
         }
     }
-    public static void debug(String message){
+
+    public static void debug(String message) {
         if (!config.getBoolean("debug")) return;
         plugin.getLogger().info(message);
+    }
+
+    public static void sendTextComponent(CommandSender sender, String path) {
+        sendTextComponent(sender, path, message -> message.replace("%player%", sender.getName()));
+    }
+
+    public static void sendTextComponent(CommandSender sender, String path, Function<String, String> placeholders) {
+        String message = configManager.getMessage(path, sender.getName());
+
+        message = placeholders.apply(message);
+
+        TextComponent textComponent = new TextComponent(message);
+        sender.sendMessage(textComponent);
     }
     public static String getPlayerIp(String playerName){
         ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerName);

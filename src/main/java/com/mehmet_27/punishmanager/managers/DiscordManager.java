@@ -3,10 +3,12 @@ package com.mehmet_27.punishmanager.managers;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.listeners.DiscordBotReady;
 import com.mehmet_27.punishmanager.objects.Punishment;
-import com.mehmet_27.punishmanager.utils.Utils;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
@@ -16,6 +18,9 @@ import net.md_5.bungee.config.Configuration;
 
 import javax.security.auth.login.LoginException;
 import java.util.Locale;
+
+import static com.mehmet_27.punishmanager.managers.DiscordAction.ADD;
+import static com.mehmet_27.punishmanager.utils.Utils.debug;
 
 public class DiscordManager {
     private final PunishManager plugin;
@@ -59,7 +64,7 @@ public class DiscordManager {
         }
     }
 
-    public void givePunishedRole(Punishment punishment) {
+    public void updateRole(Punishment punishment, DiscordAction action) {
         if (!(config.getBoolean("discord.enable") && config.getBoolean("discord.punish-role.enable"))) return;
 
         Role role = guild.getRoleById(config.getString("discord.punish-role.punishedRoleId"));
@@ -67,35 +72,25 @@ public class DiscordManager {
             plugin.getLogger().severe("Discord role not found!");
             return;
         }
+
         Member member = guild.getMemberById(dataBaseManager.getUserDiscordId(punishment.getUuid()));
         if (member == null) {
             plugin.getLogger().severe("Discord member not found!");
             return;
         }
-        guild.addRoleToMember(member, role).queue();
-        Utils.debug("Added the " + role.getName() + " role to " + punishment.getPlayerName() + " in Discord.");
-    }
 
-    public void removePunishedRole(Punishment punishment) {
-        if (!(config.getBoolean("discord.enable") && config.getBoolean("discord.punish-role.enable"))) return;
+        if (action == ADD) {
+            guild.addRoleToMember(member, role).queue();
+        } else {
+            guild.removeRoleFromMember(member, role).queue();
+        }
 
-        Role role = guild.getRoleById(config.getString("discord.punish-role.punishedRoleId"));
-        if (role == null) {
-            plugin.getLogger().severe("Discord role not found!");
-            return;
-        }
-        Member member = guild.getMemberById(dataBaseManager.getUserDiscordId(punishment.getUuid()));
-        if (member == null) {
-            plugin.getLogger().severe("Discord member not found!");
-            return;
-        }
-        guild.removeRoleFromMember(member, role).queue();
-        Utils.debug("Removed the " + role.getName() + " role to " + punishment.getPlayerName() + " in Discord.");
+        debug(String.format("[%s] %s role - %s", action.name(), role.getName(), punishment.getPlayerName()));
     }
 
     public void sendEmbed(Punishment punishment) {
         String path = "discord.punish-announce.embeds." + punishment.getPunishType().name().toLowerCase(Locale.ENGLISH);
-        if (!(configManager.getConfig().getBoolean("discord.punish-announce.enable") && configManager.getConfig().getBoolean(path))){
+        if (!(configManager.getConfig().getBoolean("discord.punish-announce.enable") &&configManager.getConfig().getBoolean(path)) ){
             return;
         }
             String json = configManager.getEmbed(punishment.getPunishType().name())
@@ -103,7 +98,7 @@ public class DiscordManager {
                 .replace("%operator%", punishment.getOperator())
                 .replace("%reason%", punishment.getReason())
                 .replace("%duration%", punishment.getDuration());
-        announceChannel.sendMessageEmbeds(((JDAImpl)api).getEntityBuilder().createMessageEmbed(DataObject.fromJson(json))).queue();
+        announceChannel.sendMessageEmbeds(((JDAImpl) api).getEntityBuilder().createMessageEmbed(DataObject.fromJson(json))).queue();
     }
 
     public void setApi(JDA api) {

@@ -49,7 +49,7 @@ public enum SqlQuery {
     }
 
     public String getQuery() {
-        if (!PunishManager.getInstance().getConfigManager().getConfig().getBoolean("mysql.enable")){
+        if (!PunishManager.getInstance().getConfigManager().getConfig().getBoolean("mysql.enable")) {
             return query.replace("`", "");
         }
         return query;
