@@ -6,7 +6,10 @@ import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
@@ -95,9 +98,9 @@ public class DiscordManager {
 
     public void sendEmbed(Punishment punishment) {
         String path = "discord.punish-announce.embeds." + punishment.getPunishType().name().toLowerCase(Locale.ENGLISH);
-        if (!configManager.getConfig().getBoolean("discord.punish-announce.enable")){
+        if (!configManager.getConfig().getBoolean("discord.punish-announce.enable")) {
             return;
-        } else if (!configManager.getConfig().getBoolean(path)){
+        } else if (!configManager.getConfig().getBoolean(path)) {
             return;
         }
         String json = configManager.getEmbed(punishment.getPunishType().name())
@@ -105,7 +108,7 @@ public class DiscordManager {
                 .replace("%operator%", punishment.getOperator())
                 .replace("%reason%", punishment.getReason())
                 .replace("%duration%", punishment.getDuration());
-        announceChannel.sendMessageEmbeds(((JDAImpl)api).getEntityBuilder().createMessageEmbed(DataObject.fromJson(json))).queue();
+        announceChannel.sendMessageEmbeds(((JDAImpl) api).getEntityBuilder().createMessageEmbed(DataObject.fromJson(json))).queue();
     }
 
     public void setApi(JDA api) {

@@ -25,7 +25,7 @@ public class PunishEvent implements Listener {
         Punishment punishment = event.getPunishment();
         CommandSender operator = "CONSOLE".equals(punishment.getOperator()) ? plugin.getProxy().getConsole() : plugin.getProxy().getPlayer(punishment.getOperator());
 
-        if (configManager.getExemptPlayers().contains(punishment.getPlayerName())){
+        if (configManager.getExemptPlayers().contains(punishment.getPlayerName())) {
             operator.sendMessage(new TextComponent(configManager.getMessage("main.exempt-player", operator.getName())));
             return;
         }

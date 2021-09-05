@@ -11,6 +11,9 @@ import net.md_5.bungee.api.chat.TextComponent;
 @CommandAlias("punishmanager")
 public class PunishManagerCommand extends BaseCommand {
 
+    @Dependency
+    private PunishManager punishManager;
+
     @Default
     @Description("The main command of the plugin.")
     public void punishManager(CommandSender sender) {
@@ -28,8 +31,8 @@ public class PunishManagerCommand extends BaseCommand {
     @Subcommand("reload")
     @Description("Reloads the plugin.")
     public void reload(CommandSender sender) {
-        PunishManager.getInstance().getConfigManager().setup();
-        sender.sendMessage(new TextComponent(Utils.color("&6" + PunishManager.getInstance().getDescription().getName() + " &7» &aAll configuration files have been reloaded.")));
+        punishManager.getConfigManager().setup();
+        sender.sendMessage(new TextComponent(Utils.color("&6" + punishManager.getDescription().getName() + " &7» &aAll configuration files have been reloaded.")));
     }
 
     @Subcommand("help")

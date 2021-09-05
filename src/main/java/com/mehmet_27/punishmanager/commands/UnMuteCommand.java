@@ -3,11 +3,11 @@ package com.mehmet_27.punishmanager.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.managers.ConfigManager;
-import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.managers.DatabaseManager;
+import com.mehmet_27.punishmanager.objects.Punishment;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.TextComponent;
+
+import static com.mehmet_27.punishmanager.utils.Utils.sendTextComponent;
 
 @CommandAlias("punishmanager")
 @CommandPermission("punishmanager.command.unmute")
@@ -15,8 +15,6 @@ public class UnMuteCommand extends BaseCommand {
 
     @Dependency
     private DatabaseManager dataBaseManager;
-    @Dependency
-    private ConfigManager configManager;
 
     @CommandCompletion("@players")
     @Description("Removes a player's mute.")
@@ -25,13 +23,11 @@ public class UnMuteCommand extends BaseCommand {
         Punishment punishment = dataBaseManager.getMute(playerName);
 
         if (punishment == null || !punishment.isMuted()) {
-            sender.sendMessage(new TextComponent(configManager.getMessage("unmute.notPunished", sender.getName()).
-                    replace("%player%", playerName)));
+            sendTextComponent(sender, "unmute.notPunished");
             return;
         }
         dataBaseManager.unPunishPlayer(punishment);
         PunishManager.getInstance().getDiscordManager().removePunishedRole(punishment);
-        sender.sendMessage(new TextComponent(configManager.getMessage("unmute.done", sender.getName()).
-                replace("%player%", playerName)));
+        sendTextComponent(sender, "unmute.done");
     }
 }

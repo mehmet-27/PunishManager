@@ -5,7 +5,10 @@ import com.mehmet_27.punishmanager.events.PlayerChatEvent;
 import com.mehmet_27.punishmanager.events.PlayerLoginEvent;
 import com.mehmet_27.punishmanager.events.PlayerSettingsChangeEvent;
 import com.mehmet_27.punishmanager.events.PunishEvent;
-import com.mehmet_27.punishmanager.managers.*;
+import com.mehmet_27.punishmanager.managers.CommandManager;
+import com.mehmet_27.punishmanager.managers.ConfigManager;
+import com.mehmet_27.punishmanager.managers.DatabaseManager;
+import com.mehmet_27.punishmanager.managers.DiscordManager;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.List;
@@ -20,6 +23,10 @@ public final class PunishManager extends Plugin {
 
     private List<String> allPlayerNames;
     private List<String> bannedIps;
+
+    public static PunishManager getInstance() {
+        return instance;
+    }
 
     @Override
     public void onEnable() {
@@ -44,10 +51,6 @@ public final class PunishManager extends Plugin {
         discordManager.disconnectBot();
     }
 
-    public static PunishManager getInstance() {
-        return instance;
-    }
-
     public ConfigManager getConfigManager() {
         return configManager;
     }
@@ -56,7 +59,7 @@ public final class PunishManager extends Plugin {
         return dataBaseManager;
     }
 
-    public List<String> getAllPlayerNames(){
+    public List<String> getAllPlayerNames() {
         return allPlayerNames;
     }
 

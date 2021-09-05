@@ -1,9 +1,9 @@
 package com.mehmet_27.punishmanager.events;
 
 import com.mehmet_27.punishmanager.PunishManager;
+import com.mehmet_27.punishmanager.managers.DatabaseManager;
 import com.mehmet_27.punishmanager.objects.Ip;
 import com.mehmet_27.punishmanager.objects.Punishment;
-import com.mehmet_27.punishmanager.managers.DatabaseManager;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PostLoginEvent;

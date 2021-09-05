@@ -5,24 +5,25 @@ import com.mehmet_27.punishmanager.managers.ConfigManager;
 import net.md_5.bungee.config.Configuration;
 
 import java.sql.Timestamp;
+import java.util.UUID;
 
 public class Punishment {
-    private final ConfigManager configManager = PunishManager.getInstance().getConfigManager();
-    private String playerName, uuid, ip, reason, operator;
-    private PunishType punishType;
-    private final long start, end;
-
     private static final int MONTH = 60 * 60 * 24 * 7 * 4;
     private static final int WEEK = 60 * 60 * 24 * 7;
     private static final int DAY = 60 * 60 * 24;
     private static final int HOUR = 60 * 60;
     private static final int MINUTE = 60;
+    private final ConfigManager configManager = PunishManager.getInstance().getConfigManager();
+    private final long start, end;
+    private String playerName, ip, reason, operator;
+    private PunishType punishType;
+    private UUID uuid;
 
-    public Punishment(String playerName, String uuid, String ip, PunishType punishType, String reason, String operator) {
+    public Punishment(String playerName, UUID uuid, String ip, PunishType punishType, String reason, String operator) {
         this(playerName, uuid, ip, punishType, reason, operator, new Timestamp(System.currentTimeMillis()).getTime(), -1);
     }
 
-    public Punishment(String playerName, String uuid, String ip, PunishType punishType, String reason, String operator, long start, long end) {
+    public Punishment(String playerName, UUID uuid, String ip, PunishType punishType, String reason, String operator, long start, long end) {
         this.playerName = playerName;
         this.uuid = uuid;
         this.ip = ip;
@@ -31,22 +32,6 @@ public class Punishment {
         this.operator = operator;
         this.start = start;
         this.end = end;
-    }
-
-    public enum PunishType {
-        BAN, KICK, MUTE, TEMPMUTE, TEMPBAN, IPBAN, NONE;
-
-        public boolean isTemp() {
-            return name().contains("TEMP");
-        }
-
-        public boolean isMute() {
-            return name().contains("MUTE");
-        }
-
-        public boolean isBan() {
-            return name().contains("BAN");
-        }
     }
 
     public PunishType getPunishType() {
@@ -81,8 +66,12 @@ public class Punishment {
         this.playerName = player;
     }
 
-    public String getUuid() {
+    public UUID getUuid() {
         return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public String getIp() {
@@ -91,10 +80,6 @@ public class Punishment {
 
     public void setIp(String ip) {
         this.ip = ip;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
     }
 
     public boolean isBanned() {
@@ -190,6 +175,22 @@ public class Punishment {
         else {
             return String.format("%s", secondFormat).
                     replaceAll("%s%", seconds);
+        }
+    }
+
+    public enum PunishType {
+        BAN, KICK, MUTE, TEMPMUTE, TEMPBAN, IPBAN, NONE;
+
+        public boolean isTemp() {
+            return name().contains("TEMP");
+        }
+
+        public boolean isMute() {
+            return name().contains("MUTE");
+        }
+
+        public boolean isBan() {
+            return name().contains("BAN");
         }
     }
 }

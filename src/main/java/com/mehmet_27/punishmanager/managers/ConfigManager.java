@@ -9,7 +9,10 @@ import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 import org.apache.commons.io.IOUtils;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FilenameFilter;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.*;
@@ -45,6 +48,7 @@ public class ConfigManager {
         }
         return null;
     }
+
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private void loadFile(File file) {
         try {
@@ -175,13 +179,15 @@ public class ConfigManager {
         return embeds;
     }
 
-    public String getEmbed(String path){
+    public String getEmbed(String path) {
         return embeds.get(path);
     }
+
     public String getDefaultLanguage() {
         return defaultLanguage;
     }
-    public List<String> getExemptPlayers(){
+
+    public List<String> getExemptPlayers() {
         return exemptPlayers;
     }
 }
