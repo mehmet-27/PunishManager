@@ -7,6 +7,7 @@ import com.mehmet_27.punishmanager.managers.DatabaseManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import net.md_5.bungee.api.CommandSender;
 
+import static com.mehmet_27.punishmanager.managers.DiscordAction.REMOVE;
 import static com.mehmet_27.punishmanager.utils.Utils.sendTextComponent;
 
 @CommandAlias("punishmanager")
@@ -27,7 +28,7 @@ public class UnMuteCommand extends BaseCommand {
             return;
         }
         dataBaseManager.unPunishPlayer(punishment);
-        PunishManager.getInstance().getDiscordManager().removePunishedRole(punishment);
+        PunishManager.getInstance().getDiscordManager().updateRole(punishment, REMOVE);
         sendTextComponent(sender, "unmute.done");
     }
 }

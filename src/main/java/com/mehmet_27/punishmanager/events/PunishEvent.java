@@ -13,6 +13,7 @@ import net.md_5.bungee.event.EventHandler;
 
 import java.util.Locale;
 
+import static com.mehmet_27.punishmanager.managers.DiscordAction.REMOVE;
 import static net.md_5.bungee.event.EventPriority.HIGHEST;
 
 public class PunishEvent implements Listener {
@@ -53,7 +54,7 @@ public class PunishEvent implements Listener {
 
         //Give "punished role" on Discord
         if (punishment.getPunishType().isMute()) {
-            plugin.getDiscordManager().givePunishedRole(punishment);
+            plugin.getDiscordManager().updateRole(punishment, REMOVE);
         }
         discordManager.sendEmbed(punishment);
     }

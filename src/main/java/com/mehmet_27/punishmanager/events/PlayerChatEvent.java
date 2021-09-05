@@ -13,6 +13,8 @@ import net.md_5.bungee.event.EventHandler;
 
 import java.util.List;
 
+import static com.mehmet_27.punishmanager.managers.DiscordAction.REMOVE;
+
 public class PlayerChatEvent implements Listener {
 
     Configuration config = PunishManager.getInstance().getConfigManager().getConfig();
@@ -26,7 +28,7 @@ public class PlayerChatEvent implements Listener {
         if (punishment == null) return;
         if (punishment.isExpired()) {
             dataBaseManager.unPunishPlayer(punishment);
-            discordManager.removePunishedRole(punishment);
+            discordManager.updateRole(punishment, REMOVE);
             return;
         }
         if (event.isCommand()) {

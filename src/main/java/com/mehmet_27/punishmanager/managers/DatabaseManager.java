@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static com.mehmet_27.punishmanager.managers.DiscordAction.REMOVE;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.IPBAN;
 
@@ -87,7 +88,7 @@ public class DatabaseManager {
         if (punishment.getPunishType().equals(IPBAN)) {
             PunishManager.getInstance().getBannedIps().remove(punishment.getIp());
         }
-        PunishManager.getInstance().getDiscordManager().removePunishedRole(punishment);
+        PunishManager.getInstance().getDiscordManager().updateRole(punishment, REMOVE);
     }
 
     public void removeAllPunishes(Punishment punishment) {
@@ -210,7 +211,7 @@ public class DatabaseManager {
                 Punishment punishment = getPunishment(playerName);
                 if (punishment.getPunishType().isTemp() && punishment.isExpired()) {
                     if (punishment.getPunishType().isMute()) {
-                        discordManager.removePunishedRole(punishment);
+                        discordManager.updateRole(punishment, REMOVE);
                     }
                     unPunishPlayer(punishment);
                     deleted++;
