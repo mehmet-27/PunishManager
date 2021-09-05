@@ -18,15 +18,17 @@ public final class PunishManager extends Plugin {
     private DatabaseManager dataBaseManager;
     private DiscordManager discordManager;
 
+    private List<String> allPlayerNames;
     private List<String> bannedIps;
 
     @Override
     public void onEnable() {
         instance = this;
         configManager = new ConfigManager(this);
-        new BungeeCommandManager(this);
         dataBaseManager = new DatabaseManager(this);
+        new BungeeCommandManager(this);
         new CommandManager(this);
+        allPlayerNames = dataBaseManager.getAllLoggedNames();
         bannedIps = dataBaseManager.getBannedIps();
         discordManager = new DiscordManager(this);
         discordManager.buildBot();
@@ -52,6 +54,10 @@ public final class PunishManager extends Plugin {
 
     public DatabaseManager getDataBaseManager() {
         return dataBaseManager;
+    }
+
+    public List<String> getAllPlayerNames(){
+        return allPlayerNames;
     }
 
     public List<String> getBannedIps() {

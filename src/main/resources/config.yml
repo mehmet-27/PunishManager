@@ -11,6 +11,8 @@ default-server-language: 'en_US'
 exempt-players:
   - examplePlayer
 
+show-all-names-in-tab-completion: true
+
 banned-commands-while-mute:
   - command1
   - command2

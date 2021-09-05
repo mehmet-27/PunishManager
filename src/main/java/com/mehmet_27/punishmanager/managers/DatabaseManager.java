@@ -250,4 +250,18 @@ public class DatabaseManager {
         }
         return null;
     }
+    public List<String> getAllLoggedNames(){
+        List<String> names = new ArrayList<>();
+        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.GET_ALL_LOGGED_NAMES.getQuery())){
+            ResultSet result = ps.executeQuery();
+            while (result.next()){
+                names.add(result.getString("name"));
+            }
+            PunishManager.getInstance().getLogger().info(names.size() + " player names loaded.");
+            return names;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
 }

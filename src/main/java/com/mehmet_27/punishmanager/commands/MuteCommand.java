@@ -30,9 +30,6 @@ public class MuteCommand extends BaseCommand {
         ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerName);
         String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;
         Punishment punishment = dataBaseManager.getMute(playerName);
-        /* fixme: Small advice
-           Replace it with ACF conditions
-        */
         if (punishment != null && punishment.isMuted()) {
             sender.sendMessage(new TextComponent(configManager.getMessage("mute.alreadyPunished", sender.getName()).
                     replace("%player%", playerName)));
