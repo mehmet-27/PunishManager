@@ -8,7 +8,7 @@ import com.mehmet_27.punishmanager.managers.DatabaseManager;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 
-@CommandAlias("unban")
+@CommandAlias("punishmanager")
 @CommandPermission("punishmanager.command.unban")
 public class UnBanCommand extends BaseCommand {
 
@@ -17,8 +17,9 @@ public class UnBanCommand extends BaseCommand {
     @Dependency
     private ConfigManager configManager;
 
-    @Default
     @CommandCompletion("@players")
+    @Description("Removes a player's ban.")
+    @CommandAlias("unban")
     public void unBan(CommandSender sender, @Name("Player") String playerName) {
         Punishment punishment = dataBaseManager.getBan(playerName);
 

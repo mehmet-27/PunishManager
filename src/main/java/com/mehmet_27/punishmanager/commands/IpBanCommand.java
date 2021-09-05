@@ -15,7 +15,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.IPBAN;
 
-@CommandAlias("banip")
+@CommandAlias("punishmanager")
 @CommandPermission("punishmanager.command.banip")
 public class IpBanCommand extends BaseCommand {
 
@@ -24,8 +24,9 @@ public class IpBanCommand extends BaseCommand {
     @Dependency
     private ConfigManager configManager;
 
-    @Default
     @CommandCompletion("@players Reason")
+    @Description("Bans a player's ip address.")
+    @CommandAlias("ipban")
     public void banIp(CommandSender sender, @Conditions("other_player") @Name("Player") String playerName, @Optional @Name("Reason") String reason) {
         ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerName);
         String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;

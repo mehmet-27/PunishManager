@@ -29,10 +29,15 @@ public class DatabaseManager {
         Configuration config = configManager.getConfig();
 
         source.setPoolName("[" + plugin.getDescription().getName() + "]" + " Hikari");
-        source.setJdbcUrl("jdbc:mysql://" + config.getString("mysql.host") + ":" + config.getString("mysql.port") + "/" + config.getString("mysql.database") + "?useSSL=false&characterEncoding=utf-8&autoReconnect=true");
-        source.setUsername(config.getString("mysql.username"));
-        source.setPassword(config.getString("mysql.password"));
-
+        if (config.getBoolean("mysql.enable")){
+            source.setJdbcUrl("jdbc:mysql://" + config.getString("mysql.host") + ":" + config.getString("mysql.port") + "/" + config.getString("mysql.database") + "?useSSL=false&characterEncoding=utf-8");
+            source.setUsername(config.getString("mysql.username"));
+            source.setPassword(config.getString("mysql.password"));
+        }else {
+            String pluginName = plugin.getDescription().getName();
+            source.setDriverClassName("org.h2.Driver");
+            source.setJdbcUrl("jdbc:h2:./plugins/" + pluginName + "/" + pluginName + ".db;MODE=MySQL");
+        }
         setup();
         discordManager = plugin.getDiscordManager();
     }

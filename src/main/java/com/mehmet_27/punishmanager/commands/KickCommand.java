@@ -13,15 +13,16 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.KICK;
 
-@CommandAlias("kick")
+@CommandAlias("punishmanager")
 @CommandPermission("punishmanager.command.kick")
 public class KickCommand extends BaseCommand {
 
     @Dependency
     private ConfigManager configManager;
 
-    @Default
     @CommandCompletion("@players Reason")
+    @Description("Kicks a player from the server.")
+    @CommandAlias("kick")
     public void kick(CommandSender sender, @Conditions("other_player") @Name("Player") String playerName, @Optional @Name("Reason") String reason) {
         ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerName);
         String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;

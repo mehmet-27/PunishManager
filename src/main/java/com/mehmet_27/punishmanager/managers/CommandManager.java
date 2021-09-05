@@ -1,9 +1,7 @@
 package com.mehmet_27.punishmanager.managers;
 
 import co.aikar.commands.*;
-import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
 import com.mehmet_27.punishmanager.PunishManager;
-import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.io.*;
@@ -27,7 +25,7 @@ public class CommandManager extends BungeeCommandManager {
     public CommandManager(PunishManager plugin) {
         super(plugin);
         this.plugin = plugin;
-        registerAll();
+        setup();
     }
 
     private void registerDependencies() {
@@ -83,11 +81,7 @@ public class CommandManager extends BungeeCommandManager {
             if (plugin.getConfigManager().getConfig().getBoolean("show-all-names-in-tab-completion")) {
                 return plugin.getAllPlayerNames();
             }
-            ArrayList<String> names = new ArrayList<>();
-            for (ProxiedPlayer player : plugin.getProxy().getPlayers()) {
-                names.add(player.getName());
-            }
-            return names;
+            return plugin.getProxy().getPlayers().stream().map(ProxiedPlayer::getName).collect(Collectors.toSet());
         });
     }
 
@@ -139,8 +133,10 @@ public class CommandManager extends BungeeCommandManager {
         return files;
     }
 
-    public void registerAll() {
+    @SuppressWarnings("deprecation")
+    public void setup() {
         registerDependencies();
+        enableUnstableAPI("help");
         registerConditions();
         registerCompletions();
         registerCommands();

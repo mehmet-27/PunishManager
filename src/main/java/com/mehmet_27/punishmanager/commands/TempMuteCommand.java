@@ -20,7 +20,7 @@ import java.util.regex.Matcher;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.TEMPMUTE;
 import static com.mehmet_27.punishmanager.utils.Utils.NumberAndUnit;
 
-@CommandAlias("tempmute")
+@CommandAlias("punishmanager")
 @CommandPermission("punishmanager.command.tempmute")
 public class TempMuteCommand extends BaseCommand {
 
@@ -29,8 +29,9 @@ public class TempMuteCommand extends BaseCommand {
     @Dependency
     private ConfigManager configManager;
 
-    @Default
     @CommandCompletion("@players @units Reason")
+    @Description("Temporarily mutes a player")
+    @CommandAlias("tempmute")
     public void tempMute(CommandSender sender, @Conditions("other_player") @Name("Player") String playerName, @Name("Time") String time, @Optional @Name("Reason") String reason) {
         ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerName);
         String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;

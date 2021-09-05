@@ -1,5 +1,7 @@
 package com.mehmet_27.punishmanager.utils;
 
+import com.mehmet_27.punishmanager.PunishManager;
+
 public enum SqlQuery {
     CREATE_PUNISHMENTS_TABLE(
             "CREATE TABLE IF NOT EXISTS `punishmanager_punishments` (" +
@@ -12,8 +14,7 @@ public enum SqlQuery {
                     " `type` VARCHAR(16)," +
                     " `start` LONGTEXT," +
                     " `end` LONGTEXT," +
-                    " PRIMARY KEY (`id`))" +
-                    " CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
+                    " PRIMARY KEY (`id`))"
     ),
     CREATE_PLAYERS_TABLE(
             "CREATE TABLE IF NOT EXISTS `punishmanager_players` (" +
@@ -21,8 +22,7 @@ public enum SqlQuery {
                     " `name` VARCHAR(16)," +
                     " `ip` VARCHAR(25)," +
                     " `language` VARCHAR(10)," +
-                    " PRIMARY KEY (`uuid`))" +
-                    " CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
+                    " PRIMARY KEY (`uuid`))"
     ),
     ADD_PLAYER_TO_PLAYERS_TABLE(
             "INSERT IGNORE INTO `punishmanager_players` (" +
@@ -49,6 +49,9 @@ public enum SqlQuery {
     }
 
     public String getQuery() {
+        if (!PunishManager.getInstance().getConfigManager().getConfig().getBoolean("mysql.enable")){
+            return query.replace("`", "");
+        }
         return query;
     }
 }

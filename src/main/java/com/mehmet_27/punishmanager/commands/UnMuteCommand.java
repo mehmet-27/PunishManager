@@ -9,7 +9,7 @@ import com.mehmet_27.punishmanager.managers.DatabaseManager;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 
-@CommandAlias("unmute")
+@CommandAlias("punishmanager")
 @CommandPermission("punishmanager.command.unmute")
 public class UnMuteCommand extends BaseCommand {
 
@@ -18,8 +18,9 @@ public class UnMuteCommand extends BaseCommand {
     @Dependency
     private ConfigManager configManager;
 
-    @Default
     @CommandCompletion("@players")
+    @Description("Removes a player's mute.")
+    @CommandAlias("unmute")
     public void unMute(CommandSender sender, @Name("Player") String playerName) {
         Punishment punishment = dataBaseManager.getMute(playerName);
 

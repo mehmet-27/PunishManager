@@ -6,7 +6,7 @@
 
     <groupId>com.mehmet_27</groupId>
     <artifactId>PunishManager</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>PunishManager</name>
@@ -61,6 +61,10 @@
                                     <pattern>net.dv8tion.jda</pattern>
                                     <shadedPattern>com.mehmet_27.punishmanager.lib.jda</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>org.h2</pattern>
+                                    <shadedPattern>com.mehmet_27.punishmanager.lib.h2</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
@@ -112,6 +116,12 @@
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
             <version>4.0.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.200</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>

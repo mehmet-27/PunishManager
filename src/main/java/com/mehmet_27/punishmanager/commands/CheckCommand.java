@@ -10,7 +10,7 @@ import com.mehmet_27.punishmanager.managers.DatabaseManager;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 
-@CommandAlias("check")
+@CommandAlias("punishmanager")
 @CommandPermission("punishmanager.command.check")
 public class CheckCommand extends BaseCommand {
 
@@ -19,8 +19,9 @@ public class CheckCommand extends BaseCommand {
     @Dependency
     private ConfigManager configManager;
 
-    @Default
     @CommandCompletion("@players")
+    @Description("Checks the current status of a player.")
+    @CommandAlias("check")
     public void check(CommandSender sender, @Name("Player") String playerName) {
         sender.sendMessage(new TextComponent(configManager.getMessage("check.checking", sender.getName()).
                 replace("%player%", playerName)));

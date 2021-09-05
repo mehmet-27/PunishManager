@@ -20,7 +20,7 @@ import java.util.regex.Matcher;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.TEMPBAN;
 import static com.mehmet_27.punishmanager.utils.Utils.NumberAndUnit;
 
-@CommandAlias("tempban")
+@CommandAlias("punishmanager")
 @CommandPermission("punishmanager.command.tempban")
 public class TempBanCommand extends BaseCommand {
 
@@ -29,8 +29,9 @@ public class TempBanCommand extends BaseCommand {
     @Dependency
     private ConfigManager configManager;
 
-    @Default
     @CommandCompletion("@players @units Reason")
+    @Description("Temporarily bans a player.")
+    @CommandAlias("tempban")
     public void tempBan(CommandSender sender, @Conditions("other_player") @Name("Player") String playerName, @Name("Time") String time, @Optional @Name("Reason") String reason) {
         ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerName);
         String uuid = (player != null && player.isConnected()) ? player.getUniqueId().toString() : playerName;

@@ -11,7 +11,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.NONE;
 
-@CommandAlias("unpunish")
+@CommandAlias("punishmanager")
 @CommandPermission("punishmanager.command.unpunish")
 public class UnPunishCommand extends BaseCommand {
 
@@ -20,8 +20,9 @@ public class UnPunishCommand extends BaseCommand {
     @Dependency
     private ConfigManager configManager;
 
-    @Default
     @CommandCompletion("@players")
+    @Description("Removes all punishes from a player.")
+    @CommandAlias("unpunish")
     public void unPunish(CommandSender sender, @Name("Player") String playerName) {
         Punishment punishment = dataBaseManager.getPunishment(playerName);
         if (punishment == null || punishment.getPunishType().equals(NONE)) {
