@@ -16,7 +16,7 @@ public class UnBanCommand extends BaseCommand {
     private DatabaseManager dataBaseManager;
 
     @CommandCompletion("@players")
-    @Description("Removes a player's ban.")
+    @Description("{@@command.unban.description}")
     @CommandAlias("unban")
     public void unBan(CommandSender sender, @Name("Player") String playerName) {
         Punishment punishment = dataBaseManager.getBan(playerName);

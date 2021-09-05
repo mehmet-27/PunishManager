@@ -14,6 +14,33 @@ main:
     hour: '%h% saat'
     minute: '%m% dakika'
     second: '%s% saniye'
+
+command:
+  ban:
+    description: 'Bir oyuncuyu yasakla.'
+  mute:
+    description: 'Bir oyuncuyu sustur.'
+  ipban:
+    description: 'Bir oyuncunun ip adresini yasakla.'
+  tempban:
+    description: 'Bir oyuncuyu süreli yasakla.'
+  tempmute:
+    description: 'Bir oyuncuyu süreli sustur.'
+  kick:
+    description: 'Bir oyuncuyu sunucudan at.'
+  check:
+    description: 'Bir oyuncunun anlık durumunu kontrol et.'
+  unban:
+    description: 'Bir oyuncunun yasağını kaldır.'
+  unmute:
+    description: 'Bir oyuncunun susturmasını aş.'
+  unpunish:
+    description: 'Bir oyuncunun tüm cezalarını kaldır.'
+  reload:
+    description: 'Eklentiyi yeniden yükle.'
+  help:
+    description: 'Yardım komutu.'
+
 ban:
   punished: '&a%player% başarıyla yasaklandı.'
   alreadyPunished: '&e%player% zaten yasaklı.'

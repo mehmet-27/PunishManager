@@ -2,11 +2,12 @@ package com.mehmet_27.punishmanager.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
-import com.mehmet_27.punishmanager.PlayerPunishEvent;
+import com.mehmet_27.punishmanager.events.PlayerPunishEvent;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.DatabaseManager;
-import com.mehmet_27.punishmanager.objects.Ip;
 import com.mehmet_27.punishmanager.objects.Punishment;
+import com.mehmet_27.punishmanager.managers.DatabaseManager;
+import com.mehmet_27.punishmanager.utils.Utils;
 import com.mehmet_27.punishmanager.objects.Reason;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -25,7 +26,7 @@ public class IpBanCommand extends BaseCommand {
     @Dependency
     private PunishManager punishManager;
     @CommandCompletion("@players Reason")
-    @Description("Bans a player's ip address.")
+    @Description("{@@command.ipban.description}")
     @CommandAlias("ipban")
     public void banIp(CommandSender sender, @Conditions("other_player") @Name("Player") String playerName, @Optional @Name("Reason") String reason) {
         ProxiedPlayer player = punishManager.getProxy().getPlayer(playerName);
@@ -41,8 +42,8 @@ public class IpBanCommand extends BaseCommand {
             return;
         }
 
-        String ip = new Ip(playerName).getPlayerIp();
-        punishment = new Punishment(playerName, uuid, ip, IPBAN, new Reason(reason, playerName).getReason(), sender.getName());
+        String ip = Utils.getPlayerIp(playerName);
+        punishment = new Punishment(playerName, uuid, ip, IPBAN, reason, sender.getName());
         punishManager.getProxy().getPluginManager().callEvent(new PlayerPunishEvent(punishment));
     }
 }

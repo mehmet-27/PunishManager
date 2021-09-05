@@ -2,7 +2,6 @@ package com.mehmet_27.punishmanager.objects;
 
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
-import net.md_5.bungee.config.Configuration;
 
 import java.sql.Timestamp;
 import java.util.UUID;
@@ -51,7 +50,10 @@ public class Punishment {
     }
 
     public String getReason() {
-        return reason != null ? reason : "null";
+        if (reason == null) {
+            reason = configManager.getMessage("main.defaultReason", playerName);
+        }
+        return reason;
     }
 
     public void setReason(String reason) {
@@ -111,7 +113,6 @@ public class Punishment {
     }
 
     public String getDuration() {
-        Configuration messages = PunishManager.getInstance().getConfigManager().getMessages();
         long currentTime = new Timestamp(System.currentTimeMillis()).getTime();
         long diff = (getEnd() - currentTime) / 1000 + 1;
         //Getting time formats

@@ -1,5 +1,6 @@
 package com.mehmet_27.punishmanager.managers;
 
+import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Optional;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.objects.Language;
@@ -7,13 +8,11 @@ import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
-import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -103,7 +102,7 @@ public class ConfigManager {
         }
     }
 
-    public String getMessage(String path, @Optional String playerName) {
+    public String getMessage(String path, String playerName) {
         String language = new Language(playerName).getLanguage();
         if (locales.containsKey(language)) {
             String msg = locales.get(language).getString(path);
@@ -171,12 +170,22 @@ public class ConfigManager {
         Map<String, String> embeds = new HashMap<>();
         for (File file : getEmbedFiles()) {
             try {
-                embeds.put(file.getName().split("\\.")[0].toUpperCase(Locale.ENGLISH), IOUtils.toString(new FileInputStream(file), StandardCharsets.UTF_8));
+                 embeds.put(file.getName().split("\\.")[0].toUpperCase(Locale.ENGLISH), fileToString(file, "UTF-8"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         return embeds;
+    }
+    public String fileToString(File file, String charset) throws IOException {
+        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+        ByteArrayOutputStream buf = new ByteArrayOutputStream();
+        int result = bis.read();
+        while(result != -1) {
+            buf.write((byte) result);
+            result = bis.read();
+        }
+        return buf.toString(charset);
     }
 
     public String getEmbed(String path) {

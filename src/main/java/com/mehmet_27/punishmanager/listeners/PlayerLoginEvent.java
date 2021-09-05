@@ -1,4 +1,4 @@
-package com.mehmet_27.punishmanager.events;
+package com.mehmet_27.punishmanager.listeners;
 
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.DatabaseManager;
@@ -22,7 +22,7 @@ public class PlayerLoginEvent implements Listener {
         ProxiedPlayer player = event.getPlayer();
         dataBaseManager.addPlayer(player);
         Punishment punishment = dataBaseManager.getBan(player.getName());
-        String playerIp = new Ip(player.getName()).getPlayerIp();
+        String playerIp = Utils.getPlayerIp(player.getName());
         if (bannedIps.contains(playerIp)) {
             Utils.sendLayout(punishment);
             return;

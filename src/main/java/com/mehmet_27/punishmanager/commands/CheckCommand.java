@@ -7,6 +7,8 @@ import com.mehmet_27.punishmanager.managers.DatabaseManager;
 import com.mehmet_27.punishmanager.objects.Ip;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
+import com.mehmet_27.punishmanager.managers.DatabaseManager;
+import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
 
 import static com.mehmet_27.punishmanager.utils.Utils.sendTextComponent;
@@ -21,7 +23,7 @@ public class CheckCommand extends BaseCommand {
     private ConfigManager configManager;
 
     @CommandCompletion("@players")
-    @Description("Checks the current status of a player.")
+    @Description("{@@command.check.description}")
     @CommandAlias("check")
     public void check(CommandSender sender, @Name("Player") String playerName) {
         sendTextComponent(sender, "check.checking");
@@ -30,7 +32,7 @@ public class CheckCommand extends BaseCommand {
             return;
         }
 
-        String ip = new Ip(playerName).getPlayerIp();
+        String ip = Utils.getPlayerIp(playerName);
         Punishment ban = dataBaseManager.getBan(playerName);
         Punishment mute = dataBaseManager.getMute(playerName);
 

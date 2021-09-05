@@ -2,6 +2,7 @@ package com.mehmet_27.punishmanager.utils;
 
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
+import com.mehmet_27.punishmanager.managers.DatabaseManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
@@ -94,5 +95,10 @@ public class Utils {
 
         TextComponent textComponent = new TextComponent(message);
         sender.sendMessage(textComponent);
+    }
+    public static String getPlayerIp(String playerName){
+        ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerName);
+        DatabaseManager dataBaseManager = PunishManager.getInstance().getDataBaseManager();
+        return player != null && player.isConnected() ? player.getSocketAddress().toString().substring(1).split(":")[0] : dataBaseManager.getOfflinePlayer(playerName).getPlayerIp();
     }
 }

@@ -14,6 +14,33 @@ main:
     hour: '%h% hours'
     minute: '%m% minutes'
     second: '%s% seconds'
+
+command:
+  ban:
+    description: 'Ban a player.'
+  mute:
+    description: 'Mute a player.'
+  ipban:
+    description: 'Bans a player''s ip address.'
+  tempban:
+    description: 'Temporarily bans a player.'
+  tempmute:
+    description: 'Temporarily mutes a player.'
+  kick:
+    description: 'Kicks a player from the server.'
+  check:
+    description: 'Checks the current status of a player.'
+  unban:
+    description: 'Removes a player''s ban.'
+  unmute:
+    description: 'Removes a player''s mute.'
+  unpunish:
+    description: 'Removes all punishes from a player.'
+  reload:
+    description: 'Reloads the plugin.'
+  help:
+    description: 'Help command.'
+
 ban:
   punished: '&a%player% successfully banned.'
   alreadyPunished: '&e%player% is already banned.'

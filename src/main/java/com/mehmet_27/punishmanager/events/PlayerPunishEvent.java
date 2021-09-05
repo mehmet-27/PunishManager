@@ -1,5 +1,6 @@
-package com.mehmet_27.punishmanager;
+package com.mehmet_27.punishmanager.events;
 
+import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import net.md_5.bungee.api.plugin.Cancellable;
