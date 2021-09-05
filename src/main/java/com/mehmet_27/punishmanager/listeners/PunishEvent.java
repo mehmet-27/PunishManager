@@ -1,6 +1,6 @@
-package com.mehmet_27.punishmanager.events;
+package com.mehmet_27.punishmanager.listeners;
 
-import com.mehmet_27.punishmanager.PlayerPunishEvent;
+import com.mehmet_27.punishmanager.events.PlayerPunishEvent;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.managers.DiscordManager;

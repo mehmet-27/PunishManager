@@ -21,7 +21,7 @@ public class UnPunishCommand extends BaseCommand {
     private ConfigManager configManager;
 
     @CommandCompletion("@players")
-    @Description("Removes all punishes from a player.")
+    @Description("{@@command.unpunish.description}")
     @CommandAlias("unpunish")
     public void unPunish(CommandSender sender, @Name("Player") String playerName) {
         Punishment punishment = dataBaseManager.getPunishment(playerName);

@@ -1,7 +1,7 @@
 package com.mehmet_27.punishmanager.managers;
 
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.events.DiscordBotReady;
+import com.mehmet_27.punishmanager.listeners.DiscordBotReady;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.dv8tion.jda.api.JDA;
@@ -95,12 +95,10 @@ public class DiscordManager {
 
     public void sendEmbed(Punishment punishment) {
         String path = "discord.punish-announce.embeds." + punishment.getPunishType().name().toLowerCase(Locale.ENGLISH);
-        if (!configManager.getConfig().getBoolean("discord.punish-announce.enable")){
-            return;
-        } else if (!configManager.getConfig().getBoolean(path)){
+        if (!(configManager.getConfig().getBoolean("discord.punish-announce.enable") && configManager.getConfig().getBoolean(path))){
             return;
         }
-        String json = configManager.getEmbed(punishment.getPunishType().name())
+            String json = configManager.getEmbed(punishment.getPunishType().name())
                 .replace("%player%", punishment.getPlayerName())
                 .replace("%operator%", punishment.getOperator())
                 .replace("%reason%", punishment.getReason())

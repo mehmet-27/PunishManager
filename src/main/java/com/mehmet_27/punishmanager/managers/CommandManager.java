@@ -132,13 +132,27 @@ public class CommandManager extends BungeeCommandManager {
 
         return files;
     }
+    public void loadLocaleFiles(Set<File> files){
+        try {
+            for (File file : files){
+                String[] locale = file.getName().split("\\.");
+                getLocales().loadYamlLanguageFile(file, new Locale(locale[0], locale[1]));
+            }
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+    }
 
     @SuppressWarnings("deprecation")
     public void setup() {
+        loadLocaleFiles(PunishManager.getInstance().getConfigManager().getLocaleFiles());
+        String[] locale = plugin.getConfigManager().getDefaultLanguage().split("_");
+        getLocales().setDefaultLocale(new Locale(locale[0], locale[1]));
         registerDependencies();
         enableUnstableAPI("help");
         registerConditions();
         registerCompletions();
         registerCommands();
     }
+
 }

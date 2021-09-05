@@ -3,11 +3,9 @@ package com.mehmet_27.punishmanager.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.annotation.*;
-import com.mehmet_27.punishmanager.PlayerPunishEvent;
+import com.mehmet_27.punishmanager.events.PlayerPunishEvent;
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.objects.Ip;
 import com.mehmet_27.punishmanager.objects.Punishment;
-import com.mehmet_27.punishmanager.objects.Reason;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.managers.DatabaseManager;
 import com.mehmet_27.punishmanager.utils.Utils;
@@ -30,7 +28,7 @@ public class TempMuteCommand extends BaseCommand {
     private ConfigManager configManager;
 
     @CommandCompletion("@players @units Reason")
-    @Description("Temporarily mutes a player")
+    @Description("{@@command.tempmute.description}")
     @CommandAlias("tempmute")
     public void tempMute(CommandSender sender, @Conditions("other_player") @Name("Player") String playerName, @Name("Time") String time, @Optional @Name("Reason") String reason) {
         ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerName);
@@ -49,8 +47,8 @@ public class TempMuteCommand extends BaseCommand {
         String unit = matcher.group("unit");
         long start = System.currentTimeMillis();
         long end = start + Utils.convertToMillis(number, unit);
-        String ip = new Ip(playerName).getPlayerIp();
-        punishment = new Punishment(playerName, uuid, ip, TEMPMUTE, new Reason(reason, playerName).getReason(), sender.getName(), start, end);
+        String ip = Utils.getPlayerIp(playerName);
+        punishment = new Punishment(playerName, uuid, ip, TEMPMUTE, reason, sender.getName(), start, end);
         PunishManager.getInstance().getProxy().getPluginManager().callEvent(new PlayerPunishEvent(punishment));
     }
 }

@@ -1,10 +1,10 @@
 package com.mehmet_27.punishmanager;
 
 import co.aikar.commands.BungeeCommandManager;
-import com.mehmet_27.punishmanager.events.PlayerChatEvent;
-import com.mehmet_27.punishmanager.events.PlayerLoginEvent;
-import com.mehmet_27.punishmanager.events.PlayerSettingsChangeEvent;
-import com.mehmet_27.punishmanager.events.PunishEvent;
+import com.mehmet_27.punishmanager.listeners.PlayerChatEvent;
+import com.mehmet_27.punishmanager.listeners.PlayerLoginEvent;
+import com.mehmet_27.punishmanager.listeners.PlayerSettingsChangeEvent;
+import com.mehmet_27.punishmanager.listeners.PunishEvent;
 import com.mehmet_27.punishmanager.managers.*;
 import net.md_5.bungee.api.plugin.Plugin;
 
