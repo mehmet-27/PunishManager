@@ -18,7 +18,7 @@ public class UnMuteCommand extends BaseCommand {
     private DatabaseManager dataBaseManager;
 
     @CommandCompletion("@players")
-    @Description("{@@command.unmute.description}")
+    @Description("{@@unmute.description}")
     @CommandAlias("unmute")
     public void unMute(CommandSender sender, @Name("Player") String playerName) {
         Punishment punishment = dataBaseManager.getMute(playerName);

@@ -19,7 +19,7 @@ public class UnPunishCommand extends BaseCommand {
     private DatabaseManager dataBaseManager;
 
     @CommandCompletion("@players")
-    @Description("{@@command.unpunish.description}")
+    @Description("{@@unpunish.description}")
     @CommandAlias("unpunish")
     public void unPunish(CommandSender sender, @Name("Player") String playerName) {
         Punishment punishment = dataBaseManager.getPunishment(playerName);

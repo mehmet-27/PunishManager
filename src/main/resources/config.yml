@@ -2,6 +2,7 @@
 # Its main purpose is to save you from paid plugins.
 # If you need help using the plugin, you can reach us here:
 
+# If you don't use mysql connection it will automatically use a local database.
 mysql:
   enable: false
   host: "localhost"
@@ -13,11 +14,15 @@ mysql:
 # This will be your server's default language.
 # If the player who entered does not have a language file,
 # messages in this language will be used.
+#
+# NOTE: Definitely don't use locale which is not a perfectly valid language file
+# NOTE: Command descriptions in the help command will only be displayed in the default language for now.
+# Language support by player is not available in command descriptions.
 default-server-language: 'en_US'
 
 # You can enter the names of the players you want to protect from all punish commands.
 exempt-players:
-  - examplePlayer
+  - 'examplePlayer'
 
 # If you turn this on, all player names that have entered the server
 # before will also appear in tab completions.
@@ -25,8 +30,9 @@ show-all-names-in-tab-completion: true
 
 # Commands you don't want players to use while muted.
 banned-commands-while-mute:
-  - command1
-  - command2
+  - 'me'
+  - 'say'
+  - 'msg'
 
 # NOTE: If you want to use the role cast feature in discord,
 # discordsrv's table must be in the same database as this plugin's table.

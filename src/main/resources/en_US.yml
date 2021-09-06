@@ -6,6 +6,7 @@
 main:
   exempt-player: 'You can''t punish this player.'
   defaultReason: 'none'
+  not-on-yourself: 'You cannot use this command on yourself!'
   timelayout:
     #Variables to be used when showing the duration of the punishment.
     month: '%mo% months'
@@ -14,32 +15,6 @@ main:
     hour: '%h% hours'
     minute: '%m% minutes'
     second: '%s% seconds'
-
-command:
-  ban:
-    description: 'Ban a player.'
-  mute:
-    description: 'Mute a player.'
-  ipban:
-    description: 'Bans a player''s ip address.'
-  tempban:
-    description: 'Temporarily bans a player.'
-  tempmute:
-    description: 'Temporarily mutes a player.'
-  kick:
-    description: 'Kicks a player from the server.'
-  check:
-    description: 'Checks the current status of a player.'
-  unban:
-    description: 'Removes a player''s ban.'
-  unmute:
-    description: 'Removes a player''s mute.'
-  unpunish:
-    description: 'Removes all punishes from a player.'
-  reload:
-    description: 'Reloads the plugin.'
-  help:
-    description: 'Help command.'
 
 ban:
   punished: '&a%player% successfully banned.'
@@ -51,6 +26,8 @@ ban:
     - '&2Operator: &a%operator%'
     - '&2Reason: &a%reason%'
   announce: '&a%player% &ebanned by &a%operator% &edue to &a%reason%.'
+  description: 'Ban a player.'
+
 tempban:
   punished: '&a%player% successfully banned.'
   alreadyPunished: '&e%player% is already banned.'
@@ -62,6 +39,8 @@ tempban:
     - '&2Reason: &a%reason%'
     - '&2Duration: &a%duration%'
   announce: '&a%player% &ewas banned by &a%operator% &efor &a%duration% &edue to &a%reason%.'
+  description: 'Temporarily bans a player.'
+
 ipban:
   punished: '&a%player% successfully banned.'
   alreadyPunished: '&e%player% is already banned.'
@@ -72,6 +51,8 @@ ipban:
     - '&2Operator: &a%operator%'
     - '&2Reason: &a%reason%'
   announce: '&a%player% &ebanned by &a%operator% &edue to &a%reason%.'
+  description: 'Bans a player''s ip address.'
+
 kick:
   punished: '&a%player% successfully kicked.'
   notOnline: '&e%player% is not online.'
@@ -80,27 +61,39 @@ kick:
     - '&7'
     - '&6You kicked from this server.'
     - '&2Reason: &a%reason%'
+  description: 'Kicks a player from the server.'
+
 mute:
   punished: '&a%player% successfully muted.'
   alreadyPunished: '&e%player% is already muted.'
   layout:
     - '&eYou were muted by &a%operator% &edue to the &a%reason%&e.'
   announce: '&a%player% &emuted by &a%operator% &edue to &a%reason%.'
+  description: 'Mute a player.'
+
 tempmute:
   punished: '&a%player% successfully muted.'
   alreadyPunished: '&e%player% is already muted.'
   layout:
     - '&eYou were muted by &a%operator% &efor &a%duration% &edue to the &a%reason%&e.'
   announce: '&a%player% &ewas muted by &a%operator% &efor &a%duration% &edue to &a%reason%.'
+  description: 'Temporarily mutes a player.'
+
 unban:
   notPunished: '&e%player% is not banned.'
   done: '&a%player%''s ban has been removed.'
+  description: 'Removes a player''s ban.'
+
 unmute:
   notPunished: '&e%player% is not muted.'
   done: '&a%player%''s mute has been removed.'
+  description: 'Removes a player''s mute.'
+
 unpunish:
   notPunished: '&e%player% is not punished.'
   done: '&a%player%''s punishes has been removed.'
+  description: 'Removes all punishes from a player.'
+
 check:
   checking: '&eChecking &a%player%'
   playerNotFound: '&c%name% not found!'
@@ -113,3 +106,13 @@ check:
   muteReason: '&e-> Mute reason: &c%reason%'
   muteOperator: '&e-> Mute operator: &c%operator%'
   notPunished: '&anot punished'
+  description: 'Checks the current status of a player.'
+
+punishmanager:
+  description: 'The main command of the plugin.'
+
+punishmanager_reload:
+  description: 'Reloads the plugin.'
+
+punishmanager_help:
+  description: 'Help command.'

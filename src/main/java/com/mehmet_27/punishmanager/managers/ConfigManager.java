@@ -1,7 +1,5 @@
 package com.mehmet_27.punishmanager.managers;
 
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.Optional;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.objects.Language;
 import com.mehmet_27.punishmanager.utils.Utils;
@@ -9,10 +7,7 @@ import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FilenameFilter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Collectors;

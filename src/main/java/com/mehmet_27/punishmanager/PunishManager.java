@@ -19,6 +19,7 @@ public final class PunishManager extends Plugin {
 
     private ConfigManager configManager;
     private DatabaseManager dataBaseManager;
+    private CommandManager commandManager;
     private DiscordManager discordManager;
 
     private List<String> allPlayerNames;
@@ -34,7 +35,7 @@ public final class PunishManager extends Plugin {
         configManager = new ConfigManager(this);
         dataBaseManager = new DatabaseManager(this);
         new BungeeCommandManager(this);
-        new CommandManager(this);
+        this.commandManager = new CommandManager(this);
         allPlayerNames = dataBaseManager.getAllLoggedNames();
         bannedIps = dataBaseManager.getBannedIps();
         discordManager = new DiscordManager(this);
@@ -69,5 +70,9 @@ public final class PunishManager extends Plugin {
 
     public DiscordManager getDiscordManager() {
         return discordManager;
+    }
+
+    public CommandManager getCommandManager() {
+        return commandManager;
     }
 }

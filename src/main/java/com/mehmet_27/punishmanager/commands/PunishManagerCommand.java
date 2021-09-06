@@ -16,6 +16,7 @@ public class PunishManagerCommand extends BaseCommand {
     private PunishManager punishManager;
 
     @Default
+    @Description("{@@punishmanager.description}")
     public void punishManager(CommandSender sender) {
         sender.sendMessage(new TextComponent(Utils.color("&a&m+                                                        +")));
         sender.sendMessage(new TextComponent(Utils.color("&6&lPunishManager")));
@@ -29,14 +30,15 @@ public class PunishManagerCommand extends BaseCommand {
     }
 
     @Subcommand("reload")
-    @Description("{@@command.reload.description}")
+    @Description("{@@punishmanager_reload.description}")
     public void reload(CommandSender sender) {
         punishManager.getConfigManager().setup();
+        punishManager.getCommandManager().updateDefaultLocale();
         sender.sendMessage(new TextComponent(Utils.color("&6" + punishManager.getDescription().getName() + " &7» &aAll configuration files have been reloaded.")));
     }
 
     @Subcommand("help")
-    @Description("{@@command.help.description}")
+    @Description("{@@punishmanager_help.description}")
     public void help(CommandSender sender, CommandHelp help) {
         help.showHelp();
     }

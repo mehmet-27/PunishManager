@@ -6,9 +6,7 @@ import com.mehmet_27.punishmanager.events.PlayerPunishEvent;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.DatabaseManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
-import com.mehmet_27.punishmanager.managers.DatabaseManager;
 import com.mehmet_27.punishmanager.utils.Utils;
-import com.mehmet_27.punishmanager.objects.Reason;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -27,7 +25,7 @@ public class MuteCommand extends BaseCommand {
     private PunishManager punishManager;
 
     @CommandCompletion("@players Reason")
-    @Description("{@@command.mute.description}")
+    @Description("{@@mute.description}")
     @CommandAlias("mute")
     public void mute(CommandSender sender, @Conditions("other_player") @Name("Player") String playerName, @Optional @Name("Reason") String reason) {
         ProxiedPlayer player = punishManager.getProxy().getPlayer(playerName);

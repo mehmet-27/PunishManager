@@ -41,8 +41,8 @@ public class DiscordManager {
     public void buildBot() {
         //Return if feature is disabled.
         if (!config.getBoolean("discord.enable")) return;
-        if (dataBaseManager.getSource() == null) {
-            plugin.getLogger().severe("Discord feature will not work because DiscordSRV could not connect to database.");
+        if (!dataBaseManager.isDiscordSRVTableExits()) {
+            plugin.getLogger().severe("The Punished Role feature will not work because DiscordSRV cannot connect to the database.");
         }
         try {
             api = JDABuilder.createDefault(config.getString("discord.token"))
@@ -66,7 +66,7 @@ public class DiscordManager {
 
     public void updateRole(Punishment punishment, DiscordAction action) {
         if (!(config.getBoolean("discord.enable") && config.getBoolean("discord.punish-role.enable"))) return;
-
+        if (!dataBaseManager.isDiscordSRVTableExits()) return;
         Role role = guild.getRoleById(config.getString("discord.punish-role.punishedRoleId"));
         if (role == null) {
             plugin.getLogger().severe("Discord role not found!");

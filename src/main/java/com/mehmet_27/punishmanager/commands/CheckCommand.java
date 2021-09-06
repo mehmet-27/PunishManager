@@ -4,10 +4,8 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.managers.DatabaseManager;
-import com.mehmet_27.punishmanager.objects.Ip;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
-import com.mehmet_27.punishmanager.managers.DatabaseManager;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
 
@@ -23,7 +21,7 @@ public class CheckCommand extends BaseCommand {
     private ConfigManager configManager;
 
     @CommandCompletion("@players")
-    @Description("{@@command.check.description}")
+    @Description("{@@check.description}")
     @CommandAlias("check")
     public void check(CommandSender sender, @Name("Player") String playerName) {
         sendTextComponent(sender, "check.checking");

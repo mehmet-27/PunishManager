@@ -8,10 +8,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.config.Configuration;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -272,5 +269,17 @@ public class DatabaseManager {
             e.printStackTrace();
         }
         return new ArrayList<>();
+    }
+
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    public boolean isDiscordSRVTableExits(){
+        try (Connection connection = source.getConnection()){
+            DatabaseMetaData dbm = connection.getMetaData();
+            ResultSet tables = dbm.getTables(null, null, "discordsrv_accounts", null);
+            return tables.next();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
     }
 }

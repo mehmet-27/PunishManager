@@ -1,12 +1,11 @@
 package com.mehmet_27.punishmanager.managers;
 
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.BungeeCommandIssuer;
-import co.aikar.commands.BungeeCommandManager;
-import co.aikar.commands.ConditionFailedException;
+import co.aikar.commands.*;
+import co.aikar.locales.MessageKey;
 import com.mehmet_27.punishmanager.PunishManager;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.net.URI;
@@ -82,7 +81,6 @@ public class CommandManager extends BungeeCommandManager {
     private void registerDependencies() {
         registerDependency(ConfigManager.class, plugin.getConfigManager());
         registerDependency(DatabaseManager.class, plugin.getDataBaseManager());
-        registerDependency(PunishManager.class, PunishManager.getInstance());
     }
 
     private void registerCommands() {
@@ -109,7 +107,7 @@ public class CommandManager extends BungeeCommandManager {
         getCommandConditions().addCondition(String.class, "other_player", (context, exec, value) -> {
             BungeeCommandIssuer issuer = context.getIssuer();
             if (issuer.isPlayer() && issuer.getPlayer().getName().equals(value)) {
-                throw new ConditionFailedException("You cannot use this command on yourself!");
+                throw new ConditionFailedException(getMessage(issuer, "main.not-on-yourself"));
             }
         });
     }
@@ -137,27 +135,35 @@ public class CommandManager extends BungeeCommandManager {
         });
     }
 
-    public void loadLocaleFiles(Set<File> files){
+    public void loadLocaleFiles(Set<File> files) {
         try {
-            for (File file : files){
-                String[] locale = file.getName().split("\\.");
-                getLocales().loadYamlLanguageFile(file, new Locale(locale[0], locale[1]));
+            for (File file : files) {
+                String[] name = file.getName().split("[._]");
+                Locale locale = new Locale(name[0], name[1]);
+                getLocales().loadYamlLanguageFile(file, locale);
             }
         } catch (IOException exception) {
             exception.printStackTrace();
         }
     }
 
+    public void updateDefaultLocale(){
+        String[] locale = plugin.getConfigManager().getDefaultLanguage().split("_");
+        getLocales().setDefaultLocale(new Locale(locale[0], locale[1]));
+    }
+
+    public String getMessage(CommandIssuer issuer, String key){
+        return getLocales().getMessage(issuer, MessageKey.of(key));
+    }
+
     @SuppressWarnings("deprecation")
     public void setup() {
         loadLocaleFiles(PunishManager.getInstance().getConfigManager().getLocaleFiles());
-        String[] locale = plugin.getConfigManager().getDefaultLanguage().split("_");
-        getLocales().setDefaultLocale(new Locale(locale[0], locale[1]));
+        updateDefaultLocale();
         registerDependencies();
         enableUnstableAPI("help");
         registerConditions();
         registerCompletions();
         registerCommands();
     }
-
 }

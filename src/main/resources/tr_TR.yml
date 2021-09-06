@@ -6,6 +6,7 @@
 main:
   exempt-player: 'Bu oyuncuyu cezalandıramazsınız.'
   defaultReason: 'yok'
+  not-on-yourself: 'Bu komutu kendi üzerinizde kullanamazsınız.'
   timelayout:
     #Cezanın süresini gösterirken kullanılacak değişkenler.
     month: '%mo% ay'
@@ -14,32 +15,6 @@ main:
     hour: '%h% saat'
     minute: '%m% dakika'
     second: '%s% saniye'
-
-command:
-  ban:
-    description: 'Bir oyuncuyu yasakla.'
-  mute:
-    description: 'Bir oyuncuyu sustur.'
-  ipban:
-    description: 'Bir oyuncunun ip adresini yasakla.'
-  tempban:
-    description: 'Bir oyuncuyu süreli yasakla.'
-  tempmute:
-    description: 'Bir oyuncuyu süreli sustur.'
-  kick:
-    description: 'Bir oyuncuyu sunucudan at.'
-  check:
-    description: 'Bir oyuncunun anlık durumunu kontrol et.'
-  unban:
-    description: 'Bir oyuncunun yasağını kaldır.'
-  unmute:
-    description: 'Bir oyuncunun susturmasını aş.'
-  unpunish:
-    description: 'Bir oyuncunun tüm cezalarını kaldır.'
-  reload:
-    description: 'Eklentiyi yeniden yükle.'
-  help:
-    description: 'Yardım komutu.'
 
 ban:
   punished: '&a%player% başarıyla yasaklandı.'
@@ -53,6 +28,8 @@ ban:
     - '&eDestek İçin'
     - "&6Site &7» &ewww.sunucusite.com"
     - "&6Discord &7» &ehttps://discord.gg/sunucudiscord"
+  description: 'Bir oyuncuyu yasakla.'
+
 tempban:
   punished: '&a%player% başarıyla yasaklandı.'
   alreadyPunished: '&e%player% zaten yasaklı.'
@@ -67,6 +44,8 @@ tempban:
     - '&eDestek İçin'
     - "&6Site &7» &ewww.sunucusite.com"
     - "&6Discord &7» &ehttps://discord.gg/sunucudiscord"
+  description: 'Bir oyuncuyu süreli yasakla.'
+
 ipban:
   punished: '&a%player% başarıyla yasaklandı.'
   alreadyPunished: '&e%player% zaten yasaklı.'
@@ -79,6 +58,8 @@ ipban:
     - '&eDestek İçin'
     - "&6Site &7» &ewww.sunucusite.com"
     - "&6Discord &7» &ehttps://discord.gg/sunucudiscord"
+  description: 'Bir oyuncunun ip adresini yasakla.'
+
 kick:
   punished: '&a%player% başarıyla atıldı.'
   notOnline: '&e%player% çevrimiçi değil.'
@@ -86,25 +67,37 @@ kick:
     - '&eSunucudan Atıldın'
     - '&7'
     - "&cSebep &7» &r%reason%"
+  description: 'Bir oyuncuyu sunucudan at.'
+
 mute:
   punished: '&a%player% başarıyla susturuldu.'
   alreadyPunished: '&e%player% zaten susturulmuş.'
   layout:
     - '&a%operator% &etarafından &a%reason% &esebebiyle susuturuldun.'
+  description: 'Bir oyuncuyu sustur.'
+
 tempmute:
   punished: '&a%player% başarıyla susturuldu.'
   alreadyPunished: '&e%player% zaten susturulmuş.'
   layout:
     - '&a%operator% &eadlı yetkili tarafından &a%reason% &esebebiyle &a%duration% &esüre boyunca susturuldun.'
+  description: 'Bir oyuncuyu süreli sustur.'
+
 unban:
   notPunished: '&e%player% yasaklı değil.'
   done: '&a%player% adlı oyuncunun yasağı kaldırıldı.'
+  description: 'Bir oyuncunun yasağını kaldır.'
+
 unmute:
   notPunished: '&e%player% susturulmamış.'
   done: '&a%player% adlı oyuncunun susturulması açıldı.'
+  description: 'Bir oyuncunun susturmasını aş.'
+
 unpunish:
   notPunished: '&e%player% cezalandırılmamış.'
   done: '&a%player% adlı oyuncunun tüm cezaları kaldırıldı.'
+  description: 'Bir oyuncunun tüm cezalarını kaldır.'
+
 check:
   checking: '&e%player% &akontrol ediliyor'
   playerNotFound: '&c%name% bulunamadı!'
@@ -117,3 +110,14 @@ check:
   muteReason: '&e-> Susturulma sebebi: &c%reason%'
   muteOperator: '&e-> Susturan yetkili: &c%operator%'
   notPunished: '&acezalandırılmamış'
+  description: 'Bir oyuncunun anlık durumunu kontrol et.'
+
+punishmanager:
+  description: 'Eklentinin ana komutu.'
+
+punishmanager_reload:
+  description: 'Eklentiyi yeniden yükle.'
+
+punishmanager_help:
+  description: 'Yardım komutu.'
+

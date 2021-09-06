@@ -5,11 +5,7 @@ import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.events.PlayerPunishEvent;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.DatabaseManager;
-import com.mehmet_27.punishmanager.objects.Ip;
-import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
-import com.mehmet_27.punishmanager.objects.Reason;
-import com.mehmet_27.punishmanager.managers.DatabaseManager;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -29,7 +25,7 @@ public class BanCommand extends BaseCommand {
     private PunishManager punishManager;
 
     @CommandCompletion("@players Reason")
-    @Description("{@@command.ban.description}")
+    @Description("{@@ban.description}")
     @CommandAlias("ban")
     public void ban(CommandSender sender, @Conditions("other_player") @Name("Player") String playerName, @Optional @Name("Reason") @Default("none") String reason) {
         ProxiedPlayer player = punishManager.getProxy().getPlayer(playerName);

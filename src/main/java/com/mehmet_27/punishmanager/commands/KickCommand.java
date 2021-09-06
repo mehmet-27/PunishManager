@@ -21,7 +21,7 @@ public class KickCommand extends BaseCommand {
     private PunishManager punishManager;
 
     @CommandCompletion("@players Reason")
-    @Description("{@@command.kick.description}")
+    @Description("{@@kick.description}")
     @CommandAlias("kick")
     public void kick(CommandSender sender, @Conditions("other_player") @Name("Player") String playerName, @Optional @Name("Reason") String reason) {
         ProxiedPlayer player = punishManager.getProxy().getPlayer(playerName);

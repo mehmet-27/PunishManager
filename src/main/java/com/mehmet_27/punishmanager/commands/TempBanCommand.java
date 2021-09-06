@@ -7,10 +7,7 @@ import com.mehmet_27.punishmanager.events.PlayerPunishEvent;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.managers.DatabaseManager;
-import com.mehmet_27.punishmanager.objects.Ip;
 import com.mehmet_27.punishmanager.objects.Punishment;
-import com.mehmet_27.punishmanager.objects.Reason;
-import com.mehmet_27.punishmanager.managers.DatabaseManager;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -33,7 +30,7 @@ public class TempBanCommand extends BaseCommand {
     private PunishManager punishManager;
 
     @CommandCompletion("@players @units Reason")
-    @Description("{@@command.tempban.description}")
+    @Description("{@@tempban.description}")
     @CommandAlias("tempban")
     public void tempBan(CommandSender sender, @Conditions("other_player") @Name("Player") String playerName, @Name("Time") String time, @Optional @Name("Reason") String reason) {
         ProxiedPlayer player = punishManager.getProxy().getPlayer(playerName);
