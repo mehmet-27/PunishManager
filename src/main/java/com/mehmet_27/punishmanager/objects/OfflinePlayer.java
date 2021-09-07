@@ -20,7 +20,7 @@ public class OfflinePlayer {
         this.playerName = playerName;
     }
 
-    public UUID getUuid() {
+    public UUID getUniqueId() {
         return UUID.fromString(uuid);
     }
 

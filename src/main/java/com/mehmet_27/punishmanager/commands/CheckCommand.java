@@ -23,7 +23,8 @@ public class CheckCommand extends BaseCommand {
     @CommandCompletion("@players")
     @Description("{@@check.description}")
     @CommandAlias("check")
-    public void check(CommandSender sender, @Name("Player") String playerName) {
+    public void check(CommandSender sender, @Name("Player") OfflinePlayer player) {
+        String playerName = player.getPlayerName();
         sendTextComponent(sender, playerName, "check.checking");
         if (!dataBaseManager.isLoggedServer(playerName)) {
             sendTextComponent(sender, playerName, "check.playerNotFound");
@@ -34,8 +35,7 @@ public class CheckCommand extends BaseCommand {
         Punishment ban = dataBaseManager.getBan(playerName);
         Punishment mute = dataBaseManager.getMute(playerName);
 
-        OfflinePlayer player = dataBaseManager.getOfflinePlayer(playerName);
-        String uuid = player != null ? player.getUuid().toString() : playerName;
+        String uuid = player.getUniqueId().toString();
         String banStatus = (ban != null && ban.isBanned() && !ban.isExpired()) ? ban.getDuration() : configManager.getMessage("check.notPunished", sender.getName());
         String muteStatus = (mute != null && mute.isMuted() && !mute.isExpired()) ? mute.getDuration() : configManager.getMessage("check.notPunished", sender.getName());
         //Kalan süreler çok uzun olduğunda bir yerden sonrasını kırp

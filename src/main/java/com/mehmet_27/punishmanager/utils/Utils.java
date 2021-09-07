@@ -81,6 +81,9 @@ public class Utils {
         plugin.getLogger().info(message);
     }
 
+    public static void sendColoredTextComponent(CommandSender sender, String message){
+        sender.sendMessage(new TextComponent(Utils.color(message)));
+    }
     public static void sendTextComponent(CommandSender sender, String path) {
         sendTextComponent(sender, path, message -> message.replace("%player%", sender.getName()));
     }

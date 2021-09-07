@@ -73,11 +73,13 @@ public class DiscordManager {
             return;
         }
 
-        Member member = guild.getMemberById(dataBaseManager.getUserDiscordId(punishment.getUuid()));
-        if (member == null) {
-            plugin.getLogger().severe("Discord member not found!");
+        String id = dataBaseManager.getUserDiscordId(punishment.getUuid());
+        if (id == null) {
+            debug(String.format("Role action failed because player %s's Discord ID could not be found.", punishment.getPlayerName()));
             return;
         }
+        Member member = guild.getMemberById(id);
+        if (member == null) return;
 
         if (action == ADD) {
             guild.addRoleToMember(member, role).queue();
@@ -90,10 +92,10 @@ public class DiscordManager {
 
     public void sendEmbed(Punishment punishment) {
         String path = "discord.punish-announce.embeds." + punishment.getPunishType().name().toLowerCase(Locale.ENGLISH);
-        if (!(configManager.getConfig().getBoolean("discord.punish-announce.enable") &&configManager.getConfig().getBoolean(path)) ){
+        if (!(configManager.getConfig().getBoolean("discord.punish-announce.enable") && configManager.getConfig().getBoolean(path))) {
             return;
         }
-            String json = configManager.getEmbed(punishment.getPunishType().name())
+        String json = configManager.getEmbed(punishment.getPunishType().name())
                 .replace("%player%", punishment.getPlayerName())
                 .replace("%operator%", punishment.getOperator())
                 .replace("%reason%", punishment.getReason())

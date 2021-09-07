@@ -8,6 +8,8 @@ import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 
+import static com.mehmet_27.punishmanager.utils.Utils.sendColoredTextComponent;
+
 @CommandAlias("punishmanager")
 @Description("The main command of the plugin.")
 public class PunishManagerCommand extends BaseCommand {
@@ -18,19 +20,20 @@ public class PunishManagerCommand extends BaseCommand {
     @Default
     @Description("{@@punishmanager.description}")
     public void punishManager(CommandSender sender) {
-        sender.sendMessage(new TextComponent(Utils.color("&a&m+                                                        +")));
-        sender.sendMessage(new TextComponent(Utils.color("&6&lPunishManager")));
-        sender.sendMessage(new TextComponent(Utils.color("&eThe best punishment plugin for your server.")));
-        sender.sendMessage(new TextComponent(Utils.color("&eMade by &bMehmet_27")));
-        sender.sendMessage(new TextComponent(Utils.color("&eContributors: &7Minat0_, RoinujNosde")));
-        sender.sendMessage(new TextComponent(Utils.color("&6Contact")));
-        sender.sendMessage(new TextComponent(Utils.color("&eDiscord: &7Mehmet#5073")));
-        sender.sendMessage(new TextComponent(Utils.color("&a&m+                                                        +")));
-        sender.sendMessage(new TextComponent(Utils.color("&eUse &a/punishmanager help &efor help.")));
+        sendColoredTextComponent(sender, "&a&m+                                                        +");
+        sendColoredTextComponent(sender, String.format("&6&l%s &7%s", punishManager.getDescription().getName(), punishManager.getDescription().getVersion()));
+        sendColoredTextComponent(sender, "&eThe best punishment plugin for your server.");
+        sendColoredTextComponent(sender, "&eDeveloped by Mehmet_27.");
+        sendColoredTextComponent(sender, "&eContributors: &7Minat0_, RoinujNosde");
+        sendColoredTextComponent(sender, "&6Contact");
+        sendColoredTextComponent(sender, "&eDiscord: &7https://discord.gg/abRq8Fan5E");
+        sendColoredTextComponent(sender, "&a&m+                                                        +");
+        sendColoredTextComponent(sender, "&eUse &a/punishmanager help &efor help.");
     }
 
     @Subcommand("reload")
     @Description("{@@punishmanager_reload.description}")
+    @CommandPermission("punishmanager.command.punishmanager.reload")
     public void reload(CommandSender sender) {
         punishManager.getConfigManager().setup();
         punishManager.getCommandManager().updateDefaultLocale();

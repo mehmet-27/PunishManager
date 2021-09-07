@@ -24,16 +24,17 @@ public class KickCommand extends BaseCommand {
     @CommandCompletion("@players Reason")
     @Description("{@@kick.description}")
     @CommandAlias("kick")
-    public void kick(CommandSender sender, @Conditions("other_player") @Name("Player") String playerName, @Optional @Name("Reason") String reason) {
-        ProxiedPlayer player = punishManager.getProxy().getPlayer(playerName);
-        if (player == null || !player.isConnected()) {
+    public void kick(CommandSender sender, @Conditions("other_player") @Name("Player") OfflinePlayer player, @Optional @Name("Reason") String reason) {
+        String playerName = player.getPlayerName();
+        ProxiedPlayer onlinePlayer = punishManager.getProxy().getPlayer(playerName);
+        if (onlinePlayer == null || !onlinePlayer.isConnected()) {
             sendTextComponent(sender, playerName, "kick.notOnline");
             return;
         }
         UUID uuid = player.getUniqueId();
 
         String ip = Utils.getPlayerIp(playerName);
-            Punishment punishment = new Punishment(playerName, uuid, ip, KICK, reason,  sender.getName());
+        Punishment punishment = new Punishment(playerName, uuid, ip, KICK, reason, sender.getName());
         Utils.sendLayout(punishment);
         sendTextComponent(sender, playerName, "kick.punished");
     }

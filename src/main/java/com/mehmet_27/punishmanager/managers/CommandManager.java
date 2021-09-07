@@ -3,6 +3,7 @@ package com.mehmet_27.punishmanager.managers;
 import co.aikar.commands.*;
 import co.aikar.locales.MessageKey;
 import com.mehmet_27.punishmanager.PunishManager;
+import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.io.File;
@@ -22,11 +23,11 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class CommandManager extends BungeeCommandManager {
-    private final PunishManager plugin;
+    private final PunishManager punishManager;
 
-    public CommandManager(PunishManager plugin) {
-        super(plugin);
-        this.plugin = plugin;
+    public CommandManager(PunishManager punishManager) {
+        super(punishManager);
+        this.punishManager = punishManager;
         setup();
     }
 
@@ -79,8 +80,8 @@ public class CommandManager extends BungeeCommandManager {
     }
 
     private void registerDependencies() {
-        registerDependency(ConfigManager.class, plugin.getConfigManager());
-        registerDependency(DatabaseManager.class, plugin.getDataBaseManager());
+        registerDependency(ConfigManager.class, punishManager.getConfigManager());
+        registerDependency(DatabaseManager.class, punishManager.getDataBaseManager());
     }
 
     private void registerCommands() {
@@ -104,11 +105,22 @@ public class CommandManager extends BungeeCommandManager {
     }
 
     private void registerConditions() {
-        getCommandConditions().addCondition(String.class, "other_player", (context, exec, value) -> {
+        getCommandConditions().addCondition(OfflinePlayer.class, "other_player", (context, exec, value) -> {
             BungeeCommandIssuer issuer = context.getIssuer();
-            if (issuer.isPlayer() && issuer.getPlayer().getName().equals(value)) {
+            if (issuer.isPlayer() && issuer.getPlayer().getName().equals(value.getPlayerName())) {
                 throw new ConditionFailedException(getMessage(issuer, "main.not-on-yourself"));
             }
+        });
+    }
+
+    public void registerContexts(){
+        getCommandContexts().registerContext(OfflinePlayer.class, c -> {
+            String playerName = c.popFirstArg();
+            OfflinePlayer offlinePlayer = punishManager.getOfflinePlayers().get(playerName);
+            if (offlinePlayer == null){
+                throw new InvalidCommandArgument(getMessage(c.getIssuer(), "not-logged-server"));
+            }
+            return punishManager.getOfflinePlayers().get(playerName);
         });
     }
 
@@ -128,10 +140,10 @@ public class CommandManager extends BungeeCommandManager {
             return Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
         });
         getCommandCompletions().registerCompletion("players", c -> {
-            if (plugin.getConfigManager().getConfig().getBoolean("show-all-names-in-tab-completion")) {
-                return plugin.getAllPlayerNames();
+            if (punishManager.getConfigManager().getConfig().getBoolean("show-all-names-in-tab-completion")) {
+                return punishManager.getAllPlayerNames();
             }
-            return plugin.getProxy().getPlayers().stream().map(ProxiedPlayer::getName).collect(Collectors.toSet());
+            return punishManager.getProxy().getPlayers().stream().map(ProxiedPlayer::getName).collect(Collectors.toSet());
         });
     }
 
@@ -148,7 +160,7 @@ public class CommandManager extends BungeeCommandManager {
     }
 
     public void updateDefaultLocale(){
-        String[] locale = plugin.getConfigManager().getDefaultLanguage().split("_");
+        String[] locale = punishManager.getConfigManager().getDefaultLanguage().split("_");
         getLocales().setDefaultLocale(new Locale(locale[0], locale[1]));
     }
 
@@ -162,8 +174,9 @@ public class CommandManager extends BungeeCommandManager {
         updateDefaultLocale();
         registerDependencies();
         enableUnstableAPI("help");
+        registerContexts();
+        registerCommands();
         registerConditions();
         registerCompletions();
-        registerCommands();
     }
 }

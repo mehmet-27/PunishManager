@@ -9,7 +9,6 @@ import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.UUID;
 
@@ -28,13 +27,9 @@ public class MuteCommand extends BaseCommand {
     @CommandCompletion("@players Reason")
     @Description("{@@mute.description}")
     @CommandAlias("mute")
-    public void mute(CommandSender sender, @Conditions("other_player") @Name("Player") String playerName, @Optional @Name("Reason") String reason) {
-        OfflinePlayer player = punishManager.getOfflinePlayers().get(playerName);
-        UUID uuid = player != null ? player.getUuid() : null;
-        if (uuid == null){
-            sendTextComponent(sender, "main.not-logged-server");
-            return;
-        }
+    public void mute(CommandSender sender, @Conditions("other_player") @Name("Player") OfflinePlayer player, @Optional @Name("Reason") String reason) {
+        UUID uuid = player.getUniqueId();
+        String playerName = player.getPlayerName();
 
         Punishment punishment = dataBaseManager.getMute(playerName);
         if (punishment != null && punishment.isMuted()) {
