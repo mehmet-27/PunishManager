@@ -9,9 +9,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.config.Configuration;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static com.mehmet_27.punishmanager.managers.DiscordAction.REMOVE;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType;
@@ -134,6 +132,25 @@ public class DatabaseManager {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public Map<String, OfflinePlayer> getAllOfflinePlayers() {
+        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT * FROM `punishmanager_players`")) {
+            ResultSet result = ps.executeQuery();
+            Map<String, OfflinePlayer> offlinePlayers = new HashMap<>();
+            while (result.next()) {
+                String uuid = result.getString("uuid");
+                String playerName = result.getString("name");
+                String ip = result.getString("ip");
+                String language = result.getString("language");
+                offlinePlayers.put(playerName, new OfflinePlayer(uuid, playerName, ip, language));
+            }
+            PunishManager.getInstance().getLogger().info(offlinePlayers.size() + " offline players loaded.");
+            return offlinePlayers;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new HashMap<>();
     }
 
     public Punishment getBan(String wantedPlayer) {
@@ -272,8 +289,8 @@ public class DatabaseManager {
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public boolean isDiscordSRVTableExits(){
-        try (Connection connection = source.getConnection()){
+    public boolean isDiscordSRVTableExits() {
+        try (Connection connection = source.getConnection()) {
             DatabaseMetaData dbm = connection.getMetaData();
             ResultSet tables = dbm.getTables(null, null, "discordsrv_accounts", null);
             return tables.next();

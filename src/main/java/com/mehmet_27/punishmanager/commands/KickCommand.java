@@ -3,6 +3,7 @@ package com.mehmet_27.punishmanager.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
+import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
@@ -26,14 +27,14 @@ public class KickCommand extends BaseCommand {
     public void kick(CommandSender sender, @Conditions("other_player") @Name("Player") String playerName, @Optional @Name("Reason") String reason) {
         ProxiedPlayer player = punishManager.getProxy().getPlayer(playerName);
         if (player == null || !player.isConnected()) {
-            sendTextComponent(sender, "kick.notOnline");
+            sendTextComponent(sender, playerName, "kick.notOnline");
             return;
         }
-
         UUID uuid = player.getUniqueId();
+
         String ip = Utils.getPlayerIp(playerName);
             Punishment punishment = new Punishment(playerName, uuid, ip, KICK, reason,  sender.getName());
         Utils.sendLayout(punishment);
-        sendTextComponent(sender, "kick.punished");
+        sendTextComponent(sender, playerName, "kick.punished");
     }
 }

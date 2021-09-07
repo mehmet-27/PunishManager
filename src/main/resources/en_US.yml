@@ -7,6 +7,7 @@ main:
   exempt-player: 'You can''t punish this player.'
   defaultReason: 'none'
   not-on-yourself: 'You cannot use this command on yourself!'
+  not-logged-server: '&cYou can''t punish someone who hasn''t been on the server before.'
   timelayout:
     #Variables to be used when showing the duration of the punishment.
     month: '%mo% months'
@@ -96,7 +97,7 @@ unpunish:
 
 check:
   checking: '&eChecking &a%player%'
-  playerNotFound: '&c%name% not found!'
+  playerNotFound: '&c%player% not found!'
   uuid: '&eUUID: &a%uuid%'
   ip: '&eIP: &a%ip%'
   banStatus: '&eBan status: &c%status%'

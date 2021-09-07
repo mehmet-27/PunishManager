@@ -47,14 +47,11 @@ public class Utils {
         if (player == null || !player.isConnected()) return;
         String path = punishment.getPunishType().toString().toLowerCase(Locale.ENGLISH) + ".layout";
         TextComponent layout = TextComponentBuilder(configManager.getLayout(path, punishment.getPlayerName()), punishment);
-        if (punishment.isBanned()) {
+        if (punishment.isBanned() || punishment.getPunishType().equals(Punishment.PunishType.KICK)) {
             player.disconnect(layout);
         }
         if (punishment.isMuted()) {
             player.sendMessage(layout);
-        }
-        if (punishment.getPunishType().equals(Punishment.PunishType.KICK)) {
-            player.disconnect(layout);
         }
     }
 
@@ -86,6 +83,10 @@ public class Utils {
 
     public static void sendTextComponent(CommandSender sender, String path) {
         sendTextComponent(sender, path, message -> message.replace("%player%", sender.getName()));
+    }
+
+    public static void sendTextComponent(CommandSender sender, String playerName, String path) {
+        sendTextComponent(sender, path, message -> message.replace("%player%", playerName));
     }
 
     public static void sendTextComponent(CommandSender sender, String path, Function<String, String> placeholders) {

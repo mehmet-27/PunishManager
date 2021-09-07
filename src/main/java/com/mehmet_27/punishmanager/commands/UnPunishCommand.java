@@ -24,11 +24,11 @@ public class UnPunishCommand extends BaseCommand {
     public void unPunish(CommandSender sender, @Name("Player") String playerName) {
         Punishment punishment = dataBaseManager.getPunishment(playerName);
         if (punishment == null || punishment.getPunishType().equals(NONE)) {
-            sendTextComponent(sender, "unpunish.notPunished");
+            sendTextComponent(sender, playerName, "unpunish.notPunished");
             return;
         }
         dataBaseManager.removeAllPunishes(punishment);
         PunishManager.getInstance().getDiscordManager().updateRole(punishment, REMOVE);
-        sendTextComponent(sender, "unpunish.done");
+        sendTextComponent(sender, playerName, "unpunish.done");
     }
 }

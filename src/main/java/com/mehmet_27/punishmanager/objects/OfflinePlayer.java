@@ -1,5 +1,7 @@
 package com.mehmet_27.punishmanager.objects;
 
+import java.util.UUID;
+
 public class OfflinePlayer {
     private String playerName, uuid, playerIp, language;
 
@@ -18,8 +20,8 @@ public class OfflinePlayer {
         this.playerName = playerName;
     }
 
-    public String getUuid() {
-        return uuid;
+    public UUID getUuid() {
+        return UUID.fromString(uuid);
     }
 
     public void setUuid(String uuid) {

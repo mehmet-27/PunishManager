@@ -24,11 +24,11 @@ public class UnMuteCommand extends BaseCommand {
         Punishment punishment = dataBaseManager.getMute(playerName);
 
         if (punishment == null || !punishment.isMuted()) {
-            sendTextComponent(sender, "unmute.notPunished");
+            sendTextComponent(sender, playerName, "unmute.notPunished");
             return;
         }
         dataBaseManager.unPunishPlayer(punishment);
         PunishManager.getInstance().getDiscordManager().updateRole(punishment, REMOVE);
-        sendTextComponent(sender, "unmute.done");
+        sendTextComponent(sender, playerName, "unmute.done");
     }
 }

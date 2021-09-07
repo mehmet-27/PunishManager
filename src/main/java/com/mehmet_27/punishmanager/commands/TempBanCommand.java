@@ -7,6 +7,7 @@ import com.mehmet_27.punishmanager.events.PlayerPunishEvent;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.managers.DatabaseManager;
+import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
@@ -17,6 +18,7 @@ import java.util.regex.Matcher;
 
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.TEMPBAN;
 import static com.mehmet_27.punishmanager.utils.Utils.NumberAndUnit;
+import static com.mehmet_27.punishmanager.utils.Utils.sendTextComponent;
 
 @CommandAlias("punishmanager")
 @CommandPermission("punishmanager.command.tempban")
@@ -33,15 +35,16 @@ public class TempBanCommand extends BaseCommand {
     @Description("{@@tempban.description}")
     @CommandAlias("tempban")
     public void tempBan(CommandSender sender, @Conditions("other_player") @Name("Player") String playerName, @Name("Time") String time, @Optional @Name("Reason") String reason) {
-        ProxiedPlayer player = punishManager.getProxy().getPlayer(playerName);
-        if (player == null || !player.isConnected()) {
+        OfflinePlayer player = punishManager.getOfflinePlayers().get(playerName);
+        UUID uuid = player != null ? player.getUuid() : null;
+        if (uuid == null){
+            sendTextComponent(sender, "main.not-logged-server");
             return;
         }
 
-        UUID uuid = player.getUniqueId();
         Punishment punishment = dataBaseManager.getBan(playerName);
         if (punishment != null && punishment.isBanned()) {
-            Utils.sendTextComponent(sender, "tempban.alreadyPunished");
+            Utils.sendTextComponent(sender, playerName, "tempban.alreadyPunished");
             return;
         }
         Matcher matcher = NumberAndUnit.matcher(time.toLowerCase());

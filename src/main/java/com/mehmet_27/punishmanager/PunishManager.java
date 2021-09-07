@@ -9,9 +9,11 @@ import com.mehmet_27.punishmanager.managers.CommandManager;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.managers.DatabaseManager;
 import com.mehmet_27.punishmanager.managers.DiscordManager;
+import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.List;
+import java.util.Map;
 
 public final class PunishManager extends Plugin {
 
@@ -22,6 +24,7 @@ public final class PunishManager extends Plugin {
     private CommandManager commandManager;
     private DiscordManager discordManager;
 
+    private Map<String, OfflinePlayer> offlinePlayers;
     private List<String> allPlayerNames;
     private List<String> bannedIps;
 
@@ -36,6 +39,7 @@ public final class PunishManager extends Plugin {
         dataBaseManager = new DatabaseManager(this);
         new BungeeCommandManager(this);
         this.commandManager = new CommandManager(this);
+        offlinePlayers = dataBaseManager.getAllOfflinePlayers();
         allPlayerNames = dataBaseManager.getAllLoggedNames();
         bannedIps = dataBaseManager.getBannedIps();
         discordManager = new DiscordManager(this);
@@ -58,6 +62,10 @@ public final class PunishManager extends Plugin {
 
     public DatabaseManager getDataBaseManager() {
         return dataBaseManager;
+    }
+
+    public Map<String, OfflinePlayer> getOfflinePlayers() {
+        return offlinePlayers;
     }
 
     public List<String> getAllPlayerNames() {

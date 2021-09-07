@@ -22,11 +22,11 @@ public class UnBanCommand extends BaseCommand {
         Punishment punishment = dataBaseManager.getBan(playerName);
 
         if (punishment == null || !punishment.isBanned()) {
-            sendTextComponent(sender, "unban.notPunished");
+            sendTextComponent(sender, playerName, "unban.notPunished");
             return;
         }
 
         dataBaseManager.unPunishPlayer(punishment);
-        sendTextComponent(sender, "unban.done");
+        sendTextComponent(sender, playerName, "unban.done");
     }
 }

@@ -7,6 +7,7 @@ main:
   exempt-player: 'Bu oyuncuyu cezalandıramazsınız.'
   defaultReason: 'yok'
   not-on-yourself: 'Bu komutu kendi üzerinizde kullanamazsınız.'
+  not-logged-server: '&cDaha önce sunucuya girmemiş birini cezalandıramazsınız.'
   timelayout:
     #Cezanın süresini gösterirken kullanılacak değişkenler.
     month: '%mo% ay'
@@ -100,7 +101,7 @@ unpunish:
 
 check:
   checking: '&e%player% &akontrol ediliyor'
-  playerNotFound: '&c%name% bulunamadı!'
+  playerNotFound: '&c%player% bulunamadı!'
   uuid: '&eUUID: &a%uuid%'
   ip: '&eIP: &a%ip%'
   banStatus: '&eYasaklanma durumu: &c%status%'
