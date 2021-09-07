@@ -97,7 +97,8 @@ public class Utils {
         TextComponent textComponent = new TextComponent(message);
         sender.sendMessage(textComponent);
     }
-    public static String getPlayerIp(String playerName){
+
+    public static String getPlayerIp(String playerName) {
         ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerName);
         DatabaseManager dataBaseManager = PunishManager.getInstance().getDataBaseManager();
         return player != null && player.isConnected() ? player.getSocketAddress().toString().substring(1).split(":")[0] : dataBaseManager.getOfflinePlayer(playerName).getPlayerIp();
