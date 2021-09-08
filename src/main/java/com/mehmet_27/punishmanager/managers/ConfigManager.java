@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class ConfigManager {
     private final PunishManager plugin;
     private final ConfigurationProvider provider = ConfigurationProvider.getProvider(YamlConfiguration.class);
-    private Configuration config, messages;
+    private Configuration config;
     private Map<String, Configuration> locales;
     private Map<String, String> embeds;
     private String defaultLanguage;
@@ -118,15 +118,12 @@ public class ConfigManager {
                 return Utils.color(locales.get(defaultLanguage).getString(path));
             }
         }
+        plugin.getLogger().warning("The searched value was not found in the language file and the default language file: " + path);
         return null;
     }
 
     public Configuration getConfig() {
         return config;
-    }
-
-    public Configuration getMessages() {
-        return messages;
     }
 
     public void setup() {
@@ -139,7 +136,7 @@ public class ConfigManager {
         loadFile(new File(plugin.getDataFolder() + File.separator + "embeds" + File.separator + "tempmute.json"));
         loadFile(new File(plugin.getDataFolder() + File.separator + "embeds" + File.separator + "ipban.json"));
         loadFile(new File(plugin.getDataFolder() + File.separator + "embeds" + File.separator + "kick.json"));
-        messages = loadConfigFile(new File(plugin.getDataFolder() + File.separator + "locales" + File.separator + "en_US.yml"));
+        loadFile(new File(plugin.getDataFolder() + File.separator + "locales" + File.separator + "en_US.yml"));
         loadFile(new File(plugin.getDataFolder() + File.separator + "locales" + File.separator + "tr_TR.yml"));
         this.locales = getLocales();
         plugin.getLogger().info("Found " + locales.size() + " language files.");

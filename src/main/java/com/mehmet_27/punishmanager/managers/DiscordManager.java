@@ -20,6 +20,7 @@ import javax.security.auth.login.LoginException;
 import java.util.Locale;
 
 import static com.mehmet_27.punishmanager.managers.DiscordAction.ADD;
+import static com.mehmet_27.punishmanager.managers.DiscordAction.REMOVE;
 import static com.mehmet_27.punishmanager.utils.Utils.debug;
 
 public class DiscordManager {
@@ -67,12 +68,10 @@ public class DiscordManager {
     public void updateRole(Punishment punishment, DiscordAction action) {
         if (!(config.getBoolean("discord.enable") && config.getBoolean("discord.punish-role.enable"))) return;
         if (!dataBaseManager.isDiscordSRVTableExits()) return;
-        Role role = guild.getRoleById(config.getString("discord.punish-role.punishedRoleId"));
-        if (role == null) {
-            plugin.getLogger().severe("Discord role not found!");
+        if (api == null) {
+            debug(String.format("Could not update role for %s because bot is null.", punishment.getPlayerName()));
             return;
         }
-
         String id = dataBaseManager.getUserDiscordId(punishment.getUuid());
         if (id == null) {
             debug(String.format("Role action failed because player %s's Discord ID could not be found.", punishment.getPlayerName()));
@@ -81,9 +80,15 @@ public class DiscordManager {
         Member member = guild.getMemberById(id);
         if (member == null) return;
 
+        Role role = guild.getRoleById(config.getString("discord.punish-role.punishedRoleId"));
+        if (role == null) {
+            plugin.getLogger().severe("Discord role not found!");
+            return;
+        }
+
         if (action == ADD) {
             guild.addRoleToMember(member, role).queue();
-        } else {
+        } else if(action == REMOVE){
             guild.removeRoleFromMember(member, role).queue();
         }
 

@@ -17,11 +17,12 @@ import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.IPBAN;
 
 public class DatabaseManager {
 
-    private final DiscordManager discordManager;
+    private final PunishManager punishManager;
     private final HikariDataSource source = new HikariDataSource();
     private final ConfigManager configManager;
 
     public DatabaseManager(PunishManager plugin) {
+        punishManager = plugin;
         configManager = plugin.getConfigManager();
         Configuration config = configManager.getConfig();
 
@@ -36,7 +37,6 @@ public class DatabaseManager {
             source.setJdbcUrl("jdbc:h2:./plugins/" + pluginName + "/" + pluginName + ".db;MODE=MySQL");
         }
         setup();
-        discordManager = plugin.getDiscordManager();
     }
 
     public HikariDataSource getSource() {
@@ -216,7 +216,7 @@ public class DatabaseManager {
         return ips;
     }
 
-    public void removeAllOutdatedPunishes() {
+    public void removeAllExpiredPunishes() {
         try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.SELECT_ALL_PUNISHMENTS.getQuery())) {
             int deleted = 0;
             ResultSet result = ps.executeQuery();
@@ -225,7 +225,7 @@ public class DatabaseManager {
                 Punishment punishment = getPunishment(playerName);
                 if (punishment.getPunishType().isTemp() && punishment.isExpired()) {
                     if (punishment.getPunishType().isMute()) {
-                        discordManager.updateRole(punishment, REMOVE);
+                        punishManager.getDiscordManager().updateRole(punishment, REMOVE);
                     }
                     unPunishPlayer(punishment);
                     deleted++;

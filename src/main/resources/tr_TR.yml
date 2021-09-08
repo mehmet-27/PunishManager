@@ -118,6 +118,7 @@ punishmanager:
 
 punishmanager_reload:
   description: 'Eklentiyi yeniden yükle.'
+  done: '&aTüm yapılandırma dosyaları yeniden yüklendi.'
 
 punishmanager_help:
   description: 'Yardım komutu.'

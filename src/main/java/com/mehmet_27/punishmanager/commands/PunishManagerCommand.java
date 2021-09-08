@@ -4,9 +4,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.TextComponent;
 
 import static com.mehmet_27.punishmanager.utils.Utils.sendColoredTextComponent;
 
@@ -23,7 +21,7 @@ public class PunishManagerCommand extends BaseCommand {
         sendColoredTextComponent(sender, "&a&m+                                                        +");
         sendColoredTextComponent(sender, String.format("&6&l%s &7%s", punishManager.getDescription().getName(), punishManager.getDescription().getVersion()));
         sendColoredTextComponent(sender, "&eThe best punishment plugin for your server.");
-        sendColoredTextComponent(sender, "&eDeveloped by Mehmet_27.");
+        sendColoredTextComponent(sender, "&eDeveloped by &bMehmet_27.");
         sendColoredTextComponent(sender, "&eContributors: &7Minat0_, RoinujNosde");
         sendColoredTextComponent(sender, "&6Contact");
         sendColoredTextComponent(sender, "&eDiscord: &7https://discord.gg/abRq8Fan5E");
@@ -37,7 +35,8 @@ public class PunishManagerCommand extends BaseCommand {
     public void reload(CommandSender sender) {
         punishManager.getConfigManager().setup();
         punishManager.getCommandManager().updateDefaultLocale();
-        sender.sendMessage(new TextComponent(Utils.color("&6" + punishManager.getDescription().getName() + " &7» &aAll configuration files have been reloaded.")));
+        String done = punishManager.getConfigManager().getMessage("", sender.getName());
+        sendColoredTextComponent(sender, String.format("&6%s &7» " + done , punishManager.getDescription().getName()));
     }
 
     @Subcommand("help")

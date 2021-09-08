@@ -52,7 +52,7 @@ public final class PunishManager extends Plugin {
 
     @Override
     public void onDisable() {
-        dataBaseManager.removeAllOutdatedPunishes();
+        dataBaseManager.removeAllExpiredPunishes();
         discordManager.disconnectBot();
     }
 
