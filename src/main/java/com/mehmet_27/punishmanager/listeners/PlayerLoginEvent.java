@@ -35,6 +35,7 @@ public class PlayerLoginEvent implements Listener {
         Punishment punishment = dataBaseManager.getBan(player.getName());
         String playerIp = Utils.getPlayerIp(player.getName());
         if (bannedIps.contains(playerIp)) {
+            debug("This player's IP address is banned: " + player.getName() + " IP: " + playerIp);
             Utils.sendLayout(punishment);
             return;
         }
