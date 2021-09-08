@@ -1,10 +1,20 @@
 package com.mehmet_27.punishmanager.objects;
 
+import com.mehmet_27.punishmanager.PunishManager;
+import com.mehmet_27.punishmanager.utils.Utils;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
+
 import java.util.UUID;
 
 public class OfflinePlayer {
     private String playerName, uuid, playerIp, language;
 
+    public OfflinePlayer(ProxiedPlayer player) {
+        this.uuid = player.getUniqueId().toString();
+        this.playerName = player.getName();
+        this.playerIp = Utils.getPlayerIp(player.getName());
+        this.language = PunishManager.getInstance().getConfigManager().getDefaultLanguage();
+    }
     public OfflinePlayer(String uuid, String playerName, String playerIp, String language) {
         this.uuid = uuid;
         this.playerName = playerName;

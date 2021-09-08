@@ -30,17 +30,17 @@ public class PunishManagerCommand extends BaseCommand {
     }
 
     @Subcommand("reload")
-    @Description("{@@punishmanager_reload.description}")
+    @Description("{@@punishmanager-reload.description}")
     @CommandPermission("punishmanager.command.punishmanager.reload")
     public void reload(CommandSender sender) {
         punishManager.getConfigManager().setup();
         punishManager.getCommandManager().updateDefaultLocale();
-        String done = punishManager.getConfigManager().getMessage("", sender.getName());
+        String done = punishManager.getConfigManager().getMessage("punishmanager-reload.done", sender.getName());
         sendColoredTextComponent(sender, String.format("&6%s &7» " + done , punishManager.getDescription().getName()));
     }
 
     @Subcommand("help")
-    @Description("{@@punishmanager_help.description}")
+    @Description("{@@punishmanager-help.description}")
     public void help(CommandSender sender, CommandHelp help) {
         help.showHelp();
     }

@@ -4,6 +4,7 @@ import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.utils.SqlQuery;
+import com.mehmet_27.punishmanager.utils.Utils;
 import com.zaxxer.hikari.HikariDataSource;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.config.Configuration;
@@ -37,10 +38,6 @@ public class DatabaseManager {
             source.setJdbcUrl("jdbc:h2:./plugins/" + pluginName + "/" + pluginName + ".db;MODE=MySQL");
         }
         setup();
-    }
-
-    public HikariDataSource getSource() {
-        return source;
     }
 
     private void createTable(String query) {
@@ -83,7 +80,6 @@ public class DatabaseManager {
         if (punishment.getPunishType().equals(IPBAN)) {
             PunishManager.getInstance().getBannedIps().remove(punishment.getIp());
         }
-        PunishManager.getInstance().getDiscordManager().updateRole(punishment, REMOVE);
     }
 
     public void removeAllPunishes(Punishment punishment) {
@@ -231,7 +227,11 @@ public class DatabaseManager {
                     deleted++;
                 }
             }
-            PunishManager.getInstance().getLogger().info(deleted + " expiring punish deleted.");
+            if (deleted == 0){
+                punishManager.getLogger().info("No expired punish found.");
+            }else {
+                punishManager.getLogger().info(deleted + " expiring punish deleted.");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -245,6 +245,7 @@ public class DatabaseManager {
             ps.setString(3, ip);
             ps.setString(4, configManager.getDefaultLanguage());
             ps.executeUpdate();
+            Utils.debug(String.format("%s has been successfully added to the database.", player.getName()));
         } catch (SQLException e) {
             e.printStackTrace();
         }

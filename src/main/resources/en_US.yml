@@ -112,9 +112,9 @@ check:
 punishmanager:
   description: 'The main command of the plugin.'
 
-punishmanager_reload:
+punishmanager-reload:
   description: 'Reloads the plugin.'
   done: '&aAll configuration files have been reloaded.'
 
-punishmanager_help:
+punishmanager-help:
   description: 'Help command.'

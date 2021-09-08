@@ -116,10 +116,10 @@ check:
 punishmanager:
   description: 'Eklentinin ana komutu.'
 
-punishmanager_reload:
+punishmanager-reload:
   description: 'Eklentiyi yeniden yükle.'
   done: '&aTüm yapılandırma dosyaları yeniden yüklendi.'
 
-punishmanager_help:
+punishmanager-help:
   description: 'Yardım komutu.'
 
