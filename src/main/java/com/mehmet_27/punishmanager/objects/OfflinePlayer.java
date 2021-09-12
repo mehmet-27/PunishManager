@@ -1,12 +1,14 @@
 package com.mehmet_27.punishmanager.objects;
 
 import com.mehmet_27.punishmanager.PunishManager;
+import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.UUID;
 
 public class OfflinePlayer {
+    private final ConfigManager configManager = PunishManager.getInstance().getConfigManager();
     private String playerName, uuid, playerIp, language;
 
     public OfflinePlayer(ProxiedPlayer player) {
@@ -47,7 +49,7 @@ public class OfflinePlayer {
     }
 
     public String getLanguage() {
-        return language;
+        return language != null ? language : configManager.getDefaultLanguage();
     }
 
     public void setLanguage(String language) {

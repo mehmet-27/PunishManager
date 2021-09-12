@@ -25,12 +25,12 @@ public enum SqlQuery {
                     " PRIMARY KEY (`uuid`))"
     ),
     ADD_PLAYER_TO_PLAYERS_TABLE(
-            "INSERT IGNORE INTO `punishmanager_players` (" +
+            "INSERT INTO `punishmanager_players` (" +
                     " `uuid`, `name`, `ip`, `language`)" +
                     " VALUES (?,?,?,?)"
     ),
     ADD_PUNISH_TO_PUNISHMENTS(
-            "INSERT IGNORE INTO `punishmanager_punishments` (" +
+            "INSERT INTO `punishmanager_punishments` (" +
                     "`name`, `uuid`, `ip`, `reason`, `operator`, `type`, `start`, `end`)" +
                     " VALUES (?,?,?,?,?,?,?,?)"
     ),
@@ -38,6 +38,7 @@ public enum SqlQuery {
     DELETE_PUNISHMENT("DELETE FROM `punishmanager_punishments` WHERE name = ?"),
     DELETE_PUNISHMENT_WITH_TYPE("DELETE FROM `punishmanager_punishments` WHERE name = ? and type = ?"),
     SELECT_ALL_PUNISHMENTS("SELECT * FROM `punishmanager_punishments`"),
+    SELECT_ALL_PLAYERS("SELECT * FROM `punishmanager_players`"),
     SELECT_PLAYER_WITH_NAME("SELECT * FROM `punishmanager_players` WHERE name = ?"),
     UPDATE_PLAYER_LOCALE("UPDATE `punishmanager_players` SET `language` = ? WHERE `name` = ?"),
     SELECT_DISCORDSRV_WITH_UUID("SELECT * FROM `discordsrv_accounts` WHERE uuid = ?"),

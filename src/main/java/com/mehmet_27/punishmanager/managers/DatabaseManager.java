@@ -4,7 +4,6 @@ import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.utils.SqlQuery;
-import com.mehmet_27.punishmanager.utils.Utils;
 import com.zaxxer.hikari.HikariDataSource;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.config.Configuration;
@@ -12,9 +11,11 @@ import net.md_5.bungee.config.Configuration;
 import java.sql.*;
 import java.util.*;
 
+import static com.mehmet_27.punishmanager.utils.SqlQuery.*;
 import static com.mehmet_27.punishmanager.managers.DiscordAction.REMOVE;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.IPBAN;
+import static com.mehmet_27.punishmanager.utils.Utils.debug;
 
 public class DatabaseManager {
 
@@ -35,7 +36,7 @@ public class DatabaseManager {
         } else {
             String pluginName = plugin.getDescription().getName();
             source.setDriverClassName("org.h2.Driver");
-            source.setJdbcUrl("jdbc:h2:./plugins/" + pluginName + "/" + pluginName + ".db;MODE=MySQL");
+            source.setJdbcUrl("jdbc:h2:./plugins/" + pluginName + "/" + pluginName);
         }
         setup();
     }
@@ -113,9 +114,8 @@ public class DatabaseManager {
     }
 
     public OfflinePlayer getOfflinePlayer(String wantedPlayer) {
-        try (Connection connection = source.getConnection()) {
-            String query = "SELECT * FROM `punishmanager_players` WHERE `name` = ?".replace("?", "'" + wantedPlayer + "'");
-            PreparedStatement ps = connection.prepareStatement(query);
+        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SELECT_PLAYER_WITH_NAME.getQuery())) {
+            ps.setString(1, wantedPlayer);
             ResultSet result = ps.executeQuery();
             if (result.next()) {
                 String uuid = result.getString("uuid");
@@ -131,7 +131,7 @@ public class DatabaseManager {
     }
 
     public Map<String, OfflinePlayer> getAllOfflinePlayers() {
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT * FROM `punishmanager_players`")) {
+        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SELECT_ALL_PLAYERS.getQuery())) {
             ResultSet result = ps.executeQuery();
             Map<String, OfflinePlayer> offlinePlayers = new HashMap<>();
             while (result.next()) {
@@ -245,7 +245,7 @@ public class DatabaseManager {
             ps.setString(3, ip);
             ps.setString(4, configManager.getDefaultLanguage());
             ps.executeUpdate();
-            Utils.debug(String.format("%s has been successfully added to the database.", player.getName()));
+            debug(String.format("%s has been successfully added to the database.", player.getName()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -256,6 +256,7 @@ public class DatabaseManager {
             ps.setString(1, language);
             ps.setString(2, playerName);
             ps.executeUpdate();
+            debug(String.format("The locale of %s is set to %s.", playerName, language));
         } catch (SQLException e) {
             e.printStackTrace();
         }

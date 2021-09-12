@@ -43,7 +43,7 @@ public class DiscordManager {
         //Return if feature is disabled.
         if (!config.getBoolean("discord.enable")) return;
         if (!dataBaseManager.isDiscordSRVTableExits()) {
-            plugin.getLogger().severe("The Punished Role feature will not work because DiscordSRV cannot connect to the database.");
+            plugin.getLogger().warning("The Punished Role feature will not work because DiscordSRV cannot connect to the database.");
         }
         try {
             api = JDABuilder.createDefault(config.getString("discord.token"))
