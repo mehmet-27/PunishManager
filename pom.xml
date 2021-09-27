@@ -6,7 +6,7 @@
 
     <groupId>com.mehmet_27</groupId>
     <artifactId>PunishManager</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <name>PunishManager</name>
@@ -81,6 +81,10 @@
 
     <repositories>
         <repository>
+            <id>exceptionflug</id>
+            <url>https://mvn.exceptionflug.de/repository/exceptionflug-public/</url>
+        </repository>
+        <repository>
             <id>aikar</id>
             <url>https://repo.aikar.co/content/groups/aikar/</url>
         </repository>
@@ -124,6 +128,12 @@
             <artifactId>h2</artifactId>
             <version>1.4.200</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>dev.simplix</groupId>
+            <artifactId>protocolize-api</artifactId>
+            <version>2.0.0</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

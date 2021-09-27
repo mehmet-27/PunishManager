@@ -27,7 +27,7 @@ public class DiscordManager {
     private final PunishManager plugin;
     private final ConfigManager configManager;
     private final Configuration config;
-    private final DatabaseManager dataBaseManager;
+    private final StorageManager storageManager;
     private JDA api;
     private Guild guild;
     private TextChannel announceChannel;
@@ -36,13 +36,13 @@ public class DiscordManager {
         this.plugin = plugin;
         this.configManager = plugin.getConfigManager();
         this.config = configManager.getConfig();
-        this.dataBaseManager = plugin.getDataBaseManager();
+        this.storageManager = plugin.getStorageManager();
     }
 
     public void buildBot() {
         //Return if feature is disabled.
         if (!config.getBoolean("discord.enable")) return;
-        if (!dataBaseManager.isDiscordSRVTableExits()) {
+        if (!storageManager.isDiscordSRVTableExits()) {
             plugin.getLogger().warning("The Punished Role feature will not work because DiscordSRV cannot connect to the database.");
         }
         try {
@@ -67,12 +67,12 @@ public class DiscordManager {
 
     public void updateRole(Punishment punishment, DiscordAction action) {
         if (!(config.getBoolean("discord.enable") && config.getBoolean("discord.punish-role.enable"))) return;
-        if (!dataBaseManager.isDiscordSRVTableExits()) return;
+        if (!storageManager.isDiscordSRVTableExits()) return;
         if (api == null) {
             debug(String.format("Could not update role for %s because bot is null.", punishment.getPlayerName()));
             return;
         }
-        String id = dataBaseManager.getUserDiscordId(punishment.getUuid());
+        String id = storageManager.getUserDiscordId(punishment.getUuid());
         if (id == null) {
             debug(String.format("Role action failed because player %s's Discord ID could not be found.", punishment.getPlayerName()));
             return;

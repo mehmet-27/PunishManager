@@ -5,23 +5,25 @@ import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.util.Locale;
 import java.util.UUID;
 
 public class OfflinePlayer {
     private final ConfigManager configManager = PunishManager.getInstance().getConfigManager();
-    private String playerName, uuid, playerIp, language;
+    private String playerName, uuid, playerIp;
+    private Locale locale;
 
     public OfflinePlayer(ProxiedPlayer player) {
         this.uuid = player.getUniqueId().toString();
         this.playerName = player.getName();
         this.playerIp = Utils.getPlayerIp(player.getName());
-        this.language = PunishManager.getInstance().getConfigManager().getDefaultLanguage();
+        this.locale = PunishManager.getInstance().getConfigManager().getDefaultLocale();
     }
-    public OfflinePlayer(String uuid, String playerName, String playerIp, String language) {
+    public OfflinePlayer(String uuid, String playerName, String playerIp, Locale locale) {
         this.uuid = uuid;
         this.playerName = playerName;
         this.playerIp = playerIp;
-        this.language = language;
+        this.locale = locale;
     }
 
     public String getPlayerName() {
@@ -48,11 +50,11 @@ public class OfflinePlayer {
         this.playerIp = playerIp;
     }
 
-    public String getLanguage() {
-        return language != null ? language : configManager.getDefaultLanguage();
+    public Locale getLocale() {
+        return locale != null ? locale : configManager.getDefaultLocale();
     }
 
-    public void setLanguage(String language) {
-        this.language = language;
+    public void setLocale(Locale locale) {
+        this.locale = locale;
     }
 }

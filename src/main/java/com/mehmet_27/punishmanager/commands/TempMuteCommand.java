@@ -5,7 +5,7 @@ import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.events.PlayerPunishEvent;
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.managers.DatabaseManager;
+import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.utils.Utils;
@@ -23,7 +23,7 @@ import static com.mehmet_27.punishmanager.utils.Utils.sendTextComponent;
 public class TempMuteCommand extends BaseCommand {
 
     @Dependency
-    private DatabaseManager dataBaseManager;
+    private StorageManager storageManager;
     @Dependency
     private PunishManager punishManager;
 
@@ -34,7 +34,7 @@ public class TempMuteCommand extends BaseCommand {
         UUID uuid = player.getUniqueId();
         String playerName = player.getPlayerName();
 
-        Punishment punishment = dataBaseManager.getMute(playerName);
+        Punishment punishment = storageManager.getMute(playerName);
         if (punishment != null && punishment.isMuted()) {
             sendTextComponent(sender, playerName, "tempmute.alreadyPunished");
             return;

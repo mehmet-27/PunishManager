@@ -1,7 +1,7 @@
 package com.mehmet_27.punishmanager.listeners;
 
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.managers.DatabaseManager;
+import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.managers.DiscordManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.utils.Utils;
@@ -18,16 +18,16 @@ import static com.mehmet_27.punishmanager.managers.DiscordAction.REMOVE;
 public class PlayerChatEvent implements Listener {
 
     Configuration config = PunishManager.getInstance().getConfigManager().getConfig();
-    DatabaseManager dataBaseManager = PunishManager.getInstance().getDataBaseManager();
+    StorageManager storageManager = PunishManager.getInstance().getStorageManager();
     DiscordManager discordManager = PunishManager.getInstance().getDiscordManager();
 
     @EventHandler
     public void onChat(ChatEvent event) {
         ProxiedPlayer player = (ProxiedPlayer) event.getSender();
-        Punishment punishment = dataBaseManager.getMute(player.getName());
+        Punishment punishment = storageManager.getMute(player.getName());
         if (punishment == null) return;
         if (punishment.isExpired()) {
-            dataBaseManager.unPunishPlayer(punishment);
+            storageManager.unPunishPlayer(punishment);
             discordManager.updateRole(punishment, REMOVE);
             return;
         }

@@ -4,6 +4,8 @@
 # %operator% -> Cezayı veren yetkili.
 # %name% -> Cezalandırılan oyuncunun adı.
 main:
+  guimaintitle: '&6&lPunishManager'
+  languageselectortitle: '&fDiller - Mevcut: {0}'
   exempt-player: 'Bu oyuncuyu cezalandıramazsınız.'
   defaultReason: 'yok'
   not-on-yourself: 'Bu komutu kendi üzerinizde kullanamazsınız.'
@@ -16,6 +18,16 @@ main:
     hour: '%h% saat'
     minute: '%m% dakika'
     second: '%s% saniye'
+
+gui:
+  backbutton-name: '&fGeri'
+  main-title: '&6&lPunishManager'
+  main-languageselector-name: '&fDil Seçici'
+  main-managepunishments-name: '&fCezaları Yönet'
+  main-adminpanel-name: '&fYönetici Paneli'
+  languageselector-title: '&fDiller - Mevcut: {0}'
+  admin-title: '&fYönetici Paneli'
+  admin-reload-name: '&aTüm yapılandırma dosyalarını yeniden yükle'
 
 ban:
   punished: '&a%player% başarıyla yasaklandı.'

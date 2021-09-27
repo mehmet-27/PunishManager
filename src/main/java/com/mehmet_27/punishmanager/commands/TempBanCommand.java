@@ -6,7 +6,7 @@ import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.events.PlayerPunishEvent;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
-import com.mehmet_27.punishmanager.managers.DatabaseManager;
+import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.utils.Utils;
@@ -24,7 +24,7 @@ import static com.mehmet_27.punishmanager.utils.Utils.sendTextComponent;
 public class TempBanCommand extends BaseCommand {
 
     @Dependency
-    private DatabaseManager dataBaseManager;
+    private StorageManager storageManager;
     @Dependency
     private ConfigManager configManager;
     @Dependency
@@ -37,7 +37,7 @@ public class TempBanCommand extends BaseCommand {
         UUID uuid = player.getUniqueId();
         String playerName = player.getPlayerName();
 
-        Punishment punishment = dataBaseManager.getBan(playerName);
+        Punishment punishment = storageManager.getBan(playerName);
         if (punishment != null && punishment.isBanned()) {
             Utils.sendTextComponent(sender, playerName, "tempban.alreadyPunished");
             return;

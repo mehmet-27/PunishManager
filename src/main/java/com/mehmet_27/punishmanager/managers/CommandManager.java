@@ -81,7 +81,7 @@ public class CommandManager extends BungeeCommandManager {
 
     private void registerDependencies() {
         registerDependency(ConfigManager.class, punishManager.getConfigManager());
-        registerDependency(DatabaseManager.class, punishManager.getDataBaseManager());
+        registerDependency(StorageManager.class, punishManager.getStorageManager());
     }
 
     private void registerCommands() {
@@ -147,7 +147,7 @@ public class CommandManager extends BungeeCommandManager {
         });
     }
 
-    public void loadLocaleFiles(Set<File> files) {
+    public void loadLocaleFiles(List<File> files) {
         try {
             for (File file : files) {
                 String[] name = file.getName().split("[._]");
@@ -160,8 +160,8 @@ public class CommandManager extends BungeeCommandManager {
     }
 
     public void updateDefaultLocale(){
-        String[] locale = punishManager.getConfigManager().getDefaultLanguage().split("_");
-        getLocales().setDefaultLocale(new Locale(locale[0], locale[1]));
+        Locale locale = punishManager.getConfigManager().getDefaultLocale();
+        getLocales().setDefaultLocale(locale);
     }
 
     public String getMessage(CommandIssuer issuer, String key){

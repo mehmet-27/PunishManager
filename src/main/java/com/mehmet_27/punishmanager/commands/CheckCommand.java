@@ -3,7 +3,7 @@ package com.mehmet_27.punishmanager.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
-import com.mehmet_27.punishmanager.managers.DatabaseManager;
+import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.utils.Utils;
@@ -16,7 +16,7 @@ import static com.mehmet_27.punishmanager.utils.Utils.sendTextComponent;
 public class CheckCommand extends BaseCommand {
 
     @Dependency
-    private DatabaseManager dataBaseManager;
+    private StorageManager storageManager;
     @Dependency
     private ConfigManager configManager;
 
@@ -26,14 +26,14 @@ public class CheckCommand extends BaseCommand {
     public void check(CommandSender sender, @Name("Player") OfflinePlayer player) {
         String playerName = player.getPlayerName();
         sendTextComponent(sender, playerName, "check.checking");
-        if (!dataBaseManager.isLoggedServer(playerName)) {
+        if (!storageManager.isLoggedServer(playerName)) {
             sendTextComponent(sender, playerName, "check.playerNotFound");
             return;
         }
 
         String ip = Utils.getPlayerIp(playerName);
-        Punishment ban = dataBaseManager.getBan(playerName);
-        Punishment mute = dataBaseManager.getMute(playerName);
+        Punishment ban = storageManager.getBan(playerName);
+        Punishment mute = storageManager.getMute(playerName);
 
         String uuid = player.getUniqueId().toString();
         String banStatus = (ban != null && ban.isBanned() && !ban.isExpired()) ? ban.getDuration() : configManager.getMessage("check.notPunished", sender.getName());

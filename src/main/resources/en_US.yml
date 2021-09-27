@@ -4,6 +4,8 @@
 # %operator% -> Operator of punishment.
 # %name% -> Name of the player being punished.
 main:
+  guimaintitle: '&6&lPunishManager'
+  languageselectortitle: '&fLanguages - Current: {0}'
   exempt-player: 'You can''t punish this player.'
   defaultReason: 'none'
   not-on-yourself: 'You cannot use this command on yourself!'
@@ -16,6 +18,16 @@ main:
     hour: '%h% hours'
     minute: '%m% minutes'
     second: '%s% seconds'
+
+gui:
+  backbutton-name: '&fBack'
+  main-title: '&6&lPunishManager'
+  main-languageselector-name: '&fLanguage Selector'
+  main-managepunishments-name: '&fManage Punishments'
+  main-adminpanel-name: '&fAdmin Panel'
+  languageselector-title: '&fLanguages - Current: {0}'
+  admin-title: '&fAdmin Panel'
+  admin-reload-name: '&aReload all configuration files'
 
 ban:
   punished: '&a%player% successfully banned.'

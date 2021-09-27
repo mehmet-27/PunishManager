@@ -3,11 +3,10 @@ package com.mehmet_27.punishmanager;
 import co.aikar.commands.BungeeCommandManager;
 import com.mehmet_27.punishmanager.listeners.PlayerChatEvent;
 import com.mehmet_27.punishmanager.listeners.PlayerLoginEvent;
-import com.mehmet_27.punishmanager.listeners.PlayerSettingsChangeEvent;
 import com.mehmet_27.punishmanager.listeners.PunishEvent;
 import com.mehmet_27.punishmanager.managers.CommandManager;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
-import com.mehmet_27.punishmanager.managers.DatabaseManager;
+import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.managers.DiscordManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -15,12 +14,13 @@ import net.md_5.bungee.api.plugin.Plugin;
 import java.util.List;
 import java.util.Map;
 
+//TODO make everymethod to uuid
 public final class PunishManager extends Plugin {
 
     private static PunishManager instance;
 
     private ConfigManager configManager;
-    private DatabaseManager dataBaseManager;
+    private StorageManager storageManager;
     private CommandManager commandManager;
     private DiscordManager discordManager;
 
@@ -36,23 +36,22 @@ public final class PunishManager extends Plugin {
     public void onEnable() {
         instance = this;
         configManager = new ConfigManager(this);
-        dataBaseManager = new DatabaseManager(this);
+        storageManager = new StorageManager(this);
         new BungeeCommandManager(this);
         this.commandManager = new CommandManager(this);
-        offlinePlayers = dataBaseManager.getAllOfflinePlayers();
-        allPlayerNames = dataBaseManager.getAllLoggedNames();
-        bannedIps = dataBaseManager.getBannedIps();
+        offlinePlayers = storageManager.getAllOfflinePlayers();
+        allPlayerNames = storageManager.getAllLoggedNames();
+        bannedIps = storageManager.getBannedIps();
         discordManager = new DiscordManager(this);
         discordManager.buildBot();
         getProxy().getPluginManager().registerListener(this, new PlayerLoginEvent());
         getProxy().getPluginManager().registerListener(this, new PlayerChatEvent());
-        getProxy().getPluginManager().registerListener(this, new PlayerSettingsChangeEvent());
         getProxy().getPluginManager().registerListener(this, new PunishEvent());
     }
 
     @Override
     public void onDisable() {
-        dataBaseManager.removeAllExpiredPunishes();
+        storageManager.removeAllExpiredPunishes();
         discordManager.disconnectBot();
     }
 
@@ -60,8 +59,8 @@ public final class PunishManager extends Plugin {
         return configManager;
     }
 
-    public DatabaseManager getDataBaseManager() {
-        return dataBaseManager;
+    public StorageManager getStorageManager() {
+        return storageManager;
     }
 
     public Map<String, OfflinePlayer> getOfflinePlayers() {

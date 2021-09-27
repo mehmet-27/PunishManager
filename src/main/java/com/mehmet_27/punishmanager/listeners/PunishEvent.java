@@ -32,7 +32,7 @@ public class PunishEvent implements Listener {
         }
 
         //Adding punish to database
-        plugin.getDataBaseManager().AddPunish(punishment);
+        plugin.getStorageManager().AddPunish(punishment);
 
         //Sending successfully punished message to operator
         String path = punishment.getPunishType().name().toLowerCase(Locale.ENGLISH) + ".punished";
