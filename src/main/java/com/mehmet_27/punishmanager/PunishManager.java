@@ -9,6 +9,7 @@ import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.managers.DiscordManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
+import com.mehmet_27.punishmanager.utils.UpdateChecker;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.List;
@@ -47,6 +48,7 @@ public final class PunishManager extends Plugin {
         getProxy().getPluginManager().registerListener(this, new PlayerLoginEvent());
         getProxy().getPluginManager().registerListener(this, new PlayerChatEvent());
         getProxy().getPluginManager().registerListener(this, new PunishEvent());
+        new UpdateChecker(this, 96062);
     }
 
     @Override
