@@ -12,8 +12,6 @@ import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.mehmet_27.punishmanager.utils.Utils.debug;
-
 public class ConfigManager {
     private final PunishManager plugin;
     private final ConfigurationProvider provider = ConfigurationProvider.getProvider(YamlConfiguration.class);

@@ -4,6 +4,7 @@ import co.aikar.commands.*;
 import co.aikar.locales.MessageKey;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
+import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.io.File;
@@ -42,6 +43,7 @@ public class CommandManager extends BungeeCommandManager {
         for (Path filesPath : getFilesPath(packageName, filter)) {
             String fileName = filesPath.toString().replace("/", ".").split(".class")[0].substring(1);
             try {
+
                 Class<?> clazz = Class.forName(fileName);
                 classes.add(clazz);
             } catch (ClassNotFoundException e) {
@@ -111,9 +113,22 @@ public class CommandManager extends BungeeCommandManager {
                 throw new ConditionFailedException(getMessage(issuer, "main.not-on-yourself"));
             }
         });
+        getCommandConditions().addCondition("requireProtocolize", (context) -> {
+            if (!Utils.isPluginEnabled("Protocolize")) {
+                throw new ConditionFailedException(Utils.color("The gui feature will not work because the Protocolize plugin cannot be found."));
+            }
+        });
     }
 
     public void registerContexts(){
+        getCommandContexts().registerContext(OfflinePlayer.class, c -> {
+            String playerName = c.popFirstArg();
+            OfflinePlayer offlinePlayer = punishManager.getOfflinePlayers().get(playerName);
+            if (offlinePlayer == null){
+                throw new InvalidCommandArgument(getMessage(c.getIssuer(), "not-logged-server"));
+            }
+            return punishManager.getOfflinePlayers().get(playerName);
+        });
         getCommandContexts().registerContext(OfflinePlayer.class, c -> {
             String playerName = c.popFirstArg();
             OfflinePlayer offlinePlayer = punishManager.getOfflinePlayers().get(playerName);

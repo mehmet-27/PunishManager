@@ -3,12 +3,11 @@ package com.mehmet_27.punishmanager.utils;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
-import dev.simplix.protocolize.api.inventory.Inventory;
-import dev.simplix.protocolize.api.player.ProtocolizePlayer;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.List;
 import java.util.Locale;
@@ -110,7 +109,8 @@ public class Utils {
         return new Locale(localeStr[0], localeStr[1]);
     }
 
-    public static void openInventory(Inventory inventory, ProtocolizePlayer player){
-        player.openInventory(inventory);
+    public static boolean isPluginEnabled(String pluginName){
+        Plugin plugin = punishManager.getProxy().getPluginManager().getPlugin(pluginName);
+        return plugin != null;
     }
 }

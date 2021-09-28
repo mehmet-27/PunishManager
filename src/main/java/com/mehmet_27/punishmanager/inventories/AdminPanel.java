@@ -2,6 +2,7 @@ package com.mehmet_27.punishmanager.inventories;
 
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
+import com.mehmet_27.punishmanager.utils.ProtocolizeUtils;
 import com.mehmet_27.punishmanager.utils.Utils;
 import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.inventory.Inventory;
@@ -30,7 +31,7 @@ public class AdminPanel extends Inventory {
                 PunishManager.getInstance().getProxy().getPluginManager().dispatchCommand(sender, "punishmanager reload");
             }
             if (click.clickedItem().displayName(true).toString().contains(color(configManager.getMessage("gui.backbutton-name", sender.getName())))){
-                Utils.openInventory(new Main(InventoryType.GENERIC_9X3, sender), Protocolize.playerProvider().player(sender.getUniqueId()));
+                ProtocolizeUtils.openInventory(new Main(InventoryType.GENERIC_9X3, sender), Protocolize.playerProvider().player(sender.getUniqueId()));
             }
         });
     }

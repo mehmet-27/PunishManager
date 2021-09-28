@@ -2,6 +2,7 @@ package com.mehmet_27.punishmanager.inventories;
 
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
+import com.mehmet_27.punishmanager.utils.ProtocolizeUtils;
 import com.mehmet_27.punishmanager.utils.Utils;
 import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.inventory.Inventory;
@@ -39,14 +40,14 @@ public class LanguageSelector extends Inventory {
             click.cancelled(true);
             if (click.clickedItem() == null) return;
             if (click.clickedItem().displayName(true).toString().contains(color(configManager.getMessage("gui.backbutton-name", sender.getName())))){
-                Utils.openInventory(new Main(InventoryType.GENERIC_9X3, sender), Protocolize.playerProvider().player(sender.getUniqueId()));
+                ProtocolizeUtils.openInventory(new Main(InventoryType.GENERIC_9X3, sender), Protocolize.playerProvider().player(sender.getUniqueId()));
                 return;
             }
             String name = click.clickedItem().displayName(true).toString();
             Locale locale = Utils.stringToLocale(name.substring(name.lastIndexOf("_") - 2, name.lastIndexOf("_") + 3));
             PunishManager.getInstance().getStorageManager().updateLanguage(sender, locale);
             PunishManager.getInstance().getOfflinePlayers().get(sender.getName()).setLocale(locale);
-            Utils.openInventory(new LanguageSelector(InventoryType.GENERIC_9X6, sender), Protocolize.playerProvider().player(sender.getUniqueId()));
+            ProtocolizeUtils.openInventory(new LanguageSelector(InventoryType.GENERIC_9X6, sender), Protocolize.playerProvider().player(sender.getUniqueId()));
         });
     }
 }
