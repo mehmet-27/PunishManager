@@ -246,6 +246,19 @@ public class StorageManager {
         }
     }
 
+    public int getPunishmentsCount(){
+        int count = 0;
+        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT COUNT(*) FROM `punishmanager_punishments`")) {
+            ResultSet result = ps.executeQuery();
+            result.next();
+            count = result.getInt(1);
+            return count;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
     public void addPlayer(ProxiedPlayer player) {
         String ip = player.getSocketAddress().toString().substring(1).split(":")[0];
         try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.ADD_PLAYER_TO_PLAYERS_TABLE.getQuery())) {

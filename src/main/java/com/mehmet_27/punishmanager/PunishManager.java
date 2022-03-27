@@ -11,6 +11,8 @@ import com.mehmet_27.punishmanager.managers.DiscordManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.utils.UpdateChecker;
 import net.md_5.bungee.api.plugin.Plugin;
+import org.bstats.bungeecord.Metrics;
+import org.bstats.charts.SingleLineChart;
 
 import java.util.List;
 import java.util.Map;
@@ -49,12 +51,18 @@ public final class PunishManager extends Plugin {
         getProxy().getPluginManager().registerListener(this, new PlayerChatEvent());
         getProxy().getPluginManager().registerListener(this, new PunishEvent());
         new UpdateChecker(this).check();
+        startMetrics();
     }
 
     @Override
     public void onDisable() {
         storageManager.removeAllExpiredPunishes();
         discordManager.disconnectBot();
+    }
+
+    private void startMetrics(){
+        Metrics metrics = new Metrics(this, 14772);
+        metrics.addCustomChart(new SingleLineChart("punishments", () -> storageManager.getPunishmentsCount()));
     }
 
     public ConfigManager getConfigManager() {

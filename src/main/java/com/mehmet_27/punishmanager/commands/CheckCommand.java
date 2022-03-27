@@ -42,6 +42,8 @@ public class CheckCommand extends BaseCommand {
 
         sendTextComponent(sender, "check.uuid", message -> message.replace("%uuid%", uuid));
         sendTextComponent(sender, "check.ip", message -> message.replace("%ip%", ip));
+        String language = storageManager.getOfflinePlayer(playerName).getLocale().toString();
+        sendTextComponent(sender, "check.language", message -> message.replace("%language%", language));
         sendTextComponent(sender, "check.banStatus", message -> message.replace("%status%", banStatus));
 
         if (ban != null && ban.isBanned()) {

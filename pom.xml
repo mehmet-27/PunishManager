@@ -65,6 +65,10 @@
                                     <pattern>org.h2</pattern>
                                     <shadedPattern>com.mehmet_27.punishmanager.lib.h2</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>org.bstats</pattern>
+                                    <shadedPattern>com.mehmet_27.punishmanager.lib.bstats</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
@@ -144,6 +148,12 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20211205</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bungeecord</artifactId>
+            <version>3.0.0</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
