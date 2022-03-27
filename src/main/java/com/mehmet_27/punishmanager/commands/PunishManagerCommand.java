@@ -25,8 +25,6 @@ public class PunishManagerCommand extends BaseCommand {
         sendColoredTextComponent(sender, "&eThe best punishment plugin for your server.");
         sendColoredTextComponent(sender, "&eDeveloped by &bMehmet_27.");
         sendColoredTextComponent(sender, "&eContributors: &7Minat0_, RoinujNosde");
-        sendColoredTextComponent(sender, "&6Contact");
-        sendColoredTextComponent(sender, "&eDiscord: &7https://discord.gg/abRq8Fan5E");
         sendColoredTextComponent(sender, "&a&m+                                                        +");
         sendColoredTextComponent(sender, "&eUse &a/punishmanager help &efor help.");
     }

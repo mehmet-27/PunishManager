@@ -1,39 +1,47 @@
 package com.mehmet_27.punishmanager.utils;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Scanner;
-import java.util.function.Consumer;
 
 public class UpdateChecker {
     private final Plugin plugin;
-    private final int resourceId;
+    private final String currentVersion;
+    private String latestVersion;
 
-    public UpdateChecker(Plugin plugin, int resourceId){
+    public UpdateChecker(Plugin plugin) {
         this.plugin = plugin;
-        this.resourceId = resourceId;
+        this.currentVersion = plugin.getDescription().getVersion();
 
-        plugin.getLogger().info("Checking for new updates");
-        getVersion(version -> {
-            if (plugin.getDescription().getVersion().equals(version)){
-                plugin.getLogger().info("No new update found");
-            }else {
-                plugin.getLogger().info("New version found: " + version);
-                plugin.getLogger().info("Download here: https://www.spigotmc.org/resources/96062/");
-            }
-        });
+        plugin.getLogger().info("Checking for new updates...");
     }
 
-    public void getVersion(final Consumer<String> consumer){
-        try (InputStream inputStream = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + this.resourceId).openStream(); Scanner scanner = new Scanner(inputStream)){
-            if (scanner.hasNext()){
-                consumer.accept(scanner.next());
+    public void check() {
+        try {
+            URL url = new URL("https://api.spiget.org/v2/resources/96062/versions/latest");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            InputStreamReader reader = new InputStreamReader(connection.getInputStream());
+
+            JsonElement parse = new JsonParser().parse(reader);
+            if (parse.isJsonObject()) {
+                latestVersion = parse.getAsJsonObject().get("name").getAsString();
             }
-        } catch (IOException e){
-            this.plugin.getLogger().info("There was a problem searching for updates: " + e.getMessage());
+
+            if (currentVersion.equals(latestVersion)){
+                plugin.getLogger().info("No new update found");
+            } else {
+                plugin.getLogger().info("New version found: " + latestVersion);
+                plugin.getLogger().info("Download here: https://www.spigotmc.org/resources/96062/");
+            }
+
+            reader.close();
+        } catch (IOException ex) {
+            plugin.getLogger().warning("There was a problem searching for updates!");
         }
     }
 }

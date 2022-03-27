@@ -23,7 +23,6 @@ public class PlayerLoginEvent implements Listener {
     @EventHandler
     public void onLogin(PostLoginEvent event) {
         ProxiedPlayer player = event.getPlayer();
-        storageManager.updatePlayerName(player);
         //TODO: punishManager.getOfflinePlayers().replace(player.getUniqueId().toString(), new OfflinePlayer(player));
         // If the player is entering the server for the first time, save it
         if (!punishManager.getOfflinePlayers().containsKey(player.getName())) {
@@ -33,6 +32,8 @@ public class PlayerLoginEvent implements Listener {
             if (!punishManager.getAllPlayerNames().contains(player.getName())) {
                 punishManager.getAllPlayerNames().add(player.getName());
             }
+        }else {
+            storageManager.updatePlayerName(player);
         }
         Punishment punishment = storageManager.getBan(player.getName());
         String playerIp = Utils.getPlayerIp(player.getName());

@@ -48,7 +48,7 @@ public final class PunishManager extends Plugin {
         getProxy().getPluginManager().registerListener(this, new PlayerLoginEvent());
         getProxy().getPluginManager().registerListener(this, new PlayerChatEvent());
         getProxy().getPluginManager().registerListener(this, new PunishEvent());
-        new UpdateChecker(this, 96062);
+        new UpdateChecker(this).check();
     }
 
     @Override
