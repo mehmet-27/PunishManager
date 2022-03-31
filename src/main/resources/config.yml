@@ -24,6 +24,9 @@ default-server-language: 'en_US'
 exempt-players:
   - 'examplePlayer'
 
+# Prevents staff from using punish commands on themselves
+self-punish: false
+
 # If you turn this on, all player names that have entered the server
 # before will also appear in tab completions.
 show-all-names-in-tab-completion: true

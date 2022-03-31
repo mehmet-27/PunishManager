@@ -109,8 +109,10 @@ public class CommandManager extends BungeeCommandManager {
     private void registerConditions() {
         getCommandConditions().addCondition(OfflinePlayer.class, "other_player", (context, exec, value) -> {
             BungeeCommandIssuer issuer = context.getIssuer();
-            if (issuer.isPlayer() && issuer.getPlayer().getName().equals(value.getPlayerName())) {
-                throw new ConditionFailedException(getMessage(issuer, "main.not-on-yourself"));
+            if(!punishManager.getConfigManager().getConfig().getBoolean("self-punish")){
+                if (issuer.isPlayer() && issuer.getPlayer().getName().equals(value.getPlayerName())) {
+                    throw new ConditionFailedException(getMessage(issuer, "main.not-on-yourself"));
+                }
             }
         });
         getCommandConditions().addCondition("requireProtocolize", (context) -> {

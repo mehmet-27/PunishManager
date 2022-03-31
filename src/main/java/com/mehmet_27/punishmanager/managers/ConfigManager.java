@@ -38,7 +38,7 @@ public class ConfigManager {
             }
             return provider.load(file);
         } catch (IOException ex) {
-            plugin.getLogger().severe(String.format("Error while trying to load file {0}: " + ex.getMessage(), file.getName()));
+            plugin.getLogger().severe(String.format("Error while trying to load config file {0}: " + ex.getMessage(), file.getName()));
         }
         return null;
     }
@@ -87,7 +87,7 @@ public class ConfigManager {
 
     public List<Locale> getAvailableLocales() {
         List<Locale> locales = new ArrayList<>();
-        for (Map.Entry<Locale, Configuration> locale : this.locales.entrySet()){
+        for (Map.Entry<Locale, Configuration> locale : this.locales.entrySet()) {
             locales.add(locale.getKey());
         }
         return locales;
