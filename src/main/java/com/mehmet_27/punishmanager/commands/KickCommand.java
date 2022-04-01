@@ -34,7 +34,7 @@ public class KickCommand extends BaseCommand {
         UUID uuid = player.getUniqueId();
 
         String ip = Utils.getPlayerIp(playerName);
-        Punishment punishment = new Punishment(playerName, uuid, ip, KICK, reason, sender.getName());
+        Punishment punishment = new Punishment(playerName, uuid, ip, KICK, reason, sender.getName(), -1);
         Utils.sendLayout(punishment);
         sendTextComponent(sender, playerName, "kick.punished");
     }

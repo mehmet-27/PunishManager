@@ -20,14 +20,37 @@ main:
     second: '%s% seconds'
 
 gui:
-  backbutton-name: '&fBack'
-  main-title: '&6&lPunishManager'
-  main-languageselector-name: '&fLanguage Selector'
-  main-managepunishments-name: '&fManage Punishments'
-  main-adminpanel-name: '&fAdmin Panel'
-  languageselector-title: '&fLanguages - Current: {0}'
-  admin-title: '&fAdmin Panel'
-  admin-reload-name: '&aReload all configuration files'
+  backbutton:
+    name: '&7Back'
+  main:
+    title: '&6&lPunishManager GUI'
+    languageselector:
+      name: '&eLanguage Selector'
+    managepunishments:
+      name: '&eManage Punishments'
+    adminpanel:
+      name: '&eAdmin Panel'
+  languageselector:
+    title: '&eLanguages - Current: &8{0}'
+  admin:
+    title: '&eAdmin Panel'
+    reload:
+      name: '&aReload all configuration files'
+  managepunishments:
+    title: '&eManage Punishments - Total &6{0}'
+    next:
+      name: '&7Next Page'
+    previous:
+      name: '&7Previous Page'
+    punishment:
+      name: '&bPunishment #%id%'
+      # Variables: %player%, %uuid%, %type%, %reason%, %operator%, %ip%
+      lore:
+        - '&6Name: &e%player%'
+        - '&6Type: &e%type%'
+        - '&6Reason: &e%reason%'
+        - '&6Operator: &e%operator%'
+        - '&6Ip: &e%ip%'
 
 ban:
   punished: '&a%player% successfully banned.'

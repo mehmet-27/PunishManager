@@ -13,25 +13,30 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import static com.mehmet_27.punishmanager.utils.Utils.color;
 
-public class AdminPanel extends Inventory {
-    public AdminPanel(InventoryType type, ProxiedPlayer sender) {
-        super(type);
-        ConfigManager configManager = PunishManager.getInstance().getConfigManager();
-        title(color(configManager.getMessage("gui.admin-title", sender.getName())));
+public class AdminPanel extends UIFrame {
+
+    PunishManager plugin;
+    ConfigManager configManager;
+
+    public AdminPanel(UIFrame parent, InventoryType type, ProxiedPlayer viewer) {
+        super(parent, type, viewer);
+        plugin = PunishManager.getInstance();
+        configManager = PunishManager.getInstance().getConfigManager();
+        title(color(configManager.getMessage("gui.admin.title", viewer.getName())));
         ItemStack reloadButton = new ItemStack(ItemType.LIME_DYE)
-                .displayName(color(configManager.getMessage("gui.admin-reload-name", sender.getName())));
+                .displayName(color(configManager.getMessage("gui.admin.reload.name", viewer.getName())));
         item(11, reloadButton);
         ItemStack back = new ItemStack(ItemType.ARROW);
-        back.displayName(color(configManager.getMessage("gui.backbutton-name", sender.getName())));
+        back.displayName(color(configManager.getMessage("gui.backbutton.name", viewer.getName())));
         item(26, back);
         onClick(click -> {
             click.cancelled(true);
             if (click.clickedItem() == null) return;
-            if (click.clickedItem().displayName(true).toString().contains(color(configManager.getMessage("gui.admin-reload-name", sender.getName())))) {
-                PunishManager.getInstance().getProxy().getPluginManager().dispatchCommand(sender, "punishmanager reload");
+            if (click.clickedItem().displayName(true).toString().contains(color(configManager.getMessage("gui.admin.reload.name", viewer.getName())))) {
+                PunishManager.getInstance().getProxy().getPluginManager().dispatchCommand(viewer, "punishmanager reload");
             }
-            if (click.clickedItem().displayName(true).toString().contains(color(configManager.getMessage("gui.backbutton-name", sender.getName())))){
-                ProtocolizeUtils.openInventory(new Main(InventoryType.GENERIC_9X3, sender), Protocolize.playerProvider().player(sender.getUniqueId()));
+            if (click.clickedItem().displayName(true).toString().contains(color(configManager.getMessage("gui.backbutton.name", viewer.getName())))){
+                ProtocolizeUtils.openInventory(getParent(), Protocolize.playerProvider().player(viewer.getUniqueId()));
             }
         });
     }

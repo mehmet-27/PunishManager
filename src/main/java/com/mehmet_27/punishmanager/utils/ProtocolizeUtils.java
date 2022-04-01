@@ -14,6 +14,6 @@ public class ProtocolizeUtils {
 
     public static void openMainInventory(ProxiedPlayer player){
         Protocolize.playerProvider().player(player.getUniqueId())
-                .openInventory(new Main(InventoryType.GENERIC_9X3, player));
+                .openInventory(new Main(null, InventoryType.GENERIC_9X3, player));
     }
 }

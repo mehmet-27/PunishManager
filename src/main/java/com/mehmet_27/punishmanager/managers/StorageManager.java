@@ -11,10 +11,10 @@ import net.md_5.bungee.config.Configuration;
 import java.sql.*;
 import java.util.*;
 
-import static com.mehmet_27.punishmanager.utils.SqlQuery.*;
 import static com.mehmet_27.punishmanager.managers.DiscordAction.REMOVE;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.IPBAN;
+import static com.mehmet_27.punishmanager.utils.SqlQuery.*;
 import static com.mehmet_27.punishmanager.utils.Utils.debug;
 
 public class StorageManager {
@@ -112,7 +112,8 @@ public class StorageManager {
                 long start = result.getLong("start");
                 long end = result.getLong("end");
                 PunishType punishType = PunishType.valueOf(result.getString("type"));
-                return new Punishment(playerName, UUID.fromString(uuid), ip, punishType, reason, operator, start, end);
+                int id = result.getInt("id");
+                return new Punishment(playerName, UUID.fromString(uuid), ip, punishType, reason, operator, start, end, id);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -179,8 +180,9 @@ public class StorageManager {
                 String operator = result.getString("operator");
                 long start = result.getLong("start");
                 long end = result.getLong("end");
+                int id = result.getInt("id");
                 PunishType punishType = PunishType.valueOf(result.getString("type"));
-                punishments.add(new Punishment(playerName, UUID.fromString(uuid), ip, punishType, reason, operator, start, end));
+                punishments.add(new Punishment(playerName, UUID.fromString(uuid), ip, punishType, reason, operator, start, end, id));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -246,7 +248,7 @@ public class StorageManager {
         }
     }
 
-    public int getPunishmentsCount(){
+    public int getPunishmentsCount() {
         int count = 0;
         try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT COUNT(*) FROM `punishmanager_punishments`")) {
             ResultSet result = ps.executeQuery();
@@ -334,5 +336,30 @@ public class StorageManager {
             ex.printStackTrace();
         }
         return false;
+    }
+
+    public List<Punishment> getAllPunishments() {
+        List<Punishment> punishments = new ArrayList<>();
+        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.SELECT_ALL_PUNISHMENTS.getQuery())) {
+            ResultSet result = ps.executeQuery();
+            while (result.next()) {
+                String playerName = result.getString("name");
+                String uuid = result.getString("uuid");
+                String ip = result.getString("ip");
+                String reason = result.getString("reason");
+                String operator = result.getString("operator");
+                long start = result.getLong("start");
+                long end = result.getLong("end");
+                int id = result.getInt("id");
+                PunishType punishType = PunishType.valueOf(result.getString("type"));
+                Punishment punishment = new Punishment(playerName, UUID.fromString(uuid), ip, punishType, reason, operator, start, end, id);
+                if (!punishment.isExpired()){
+                    punishments.add(punishment);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return punishments;
     }
 }

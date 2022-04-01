@@ -132,6 +132,31 @@ public class ConfigManager {
         return null;
     }
 
+    public List<String> getStringList(String path, String playerName) {
+        Locale locale = new PlayerLocale(playerName).getLocale();
+        if (locales.containsKey(locale)) {
+            List<String> stringList = locales.get(locale).getStringList(path);
+            if (!stringList.isEmpty()) {
+                return stringList.stream().map(Utils::color).collect(Collectors.toList());
+            } else {
+                return locales.get(defaultLocale).getStringList(path).stream().map(Utils::color).collect(Collectors.toList());
+            }
+        } else {
+            return locales.get(defaultLocale).getStringList(path).stream().map(Utils::color).collect(Collectors.toList());
+        }
+    }
+
+    public List<String> getStringList(String path) {
+        if (locales.containsKey(defaultLocale)) {
+            List<String> stringList = locales.get(defaultLocale).getStringList(path);
+            if (!stringList.isEmpty()) {
+                return stringList.stream().map(Utils::color).collect(Collectors.toList());
+            }
+        }
+        plugin.getLogger().warning("The searched value was not found in the language file and the default language file: " + path);
+        return null;
+    }
+
     public Configuration getConfig() {
         return config;
     }

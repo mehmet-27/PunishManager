@@ -20,14 +20,37 @@ main:
     second: '%s% saniye'
 
 gui:
-  backbutton-name: '&fGeri'
-  main-title: '&6&lPunishManager'
-  main-languageselector-name: '&fDil Seçici'
-  main-managepunishments-name: '&fCezaları Yönet'
-  main-adminpanel-name: '&fYönetici Paneli'
-  languageselector-title: '&fDiller - Mevcut: {0}'
-  admin-title: '&fYönetici Paneli'
-  admin-reload-name: '&aTüm yapılandırma dosyalarını yeniden yükle'
+  backbutton:
+    name: '&7Geri'
+  main:
+    title: '&6&lPunishManager GUI'
+    languageselector:
+      name: '&eDil Seçici'
+    managepunishments:
+      name: '&eCezaları Yönet'
+    adminpanel:
+      name: '&eAdmin Paneli'
+  languageselector:
+    title: '&eDiller - Mevcut: &8{0}'
+  admin:
+    title: '&eAdmin Paneli'
+    reload:
+      name: '&aTüm yapılandırma dosyalarını yeniden yükle'
+  managepunishments:
+    title: '&eCezaları Yönet - Total &6{0}'
+    next:
+      name: '&7Sonraki Sayfa'
+    previous:
+      name: '&7Önceki Sayfa'
+    punishment:
+      name: '&bCeza #%id%'
+      # Variables: %player%, %uuid%, %type%, %reason%, %operator%, %ip%
+      lore:
+        - '&6İsim: &e%player%'
+        - '&6Tür: &e%type%'
+        - '&6Sebep: &e%reason%'
+        - '&6Operatör: &e%operator%'
+        - '&6Ip: &e%ip%'
 
 ban:
   punished: '&a%player% başarıyla yasaklandı.'

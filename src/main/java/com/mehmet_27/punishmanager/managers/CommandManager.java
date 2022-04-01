@@ -127,7 +127,7 @@ public class CommandManager extends BungeeCommandManager {
             String playerName = c.popFirstArg();
             OfflinePlayer offlinePlayer = punishManager.getOfflinePlayers().get(playerName);
             if (offlinePlayer == null){
-                throw new InvalidCommandArgument(getMessage(c.getIssuer(), "not-logged-server"));
+                throw new InvalidCommandArgument(getMessage(c.getIssuer(), "main.not-logged-server"));
             }
             return punishManager.getOfflinePlayers().get(playerName);
         });
@@ -135,7 +135,7 @@ public class CommandManager extends BungeeCommandManager {
             String playerName = c.popFirstArg();
             OfflinePlayer offlinePlayer = punishManager.getOfflinePlayers().get(playerName);
             if (offlinePlayer == null){
-                throw new InvalidCommandArgument(getMessage(c.getIssuer(), "not-logged-server"));
+                throw new InvalidCommandArgument(getMessage(c.getIssuer(), "main.not-logged-server"));
             }
             return punishManager.getOfflinePlayers().get(playerName);
         });

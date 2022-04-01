@@ -17,12 +17,13 @@ public class Punishment {
     private String playerName, ip, reason, operator;
     private PunishType punishType;
     private UUID uuid;
+    private final int id;
 
-    public Punishment(String playerName, UUID uuid, String ip, PunishType punishType, String reason, String operator) {
-        this(playerName, uuid, ip, punishType, reason, operator, new Timestamp(System.currentTimeMillis()).getTime(), -1);
+    public Punishment(String playerName, UUID uuid, String ip, PunishType punishType, String reason, String operator, int id) {
+        this(playerName, uuid, ip, punishType, reason, operator, new Timestamp(System.currentTimeMillis()).getTime(), -1, id);
     }
 
-    public Punishment(String playerName, UUID uuid, String ip, PunishType punishType, String reason, String operator, long start, long end) {
+    public Punishment(String playerName, UUID uuid, String ip, PunishType punishType, String reason, String operator, long start, long end, int id) {
         this.playerName = playerName;
         this.uuid = uuid;
         this.ip = ip;
@@ -31,6 +32,7 @@ public class Punishment {
         this.operator = operator;
         this.start = start;
         this.end = end;
+        this.id = id;
     }
 
     public PunishType getPunishType() {
@@ -193,5 +195,9 @@ public class Punishment {
         public boolean isBan() {
             return name().contains("BAN");
         }
+    }
+
+    public int getId(){
+        return id;
     }
 }

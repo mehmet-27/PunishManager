@@ -51,7 +51,7 @@ public class TempBanCommand extends BaseCommand {
         long start = System.currentTimeMillis();
         long end = start + Utils.convertToMillis(number, unit);
         String ip = Utils.getPlayerIp(playerName);
-        punishment = new Punishment(playerName, uuid, ip, TEMPBAN, reason, sender.getName(), start, end);
+        punishment = new Punishment(playerName, uuid, ip, TEMPBAN, reason, sender.getName(), start, end, -1);
         punishManager.getProxy().getPluginManager().callEvent(new PlayerPunishEvent(punishment));
     }
 }
