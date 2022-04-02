@@ -49,7 +49,7 @@ public class LanguageSelector extends UIFrame{
             Locale newLocale = Utils.stringToLocale(name.substring(name.lastIndexOf("_") - 2, name.lastIndexOf("_") + 3));
             plugin.getStorageManager().updateLanguage(viewer, newLocale);
             plugin.getOfflinePlayers().get(viewer.getName()).setLocale(newLocale);
-            Utils.sendTextComponent(viewer, "set-language", message -> message.replace("{0}", newLocale.toString()));
+            Utils.sendTextComponent(viewer, "main.setlanguage", message -> message.replace("{0}", newLocale.toString()));
             ProtocolizeUtils.openMainInventory(viewer);
         });
     }

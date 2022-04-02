@@ -8,6 +8,8 @@ main:
   defaultReason: 'none'
   not-on-yourself: 'You cannot use this command on yourself!'
   not-logged-server: '&cYou can''t punish someone who hasn''t been on the server before.'
+  setlanguage: '&aYour language is set to {0}.'
+  setdefaultlanguage: '&aThe default language for server is set to {0}.'
   timelayout:
     #Variables to be used when showing the duration of the punishment.
     month: '%mo% months'
@@ -35,7 +37,7 @@ gui:
     reload:
       name: '&aReload all configuration files'
     defaultlanguageselector:
-      name: '&aDefault Language Selector'
+      name: '&aDefault Language'
   managepunishments:
     title: '&eManage Punishments - Total &6{0}'
     next:
@@ -52,10 +54,7 @@ gui:
         - '&6Operator: &e%operator%'
         - '&6Ip: &e%ip%'
   defaultlanguageselector:
-    title: '&eDefault Language Selector - Current: &8{0}'
-
-set-language: '&aThe default language for server is set to {0}.'
-set-default-language: '&aYour language is set to {0}.'
+    title: '&eDefault Language - Current: &8{0}'
 
 ban:
   punished: '&a%player% successfully banned.'

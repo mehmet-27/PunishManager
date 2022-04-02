@@ -19,14 +19,10 @@ public class PunishManagerCommand extends BaseCommand {
 
     @Default
     @Description("{@@punishmanager.description}")
-    public void punishManager(CommandSender sender) {
-        sendColoredTextComponent(sender, "&a&m+                                                        +");
-        sendColoredTextComponent(sender, String.format("&6&l%s &7%s", punishManager.getDescription().getName(), punishManager.getDescription().getVersion()));
-        sendColoredTextComponent(sender, "&eThe best punishment plugin for your server.");
-        sendColoredTextComponent(sender, "&eDeveloped by &bMehmet_27.");
-        sendColoredTextComponent(sender, "&eContributors: &7Minat0_, RoinujNosde");
-        sendColoredTextComponent(sender, "&a&m+                                                        +");
-        sendColoredTextComponent(sender, "&eUse &a/punishmanager help &efor help.");
+    @Conditions("requireProtocolize")
+    public void punishManager(ProxiedPlayer sender) {
+        //Main GUI
+        ProtocolizeUtils.openMainInventory(sender);
     }
 
     @Subcommand("reload")
@@ -39,12 +35,15 @@ public class PunishManagerCommand extends BaseCommand {
         sendColoredTextComponent(sender, String.format("&6%s &7» " + done , punishManager.getDescription().getName()));
     }
 
-    @Subcommand("gui")
-    @CommandPermission("punishmanager.command.punishmanager.gui")
-    @Conditions("requireProtocolize")
-    public void gui(ProxiedPlayer sender) {
-        //Main GUI
-        ProtocolizeUtils.openMainInventory(sender);
+    @Subcommand("about")
+    public void about(ProxiedPlayer sender) {
+        sendColoredTextComponent(sender, "&a&m+                                                        +");
+        sendColoredTextComponent(sender, String.format("&6&l%s &7%s", punishManager.getDescription().getName(), punishManager.getDescription().getVersion()));
+        sendColoredTextComponent(sender, "&eThe best punishment plugin for your server.");
+        sendColoredTextComponent(sender, "&eDeveloped by &bMehmet_27");
+        sendColoredTextComponent(sender, "&eContributors: &7Minat0_ & RoinujNosde");
+        sendColoredTextComponent(sender, "&a&m+                                                        +");
+        sendColoredTextComponent(sender, "&eUse &a/punishmanager help &efor help.");
     }
 
     @Subcommand("help")

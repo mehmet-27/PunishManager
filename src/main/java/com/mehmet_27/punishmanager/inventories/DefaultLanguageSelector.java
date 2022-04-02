@@ -48,9 +48,9 @@ public class DefaultLanguageSelector extends UIFrame {
             String name = clickedItem.displayName(true).toString();
             Locale newLocale = Utils.stringToLocale(name.substring(name.lastIndexOf("_") - 2, name.lastIndexOf("_") + 3));
             configManager.setDefaultLocale(newLocale);
-            Utils.sendTextComponent(viewer, "set-default-language", message -> message.replace("{0}", newLocale.toString()));
+            Utils.sendTextComponent(viewer, "main.setdefaultlanguage", message -> message.replace("{0}", newLocale.toString()));
             ProtocolizePlayer protocolizePlayer = Protocolize.playerProvider().player(viewer.getUniqueId());
-            ProtocolizeUtils.openInventory(this, protocolizePlayer);
+            ProtocolizeUtils.openInventory(getParent(), protocolizePlayer);
         });
     }
 }
