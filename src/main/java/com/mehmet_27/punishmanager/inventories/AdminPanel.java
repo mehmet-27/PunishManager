@@ -16,9 +16,14 @@ public class AdminPanel extends UIFrame {
         super(parent, type, viewer);
         PunishManager plugin = PunishManager.getInstance();
         title(Messages.GUI_ADMINPANEL_TITLE.getString(viewer.getName()));
+
         ItemStack reloadButton = new ItemStack(ItemType.LIME_DYE)
                 .displayName(Messages.GUI_ADMINPANEL_RELOAD_NAME.getString(viewer.getName()));
         item(11, reloadButton);
+
+        ItemStack defaultLanguageSelector = new ItemStack(ItemType.PAPER)
+                .displayName(Messages.GUI_ADMINPANEL_DEFAULTLANGUAGESELECTOR_NAME.getString(viewer.getName()));
+        item(15, defaultLanguageSelector);
 
         ItemStack backButton = new Item().back(viewer.getName());
         item(26, backButton);
@@ -27,9 +32,11 @@ public class AdminPanel extends UIFrame {
             click.cancelled(true);
             ItemStack clickedItem = click.clickedItem();
             if (clickedItem == null) return;
-            String itemName = clickedItem.displayName(true).toString();
-            if (itemName.contains(Messages.GUI_ADMINPANEL_RELOAD_NAME.getString(viewer.getName()))) {
+            if (clickedItem.equals(reloadButton)) {
                 plugin.getProxy().getPluginManager().dispatchCommand(viewer, "punishmanager reload");
+            }
+            if (clickedItem.equals(defaultLanguageSelector)) {
+                click.player().openInventory(new DefaultLanguageSelector(this, InventoryType.GENERIC_9X6, viewer));
             }
             if (clickedItem.equals(backButton)){
                 ProtocolizePlayer protocolizePlayer = Protocolize.playerProvider().player(viewer.getUniqueId());

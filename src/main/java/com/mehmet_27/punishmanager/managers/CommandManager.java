@@ -187,7 +187,7 @@ public class CommandManager extends BungeeCommandManager {
 
     @SuppressWarnings("deprecation")
     public void setup() {
-        loadLocaleFiles(PunishManager.getInstance().getConfigManager().getLocaleFiles());
+        loadLocaleFiles(punishManager.getConfigManager().getLocaleFiles());
         updateDefaultLocale();
         registerDependencies();
         enableUnstableAPI("help");

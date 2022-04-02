@@ -29,11 +29,13 @@ gui:
     adminpanel:
       name: '&eAdmin Panel'
   languageselector:
-    title: '&eLanguages - Current: &8{0}'
+    title: '&eLanguage Selector - Current: &8{0}'
   adminpanel:
     title: '&eAdmin Panel'
     reload:
       name: '&aReload all configuration files'
+    defaultlanguageselector:
+      name: '&aDefault Language Selector'
   managepunishments:
     title: '&eManage Punishments - Total &6{0}'
     next:
@@ -49,6 +51,11 @@ gui:
         - '&6Reason: &e%reason%'
         - '&6Operator: &e%operator%'
         - '&6Ip: &e%ip%'
+  defaultlanguageselector:
+    title: '&eDefault Language Selector - Current: &8{0}'
+
+set-language: '&aThe default language for server is set to {0}.'
+set-default-language: '&aYour language is set to {0}.'
 
 ban:
   punished: '&a%player% successfully banned.'

@@ -13,12 +13,14 @@ public enum Messages {
     GUI_MAIN_MANAGEPUNISHMENTS_NAME("gui.main.managepunishments.name"),
     GUI_ADMINPANEL_TITLE("gui.adminpanel.title"),
     GUI_ADMINPANEL_RELOAD_NAME("gui.adminpanel.reload.name"),
+    GUI_ADMINPANEL_DEFAULTLANGUAGESELECTOR_NAME("gui.adminpanel.defaultlanguageselector.name"),
     GUI_MANAGEPUNISHMENTS_TITLE("gui.managepunishments.title"),
     GUI_MANAGEPUNISHMENTS_PUNISHMENT_NAME("gui.managepunishments.punishment.name"),
     GUI_MANAGEPUNISHMENTS_PUNISHMENT_LORE("gui.managepunishments.punishment.lore"),
     GUI_MANAGEPUNISHMENTS_NEXT_NAME("gui.managepunishments.next.name"),
     GUI_MANAGEPUNISHMENTS_PREVIOUS_NAME("gui.managepunishments.previous.name"),
-    GUI_LANGUAGESELECTOR_TITLE("gui.languageselector.title");
+    GUI_LANGUAGESELECTOR_TITLE("gui.languageselector.title"),
+    GUI_DEFAULTLANGUAGESELECTOR_TITLE("gui.defaultlanguageselector.title");
 
     private final String path;
 

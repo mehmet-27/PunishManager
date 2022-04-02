@@ -29,11 +29,13 @@ gui:
     adminpanel:
       name: '&eAdmin Paneli'
   languageselector:
-    title: '&eDiller - Mevcut: &8{0}'
-  admin:
+    title: '&eDil Seçici - Mevcut: &8{0}'
+  adminpanel:
     title: '&eAdmin Paneli'
     reload:
       name: '&aTüm yapılandırma dosyalarını yeniden yükle'
+    defaultlanguageselector:
+      name: '&aVarsayılan Dil Seçici'
   managepunishments:
     title: '&eCezaları Yönet - Toplam &6{0}'
     next:
@@ -49,6 +51,11 @@ gui:
         - '&6Sebep: &e%reason%'
         - '&6Operatör: &e%operator%'
         - '&6Ip: &e%ip%'
+  defaultlanguageselector:
+    title: '&eVarsayılan Dil Seçici - Mevcut: &8{0}'
+
+set-language: '&aSunucu için varsayılan dil {0} olarak ayarlandı.'
+set-default-language: '&aDiliniz {0} olarak ayarlandı.'
 
 ban:
   punished: '&a%player% başarıyla yasaklandı.'

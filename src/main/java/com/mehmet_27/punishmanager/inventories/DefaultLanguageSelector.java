@@ -12,22 +12,21 @@ import dev.simplix.protocolize.data.ItemType;
 import dev.simplix.protocolize.data.inventory.InventoryType;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-//TODO add multi-page support
-public class LanguageSelector extends UIFrame{
-
-    public LanguageSelector(UIFrame parent, InventoryType type, @NotNull ProxiedPlayer viewer) {
+public class DefaultLanguageSelector extends UIFrame {
+    public DefaultLanguageSelector(@Nullable UIFrame parent, InventoryType type, @NotNull ProxiedPlayer viewer) {
         super(parent, type, viewer);
         PunishManager plugin = PunishManager.getInstance();
         ConfigManager configManager = plugin.getConfigManager();
 
-        Locale viewerLocale = plugin.getOfflinePlayers().get(viewer.getName()).getLocale();
-        title(Messages.GUI_LANGUAGESELECTOR_TITLE.getString(viewer.getName())
-                .replace("{0}", viewerLocale.toString()));
+        Locale defaultLocale = configManager.getDefaultLocale();
+        title(Messages.GUI_DEFAULTLANGUAGESELECTOR_TITLE.getString(viewer.getName())
+                .replace("{0}", defaultLocale.toString()));
         List<String> localeNames = configManager.getAvailableLocales().stream().map(Locale::toString).sorted().collect(Collectors.toList());
         for (int i = 0; i < localeNames.size(); i++) {
             ItemStack itemStack = new ItemStack(ItemType.PAPER);
@@ -36,6 +35,7 @@ public class LanguageSelector extends UIFrame{
         }
         ItemStack backButton = new Item().back(viewer.getName());
         item(53, backButton);
+
         onClick(click -> {
             click.cancelled(true);
             ItemStack clickedItem = click.clickedItem();
@@ -45,12 +45,12 @@ public class LanguageSelector extends UIFrame{
                 ProtocolizeUtils.openInventory(getParent(), protocolizePlayer);
                 return;
             }
-            String name = click.clickedItem().displayName(true).toString();
+            String name = clickedItem.displayName(true).toString();
             Locale newLocale = Utils.stringToLocale(name.substring(name.lastIndexOf("_") - 2, name.lastIndexOf("_") + 3));
-            plugin.getStorageManager().updateLanguage(viewer, newLocale);
-            plugin.getOfflinePlayers().get(viewer.getName()).setLocale(newLocale);
-            Utils.sendTextComponent(viewer, "set-language", message -> message.replace("{0}", newLocale.toString()));
-            ProtocolizeUtils.openMainInventory(viewer);
+            configManager.setDefaultLocale(newLocale);
+            Utils.sendTextComponent(viewer, "set-default-language", message -> message.replace("{0}", newLocale.toString()));
+            ProtocolizePlayer protocolizePlayer = Protocolize.playerProvider().player(viewer.getUniqueId());
+            ProtocolizeUtils.openInventory(this, protocolizePlayer);
         });
     }
 }

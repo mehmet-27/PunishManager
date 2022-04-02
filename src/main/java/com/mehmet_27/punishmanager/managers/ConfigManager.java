@@ -43,6 +43,15 @@ public class ConfigManager {
         return null;
     }
 
+    public void saveConfiguration(Configuration config, File file) {
+        try {
+            provider.save(config,file);
+        } catch (IOException e){
+            plugin.getLogger().severe("An error occurred while saving the configuration: ");
+            e.printStackTrace();
+        }
+    }
+
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private void loadFile(File file) {
         try {
@@ -161,24 +170,6 @@ public class ConfigManager {
         return config;
     }
 
-    public void setup() {
-        config = loadConfigFile(new File(plugin.getDataFolder() + File.separator + "config.yml"));
-        loadFolder(new File(plugin.getDataFolder() + File.separator + "locales"));
-        loadFolder(new File(plugin.getDataFolder() + File.separator + "embeds"));
-        loadFile(new File(plugin.getDataFolder() + File.separator + "embeds" + File.separator + "ban.json"));
-        loadFile(new File(plugin.getDataFolder() + File.separator + "embeds" + File.separator + "mute.json"));
-        loadFile(new File(plugin.getDataFolder() + File.separator + "embeds" + File.separator + "tempban.json"));
-        loadFile(new File(plugin.getDataFolder() + File.separator + "embeds" + File.separator + "tempmute.json"));
-        loadFile(new File(plugin.getDataFolder() + File.separator + "embeds" + File.separator + "ipban.json"));
-        loadFile(new File(plugin.getDataFolder() + File.separator + "embeds" + File.separator + "kick.json"));
-        loadFile(new File(plugin.getDataFolder() + File.separator + "locales" + File.separator + "en_US.yml"));
-        loadFile(new File(plugin.getDataFolder() + File.separator + "locales" + File.separator + "tr_TR.yml"));
-        this.locales = getLocales();
-        this.embeds = getEmbeds();
-        defaultLocale = Utils.stringToLocale(getConfig().getString("default-server-language"));
-        this.exemptPlayers = getConfig().getStringList("exempt-players");
-    }
-
     private Set<File> getEmbedFiles() {
         Set<File> files = new HashSet<>();
         File directoryPath = new File(plugin.getDataFolder().getAbsolutePath() + File.separator + "embeds");
@@ -219,11 +210,36 @@ public class ConfigManager {
         return embeds.get(path);
     }
 
-    public java.util.Locale getDefaultLocale() {
+    public Locale getDefaultLocale() {
         return defaultLocale;
     }
 
     public List<String> getExemptPlayers() {
         return exemptPlayers;
+    }
+
+    public void setDefaultLocale(Locale locale){
+        defaultLocale = locale;
+        config.set("default-server-language", locale.toString());
+        saveConfiguration(config, new File(plugin.getDataFolder() + File.separator + "config.yml"));
+        config = loadConfigFile(new File(plugin.getDataFolder() + File.separator + "config.yml"));
+    }
+    public void setup() {
+        config = loadConfigFile(new File(plugin.getDataFolder() + File.separator + "config.yml"));
+        String pluginFolder = plugin.getDataFolder() + File.separator;
+        loadFolder(new File(pluginFolder + "locales"));
+        loadFolder(new File(pluginFolder + "embeds"));
+        loadFile(new File(pluginFolder + "embeds" + File.separator + "ban.json"));
+        loadFile(new File(pluginFolder + "embeds" + File.separator + "mute.json"));
+        loadFile(new File(pluginFolder + "embeds" + File.separator + "tempban.json"));
+        loadFile(new File(pluginFolder + "embeds" + File.separator + "tempmute.json"));
+        loadFile(new File(pluginFolder + "embeds" + File.separator + "ipban.json"));
+        loadFile(new File(pluginFolder + "embeds" + File.separator + "kick.json"));
+        loadFile(new File(pluginFolder + "locales" + File.separator + "en_US.yml"));
+        loadFile(new File(pluginFolder + "locales" + File.separator + "tr_TR.yml"));
+        this.locales = getLocales();
+        this.embeds = getEmbeds();
+        defaultLocale = Utils.stringToLocale(getConfig().getString("default-server-language"));
+        this.exemptPlayers = getConfig().getStringList("exempt-players");
     }
 }
