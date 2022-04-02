@@ -4,8 +4,6 @@
 # %operator% -> Operator of punishment.
 # %name% -> Name of the player being punished.
 main:
-  guimaintitle: '&6&lPunishManager'
-  languageselectortitle: '&fLanguages - Current: {0}'
   exempt-player: 'You can''t punish this player.'
   defaultReason: 'none'
   not-on-yourself: 'You cannot use this command on yourself!'
@@ -32,7 +30,7 @@ gui:
       name: '&eAdmin Panel'
   languageselector:
     title: '&eLanguages - Current: &8{0}'
-  admin:
+  adminpanel:
     title: '&eAdmin Panel'
     reload:
       name: '&aReload all configuration files'

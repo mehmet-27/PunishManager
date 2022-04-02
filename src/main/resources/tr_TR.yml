@@ -4,8 +4,6 @@
 # %operator% -> Cezayı veren yetkili.
 # %name% -> Cezalandırılan oyuncunun adı.
 main:
-  guimaintitle: '&6&lPunishManager'
-  languageselectortitle: '&fDiller - Mevcut: {0}'
   exempt-player: 'Bu oyuncuyu cezalandıramazsınız.'
   defaultReason: 'yok'
   not-on-yourself: 'Bu komutu kendi üzerinizde kullanamazsınız.'
@@ -37,7 +35,7 @@ gui:
     reload:
       name: '&aTüm yapılandırma dosyalarını yeniden yükle'
   managepunishments:
-    title: '&eCezaları Yönet - Total &6{0}'
+    title: '&eCezaları Yönet - Toplam &6{0}'
     next:
       name: '&7Sonraki Sayfa'
     previous:

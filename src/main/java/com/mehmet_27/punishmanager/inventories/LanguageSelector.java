@@ -2,10 +2,12 @@ package com.mehmet_27.punishmanager.inventories;
 
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
+import com.mehmet_27.punishmanager.utils.Messages;
 import com.mehmet_27.punishmanager.utils.ProtocolizeUtils;
 import com.mehmet_27.punishmanager.utils.Utils;
 import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.item.ItemStack;
+import dev.simplix.protocolize.api.player.ProtocolizePlayer;
 import dev.simplix.protocolize.data.ItemType;
 import dev.simplix.protocolize.data.inventory.InventoryType;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -15,22 +17,17 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-import static com.mehmet_27.punishmanager.utils.Utils.color;
-
 //TODO add multi-page support
 public class LanguageSelector extends UIFrame{
 
-    PunishManager plugin;
-    ConfigManager configManager;
-    Locale viewerLocale;
-
     public LanguageSelector(UIFrame parent, InventoryType type, @NotNull ProxiedPlayer viewer) {
         super(parent, type, viewer);
-        plugin = PunishManager.getInstance();
-        configManager = plugin.getConfigManager();
-        viewerLocale = plugin.getOfflinePlayers().get(viewer.getName()).getLocale();
-        title(color(configManager.getMessage("gui.languageselector.title", viewer.getName())
-                .replace("{0}", viewerLocale.toString())));
+        PunishManager plugin = PunishManager.getInstance();
+        ConfigManager configManager = plugin.getConfigManager();
+
+        Locale viewerLocale = plugin.getOfflinePlayers().get(viewer.getName()).getLocale();
+        title(Messages.GUI_LANGUAGESELECTOR_TITLE.getString(viewer.getName())
+                .replace("{0}", viewerLocale.toString()));
         List<String> localeNames = configManager.getAvailableLocales().stream().map(Locale::toString).sorted().collect(Collectors.toList());
         // Sort locales alphabetically
         for (int i = 0; i < localeNames.size(); i++) {
@@ -38,14 +35,15 @@ public class LanguageSelector extends UIFrame{
             itemStack.displayName(localeNames.get(i));
             item(i, itemStack);
         }
-        ItemStack back = new ItemStack(ItemType.ARROW);
-        back.displayName(color(configManager.getMessage("gui.backbutton.name", viewer.getName())));
-        item(53, back);
+        ItemStack backButton = new Item().back(viewer.getName());
+        item(53, backButton);
         onClick(click -> {
             click.cancelled(true);
-            if (click.clickedItem() == null) return;
-            if (click.clickedItem().displayName(true).toString().contains(color(configManager.getMessage("gui.backbutton.name", viewer.getName())))){
-                ProtocolizeUtils.openInventory(getParent(), Protocolize.playerProvider().player(viewer.getUniqueId()));
+            ItemStack clickedItem = click.clickedItem();
+            if (clickedItem == null) return;
+            if (clickedItem.equals(backButton)){
+                ProtocolizePlayer protocolizePlayer = Protocolize.playerProvider().player(viewer.getUniqueId());
+                ProtocolizeUtils.openInventory(getParent(), protocolizePlayer);
                 return;
             }
             String name = click.clickedItem().displayName(true).toString();

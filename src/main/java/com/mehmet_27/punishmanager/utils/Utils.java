@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.function.Function;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class Utils {
 
@@ -21,6 +22,10 @@ public class Utils {
 
     public static String color(String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
+    }
+
+    public static List<String> color(List<String> stringList){
+        return stringList.stream().map(Utils::color).collect(Collectors.toList());
     }
 
     public static TextComponent TextComponentBuilder(List<String> messages, Punishment punishment) {
@@ -112,5 +117,14 @@ public class Utils {
     public static boolean isPluginEnabled(String pluginName){
         Plugin plugin = punishManager.getProxy().getPluginManager().getPlugin(pluginName);
         return plugin != null;
+    }
+
+    public static String replacePunishmentPlaceholders(String message, Punishment punishment){
+        return message.replace("%reason%", punishment.getReason())
+                .replace("%operator%", punishment.getOperator())
+                .replace("%player%", punishment.getPlayerName())
+                .replace("%type%", punishment.getPunishType().name())
+                .replace("%ip%", "" + punishment.getIp())
+                .replace("%uuid%", punishment.getUuid().toString());
     }
 }
