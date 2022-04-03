@@ -10,6 +10,8 @@ main:
   not-logged-server: '&cYou can''t punish someone who hasn''t been on the server before.'
   setlanguage: '&aYour language is set to {0}.'
   setdefaultlanguage: '&aThe default language for server is set to {0}.'
+  mustInteger: '&cPlease enter a valid integer value.'
+  punishmentNotFound: '&eSearched punishment not found.'
   timelayout:
     #Variables to be used when showing the duration of the punishment.
     month: '%mo% months'
@@ -158,3 +160,7 @@ punishmanager-reload:
 
 punishmanager-help:
   description: 'Help command.'
+
+changereason:
+  description: 'Changes the reason for a punish.'
+  done: '&aThe reason for the &e#%id% &apunish has been changed to &e%reason%&a.'

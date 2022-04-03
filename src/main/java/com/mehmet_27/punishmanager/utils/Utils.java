@@ -127,4 +127,13 @@ public class Utils {
                 .replace("%ip%", "" + punishment.getIp())
                 .replace("%uuid%", punishment.getUuid().toString());
     }
+
+    public static boolean isInteger(String value){
+        try {
+            Integer.parseInt(value);
+            return true;
+        } catch (NumberFormatException e){
+            return false;
+        }
+    }
 }

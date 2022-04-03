@@ -120,6 +120,27 @@ public class StorageManager {
         }
         return null;
     }
+    public Punishment getPunishmentWithId(int punishmentId) {
+        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(GET_PUNISHMENT_WITH_ID.getQuery())) {
+            ps.setInt(1, punishmentId);
+            ResultSet result = ps.executeQuery();
+            if (result.next()) {
+                String playerName = result.getString("name");
+                String uuid = result.getString("uuid");
+                String ip = result.getString("ip");
+                String reason = result.getString("reason");
+                String operator = result.getString("operator");
+                long start = result.getLong("start");
+                long end = result.getLong("end");
+                PunishType punishType = PunishType.valueOf(result.getString("type"));
+                int id = result.getInt("id");
+                return new Punishment(playerName, UUID.fromString(uuid), ip, punishType, reason, operator, start, end, id);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public OfflinePlayer getOfflinePlayer(String wantedPlayer) {
         try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SELECT_PLAYER_WITH_NAME.getQuery())) {
@@ -361,5 +382,15 @@ public class StorageManager {
             e.printStackTrace();
         }
         return punishments;
+    }
+
+    public void updatePunishmentReason(int punishmentId, String newReason) {
+        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(UPDATE_PUNISHMENT_REASON.getQuery())) {
+            ps.setString(1, newReason);
+            ps.setInt(2, punishmentId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

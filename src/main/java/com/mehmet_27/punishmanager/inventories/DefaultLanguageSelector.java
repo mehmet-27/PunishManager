@@ -47,7 +47,10 @@ public class DefaultLanguageSelector extends UIFrame {
             }
             String name = clickedItem.displayName(true).toString();
             Locale newLocale = Utils.stringToLocale(name.substring(name.lastIndexOf("_") - 2, name.lastIndexOf("_") + 3));
+            // plugin locale
             configManager.setDefaultLocale(newLocale);
+            // acf locale
+            plugin.getCommandManager().getLocales().setDefaultLocale(newLocale);
             Utils.sendTextComponent(viewer, "main.setdefaultlanguage", message -> message.replace("{0}", newLocale.toString()));
             ProtocolizePlayer protocolizePlayer = Protocolize.playerProvider().player(viewer.getUniqueId());
             ProtocolizeUtils.openInventory(getParent(), protocolizePlayer);

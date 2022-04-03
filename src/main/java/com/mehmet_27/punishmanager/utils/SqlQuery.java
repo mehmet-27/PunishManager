@@ -35,12 +35,14 @@ public enum SqlQuery {
                     " VALUES (?,?,?,?,?,?,?,?)"
     ),
     GET_PUNISHMENT("SELECT * FROM `punishmanager_punishments` WHERE name = ?"),
+    GET_PUNISHMENT_WITH_ID("SELECT * FROM `punishmanager_punishments` WHERE id = ?"),
     DELETE_PUNISHMENT("DELETE FROM `punishmanager_punishments` WHERE name = ?"),
     DELETE_PUNISHMENT_WITH_TYPE("DELETE FROM `punishmanager_punishments` WHERE name = ? and type = ?"),
     SELECT_ALL_PUNISHMENTS("SELECT * FROM `punishmanager_punishments`"),
     SELECT_ALL_PLAYERS("SELECT * FROM `punishmanager_players`"),
     SELECT_PLAYER_WITH_NAME("SELECT * FROM `punishmanager_players` WHERE name = ?"),
     UPDATE_PLAYER_LOCALE("UPDATE `punishmanager_players` SET `language` = ? WHERE `uuid` = ?"),
+    UPDATE_PUNISHMENT_REASON("UPDATE `punishmanager_punishments` SET `reason` = ? WHERE `id` = ?"),
     UPDATE_PLAYER_NAME("UPDATE `punishmanager_players` SET `name` = ? WHERE `uuid` = ?"),
     SELECT_DISCORDSRV_WITH_UUID("SELECT * FROM `discordsrv_accounts` WHERE uuid = ?"),
     GET_ALL_LOGGED_NAMES("SELECT name FROM `punishmanager_players`");

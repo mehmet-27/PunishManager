@@ -109,7 +109,7 @@ public class CommandManager extends BungeeCommandManager {
     private void registerConditions() {
         getCommandConditions().addCondition(OfflinePlayer.class, "other_player", (context, exec, value) -> {
             BungeeCommandIssuer issuer = context.getIssuer();
-            if(!punishManager.getConfigManager().getConfig().getBoolean("self-punish")){
+            if (!punishManager.getConfigManager().getConfig().getBoolean("self-punish")) {
                 if (issuer.isPlayer() && issuer.getPlayer().getName().equals(value.getPlayerName())) {
                     throw new ConditionFailedException(getMessage(issuer, "main.not-on-yourself"));
                 }
@@ -120,13 +120,19 @@ public class CommandManager extends BungeeCommandManager {
                 throw new ConditionFailedException(Utils.color("The gui feature will not work because the Protocolize plugin cannot be found."));
             }
         });
+        getCommandConditions().addCondition(String.class, "mustInteger", (context, exec, value) -> {
+            BungeeCommandIssuer issuer = context.getIssuer();
+            if (!Utils.isInteger(value)) {
+                throw new ConditionFailedException(getMessage(issuer, "main.mustInteger"));
+            }
+        });
     }
 
-    public void registerContexts(){
+    public void registerContexts() {
         getCommandContexts().registerContext(OfflinePlayer.class, c -> {
             String playerName = c.popFirstArg();
             OfflinePlayer offlinePlayer = punishManager.getOfflinePlayers().get(playerName);
-            if (offlinePlayer == null){
+            if (offlinePlayer == null) {
                 throw new InvalidCommandArgument(getMessage(c.getIssuer(), "main.not-logged-server"));
             }
             return punishManager.getOfflinePlayers().get(playerName);
@@ -134,7 +140,7 @@ public class CommandManager extends BungeeCommandManager {
         getCommandContexts().registerContext(OfflinePlayer.class, c -> {
             String playerName = c.popFirstArg();
             OfflinePlayer offlinePlayer = punishManager.getOfflinePlayers().get(playerName);
-            if (offlinePlayer == null){
+            if (offlinePlayer == null) {
                 throw new InvalidCommandArgument(getMessage(c.getIssuer(), "main.not-logged-server"));
             }
             return punishManager.getOfflinePlayers().get(playerName);
@@ -176,12 +182,12 @@ public class CommandManager extends BungeeCommandManager {
         }
     }
 
-    public void updateDefaultLocale(){
+    public void updateDefaultLocale() {
         Locale locale = punishManager.getConfigManager().getDefaultLocale();
         getLocales().setDefaultLocale(locale);
     }
 
-    public String getMessage(CommandIssuer issuer, String key){
+    public String getMessage(CommandIssuer issuer, String key) {
         return getLocales().getMessage(issuer, MessageKey.of(key));
     }
 

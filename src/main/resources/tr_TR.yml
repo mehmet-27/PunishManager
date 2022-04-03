@@ -10,6 +10,8 @@ main:
   not-logged-server: '&cDaha önce sunucuya girmemiş birini cezalandıramazsınız.'
   setlanguage: '&aDiliniz {0} olarak ayarlandı.'
   setdefaultlanguage: '&aSunucu için varsayılan dil {0} olarak ayarlandı.'
+  mustInteger: '&cLütfen geçerli bir sayı giriniz.'
+  punishmentNotFound: '&eAradığınız ceza bulunamadı.'
   timelayout:
     #Cezanın süresini gösterirken kullanılacak değişkenler.
     month: '%mo% ay'
@@ -162,4 +164,8 @@ punishmanager-reload:
 
 punishmanager-help:
   description: 'Yardım komutu.'
+
+changereason:
+  description: 'Bir cezanın sebebini değiştirir.'
+  done: '&e#%id% &anumaralı cezanın sebebi &e%reason% &aolarak değiştirildi.'
 
