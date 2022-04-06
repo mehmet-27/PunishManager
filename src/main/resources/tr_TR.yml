@@ -14,6 +14,7 @@ main:
   punishmentNotFound: '&eAradığınız ceza bulunamadı.'
   timelayout:
     #Cezanın süresini gösterirken kullanılacak değişkenler.
+    year: '%y% yıl'
     month: '%mo% ay'
     week: '%w% hafta'
     day: '%d% gün'

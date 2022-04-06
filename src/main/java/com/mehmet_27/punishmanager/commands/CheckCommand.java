@@ -38,7 +38,6 @@ public class CheckCommand extends BaseCommand {
         String uuid = player.getUniqueId().toString();
         String banStatus = (ban != null && ban.isBanned() && !ban.isExpired()) ? ban.getDuration() : configManager.getMessage("check.notPunished", sender.getName());
         String muteStatus = (mute != null && mute.isMuted() && !mute.isExpired()) ? mute.getDuration() : configManager.getMessage("check.notPunished", sender.getName());
-        //Kalan süreler çok uzun olduğunda bir yerden sonrasını kırp
 
         sendTextComponent(sender, "check.uuid", message -> message.replace("%uuid%", uuid));
         sendTextComponent(sender, "check.ip", message -> message.replace("%ip%", ip));

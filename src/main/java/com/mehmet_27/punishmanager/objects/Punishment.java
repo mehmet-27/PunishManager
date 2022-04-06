@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 import java.util.UUID;
 
 public class Punishment {
+    private static final int YEAR = 60 * 60 * 24 * 7 * 4 * 12;
     private static final int MONTH = 60 * 60 * 24 * 7 * 4;
     private static final int WEEK = 60 * 60 * 24 * 7;
     private static final int DAY = 60 * 60 * 24;
@@ -118,6 +119,7 @@ public class Punishment {
         long currentTime = new Timestamp(System.currentTimeMillis()).getTime();
         long diff = (getEnd() - currentTime) / 1000 + 1;
         //Getting time formats
+        String yearFormat = configManager.getMessage("main.timelayout.year", this.playerName);
         String monthFormat = configManager.getMessage("main.timelayout.month", this.playerName);
         String weekFormat = configManager.getMessage("main.timelayout.week", this.playerName);
         String dayFormat = configManager.getMessage("main.timelayout.day", this.playerName);
@@ -125,6 +127,7 @@ public class Punishment {
         String minuteFormat = configManager.getMessage("main.timelayout.minute", this.playerName);
         String secondFormat = configManager.getMessage("main.timelayout.second", this.playerName);
 
+        String years = String.valueOf(diff / 60 / 60 / 24 / 7 / 4 / 12);
         String months = String.valueOf(diff / 60 / 60 / 24 / 7 / 4);
         String weeks = String.valueOf(diff / 60 / 60 / 24 / 7 % 4);
         String days = String.valueOf(diff / 60 / 60 / 24 % 7);
@@ -133,6 +136,22 @@ public class Punishment {
         String seconds = String.valueOf(diff % 60);
         if (getEnd() == -1) {
             return "permanent";
+        }
+        // years
+        if (diff > YEAR) {
+            return String.format("%s %s %s %s %s %s %s", yearFormat, monthFormat, weekFormat, dayFormat, hourFormat, minuteFormat, secondFormat).
+                    replaceAll("%y%", years).
+                    replaceAll("%mo%", months).
+                    replaceAll("%w%", weeks).
+                    replaceAll("%d%", days).
+                    replaceAll("%h%", hours).
+                    replaceAll("%m%", minutes).
+                    replaceAll("%s%", seconds);
+        }
+        // year
+        if (diff == YEAR) {
+            return String.format("%s", yearFormat).
+                    replaceAll("%y%", years);
         }
         // months
         if (diff > MONTH) {
@@ -144,6 +163,11 @@ public class Punishment {
                     replaceAll("%m%", minutes).
                     replaceAll("%s%", seconds);
         }
+        // month
+        else if (diff == MONTH){
+            return String.format("%s", monthFormat).
+                    replaceAll("%mo%", months);
+        }
         // weeks
         else if (diff > WEEK) {
             return String.format("%s %s %s %s %s", weekFormat, dayFormat, hourFormat, minuteFormat, secondFormat).
@@ -153,6 +177,11 @@ public class Punishment {
                     replaceAll("%m%", minutes).
                     replaceAll("%s%", seconds);
         }
+        // week
+        else if (diff == WEEK) {
+            return String.format("%s", weekFormat).
+                    replaceAll("%w%", weeks);
+        }
         // days
         else if (diff > DAY) {
             return String.format("%s %s %s %s", dayFormat, hourFormat, minuteFormat, secondFormat).
@@ -161,6 +190,11 @@ public class Punishment {
                     replaceAll("%m%", minutes).
                     replaceAll("%s%", seconds);
         }
+        // day
+        else if (diff == DAY) {
+            return String.format("%s", dayFormat).
+                    replaceAll("%d%", days);
+        }
         // hours
         else if (diff > HOUR) {
             return String.format("%s %s %s", hourFormat, minuteFormat, secondFormat).
@@ -168,11 +202,21 @@ public class Punishment {
                     replaceAll("%m%", minutes).
                     replaceAll("%s%", seconds);
         }
+        // hour
+        else if (diff == HOUR) {
+            return String.format("%s", hourFormat).
+                    replaceAll("%h%", hours);
+        }
         // minutes
         else if (diff > MINUTE) {
             return String.format("%s %s", minuteFormat, secondFormat).
                     replaceAll("%m%", minutes).
                     replaceAll("%s%", seconds);
+        }
+        // minutes
+        else if (diff == MINUTE) {
+            return String.format("%s", minuteFormat).
+                    replaceAll("%m%", minutes);
         }
         // seconds
         else {

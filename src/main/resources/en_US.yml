@@ -14,12 +14,13 @@ main:
   punishmentNotFound: '&eSearched punishment not found.'
   timelayout:
     #Variables to be used when showing the duration of the punishment.
-    month: '%mo% months'
-    week: '%w% weeks'
-    day: '%d% days'
-    hour: '%h% hours'
-    minute: '%m% minutes'
-    second: '%s% seconds'
+    year: '%y% year(s)'
+    month: '%mo% month(s)'
+    week: '%w% week(s)'
+    day: '%d% day(s)'
+    hour: '%h% hour(s)'
+    minute: '%m% minute(s)'
+    second: '%s% second(s)'
 
 gui:
   backbutton:
