@@ -34,7 +34,7 @@ public class TempMuteCommand extends BaseCommand {
         UUID uuid = player.getUniqueId();
         String playerName = player.getPlayerName();
 
-        Punishment punishment = storageManager.getMute(playerName);
+        Punishment punishment = storageManager.getMute(uuid);
         if (punishment != null && punishment.isMuted()) {
             sendTextComponent(sender, playerName, "tempmute.alreadyPunished");
             return;
@@ -47,7 +47,7 @@ public class TempMuteCommand extends BaseCommand {
         String unit = matcher.group("unit");
         long start = System.currentTimeMillis();
         long end = start + Utils.convertToMillis(number, unit);
-        String ip = Utils.getPlayerIp(playerName);
+        String ip = Utils.getPlayerIp(uuid);
         punishment = new Punishment(playerName, uuid, ip, TEMPMUTE, reason, sender.getName(), start, end, -1);
         punishManager.getProxy().getPluginManager().callEvent(new PlayerPunishEvent(punishment));
     }

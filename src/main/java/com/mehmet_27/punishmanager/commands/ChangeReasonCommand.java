@@ -25,7 +25,7 @@ public class ChangeReasonCommand extends BaseCommand {
 
         Punishment punishment = storageManager.getPunishmentWithId(Integer.parseInt(punishmentId));
         if (punishment == null) {
-            sendTextComponent(sender, "ban.punishmentNotFound");
+            sendTextComponent(sender, "changereason.punishmentNotFound");
             return;
         }
 

@@ -16,7 +16,7 @@ public class OfflinePlayer {
     public OfflinePlayer(ProxiedPlayer player) {
         this.uuid = player.getUniqueId().toString();
         this.playerName = player.getName();
-        this.playerIp = Utils.getPlayerIp(player.getName());
+        this.playerIp = Utils.getPlayerIp(player.getUniqueId());
         this.locale = PunishManager.getInstance().getConfigManager().getDefaultLocale();
     }
     public OfflinePlayer(String uuid, String playerName, String playerIp, Locale locale) {
@@ -38,7 +38,7 @@ public class OfflinePlayer {
         return UUID.fromString(uuid);
     }
 
-    public void setUuid(String uuid) {
+    public void setUniqueId(String uuid) {
         this.uuid = uuid;
     }
 

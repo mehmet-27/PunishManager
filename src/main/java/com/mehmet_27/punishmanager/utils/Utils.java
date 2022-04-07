@@ -11,6 +11,7 @@ import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -103,10 +104,10 @@ public class Utils {
         sender.sendMessage(textComponent);
     }
 
-    public static String getPlayerIp(String playerName) {
-        ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerName);
+    public static String getPlayerIp(UUID playerUuid) {
+        ProxiedPlayer player = PunishManager.getInstance().getProxy().getPlayer(playerUuid);
         StorageManager storageManager = PunishManager.getInstance().getStorageManager();
-        return player != null && player.isConnected() ? player.getSocketAddress().toString().substring(1).split(":")[0] : storageManager.getOfflinePlayer(playerName).getPlayerIp();
+        return player != null && player.isConnected() ? player.getSocketAddress().toString().substring(1).split(":")[0] : storageManager.getOfflinePlayer(playerUuid).getPlayerIp();
     }
 
     public static Locale stringToLocale(String loc){

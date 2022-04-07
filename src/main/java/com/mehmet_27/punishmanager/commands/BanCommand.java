@@ -31,13 +31,13 @@ public class BanCommand extends BaseCommand {
         UUID uuid = player.getUniqueId();
         String playerName = player.getPlayerName();
 
-        Punishment punishment = storageManager.getBan(playerName);
+        Punishment punishment = storageManager.getBan(uuid);
         if (punishment != null && punishment.isBanned()) {
             sendTextComponent(sender, playerName, "ban.alreadyPunished");
             return;
         }
 
-        String ip = Utils.getPlayerIp(playerName);
+        String ip = Utils.getPlayerIp(uuid);
         punishment = new Punishment(playerName, uuid, ip, BAN, reason, sender.getName(), -1);
         punishManager.getProxy().getPluginManager().callEvent(new PlayerPunishEvent(punishment));
     }

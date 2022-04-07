@@ -11,7 +11,6 @@ main:
   setlanguage: '&aDiliniz {0} olarak ayarlandı.'
   setdefaultlanguage: '&aSunucu için varsayılan dil {0} olarak ayarlandı.'
   mustInteger: '&cLütfen geçerli bir sayı giriniz.'
-  punishmentNotFound: '&eAradığınız ceza bulunamadı.'
   timelayout:
     #Cezanın süresini gösterirken kullanılacak değişkenler.
     year: '%y% yıl'
@@ -168,5 +167,6 @@ punishmanager-help:
 
 changereason:
   description: 'Bir cezanın sebebini değiştirir.'
+  punishmentNotFound: '&eAranan ceza bulunamadı.'
   done: '&e#%id% &anumaralı cezanın sebebi &e%reason% &aolarak değiştirildi.'
 

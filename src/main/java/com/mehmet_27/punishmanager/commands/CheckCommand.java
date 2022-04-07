@@ -9,6 +9,8 @@ import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
 
+import java.util.UUID;
+
 import static com.mehmet_27.punishmanager.utils.Utils.sendTextComponent;
 
 @CommandAlias("punishmanager")
@@ -25,23 +27,23 @@ public class CheckCommand extends BaseCommand {
     @CommandAlias("check")
     public void check(CommandSender sender, @Name("Player") OfflinePlayer player) {
         String playerName = player.getPlayerName();
+        UUID uuid = player.getUniqueId();
         sendTextComponent(sender, playerName, "check.checking");
-        if (!storageManager.isLoggedServer(playerName)) {
+        if (!storageManager.isLoggedServer(uuid)) {
             sendTextComponent(sender, playerName, "check.playerNotFound");
             return;
         }
 
-        String ip = Utils.getPlayerIp(playerName);
-        Punishment ban = storageManager.getBan(playerName);
-        Punishment mute = storageManager.getMute(playerName);
+        String ip = Utils.getPlayerIp(uuid);
+        Punishment ban = storageManager.getBan(uuid);
+        Punishment mute = storageManager.getMute(uuid);
 
-        String uuid = player.getUniqueId().toString();
         String banStatus = (ban != null && ban.isBanned() && !ban.isExpired()) ? ban.getDuration() : configManager.getMessage("check.notPunished", sender.getName());
         String muteStatus = (mute != null && mute.isMuted() && !mute.isExpired()) ? mute.getDuration() : configManager.getMessage("check.notPunished", sender.getName());
 
-        sendTextComponent(sender, "check.uuid", message -> message.replace("%uuid%", uuid));
+        sendTextComponent(sender, "check.uuid", message -> message.replace("%uuid%", uuid.toString()));
         sendTextComponent(sender, "check.ip", message -> message.replace("%ip%", ip));
-        String language = storageManager.getOfflinePlayer(playerName).getLocale().toString();
+        String language = storageManager.getOfflinePlayer(uuid).getLocale().toString();
         sendTextComponent(sender, "check.language", message -> message.replace("%language%", language));
         sendTextComponent(sender, "check.banStatus", message -> message.replace("%status%", banStatus));
 

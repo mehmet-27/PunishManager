@@ -31,13 +31,13 @@ public class MuteCommand extends BaseCommand {
         UUID uuid = player.getUniqueId();
         String playerName = player.getPlayerName();
 
-        Punishment punishment = storageManager.getMute(playerName);
+        Punishment punishment = storageManager.getMute(uuid);
         if (punishment != null && punishment.isMuted()) {
             sendTextComponent(sender, playerName, "mute.alreadyPunished");
             return;
         }
 
-        String ip = Utils.getPlayerIp(playerName);
+        String ip = Utils.getPlayerIp(uuid);
         punishment = new Punishment(playerName, uuid, ip, MUTE, reason, sender.getName(), -1);
         punishManager.getProxy().getPluginManager().callEvent(new PlayerPunishEvent(punishment));
     }

@@ -34,9 +34,10 @@ public class PlayerLoginEvent implements Listener {
             }
         }else {
             storageManager.updatePlayerName(player);
+            storageManager.updatePlayerIp(player);
         }
-        Punishment punishment = storageManager.getBan(player.getName());
-        String playerIp = Utils.getPlayerIp(player.getName());
+        Punishment punishment = storageManager.getBan(player.getUniqueId());
+        String playerIp = Utils.getPlayerIp(player.getUniqueId());
         if (bannedIps.contains(playerIp)) {
             debug("This player's IP address is banned: " + player.getName() + " IP: " + playerIp);
             Utils.sendLayout(punishment);

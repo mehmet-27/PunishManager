@@ -1,6 +1,6 @@
 # This plugin was written by Mehmet_27.
 # Its main purpose is to save you from paid plugins.
-# If you need help using the plugin, you can reach us here:
+# If you need help using the plugin, you can reach us here: https://discord.gg/MYjmmEqKvE
 
 # If you don't use mysql connection it will automatically use a local database.
 mysql:
@@ -57,4 +57,5 @@ discord:
       tempban: true
       tempmute: true
 
+updateChecker: true
 debug: false

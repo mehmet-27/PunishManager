@@ -2,5 +2,5 @@ name: PunishManager
 version: ${project.version}
 main: com.mehmet_27.punishmanager.PunishManager
 author: Mehmet_27
-authors: Minat0_
-description: Advanced punish manager.
+authors: Minat0_, RoinujNosde
+description: Advanced punish plugin that offers many features to servers.

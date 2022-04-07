@@ -11,7 +11,6 @@ main:
   setlanguage: '&aYour language is set to {0}.'
   setdefaultlanguage: '&aThe default language for server is set to {0}.'
   mustInteger: '&cPlease enter a valid integer value.'
-  punishmentNotFound: '&eSearched punishment not found.'
   timelayout:
     #Variables to be used when showing the duration of the punishment.
     year: '%y% year(s)'
@@ -164,4 +163,5 @@ punishmanager-help:
 
 changereason:
   description: 'Changes the reason for a punish.'
+  punishmentNotFound: '&eSearched punishment not found.'
   done: '&aThe reason for the &e#%id% &apunish has been changed to &e%reason%&a.'

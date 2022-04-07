@@ -48,7 +48,7 @@ public class StorageManager {
         setup();
     }
 
-    private void createTable(String query) {
+    private void executeUpdate(String query) {
         try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(query)) {
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -57,8 +57,8 @@ public class StorageManager {
     }
 
     public void setup() {
-        createTable(SqlQuery.CREATE_PUNISHMENTS_TABLE.getQuery());
-        createTable(SqlQuery.CREATE_PLAYERS_TABLE.getQuery());
+        executeUpdate(SqlQuery.CREATE_PUNISHMENTS_TABLE.getQuery());
+        executeUpdate(SqlQuery.CREATE_PLAYERS_TABLE.getQuery());
     }
 
     public void AddPunish(Punishment punishment) {
@@ -79,7 +79,7 @@ public class StorageManager {
 
     public void unPunishPlayer(Punishment punishment) {
         try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.DELETE_PUNISHMENT_WITH_TYPE.getQuery())) {
-            ps.setString(1, punishment.getPlayerName());
+            ps.setString(1, punishment.getUuid().toString());
             ps.setString(2, punishment.getPunishType().toString());
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -92,16 +92,16 @@ public class StorageManager {
 
     public void removeAllPunishes(Punishment punishment) {
         try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.DELETE_PUNISHMENT.getQuery())) {
-            ps.setString(1, punishment.getPlayerName());
+            ps.setString(1, punishment.getUuid().toString());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public Punishment getPunishment(String wantedPlayer) {
+    public Punishment getPunishment(UUID wantedPlayer) {
         try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.GET_PUNISHMENT.getQuery())) {
-            ps.setString(1, wantedPlayer);
+            ps.setString(1, wantedPlayer.toString());
             ResultSet result = ps.executeQuery();
             if (result.next()) {
                 String playerName = result.getString("name");
@@ -142,9 +142,9 @@ public class StorageManager {
         return null;
     }
 
-    public OfflinePlayer getOfflinePlayer(String wantedPlayer) {
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SELECT_PLAYER_WITH_NAME.getQuery())) {
-            ps.setString(1, wantedPlayer);
+    public OfflinePlayer getOfflinePlayer(UUID wantedPlayer) {
+        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SELECT_PLAYER_WITH_UUID.getQuery())) {
+            ps.setString(1, wantedPlayer.toString());
             ResultSet result = ps.executeQuery();
             if (result.next()) {
                 String uuid = result.getString("uuid");
@@ -180,18 +180,18 @@ public class StorageManager {
         return new HashMap<>();
     }
 
-    public Punishment getBan(String wantedPlayer) {
+    public Punishment getBan(UUID wantedPlayer) {
         return getPunishment(wantedPlayer, "BAN");
     }
 
-    public Punishment getMute(String wantedPlayer) {
+    public Punishment getMute(UUID wantedPlayer) {
         return getPunishment(wantedPlayer, "MUTE");
     }
 
-    public Punishment getPunishment(String wantedPlayer, String type) {
+    public Punishment getPunishment(UUID playerUuid, String type) {
         List<Punishment> punishments = new ArrayList<>();
         try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.GET_PUNISHMENT.getQuery())) {
-            ps.setString(1, wantedPlayer);
+            ps.setString(1, playerUuid.toString());
             ResultSet result = ps.executeQuery();
             while (result.next()) {
                 String playerName = result.getString("name");
@@ -216,9 +216,9 @@ public class StorageManager {
         return null;
     }
 
-    public boolean isLoggedServer(String wantedPlayer) {
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.SELECT_PLAYER_WITH_NAME.getQuery())) {
-            ps.setString(1, wantedPlayer);
+    public boolean isLoggedServer(UUID wantedPlayer) {
+        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.SELECT_PLAYER_WITH_UUID.getQuery())) {
+            ps.setString(1, wantedPlayer.toString());
             ResultSet result = ps.executeQuery();
             if (result.next()) {
                 return true;
@@ -249,8 +249,8 @@ public class StorageManager {
             int deleted = 0;
             ResultSet result = ps.executeQuery();
             while (result.next()) {
-                String playerName = result.getString("name");
-                Punishment punishment = getPunishment(playerName);
+                UUID playerUuid = UUID.fromString(result.getString("uuid"));
+                Punishment punishment = getPunishment(playerUuid);
                 if (punishment.getPunishType().isTemp() && punishment.isExpired()) {
                     if (punishment.getPunishType().isMute()) {
                         punishManager.getDiscordManager().updateRole(punishment, REMOVE);
@@ -302,6 +302,18 @@ public class StorageManager {
             ps.setString(1, player.getName());
             ps.setString(2, player.getUniqueId().toString());
             debug(String.format("Update player name: %s -> %s", oldName, player.getName()));
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void updatePlayerIp(ProxiedPlayer player) {
+        String oldIp = punishManager.getOfflinePlayers().get(player.getName()).getPlayerIp();
+        String newIp = player.getSocketAddress().toString().substring(1).split(":")[0];
+        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(UPDATE_PLAYER_IP.getQuery())) {
+            ps.setString(1, newIp);
+            ps.setString(2, player.getUniqueId().toString());
+            debug(String.format("Update player IP address: %s -> %s", oldIp, newIp));
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

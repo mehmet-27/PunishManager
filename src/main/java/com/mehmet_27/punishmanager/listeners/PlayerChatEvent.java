@@ -24,7 +24,7 @@ public class PlayerChatEvent implements Listener {
     @EventHandler
     public void onChat(ChatEvent event) {
         ProxiedPlayer player = (ProxiedPlayer) event.getSender();
-        Punishment punishment = storageManager.getMute(player.getName());
+        Punishment punishment = storageManager.getMute(player.getUniqueId());
         if (punishment == null) return;
         if (punishment.isExpired()) {
             storageManager.unPunishPlayer(punishment);

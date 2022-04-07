@@ -23,7 +23,7 @@ public class AdminPanel extends UIFrame {
 
         ItemStack defaultLanguageSelector = new ItemStack(ItemType.PAPER)
                 .displayName(Messages.GUI_ADMINPANEL_DEFAULTLANGUAGESELECTOR_NAME.getString(viewer.getName()));
-        item(15, defaultLanguageSelector);
+        //item(15, defaultLanguageSelector);
 
         ItemStack backButton = new Item().back(viewer.getName());
         item(26, backButton);
