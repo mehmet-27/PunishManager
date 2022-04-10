@@ -21,8 +21,7 @@ public class UpdateChecker {
     }
 
     public void start() {
-        if (plugin.getConfigManager().getConfig().getBoolean("updateChecker")){
-            check();
+        if (plugin.getConfigManager().getConfig().getBoolean("updateChecker", true)){
             plugin.getProxy().getScheduler().schedule(plugin, this::check, 0, 12, TimeUnit.HOURS);
         }
     }

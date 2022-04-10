@@ -116,6 +116,9 @@ public class Punishment {
     }
 
     public String getDuration() {
+        if (getEnd() == -1) {
+            return "permanent";
+        }
         long currentTime = new Timestamp(System.currentTimeMillis()).getTime();
         long diff = (getEnd() - currentTime) / 1000 + 1;
         //Getting time formats
@@ -128,14 +131,17 @@ public class Punishment {
         String secondFormat = configManager.getMessage("main.timelayout.second", this.playerName);
 
         String years = String.valueOf(diff / 60 / 60 / 24 / 7 / 4 / 12);
-        String months = String.valueOf(diff / 60 / 60 / 24 / 7 / 4);
+        String months = String.valueOf(diff / 60 / 60 / 24 / 7 / 4 % 12);
         String weeks = String.valueOf(diff / 60 / 60 / 24 / 7 % 4);
         String days = String.valueOf(diff / 60 / 60 / 24 % 7);
         String hours = String.valueOf(diff / 60 / 60 % 24);
         String minutes = String.valueOf(diff / 60 % 60);
         String seconds = String.valueOf(diff % 60);
-        if (getEnd() == -1) {
-            return "permanent";
+
+        // show short
+        if (diff % YEAR == 0) {
+            return String.format("%s", yearFormat).
+                    replaceAll("%y%", years);
         }
         // years
         if (diff > YEAR) {
@@ -148,10 +154,10 @@ public class Punishment {
                     replaceAll("%m%", minutes).
                     replaceAll("%s%", seconds);
         }
-        // year
-        if (diff == YEAR) {
-            return String.format("%s", yearFormat).
-                    replaceAll("%y%", years);
+        // show short
+        else if (diff % MONTH == 0){
+            return String.format("%s", monthFormat).
+                    replaceAll("%mo%", months);
         }
         // months
         if (diff > MONTH) {
@@ -163,10 +169,10 @@ public class Punishment {
                     replaceAll("%m%", minutes).
                     replaceAll("%s%", seconds);
         }
-        // month
-        else if (diff == MONTH){
-            return String.format("%s", monthFormat).
-                    replaceAll("%mo%", months);
+        // show short
+        else if (diff % WEEK == 0) {
+            return String.format("%s", weekFormat).
+                    replaceAll("%w%", weeks);
         }
         // weeks
         else if (diff > WEEK) {
@@ -177,10 +183,10 @@ public class Punishment {
                     replaceAll("%m%", minutes).
                     replaceAll("%s%", seconds);
         }
-        // week
-        else if (diff == WEEK) {
-            return String.format("%s", weekFormat).
-                    replaceAll("%w%", weeks);
+        // show short
+        else if (diff % DAY == 0) {
+            return String.format("%s", dayFormat).
+                    replaceAll("%d%", days);
         }
         // days
         else if (diff > DAY) {
@@ -190,10 +196,10 @@ public class Punishment {
                     replaceAll("%m%", minutes).
                     replaceAll("%s%", seconds);
         }
-        // day
-        else if (diff == DAY) {
-            return String.format("%s", dayFormat).
-                    replaceAll("%d%", days);
+        // show short
+        else if (diff % HOUR == 0) {
+            return String.format("%s", hourFormat).
+                    replaceAll("%h%", hours);
         }
         // hours
         else if (diff > HOUR) {
@@ -202,21 +208,16 @@ public class Punishment {
                     replaceAll("%m%", minutes).
                     replaceAll("%s%", seconds);
         }
-        // hour
-        else if (diff == HOUR) {
-            return String.format("%s", hourFormat).
-                    replaceAll("%h%", hours);
+        // show short
+        else if (diff % MINUTE == 0) {
+            return String.format("%s", minuteFormat).
+                    replaceAll("%m%", minutes);
         }
         // minutes
         else if (diff > MINUTE) {
             return String.format("%s %s", minuteFormat, secondFormat).
                     replaceAll("%m%", minutes).
                     replaceAll("%s%", seconds);
-        }
-        // minutes
-        else if (diff == MINUTE) {
-            return String.format("%s", minuteFormat).
-                    replaceAll("%m%", minutes);
         }
         // seconds
         else {

@@ -1,13 +1,15 @@
 package com.mehmet_27.punishmanager;
 
 import co.aikar.commands.BungeeCommandManager;
+import com.mehmet_27.punishmanager.dependencies.Dependency;
+import com.mehmet_27.punishmanager.dependencies.DependencyManager;
 import com.mehmet_27.punishmanager.listeners.PlayerChatEvent;
 import com.mehmet_27.punishmanager.listeners.PlayerLoginEvent;
 import com.mehmet_27.punishmanager.listeners.PunishEvent;
 import com.mehmet_27.punishmanager.managers.CommandManager;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
-import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.managers.DiscordManager;
+import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.utils.UpdateChecker;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -17,11 +19,11 @@ import org.bstats.charts.SingleLineChart;
 import java.util.List;
 import java.util.Map;
 
-//TODO make everymethod to uuid
 public final class PunishManager extends Plugin {
 
     private static PunishManager instance;
 
+    private DependencyManager dependencyManager;
     private ConfigManager configManager;
     private StorageManager storageManager;
     private CommandManager commandManager;
@@ -38,6 +40,9 @@ public final class PunishManager extends Plugin {
     @Override
     public void onEnable() {
         instance = this;
+        this.dependencyManager = new DependencyManager(this);
+        // Download protocolize-bungeecord.jar
+        dependencyManager.downloadDependency(Dependency.PROTOCOLIZE_BUNGEECORD, this.getProxy().getPluginsFolder().toPath().resolve(Dependency.PROTOCOLIZE_BUNGEECORD.getFileName()));
         configManager = new ConfigManager(this);
         storageManager = new StorageManager(this);
         new BungeeCommandManager(this);
@@ -46,7 +51,6 @@ public final class PunishManager extends Plugin {
         allPlayerNames = storageManager.getAllLoggedNames();
         bannedIps = storageManager.getBannedIps();
         discordManager = new DiscordManager(this);
-        discordManager.buildBot();
         getProxy().getPluginManager().registerListener(this, new PlayerLoginEvent());
         getProxy().getPluginManager().registerListener(this, new PlayerChatEvent());
         getProxy().getPluginManager().registerListener(this, new PunishEvent());
@@ -60,9 +64,13 @@ public final class PunishManager extends Plugin {
         discordManager.disconnectBot();
     }
 
-    private void startMetrics(){
+    private void startMetrics() {
         Metrics metrics = new Metrics(this, 14772);
         metrics.addCustomChart(new SingleLineChart("punishments", () -> storageManager.getPunishmentsCount()));
+    }
+
+    public DependencyManager getDependencyManager() {
+        return dependencyManager;
     }
 
     public ConfigManager getConfigManager() {

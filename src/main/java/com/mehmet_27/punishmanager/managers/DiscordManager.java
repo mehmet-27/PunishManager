@@ -28,6 +28,7 @@ public class DiscordManager {
     private final ConfigManager configManager;
     private final Configuration config;
     private final StorageManager storageManager;
+    private final boolean isEnabledInConfig;
     private JDA api;
     private Guild guild;
     private TextChannel announceChannel;
@@ -37,11 +38,13 @@ public class DiscordManager {
         this.configManager = plugin.getConfigManager();
         this.config = configManager.getConfig();
         this.storageManager = plugin.getStorageManager();
+        this.isEnabledInConfig = config.getBoolean("discord.enable", false);
+        if (isEnabledInConfig){
+            buildBot();
+        }
     }
 
-    public void buildBot() {
-        //Return if feature is disabled.
-        if (!config.getBoolean("discord.enable")) return;
+    private void buildBot() {
         if (!storageManager.isDiscordSRVTableExits()) {
             plugin.getLogger().warning("The Punished Role feature will not work because DiscordSRV cannot connect to the database.");
         }
@@ -59,6 +62,7 @@ public class DiscordManager {
     }
 
     public void disconnectBot() {
+        if (!isEnabledInConfig) return;
         if (api != null) {
             api.shutdown();
             api = null;

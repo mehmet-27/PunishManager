@@ -2,8 +2,9 @@
 # %reason% -> Cezanın sebebi.
 # %duration% -> Cezanın süresi.
 # %operator% -> Cezayı veren yetkili.
-# %name% -> Cezalandırılan oyuncunun adı.
+# %player% -> Cezalandırılan oyuncunun adı.
 main:
+  prefix: '&6PunishManager'
   exempt-player: 'Bu oyuncuyu cezalandıramazsınız.'
   defaultReason: 'yok'
   not-on-yourself: 'Bu komutu kendi üzerinizde kullanamazsınız.'
@@ -53,6 +54,7 @@ gui:
         - '&6İsim: &e%player%'
         - '&6Tür: &e%type%'
         - '&6Sebep: &e%reason%'
+        - '&6Süre: &e%duration%'
         - '&6Operatör: &e%operator%'
         - '&6Ip: &e%ip%'
   defaultlanguageselector:
@@ -62,8 +64,8 @@ ban:
   punished: '&a%player% başarıyla yasaklandı.'
   alreadyPunished: '&e%player% zaten yasaklı.'
   layout:
-    - '&6&lSUNUCUADI'
-    - '&eSunucularından Kalıcı Yasaklandınız!'
+    - '%prefix%'
+    - '&eSunucudan Kalıcı Yasaklandınız!'
     - '&eYasaklayan: &a%operator%'
     - "&eSebep &7» &2%reason%"
     - '&7'
@@ -76,8 +78,8 @@ tempban:
   punished: '&a%player% başarıyla yasaklandı.'
   alreadyPunished: '&e%player% zaten yasaklı.'
   layout:
-    - '&6&lSUNUCUADI'
-    - '&eSunucularından Yasaklandınız!'
+    - '%prefix%'
+    - '&eSunucudan Yasaklandınız!'
     - '&eYasaklayan: &a%operator%'
     - '&7'
     - "&eSebep &7» &a%reason%"
@@ -92,8 +94,8 @@ ipban:
   punished: '&a%player% başarıyla yasaklandı.'
   alreadyPunished: '&e%player% zaten yasaklı.'
   layout:
-    - '&6&lSUNUCUADI'
-    - '&eSunucularından Kalıcı Yasaklandınız!'
+    - '%prefix%'
+    - '&eSunucudan Kalıcı Yasaklandınız!'
     - '&eYasaklayan: &a%operator%'
     - "&eSebep &7» &2%reason%"
     - '&7'

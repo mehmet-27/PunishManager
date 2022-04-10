@@ -2,6 +2,7 @@ package com.mehmet_27.punishmanager.managers;
 
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.objects.PlayerLocale;
+import com.mehmet_27.punishmanager.utils.FileUtils;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
@@ -9,8 +10,12 @@ import net.md_5.bungee.config.YamlConfiguration;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static com.mehmet_27.punishmanager.utils.FileUtils.copyFileFromResources;
 
 public class ConfigManager {
     private final PunishManager plugin;
@@ -45,30 +50,11 @@ public class ConfigManager {
 
     public void saveConfiguration(Configuration config, File file) {
         try {
-            provider.save(config,file);
-        } catch (IOException e){
+            provider.save(config, file);
+        } catch (IOException e) {
             plugin.getLogger().severe("An error occurred while saving the configuration: ");
             e.printStackTrace();
         }
-    }
-
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    private void loadFile(File file) {
-        try {
-            if (!plugin.getDataFolder().exists()) {
-                file.getParentFile().mkdirs();
-            }
-            if (!file.exists() && !file.isDirectory()) {
-                Files.copy(plugin.getResourceAsStream(file.getName()), file.toPath());
-            }
-        } catch (IOException ex) {
-            plugin.getLogger().severe(String.format("Error while trying to load file {0}: " + ex.getMessage(), file.getName()));
-        }
-    }
-
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    private void loadFolder(File file) {
-        file.mkdirs();
     }
 
     public Map<Locale, Configuration> getLocales() {
@@ -102,57 +88,36 @@ public class ConfigManager {
         return locales;
     }
 
-    public List<String> getLayout(String path, String playerName) {
-        Locale locale = new PlayerLocale(playerName).getLocale();
-        if (locales.containsKey(locale)) {
-            List<String> messages = locales.get(locale).getStringList(path);
-            if (messages.size() != 0) {
-                return locales.get(locale).getStringList(path).stream().map(Utils::color).collect(Collectors.toList());
-            } else {
-                return locales.get(defaultLocale).getStringList(path).stream().map(Utils::color).collect(Collectors.toList());
-            }
-        } else {
-            return locales.get(defaultLocale).getStringList(path).stream().map(Utils::color).collect(Collectors.toList());
-        }
-    }
-
-    public String getMessage(String path, String playerName) {
-        Locale locale = new PlayerLocale(playerName).getLocale();
-        if (locales.containsKey(locale)) {
-            String msg = locales.get(locale).getString(path);
-            if (msg != null && msg.length() != 0) {
-                return Utils.color(locales.get(locale).getString(path));
-            } else {
-                return Utils.color(locales.get(defaultLocale).getString(path));
-            }
-        } else {
-            return Utils.color(locales.get(defaultLocale).getString(path));
-        }
-    }
-
     public String getMessage(String path) {
         if (locales.containsKey(defaultLocale)) {
             String msg = locales.get(defaultLocale).getString(path);
             if (msg != null && msg.length() != 0) {
-                return Utils.color(locales.get(defaultLocale).getString(path));
+                return Utils.color(msg);
             }
         }
         plugin.getLogger().warning("The searched value was not found in the language file and the default language file: " + path);
-        return null;
+        return "";
     }
 
-    public List<String> getStringList(String path, String playerName) {
+    public String getMessage(String path, String playerName) {
         Locale locale = new PlayerLocale(playerName).getLocale();
+        String message;
+        String prefix = "";
         if (locales.containsKey(locale)) {
-            List<String> stringList = locales.get(locale).getStringList(path);
-            if (!stringList.isEmpty()) {
-                return stringList.stream().map(Utils::color).collect(Collectors.toList());
-            } else {
-                return locales.get(defaultLocale).getStringList(path).stream().map(Utils::color).collect(Collectors.toList());
+            message = locales.get(locale).getString(path);
+            if (message == null || message.isEmpty()){
+                message = locales.get(defaultLocale).getString(path);
             }
+            prefix = locales.get(locale).getString("main.prefix", locales.get(defaultLocale).getString("main.prefix"));
         } else {
-            return locales.get(defaultLocale).getStringList(path).stream().map(Utils::color).collect(Collectors.toList());
+            message = getMessage(path);
         }
+        return Utils.color(message.replace("%prefix%", prefix));
+    }
+
+    public String getMessage(String path, String playerName, Function<String, String> placeholders){
+        String message = getMessage(path, playerName);
+        return Utils.color(placeholders.apply(message));
     }
 
     public List<String> getStringList(String path) {
@@ -163,7 +128,18 @@ public class ConfigManager {
             }
         }
         plugin.getLogger().warning("The searched value was not found in the language file and the default language file: " + path);
-        return null;
+        return new ArrayList<>();
+    }
+
+    public List<String> getStringList(String path, String playerName) {
+        Locale locale = new PlayerLocale(playerName).getLocale();
+        List<String> stringList;
+        if (locales.containsKey(locale)) {
+            stringList = locales.get(locale).getStringList(path);
+        } else {
+            stringList = getStringList(path);
+        }
+        return stringList.stream().map(Utils::color).collect(Collectors.toList());
     }
 
     public Configuration getConfig() {
@@ -218,25 +194,26 @@ public class ConfigManager {
         return exemptPlayers;
     }
 
-    public void setDefaultLocale(Locale locale){
+    public void setDefaultLocale(Locale locale) {
         defaultLocale = locale;
         config.set("default-server-language", locale.toString());
         saveConfiguration(config, new File(plugin.getDataFolder() + File.separator + "config.yml"));
         config = loadConfigFile(new File(plugin.getDataFolder() + File.separator + "config.yml"));
     }
+
     public void setup() {
         config = loadConfigFile(new File(plugin.getDataFolder() + File.separator + "config.yml"));
         String pluginFolder = plugin.getDataFolder() + File.separator;
-        loadFolder(new File(pluginFolder + "locales"));
-        loadFolder(new File(pluginFolder + "embeds"));
-        loadFile(new File(pluginFolder + "embeds" + File.separator + "ban.json"));
-        loadFile(new File(pluginFolder + "embeds" + File.separator + "mute.json"));
-        loadFile(new File(pluginFolder + "embeds" + File.separator + "tempban.json"));
-        loadFile(new File(pluginFolder + "embeds" + File.separator + "tempmute.json"));
-        loadFile(new File(pluginFolder + "embeds" + File.separator + "ipban.json"));
-        loadFile(new File(pluginFolder + "embeds" + File.separator + "kick.json"));
-        loadFile(new File(pluginFolder + "locales" + File.separator + "en_US.yml"));
-        loadFile(new File(pluginFolder + "locales" + File.separator + "tr_TR.yml"));
+        FileUtils.createDirectoriesIfNotExists(Paths.get(pluginFolder + "locales"));
+        FileUtils.createDirectoriesIfNotExists(Paths.get(pluginFolder + "embeds"));
+        copyFileFromResources(plugin, new File(pluginFolder + "embeds" + File.separator + "ban.json"));
+        copyFileFromResources(plugin, new File(pluginFolder + "embeds" + File.separator + "mute.json"));
+        copyFileFromResources(plugin, new File(pluginFolder + "embeds" + File.separator + "tempban.json"));
+        copyFileFromResources(plugin, new File(pluginFolder + "embeds" + File.separator + "tempmute.json"));
+        copyFileFromResources(plugin, new File(pluginFolder + "embeds" + File.separator + "ipban.json"));
+        copyFileFromResources(plugin, new File(pluginFolder + "embeds" + File.separator + "kick.json"));
+        copyFileFromResources(plugin, new File(pluginFolder + "locales" + File.separator + "en_US.yml"));
+        copyFileFromResources(plugin, new File(pluginFolder + "locales" + File.separator + "tr_TR.yml"));
         this.locales = getLocales();
         this.embeds = getEmbeds();
         defaultLocale = Utils.stringToLocale(getConfig().getString("default-server-language"));

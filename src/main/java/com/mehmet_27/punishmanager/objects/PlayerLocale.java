@@ -2,14 +2,13 @@ package com.mehmet_27.punishmanager.objects;
 
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
-import com.mehmet_27.punishmanager.managers.StorageManager;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.Locale;
 
 public class PlayerLocale {
     private final PunishManager punishManager = PunishManager.getInstance();
-    private final ConfigManager configManager = PunishManager.getInstance().getConfigManager();
+    private final ConfigManager configManager = punishManager.getConfigManager();
     private final String playerName;
 
     public PlayerLocale(String playerName) {

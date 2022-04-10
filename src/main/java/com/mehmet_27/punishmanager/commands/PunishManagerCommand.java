@@ -9,6 +9,7 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import static com.mehmet_27.punishmanager.utils.Utils.sendColoredTextComponent;
+import static com.mehmet_27.punishmanager.utils.Utils.sendTextComponent;
 
 @CommandAlias("punishmanager")
 @Description("The main command of the plugin.")
@@ -31,8 +32,7 @@ public class PunishManagerCommand extends BaseCommand {
     public void reload(CommandSender sender) {
         punishManager.getConfigManager().setup();
         punishManager.getCommandManager().updateDefaultLocale();
-        String done = punishManager.getConfigManager().getMessage("punishmanager-reload.done", sender.getName());
-        sendColoredTextComponent(sender, String.format("&6%s &7» " + done , punishManager.getDescription().getName()));
+        sendTextComponent(sender, "punishmanager-reload.done");
     }
 
     @Subcommand("about")

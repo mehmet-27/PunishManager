@@ -30,17 +30,17 @@ public enum Messages {
 
     public String getString(String player) {
         ConfigManager configManager = PunishManager.getInstance().getConfigManager();
-        return Utils.color(configManager.getMessage(path, player));
+        return configManager.getMessage(path, player);
     }
 
     public String getString() {
         ConfigManager configManager = PunishManager.getInstance().getConfigManager();
-        return Utils.color(configManager.getMessage(path));
+        return configManager.getMessage(path);
     }
 
     public List<String> getStringList(String player) {
         ConfigManager configManager = PunishManager.getInstance().getConfigManager();
-        return Utils.color(configManager.getStringList(path, player));
+        return configManager.getStringList(path, player);
     }
 
 

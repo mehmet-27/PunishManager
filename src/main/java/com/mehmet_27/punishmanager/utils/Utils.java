@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class Utils {
 
     public static final Pattern NumberAndUnit = Pattern.compile("(?<number>[0-9]+)(?<unit>mo|[ywdhms])");
-    private static final PunishManager punishManager = PunishManager.getInstance();
+    private static final PunishManager plugin = PunishManager.getInstance();
 
     public static String color(String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
@@ -31,25 +31,20 @@ public class Utils {
 
     public static TextComponent TextComponentBuilder(List<String> messages, Punishment punishment) {
         TextComponent layout = new TextComponent();
-        Punishment.PunishType punishType = punishment.getPunishType();
         for (String message : messages) {
-            message = message.
-                    replace("%reason%", punishment.getReason()).
-                    replace("%operator%", punishment.getOperator()).
-                    replace("%name%", punishment.getPlayerName());
-            if (punishType.isTemp()) {
-                message = message.replace("%duration%", punishment.getDuration());
-            }
+            message = message.replace("%prefix%", plugin.getConfigManager().getMessage("main.prefix", punishment.getPlayerName()));
+            // Replace general punishment placeholders
+            message = Utils.replacePunishmentPlaceholders(message, punishment);
             layout.addExtra(message + "\n");
         }
         return layout;
     }
 
     public static void sendLayout(Punishment punishment) {
-        ProxiedPlayer player = punishManager.getProxy().getPlayer(punishment.getPlayerName());
+        ProxiedPlayer player = plugin.getProxy().getPlayer(punishment.getPlayerName());
         if (player == null || !player.isConnected()) return;
         String path = punishment.getPunishType().toString().toLowerCase(Locale.ENGLISH) + ".layout";
-        TextComponent layout = TextComponentBuilder(punishManager.getConfigManager().getLayout(path, punishment.getPlayerName()), punishment);
+        TextComponent layout = TextComponentBuilder(plugin.getConfigManager().getStringList(path, punishment.getPlayerName()), punishment);
         if (punishment.isBanned() || punishment.getPunishType().equals(Punishment.PunishType.KICK)) {
             player.disconnect(layout);
         }
@@ -80,13 +75,14 @@ public class Utils {
     }
 
     public static void debug(String message) {
-        if (!punishManager.getConfigManager().getConfig().getBoolean("debug")) return;
-        punishManager.getLogger().info(message);
+        if (!plugin.getConfigManager().getConfig().getBoolean("debug")) return;
+        plugin.getLogger().info(message);
     }
 
     public static void sendColoredTextComponent(CommandSender sender, String message){
         sender.sendMessage(new TextComponent(Utils.color(message)));
     }
+
     public static void sendTextComponent(CommandSender sender, String path) {
         sendTextComponent(sender, path, message -> message.replace("%player%", sender.getName()));
     }
@@ -96,7 +92,7 @@ public class Utils {
     }
 
     public static void sendTextComponent(CommandSender sender, String path, Function<String, String> placeholders) {
-        String message = punishManager.getConfigManager().getMessage(path, sender.getName());
+        String message = plugin.getConfigManager().getMessage(path, sender.getName());
 
         message = placeholders.apply(message);
 
@@ -116,12 +112,13 @@ public class Utils {
     }
 
     public static boolean isPluginEnabled(String pluginName){
-        Plugin plugin = punishManager.getProxy().getPluginManager().getPlugin(pluginName);
+        Plugin plugin = Utils.plugin.getProxy().getPluginManager().getPlugin(pluginName);
         return plugin != null;
     }
 
     public static String replacePunishmentPlaceholders(String message, Punishment punishment){
         return message.replace("%reason%", punishment.getReason())
+                .replace("%duration%", punishment.getDuration())
                 .replace("%operator%", punishment.getOperator())
                 .replace("%player%", punishment.getPlayerName())
                 .replace("%type%", punishment.getPunishType().name())
