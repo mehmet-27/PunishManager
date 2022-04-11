@@ -58,11 +58,28 @@ public class StorageManager {
 
     public void setup() {
         executeUpdate(SqlQuery.CREATE_PUNISHMENTS_TABLE.getQuery());
+        executeUpdate(SqlQuery.CREATE_PUNISHMENTHISTORY_TABLE.getQuery());
         executeUpdate(SqlQuery.CREATE_PLAYERS_TABLE.getQuery());
     }
 
-    public void AddPunish(Punishment punishment) {
+    public void addPunishToPunishments(Punishment punishment) {
         try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.ADD_PUNISH_TO_PUNISHMENTS.getQuery())) {
+            ps.setString(1, punishment.getPlayerName());
+            ps.setString(2, punishment.getUuid().toString());
+            ps.setString(3, punishment.getIp());
+            ps.setString(4, punishment.getReason());
+            ps.setString(5, punishment.getOperator());
+            ps.setString(6, punishment.getPunishType().toString());
+            ps.setString(7, String.valueOf(punishment.getStart()));
+            ps.setString(8, String.valueOf(punishment.getEnd()));
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addPunishToHistory(Punishment punishment) {
+        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(ADD_PUNISH_TO_PUNISHMENTHISTORY.getQuery())) {
             ps.setString(1, punishment.getPlayerName());
             ps.setString(2, punishment.getUuid().toString());
             ps.setString(3, punishment.getIp());

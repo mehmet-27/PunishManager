@@ -70,8 +70,8 @@ ban:
     - "&eSebep &7» &2%reason%"
     - '&7'
     - '&eDestek İçin'
-    - "&6Site &7» &ewww.sunucusite.com"
-    - "&6Discord &7» &ehttps://discord.gg/sunucudiscord"
+    - "&6Site &7» &eyakında"
+    - "&6Discord &7» &eyakında"
   description: 'Bir oyuncuyu yasakla.'
 
 tempban:
@@ -86,8 +86,8 @@ tempban:
     - "&eKalan süre &7» &a%duration%"
     - '&7'
     - '&eDestek İçin'
-    - "&6Site &7» &ewww.sunucusite.com"
-    - "&6Discord &7» &ehttps://discord.gg/sunucudiscord"
+    - "&6Site &7» &eyakında"
+    - "&6Discord &7» &eyakında"
   description: 'Bir oyuncuyu süreli yasakla.'
 
 ipban:
@@ -100,8 +100,8 @@ ipban:
     - "&eSebep &7» &2%reason%"
     - '&7'
     - '&eDestek İçin'
-    - "&6Site &7» &ewww.sunucusite.com"
-    - "&6Discord &7» &ehttps://discord.gg/sunucudiscord"
+    - "&6Site &7» &eyakında"
+    - "&6Discord &7» &eyakında"
   description: 'Bir oyuncunun ip adresini yasakla.'
 
 kick:

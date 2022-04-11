@@ -16,6 +16,19 @@ public enum SqlQuery {
                     " `end` LONGTEXT," +
                     " PRIMARY KEY (`id`))"
     ),
+    CREATE_PUNISHMENTHISTORY_TABLE(
+            "CREATE TABLE IF NOT EXISTS `punishmanager_punishmenthistory` (" +
+                    " `id` BIGINT(20) NOT NULL auto_increment," +
+                    " `name` VARCHAR(16)," +
+                    " `uuid` VARCHAR(72)," +
+                    " `ip` VARCHAR(25)," +
+                    " `reason` VARCHAR(255)," +
+                    " `operator` VARCHAR(16)," +
+                    " `type` VARCHAR(16)," +
+                    " `start` LONGTEXT," +
+                    " `end` LONGTEXT," +
+                    " PRIMARY KEY (`id`))"
+    ),
     CREATE_PLAYERS_TABLE(
             "CREATE TABLE IF NOT EXISTS `punishmanager_players` (" +
                     " `uuid` VARCHAR(72) NOT NULL," +
@@ -31,6 +44,11 @@ public enum SqlQuery {
     ),
     ADD_PUNISH_TO_PUNISHMENTS(
             "INSERT INTO `punishmanager_punishments` (" +
+                    "`name`, `uuid`, `ip`, `reason`, `operator`, `type`, `start`, `end`)" +
+                    " VALUES (?,?,?,?,?,?,?,?)"
+    ),
+    ADD_PUNISH_TO_PUNISHMENTHISTORY(
+            "INSERT INTO `punishmanager_punishmenthistory` (" +
                     "`name`, `uuid`, `ip`, `reason`, `operator`, `type`, `start`, `end`)" +
                     " VALUES (?,?,?,?,?,?,?,?)"
     ),
