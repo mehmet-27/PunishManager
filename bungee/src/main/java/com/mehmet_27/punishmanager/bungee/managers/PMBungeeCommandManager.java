@@ -8,19 +8,13 @@ import com.mehmet_27.punishmanager.bungee.Utils.Utils;
 import com.mehmet_27.punishmanager.managers.CommandManager;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
+import com.mehmet_27.punishmanager.utils.FileUtils;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -37,61 +31,6 @@ public class PMBungeeCommandManager extends BungeeCommandManager implements Comm
     }
 
     @Override
-    public Set<Class<?>> getClasses(String packageName) {
-        Set<Class<?>> classes = new LinkedHashSet<>();
-
-        Predicate<? super Path> filter = entry -> {
-            String path = entry.getFileName().toString();
-            return !path.contains("$") && path.endsWith(".class");
-        };
-
-        for (Path filesPath : getFilesPath(packageName, filter)) {
-            String fileName = filesPath.toString().replace("/", ".").split(".class")[0];
-            if (fileName.startsWith(".")){
-                fileName = fileName.substring(1);
-            }
-            try {
-
-                Class<?> clazz = Class.forName(fileName);
-                classes.add(clazz);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return classes;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public <T> Set<Class<? extends T>> getClassesBySubType(String packageName, Class<?> type) {
-        return getClasses(packageName).stream().
-                filter(type::isAssignableFrom).
-                map(aClass -> ((Class<? extends T>) aClass)).
-                collect(Collectors.toSet());
-    }
-
-    @Override
-    public Set<Path> getFilesPath(String path, Predicate<? super Path> filter) {
-        Set<Path> files = new LinkedHashSet<>();
-        String packagePath = path.replace(".", "/");
-        try {
-            URI uri = PunishManager.class.getProtectionDomain().getCodeSource().getLocation().toURI();
-            FileSystem fileSystem = FileSystems.newFileSystem(URI.create("jar:" + uri), Collections.emptyMap());
-            files = Files.walk(fileSystem.getPath(packagePath)).
-                    filter(Objects::nonNull).
-                    filter(filter).
-                    collect(Collectors.toSet());
-            fileSystem.close();
-        } catch (URISyntaxException | IOException ex) {
-            PunishManager.getInstance().getLogger().
-                    log(Level.WARNING, "An error occurred while trying to load files: " + ex.getMessage(), ex);
-        }
-
-        return files;
-    }
-
-    @Override
     public void registerDependencies() {
         registerDependency(BungeeConfigManager.class, PunishManager.getInstance().getConfigManager());
         registerDependency(StorageManager.class, PunishManager.getInstance().getStorageManager());
@@ -99,7 +38,7 @@ public class PMBungeeCommandManager extends BungeeCommandManager implements Comm
 
     @Override
     public void registerCommands() {
-        Set<Class<? extends BaseCommand>> commands = getClassesBySubType("com.mehmet_27.punishmanager.bungee.commands", BaseCommand.class);
+        Set<Class<? extends BaseCommand>> commands = FileUtils.getClassesBySubType("com.mehmet_27.punishmanager.bungee.commands", BaseCommand.class);
         plugin.getLogger().info(String.format("Registering %d base commands...", commands.size()));
 
         for (Class<? extends BaseCommand> c : commands) {
