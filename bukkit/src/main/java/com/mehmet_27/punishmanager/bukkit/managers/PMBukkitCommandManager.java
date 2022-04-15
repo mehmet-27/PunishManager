@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -47,7 +46,10 @@ public class PMBukkitCommandManager extends PaperCommandManager implements Comma
         };
 
         for (Path filesPath : getFilesPath(packageName, filter)) {
-            String fileName = filesPath.toString().replace("/", ".").split(".class")[0].substring(1);
+            String fileName = filesPath.toString().replace("/", ".").split(".class")[0];
+            if (fileName.startsWith(".")){
+                fileName = fileName.substring(1);
+            }
             try {
 
                 Class<?> clazz = Class.forName(fileName);
@@ -81,7 +83,7 @@ public class PMBukkitCommandManager extends PaperCommandManager implements Comma
                     filter(filter).
                     collect(Collectors.toSet());
             fileSystem.close();
-        } catch (URISyntaxException | IOException ex) {
+        } catch (Exception ex) {
             PunishManager.getInstance().getLogger().
                     log(Level.WARNING, "An error occurred while trying to load files: " + ex.getMessage(), ex);
         }
