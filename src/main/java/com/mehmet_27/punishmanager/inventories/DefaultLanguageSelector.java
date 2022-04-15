@@ -1,7 +1,5 @@
 package com.mehmet_27.punishmanager.inventories;
 
-import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.utils.Messages;
 import com.mehmet_27.punishmanager.utils.ProtocolizeUtils;
 import com.mehmet_27.punishmanager.utils.Utils;
@@ -21,7 +19,7 @@ import java.util.stream.Collectors;
 public class DefaultLanguageSelector extends UIFrame {
     public DefaultLanguageSelector(@Nullable UIFrame parent, InventoryType type, @NotNull ProxiedPlayer viewer) {
         super(parent, type, viewer);
-        PunishManager plugin = PunishManager.getInstance();
+        PunishManagerold plugin = PunishManagerold.getInstance();
         ConfigManager configManager = plugin.getConfigManager();
 
         Locale defaultLocale = configManager.getDefaultLocale();

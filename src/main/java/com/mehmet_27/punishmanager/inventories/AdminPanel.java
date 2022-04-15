@@ -1,6 +1,5 @@
 package com.mehmet_27.punishmanager.inventories;
 
-import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.utils.Messages;
 import com.mehmet_27.punishmanager.utils.ProtocolizeUtils;
 import dev.simplix.protocolize.api.Protocolize;
@@ -14,7 +13,7 @@ public class AdminPanel extends UIFrame {
 
     public AdminPanel(UIFrame parent, InventoryType type, ProxiedPlayer viewer) {
         super(parent, type, viewer);
-        PunishManager plugin = PunishManager.getInstance();
+        PunishManagerold plugin = PunishManagerold.getInstance();
         title(Messages.GUI_ADMINPANEL_TITLE.getString(viewer.getName()));
 
         ItemStack reloadButton = new ItemStack(ItemType.LIME_DYE)

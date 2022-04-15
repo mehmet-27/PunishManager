@@ -1,0 +1,7 @@
+name: PunishManager
+version: ${project.version}
+main: com.mehmet_27.punishmanager.bukkit.PMBukkit
+author: Mehmet_27
+authors: [Minat0_, RoinujNosde]
+description: Advanced punish management plugin.
+api-version: 1.13

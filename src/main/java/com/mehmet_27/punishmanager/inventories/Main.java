@@ -1,7 +1,5 @@
 package com.mehmet_27.punishmanager.inventories;
 
-import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.utils.Messages;
 import dev.simplix.protocolize.api.item.ItemStack;
 import dev.simplix.protocolize.data.ItemType;
@@ -13,7 +11,7 @@ public class Main extends UIFrame {
 
     public Main(UIFrame parent, InventoryType type, ProxiedPlayer viewer) {
         super(parent, type, viewer);
-        PunishManager plugin = PunishManager.getInstance();
+        PunishManagerold plugin = PunishManagerold.getInstance();
         title(Messages.GUI_MAIN_TITLE.getString(viewer.getName()));
 
         ItemStack languageSelector = new ItemStack(ItemType.WHITE_BANNER)

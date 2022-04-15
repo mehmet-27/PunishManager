@@ -1,7 +1,5 @@
 package com.mehmet_27.punishmanager.inventories;
 
-import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.utils.Messages;
 import com.mehmet_27.punishmanager.utils.ProtocolizeUtils;
 import com.mehmet_27.punishmanager.utils.Utils;
@@ -22,7 +20,7 @@ public class LanguageSelector extends UIFrame{
 
     public LanguageSelector(UIFrame parent, InventoryType type, @NotNull ProxiedPlayer viewer) {
         super(parent, type, viewer);
-        PunishManager plugin = PunishManager.getInstance();
+        PunishManagerold plugin = PunishManagerold.getInstance();
         ConfigManager configManager = plugin.getConfigManager();
 
         Locale viewerLocale = plugin.getOfflinePlayers().get(viewer.getName()).getLocale();

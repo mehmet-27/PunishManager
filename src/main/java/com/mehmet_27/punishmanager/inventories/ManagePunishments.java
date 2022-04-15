@@ -1,8 +1,5 @@
 package com.mehmet_27.punishmanager.inventories;
 
-import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.managers.StorageManager;
-import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.utils.Messages;
 import com.mehmet_27.punishmanager.utils.ProtocolizeUtils;
 import dev.simplix.protocolize.api.Protocolize;
@@ -23,7 +20,7 @@ public class ManagePunishments extends UIFrame {
 
     public ManagePunishments(@Nullable UIFrame parent, InventoryType type, @NotNull ProxiedPlayer viewer, int startIndex) {
         super(parent, type, viewer);
-        PunishManager plugin = PunishManager.getInstance();
+        PunishManagerold plugin = PunishManagerold.getInstance();
         StorageManager storageManager = plugin.getStorageManager();
         List<Punishment> punishments = storageManager.getAllPunishments();
 
