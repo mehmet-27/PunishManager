@@ -46,7 +46,7 @@ public class PMBungeeCommandManager extends BungeeCommandManager implements Comm
         };
 
         for (Path filesPath : getFilesPath(packageName, filter)) {
-            String fileName = filesPath.toString().replace("/", ".").split(".class")[0].substring(1);
+            String fileName = filesPath.toString().replace("/", ".").split(".class")[0];
             if (fileName.startsWith(".")){
                 fileName = fileName.substring(1);
             }
