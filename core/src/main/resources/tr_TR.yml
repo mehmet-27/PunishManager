@@ -154,6 +154,7 @@ check:
   muteStatus: '&eSusturulma durumu: &c%status%'
   muteReason: '&e-> Susturulma sebebi: &c%reason%'
   muteOperator: '&e-> Susturan yetkili: &c%operator%'
+  punishId: '&e-> Ceza Id: &c%id%'
   notPunished: '&acezalandırılmamış'
   description: 'Bir oyuncunun anlık durumunu kontrol et.'
 

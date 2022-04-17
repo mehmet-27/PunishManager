@@ -10,11 +10,6 @@ public class UtilsCore {
     public static final Pattern NumberAndUnit = Pattern.compile("(?<number>[0-9]+)(?<unit>mo|[ywdhms])");
     private static final MethodInterface methods = PunishManager.getInstance().getMethods();
 
-    public static void debug(String message) {
-        if (!methods.getConfig().getBoolean("debug")) return;
-        methods.getLogger().info(message);
-    }
-
     public static String replacePunishmentPlaceholders(String message, Punishment punishment){
         return message.replace("%reason%", punishment.getReason())
                 .replace("%duration%", punishment.getDuration())

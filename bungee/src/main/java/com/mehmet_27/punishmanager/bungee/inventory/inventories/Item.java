@@ -1,4 +1,4 @@
-package com.mehmet_27.punishmanager.inventories;
+package com.mehmet_27.punishmanager.bungee.inventory.inventories;
 
 import com.mehmet_27.punishmanager.utils.Messages;
 import dev.simplix.protocolize.api.item.ItemStack;

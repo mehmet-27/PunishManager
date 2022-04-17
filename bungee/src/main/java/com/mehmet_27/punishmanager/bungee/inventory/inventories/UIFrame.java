@@ -1,4 +1,4 @@
-package com.mehmet_27.punishmanager.inventories;
+package com.mehmet_27.punishmanager.bungee.inventory.inventories;
 
 import dev.simplix.protocolize.api.inventory.Inventory;
 import dev.simplix.protocolize.data.inventory.InventoryType;

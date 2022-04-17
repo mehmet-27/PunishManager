@@ -45,6 +45,15 @@ public class BungeeConfigManager implements ConfigManager {
     }
 
     @Override
+    public List<Locale> getAvailableLocales() {
+        List<Locale> locales = new ArrayList<>();
+        for (Map.Entry<Locale, BungeeConfiguration> locale : this.locales.entrySet()) {
+            locales.add(locale.getKey());
+        }
+        return locales;
+    }
+
+    @Override
     public List<File> getLocaleFiles() {
         List<File> files = new ArrayList<>();
         File directoryPath = new File(plugin.getDataFolder() + File.separator + "locales");
@@ -178,6 +187,7 @@ public class BungeeConfigManager implements ConfigManager {
         config = new BungeeConfiguration(new File(dataFolder + File.separator  + "config.yml"));
         copyFileFromResources(new File(dataFolder + File.separator  + "locales" + File.separator + "en_US.yml"));
         copyFileFromResources(new File(dataFolder + File.separator  + "locales" + File.separator + "tr_TR.yml"));
+        copyFileFromResources(new File(dataFolder + File.separator  + "locales" + File.separator + "es_ES.yml"));
         copyFileFromResources(new File(dataFolder + File.separator  + "embeds" + File.separator + "ban.json"));
         copyFileFromResources(new File(dataFolder + File.separator  + "embeds" + File.separator + "ipban.json"));
         copyFileFromResources(new File(dataFolder + File.separator  + "embeds" + File.separator + "mute.json"));
@@ -193,6 +203,7 @@ public class BungeeConfigManager implements ConfigManager {
         this.exemptPlayers = getConfig().getStringList("exempt-players");
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
     public void copyFileFromResources(File file) {
         if (!file.getParentFile().exists()){

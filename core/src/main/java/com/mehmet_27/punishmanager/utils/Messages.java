@@ -1,5 +1,8 @@
 package com.mehmet_27.punishmanager.utils;
 
+import com.mehmet_27.punishmanager.PunishManager;
+import com.mehmet_27.punishmanager.managers.ConfigManager;
+
 import java.util.List;
 
 public enum Messages {
@@ -26,19 +29,21 @@ public enum Messages {
     }
 
     public String getString(String player) {
-        ConfigManager configManager = PunishManagerold.getInstance().getConfigManager();
+        ConfigManager configManager = PunishManager.getInstance().getConfigManager();
         return configManager.getMessage(path, player);
     }
 
     public String getString() {
-        ConfigManager configManager = PunishManagerold.getInstance().getConfigManager();
+        ConfigManager configManager = PunishManager.getInstance().getConfigManager();
         return configManager.getMessage(path);
     }
 
     public List<String> getStringList(String player) {
-        ConfigManager configManager = PunishManagerold.getInstance().getConfigManager();
+        ConfigManager configManager = PunishManager.getInstance().getConfigManager();
         return configManager.getStringList(path, player);
     }
 
-
+    public String getPath(){
+        return path;
+    }
 }

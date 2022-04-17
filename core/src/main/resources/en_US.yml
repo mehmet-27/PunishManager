@@ -159,6 +159,7 @@ check:
   muteStatus: '&eMute status: &c%status%'
   muteReason: '&e-> Mute reason: &c%reason%'
   muteOperator: '&e-> Mute operator: &c%operator%'
+  punishId: '&e-> Punish Id: &c%id%'
   notPunished: '&anot punished'
   description: 'Checks the current status of a player.'
 

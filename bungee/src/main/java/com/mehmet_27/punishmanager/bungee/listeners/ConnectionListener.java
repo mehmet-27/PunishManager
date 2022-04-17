@@ -40,7 +40,7 @@ public class ConnectionListener implements Listener {
 
         // If the player is entering the server for the first time, save it
         if (!punishManager.getOfflinePlayers().containsKey(player.getName())) {
-            UtilsCore.debug(String.format("%s is entering the server for the first time.", player.getName()));
+            PunishManager.getInstance().debug(String.format("%s is entering the server for the first time.", player.getName()));
             storageManager.addPlayer(player);
             punishManager.getOfflinePlayers().put(player.getName(), player);
             if (!punishManager.getAllPlayerNames().contains(player.getName())) {
@@ -58,7 +58,7 @@ public class ConnectionListener implements Listener {
             return;
         }
         if (bannedIps.contains(player.getPlayerIp())) {
-            UtilsCore.debug("This player's IP address is banned: " + player.getName() + " IP: " + player.getPlayerIp());
+            PunishManager.getInstance().debug("This player's IP address is banned: " + player.getName() + " IP: " + player.getPlayerIp());
             event.setCancelReason(Utils.getLayout(punishment));
             event.setCancelled(true);
             return;
@@ -69,10 +69,11 @@ public class ConnectionListener implements Listener {
 
     @EventHandler
     public void onDisconnect(PlayerDisconnectEvent event) {
-        Punishment punishment = storageManager.getBan(event.getPlayer().getUniqueId());
+        Punishment punishment = storageManager.getPunishment(event.getPlayer().getUniqueId());
         if (punishment == null) return;
         if (punishment.isExpired()) {
             storageManager.unPunishPlayer(punishment);
         }
+        storageManager.updatePlayerLastLogin(event.getPlayer().getUniqueId());
     }
 }

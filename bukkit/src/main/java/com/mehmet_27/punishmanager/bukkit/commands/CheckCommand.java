@@ -44,12 +44,14 @@ public class CheckCommand extends BaseCommand {
         Utils.sendText(sender, "check.banStatus", message -> message.replace("%status%", banStatus));
 
         if (ban != null && ban.isBanned()) {
+            Utils.sendText(sender, "check.punishId", message -> message.replace("%id%", ban.getId() + ""));
             Utils.sendText(sender, "check.banReason", message -> message.replace("%reason%", ban.getReason()));
             Utils.sendText(sender, "check.banOperator", message -> message.replace("%operator%", ban.getOperator()));
         }
 
         Utils.sendText(sender, "check.muteStatus", message -> message.replace("%status%", muteStatus));
         if (mute != null && mute.isMuted()) {
+            Utils.sendText(sender, "check.punishId", message -> message.replace("%id%", mute.getId() + ""));
             Utils.sendText(sender, "check.muteReason", message -> message.replace("%reason%", mute.getReason()));
             Utils.sendText(sender, "check.muteOperator", message -> message.replace("%operator%", mute.getOperator()));
         }

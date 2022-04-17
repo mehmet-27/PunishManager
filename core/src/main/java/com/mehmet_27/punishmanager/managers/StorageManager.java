@@ -13,11 +13,11 @@ import java.util.*;
 
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.*;
-import static com.mehmet_27.punishmanager.utils.UtilsCore.debug;
 
 public class StorageManager {
 
-    private final MethodInterface methods = PunishManager.getInstance().getMethods();
+    private final PunishManager punishManager = PunishManager.getInstance();
+    private final MethodInterface methods = punishManager.getMethods();
     private final HikariDataSource source = new HikariDataSource();
 
     public StorageManager() {
@@ -54,6 +54,12 @@ public class StorageManager {
         executeUpdate(SqlQuery.CREATE_PUNISHMENTS_TABLE.getQuery());
         executeUpdate(SqlQuery.CREATE_PUNISHMENTHISTORY_TABLE.getQuery());
         executeUpdate(SqlQuery.CREATE_PLAYERS_TABLE.getQuery());
+        executeUpdate(SqlQuery.ADD_COLUMN_IF_NOT_EXISTS.getQuery()
+                .replace("{0}", "punishmanager_players")
+                .replace("{1}", "first_login LONGTEXT NOT NULL"));
+        executeUpdate(SqlQuery.ADD_COLUMN_IF_NOT_EXISTS.getQuery()
+                .replace("{0}", "punishmanager_players")
+                .replace("{1}", "last_login LONGTEXT NOT NULL"));
     }
 
     public void addPunishToPunishments(Punishment punishment) {
@@ -66,6 +72,7 @@ public class StorageManager {
             ps.setString(6, punishment.getPunishType().toString());
             ps.setString(7, String.valueOf(punishment.getStart()));
             ps.setString(8, String.valueOf(punishment.getEnd()));
+            punishManager.debug("Method: addPunishToPunishments, Statement: " + ps);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -301,8 +308,9 @@ public class StorageManager {
             ps.setString(3, ip);
             ps.setString(4, methods.getConfigManager().getDefaultLocale().toString());
             ps.setString(5, String.valueOf(System.currentTimeMillis()));
+            ps.setString(6, String.valueOf(System.currentTimeMillis()));
             ps.executeUpdate();
-            debug(String.format("%s has been successfully added to the database.", player.getName()));
+            punishManager.debug(String.format("%s has been successfully added to the database.", player.getName()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -313,31 +321,39 @@ public class StorageManager {
         try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.UPDATE_PLAYER_NAME.getQuery())) {
             ps.setString(1, player.getName());
             ps.setString(2, player.getUniqueId().toString());
-            debug(String.format("Update player name: %s -> %s", oldName, player.getName()));
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    public void updatePlayerIp(OfflinePlayer player) {
-        String oldIp = PunishManager.getInstance().getOfflinePlayers().get(player.getName()).getPlayerIp();
-        String newIp = player.getPlayerIp();
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.UPDATE_PLAYER_IP.getQuery())) {
-            ps.setString(1, newIp);
-            ps.setString(2, player.getUniqueId().toString());
-            debug(String.format("Update player IP address: %s -> %s", oldIp, newIp));
+            punishManager.debug(String.format("Update player name: %s -> %s", oldName, player.getName()));
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void updateLanguage(OfflinePlayer player, Locale locale) {
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.UPDATE_PLAYER_LOCALE.getQuery())) {
-            ps.setString(1, locale.toString());
+    public void updatePlayerLastLogin(UUID uuid) {
+        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.UPDATE_PLAYER_LAST_LOGIN.getQuery())) {
+            ps.setLong(1, System.currentTimeMillis());
+            ps.setString(2, uuid.toString());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updatePlayerIp(OfflinePlayer player) {
+        String newIp = player.getPlayerIp();
+        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.UPDATE_PLAYER_IP.getQuery())) {
+            ps.setString(1, newIp);
             ps.setString(2, player.getUniqueId().toString());
             ps.executeUpdate();
-            debug(String.format("The locale of %s is set to %s.", player.getName(), locale));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateLanguage(UUID uuid, Locale locale) {
+        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.UPDATE_PLAYER_LOCALE.getQuery())) {
+            ps.setString(1, locale.toString());
+            ps.setString(2, uuid.toString());
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

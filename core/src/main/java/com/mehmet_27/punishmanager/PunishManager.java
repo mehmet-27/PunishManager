@@ -95,4 +95,9 @@ public class PunishManager {
     public InputStream getResourceStream(String path) {
         return getClass().getClassLoader().getResourceAsStream(path);
     }
+
+    public void debug(String message) {
+        if (!methods.getConfig().getBoolean("debug", false)) return;
+        methods.getLogger().info(message);
+    }
 }

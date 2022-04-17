@@ -18,6 +18,8 @@ public interface ConfigManager {
 
     Map<Locale, Object> getLocales();
 
+    List<Locale> getAvailableLocales();
+
     List<File> getLocaleFiles();
 
     String getMessage(String path);

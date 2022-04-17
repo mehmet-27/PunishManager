@@ -1,7 +1,11 @@
-package com.mehmet_27.punishmanager.inventories;
+package com.mehmet_27.punishmanager.bungee.inventory.inventories;
 
+import com.mehmet_27.punishmanager.PunishManager;
+import com.mehmet_27.punishmanager.bungee.inventory.InventoryUtils;
+import com.mehmet_27.punishmanager.managers.StorageManager;
+import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.utils.Messages;
-import com.mehmet_27.punishmanager.utils.ProtocolizeUtils;
+import com.mehmet_27.punishmanager.utils.UtilsCore;
 import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.item.ItemStack;
 import dev.simplix.protocolize.api.player.ProtocolizePlayer;
@@ -14,14 +18,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.mehmet_27.punishmanager.utils.Utils.replacePunishmentPlaceholders;
-
 public class ManagePunishments extends UIFrame {
 
     public ManagePunishments(@Nullable UIFrame parent, InventoryType type, @NotNull ProxiedPlayer viewer, int startIndex) {
         super(parent, type, viewer);
-        PunishManagerold plugin = PunishManagerold.getInstance();
-        StorageManager storageManager = plugin.getStorageManager();
+        StorageManager storageManager = PunishManager.getInstance().getStorageManager();
         List<Punishment> punishments = storageManager.getAllPunishments();
 
         title(Messages.GUI_MANAGEPUNISHMENTS_TITLE.getString(viewer.getName())
@@ -35,7 +36,7 @@ public class ManagePunishments extends UIFrame {
                     .replace("%id%", "" + punishment.getId()));
 
             List<String> lore = Messages.GUI_MANAGEPUNISHMENTS_PUNISHMENT_LORE.getStringList(viewer.getName())
-                    .stream().map(string -> replacePunishmentPlaceholders(string, punishment)).collect(Collectors.toList());
+                    .stream().map(string -> UtilsCore.replacePunishmentPlaceholders(string, punishment)).collect(Collectors.toList());
             is.lore(lore, true);
             item(index, is);
             index++;
@@ -68,17 +69,17 @@ public class ManagePunishments extends UIFrame {
             //back
             if (clickedItem.equals(backButton)){
                 ProtocolizePlayer protocolizePlayer = Protocolize.playerProvider().player(viewer.getUniqueId());
-                ProtocolizeUtils.openInventory(getParent(), protocolizePlayer);
+                InventoryUtils.openInventory(getParent(), protocolizePlayer);
                 return;
             }
             //next
             if (clickedItem.equals(nextButton)) {
-                ProtocolizeUtils.openInventory(new ManagePunishments(this, InventoryType.GENERIC_9X6, viewer, finalStartIndex), Protocolize.playerProvider().player(viewer.getUniqueId()));
+                InventoryUtils.openInventory(new ManagePunishments(this, InventoryType.GENERIC_9X6, viewer, finalStartIndex), Protocolize.playerProvider().player(viewer.getUniqueId()));
                 return;
             }
             //previous
             if (clickedItem.equals(previousButton)) {
-                ProtocolizeUtils.openInventory(getParent(), Protocolize.playerProvider().player(viewer.getUniqueId()));
+                InventoryUtils.openInventory(getParent(), Protocolize.playerProvider().player(viewer.getUniqueId()));
             }
         });
     }

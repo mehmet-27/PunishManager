@@ -7,7 +7,7 @@
     <parent>
         <artifactId>PunishManager</artifactId>
         <groupId>com.mehmet_27.punishmanager</groupId>
-        <version>1.3.1</version>
+        <version>1.3.2</version>
     </parent>
 
     <artifactId>PunishManager-Bukkit</artifactId>
@@ -37,6 +37,11 @@
             <artifactId>PunishManager-Core</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.cryptomorin</groupId>
+            <artifactId>XSeries</artifactId>
+            <version>8.3.0</version>
         </dependency>
         <dependency>
             <groupId>org.bstats</groupId>

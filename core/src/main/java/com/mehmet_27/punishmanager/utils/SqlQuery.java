@@ -35,13 +35,17 @@ public enum SqlQuery {
                     " `name` VARCHAR(16)," +
                     " `ip` VARCHAR(25)," +
                     " `language` VARCHAR(10)," +
-                    " `first_login` LONGTEXT," +
+                    " `first_login` LONGTEXT NOT NULL," +
+                    " `last_login` LONGTEXT NOT NULL," +
                     " PRIMARY KEY (`uuid`))"
+    ),
+    ADD_COLUMN_IF_NOT_EXISTS(
+            "ALTER TABLE {0} ADD COLUMN IF NOT EXISTS {1}"
     ),
     ADD_PLAYER_TO_PLAYERS_TABLE(
             "INSERT INTO `punishmanager_players` (" +
-                    " `uuid`, `name`, `ip`, `language`, `first_login`)" +
-                    " VALUES (?,?,?,?,?)"
+                    " `uuid`, `name`, `ip`, `language`, `first_login`, `last_login`)" +
+                    " VALUES (?,?,?,?,?,?)"
     ),
     ADD_PUNISH_TO_PUNISHMENTS(
             "INSERT INTO `punishmanager_punishments` (" +
@@ -63,6 +67,7 @@ public enum SqlQuery {
     UPDATE_PLAYER_LOCALE("UPDATE `punishmanager_players` SET `language` = ? WHERE `uuid` = ?"),
     UPDATE_PUNISHMENT_REASON("UPDATE `punishmanager_punishments` SET `reason` = ? WHERE `id` = ?"),
     UPDATE_PLAYER_NAME("UPDATE `punishmanager_players` SET `name` = ? WHERE `uuid` = ?"),
+    UPDATE_PLAYER_LAST_LOGIN("UPDATE `punishmanager_players` SET `last_login` = ? WHERE `uuid` = ?"),
     UPDATE_PLAYER_IP("UPDATE `punishmanager_players` SET `ip` = ? WHERE `uuid` = ?"),
     SELECT_DISCORDSRV_WITH_UUID("SELECT * FROM `discordsrv_accounts` WHERE uuid = ?"),
     GET_ALL_LOGGED_NAMES("SELECT name FROM `punishmanager_players`");

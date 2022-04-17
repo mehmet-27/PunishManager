@@ -19,10 +19,9 @@ import net.dv8tion.jda.internal.JDAImpl;
 import javax.security.auth.login.LoginException;
 import java.util.Locale;
 
-import static com.mehmet_27.punishmanager.utils.UtilsCore.debug;
-
 public class DiscordManager {
-    private final MethodInterface methods = PunishManager.getInstance().getMethods();
+    private final PunishManager punishManager = PunishManager.getInstance();
+    private final MethodInterface methods = punishManager.getMethods();
     private final ConfigManager configManager = methods.getConfigManager();
     private final ConfigurationAdapter config = configManager.getConfig();
     private final StorageManager storageManager;
@@ -68,12 +67,12 @@ public class DiscordManager {
         if (!(config.getBoolean("discord.enable") && config.getBoolean("discord.punish-role.enable"))) return;
         if (!storageManager.isDiscordSRVTableExits()) return;
         if (api == null) {
-            debug(String.format("Could not update role for %s because bot is null.", punishment.getPlayerName()));
+            punishManager.debug(String.format("Could not update role for %s because bot is null.", punishment.getPlayerName()));
             return;
         }
         String id = storageManager.getUserDiscordId(punishment.getUuid());
         if (id == null) {
-            debug(String.format("Role action failed because player %s's Discord ID could not be found.", punishment.getPlayerName()));
+            punishManager.debug(String.format("Role action failed because player %s's Discord ID could not be found.", punishment.getPlayerName()));
             return;
         }
         Member member = guild.getMemberById(id);
@@ -91,7 +90,7 @@ public class DiscordManager {
             guild.removeRoleFromMember(member, role).queue();
         }
 
-        debug(String.format("[%s] %s role - %s", action.name(), role.getName(), punishment.getPlayerName()));
+        punishManager.debug(String.format("[%s] %s role - %s", action.name(), role.getName(), punishment.getPlayerName()));
     }
 
     public void sendEmbed(Punishment punishment) {
@@ -120,6 +119,6 @@ public class DiscordManager {
     }
 
     public enum DiscordAction {
-        ADD, REMOVE;
+        ADD, REMOVE
     }
 }

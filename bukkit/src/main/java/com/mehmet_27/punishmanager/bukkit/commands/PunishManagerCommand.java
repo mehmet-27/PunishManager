@@ -5,6 +5,8 @@ import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bukkit.PMBukkit;
+import com.mehmet_27.punishmanager.bukkit.inventory.InventoryDrawer;
+import com.mehmet_27.punishmanager.bukkit.inventory.inventories.MainFrame;
 import com.mehmet_27.punishmanager.bukkit.utils.Utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -20,7 +22,7 @@ public class PunishManagerCommand extends BaseCommand {
     @Description("{@@punishmanager.description}")
     public void punishManager(Player sender) {
         //Main GUI
-        // TODO ProtocolizeUtils.openMainInventory(sender);
+        InventoryDrawer.open(new MainFrame(sender));
     }
 
     @Subcommand("reload")
