@@ -51,6 +51,8 @@ public class LangSelector extends UIFrame {
                 Locale newLocale = Utils.stringToLocale(name);
                 punishManager.getStorageManager().updateLanguage(getViewer().getUniqueId(), newLocale);
                 punishManager.getOfflinePlayers().get(getViewer().getName()).setLocale(newLocale);
+                PMBukkit.getInstance().getCommandManager().setPlayerLocale(getViewer(),
+                        punishManager.getOfflinePlayers().get(getViewer().getName()).getLocale());
                 Utils.sendText(getViewer(), "main.setlanguage", message -> message.replace("{0}", newLocale.toString()));
                 updateFrame();
             });

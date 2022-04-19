@@ -35,12 +35,17 @@ public class PunishManagerCommand extends BaseCommand {
     }
 
     @Subcommand("about")
-    public void about(ProxiedPlayer sender) {
+    public void about(CommandSender sender) {
         PunishManager.getInstance().getMethods().sendMessage(sender, "&a&m+                                                        +");
-        PunishManager.getInstance().getMethods().sendMessage(sender, String.format("&6&l%s &7%s", PunishManager.getInstance().getMethods().getPluginName(), PunishManager.getInstance().getMethods().getPluginVersion()));
+        PunishManager.getInstance().getMethods().sendMessage(sender, String.format("&6&l%s", PunishManager.getInstance().getMethods().getPluginName()));
         PunishManager.getInstance().getMethods().sendMessage(sender, "&eThe best punishment plugin for your server.");
-        PunishManager.getInstance().getMethods().sendMessage(sender, "&eDeveloped by &bMehmet_27");
-        PunishManager.getInstance().getMethods().sendMessage(sender, "&eContributors: &7Minat0_ & RoinujNosde");
+        PunishManager.getInstance().getMethods().sendMessage(sender, "&e");
+        PunishManager.getInstance().getMethods().sendMessage(sender, "&eDeveloper: &bMehmet_27");
+        PunishManager.getInstance().getMethods().sendMessage(sender, "&eVersion: &b" + PunishManager.getInstance().getMethods().getPluginVersion());
+        PunishManager.getInstance().getMethods().sendMessage(sender, "&ePlatform: &b" + PunishManager.getInstance().getMethods().getPlatform().getFriendlyName());
+        PunishManager.getInstance().getMethods().sendMessage(sender, "&eStorage Provider: &b" + PunishManager.getInstance().getStorageManager().getStorageProvider());
+        PunishManager.getInstance().getMethods().sendMessage(sender, "&e");
+        PunishManager.getInstance().getMethods().sendMessage(sender, "&eContributors: &7Minat0_, RoinujNosde");
         PunishManager.getInstance().getMethods().sendMessage(sender, "&a&m+                                                        +");
         PunishManager.getInstance().getMethods().sendMessage(sender, "&eUse &a/punishmanager help &efor help.");
     }

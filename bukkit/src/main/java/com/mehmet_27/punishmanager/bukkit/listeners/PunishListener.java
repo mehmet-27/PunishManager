@@ -24,7 +24,7 @@ public class PunishListener implements Listener {
     private final BukkitConfigManager configManager;
     private final DiscordManager discordManager = punishManager.getDiscordManager();
 
-    public PunishListener(PMBukkit plugin){
+    public PunishListener(PMBukkit plugin) {
         this.plugin = plugin;
         this.configManager = plugin.getConfigManager();
     }
@@ -50,10 +50,12 @@ public class PunishListener implements Listener {
         //Sends the punish message
         Player player = plugin.getServer().getPlayer(punishment.getUuid());
 
-        if (punishment.isBanned()){
-            Objects.requireNonNull(player).kickPlayer(Utils.getLayout(punishment));
-        } else if (punishment.isMuted()){
-            Objects.requireNonNull(player).sendMessage(Utils.getLayout(punishment));
+        if (player != null && player.isOnline()) {
+            if (punishment.isBanned()) {
+                player.kickPlayer(Utils.getLayout(punishment));
+            } else if (punishment.isMuted()) {
+                player.sendMessage(Utils.getLayout(punishment));
+            }
         }
 
         //Sending to punish announcement

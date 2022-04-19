@@ -19,18 +19,14 @@ public class StorageManager {
     private final PunishManager punishManager = PunishManager.getInstance();
     private final MethodInterface methods = punishManager.getMethods();
     private final HikariDataSource source = new HikariDataSource();
+    boolean mysqlEnabled;
 
     public StorageManager() {
         ConfigurationAdapter config = methods.getConfig();
         String pluginName = methods.getPluginName();
         source.setPoolName("[" + pluginName + "]" + " Hikari");
-        boolean mysqlEnabled = methods.getConfig().getBoolean("mysql.enable");
-        String info = "Loading storage provider: %s";
-        if (mysqlEnabled) {
-            methods.getLogger().info(String.format(info, "MySQL"));
-        } else {
-            methods.getLogger().info(String.format(info, "H2"));
-        }
+        mysqlEnabled = methods.getConfig().getBoolean("mysql.enable");
+        methods.getLogger().info("Loading storage provider: " + getStorageProvider());
         if (mysqlEnabled) {
             source.setJdbcUrl("jdbc:mysql://" + config.getString("mysql.host") + ":" + config.getString("mysql.port") + "/" + config.getString("mysql.database") + "?useSSL=false&characterEncoding=utf-8");
             source.setUsername(config.getString("mysql.username"));
@@ -40,6 +36,10 @@ public class StorageManager {
             source.setJdbcUrl("jdbc:h2:./plugins/" + pluginName + "/" + pluginName);
         }
         setup();
+    }
+
+    public String getStorageProvider(){
+        return mysqlEnabled ? "MySQL" : "H2";
     }
 
     private void executeUpdate(String query) {

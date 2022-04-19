@@ -25,7 +25,6 @@ public class BungeeConfigManager implements ConfigManager {
 
     public BungeeConfigManager(PMBungee plugin){
         this.plugin = plugin;
-        setup();
     }
 
     @Override

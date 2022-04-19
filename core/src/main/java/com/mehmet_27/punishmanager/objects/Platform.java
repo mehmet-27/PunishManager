@@ -1,7 +1,7 @@
 package com.mehmet_27.punishmanager.objects;
 
 public enum Platform {
-    BUKKIT("Bukkit"),
+    BUKKIT_SPIGOT("Bukkit/Spigot"),
     BUNGEECORD("BungeeCord");
 
     private final String friendlyName;

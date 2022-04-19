@@ -29,7 +29,7 @@ public class BukkitMethods implements MethodInterface {
 
     @Override
     public Platform getPlatform() {
-        return Platform.BUKKIT;
+        return Platform.BUKKIT_SPIGOT;
     }
 
     @Override

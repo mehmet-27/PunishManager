@@ -10,6 +10,7 @@ import com.mehmet_27.punishmanager.utils.UtilsCore;
 import net.md_5.bungee.api.connection.PendingConnection;
 import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
+import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
@@ -65,6 +66,12 @@ public class ConnectionListener implements Listener {
         }
         event.setCancelReason(Utils.getLayout(punishment));
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onPostLogin(PostLoginEvent event){
+        plugin.getCommandManager().setIssuerLocale(event.getPlayer(),
+                punishManager.getOfflinePlayers().get(event.getPlayer().getName()).getLocale());
     }
 
     @EventHandler

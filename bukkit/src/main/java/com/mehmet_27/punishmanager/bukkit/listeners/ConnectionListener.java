@@ -50,6 +50,8 @@ public class ConnectionListener implements Listener {
         } else {
             storageManager.updatePlayerName(player);
             storageManager.updatePlayerIp(player);
+            plugin.getCommandManager().setPlayerLocale(connection,
+                    punishManager.getOfflinePlayers().get(player.getName()).getLocale());
         }
 
         Punishment punishment = storageManager.getBan(player.getUniqueId());

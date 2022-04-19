@@ -34,7 +34,9 @@ public class PunishManager {
 
     public void onEnable(MethodInterface methodInterface) {
         this.methods = methodInterface;
+        methods.getLogger().info("Platform: " + methods.getPlatform().getFriendlyName());
         this.configManager = methods.getConfigManager();
+        configManager.setup();
         this.dependencyManager = new DependencyManager();
         // Download protocolize-bungeecord.jar
         if (methods.getPlatform().equals(Platform.BUNGEECORD)) {

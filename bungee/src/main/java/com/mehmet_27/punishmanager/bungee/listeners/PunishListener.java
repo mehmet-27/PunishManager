@@ -24,7 +24,7 @@ public class PunishListener implements Listener {
     private final BungeeConfigManager configManager;
     private final DiscordManager discordManager = punishManager.getDiscordManager();
 
-    public PunishListener(PMBungee plugin){
+    public PunishListener(PMBungee plugin) {
         this.plugin = plugin;
         this.configManager = plugin.getConfigManager();
     }
@@ -50,10 +50,12 @@ public class PunishListener implements Listener {
         //Sends the punish message
         ProxiedPlayer player = plugin.getProxy().getPlayer(punishment.getUuid());
 
-        if (punishment.isBanned()){
-            player.disconnect(Utils.getLayout(punishment));
-        } else if (punishment.isMuted()){
-            player.sendMessage(Utils.getLayout(punishment));
+        if (player != null && player.isConnected()) {
+            if (punishment.isBanned()) {
+                player.disconnect(Utils.getLayout(punishment));
+            } else if (punishment.isMuted()) {
+                player.sendMessage(Utils.getLayout(punishment));
+            }
         }
 
         //Sending to punish announcement

@@ -26,7 +26,6 @@ public class BukkitConfigManager implements ConfigManager {
 
     public BukkitConfigManager(PMBukkit plugin){
         this.plugin = plugin;
-        setup();
     }
 
     @Override

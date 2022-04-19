@@ -86,14 +86,6 @@ public class PMBukkitCommandManager extends PaperCommandManager implements Comma
             }
             return PunishManager.getInstance().getOfflinePlayers().get(playerName);
         });
-        getCommandContexts().registerContext(OfflinePlayer.class, c -> {
-            String playerName = c.popFirstArg();
-            OfflinePlayer offlinePlayer = PunishManager.getInstance().getOfflinePlayers().get(playerName);
-            if (offlinePlayer == null) {
-                throw new InvalidCommandArgument(getMessage(c.getIssuer(), "main.not-logged-server"));
-            }
-            return PunishManager.getInstance().getOfflinePlayers().get(playerName);
-        });
     }
 
     @Override
@@ -153,5 +145,6 @@ public class PMBukkitCommandManager extends PaperCommandManager implements Comma
         registerCommands();
         registerConditions();
         registerCompletions();
+        usePerIssuerLocale(true, false);
     }
 }
