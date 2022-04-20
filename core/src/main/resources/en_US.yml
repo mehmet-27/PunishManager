@@ -1,8 +1,9 @@
-# Placeholders:
-# %reason% -> Reason of punishment.
-# %duration% -> Duration of punishment.
-# %operator% -> Operator of punishment.
-# %player% -> Name of the player being punished.
+---
+#Placeholders:
+#%reason% -> Reason of punishment.
+#%duration% -> Duration of punishment.
+#%operator% -> Operator of punishment.
+#%player% -> Name of the player being punished.
 main:
   prefix: '&6PunishManager'
   exempt-player: 'You can''t punish this player.'
@@ -21,7 +22,6 @@ main:
     hour: '%h% hour(s)'
     minute: '%m% minute(s)'
     second: '%s% second(s)'
-
 gui:
   backbutton:
     name: '&7Back'
@@ -49,7 +49,7 @@ gui:
       name: '&7Previous Page'
     punishment:
       name: '&bPunishment #%id%'
-      # Variables: %player%, %uuid%, %type%, %reason%, %operator%, %ip%
+      #Variables: %player%, %uuid%, %type%, %reason%, %operator%, %ip%
       lore:
         - '&6Name: &e%player%'
         - '&6Type: &e%type%'
@@ -59,7 +59,6 @@ gui:
         - '&6Ip: &e%ip%'
   defaultlanguageselector:
     title: '&eDefault Language - Current: &8{0}'
-
 ban:
   punished: '&a%player% successfully banned.'
   alreadyPunished: '&e%player% is already banned.'
@@ -74,7 +73,6 @@ ban:
     - "&6Discord &7» &ecoming soon"
   announce: '&a%player% &ebanned by &a%operator% &edue to &a%reason%.'
   description: 'Ban a player.'
-
 tempban:
   punished: '&a%player% successfully banned.'
   alreadyPunished: '&e%player% is already banned.'
@@ -90,7 +88,6 @@ tempban:
     - "&6Discord &7» &ecoming soon"
   announce: '&a%player% &ewas banned by &a%operator% &efor &a%duration% &edue to &a%reason%.'
   description: 'Temporarily bans a player.'
-
 ipban:
   punished: '&a%player% successfully banned.'
   alreadyPunished: '&e%player% is already banned.'
@@ -105,7 +102,6 @@ ipban:
     - "&6Discord &7» &ecoming soon"
   announce: '&a%player% &ebanned by &a%operator% &edue to &a%reason%.'
   description: 'Bans a player''s ip address.'
-
 kick:
   punished: '&a%player% successfully kicked.'
   notOnline: '&e%player% is not online.'
@@ -115,7 +111,6 @@ kick:
     - '&6You kicked from this server.'
     - '&2Reason: &a%reason%'
   description: 'Kicks a player from the server.'
-
 mute:
   punished: '&a%player% successfully muted.'
   alreadyPunished: '&e%player% is already muted.'
@@ -123,7 +118,6 @@ mute:
     - '&eYou were muted by &a%operator% &edue to the &a%reason%&e.'
   announce: '&a%player% &emuted by &a%operator% &edue to &a%reason%.'
   description: 'Mute a player.'
-
 tempmute:
   punished: '&a%player% successfully muted.'
   alreadyPunished: '&e%player% is already muted.'
@@ -131,22 +125,18 @@ tempmute:
     - '&eYou were muted by &a%operator% &efor &a%duration% &edue to the &a%reason%&e.'
   announce: '&a%player% &ewas muted by &a%operator% &efor &a%duration% &edue to &a%reason%.'
   description: 'Temporarily mutes a player.'
-
 unban:
   notPunished: '&e%player% is not banned.'
   done: '&a%player%''s ban has been removed.'
   description: 'Removes a player''s ban.'
-
 unmute:
   notPunished: '&e%player% is not muted.'
   done: '&a%player%''s mute has been removed.'
   description: 'Removes a player''s mute.'
-
 unpunish:
   notPunished: '&e%player% is not punished.'
   done: '&a%player%''s punishes has been removed.'
   description: 'Removes all punishes from a player.'
-
 check:
   checking: '&eChecking &a%player%'
   playerNotFound: '&c%player% not found!'
@@ -162,17 +152,13 @@ check:
   punishId: '&e-> Punish Id: &c%id%'
   notPunished: '&anot punished'
   description: 'Checks the current status of a player.'
-
 punishmanager:
   description: 'The main command of the plugin.'
-
 punishmanager-reload:
   description: 'Reloads the plugin.'
   done: '&aAll configuration files have been reloaded.'
-
 punishmanager-help:
   description: 'Help command.'
-
 changereason:
   description: 'Changes the reason for a punish.'
   punishmentNotFound: '&eSearched punishment not found.'
