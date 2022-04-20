@@ -71,7 +71,7 @@ ban:
     - '&eDestek İçin'
     - "&6Site &7» &eyakında"
     - "&6Discord &7» &eyakında"
-  announce: '&a%player% &ebanned by &a%operator% &edue to &a%reason%.'
+  announce: '&a%player% &eadlı oyuncu &a%operator% &etarafından &a%reason% &esebebiyle yasaklandı.'
   description: 'Bir oyuncuyu yasakla.'
 tempban:
   punished: '&a%player% başarıyla yasaklandı.'
@@ -86,7 +86,7 @@ tempban:
     - '&7'
     - "&eDestek İçin"
     - "&6Site &7» &eyakında"
-  announce: '&a%player% &ewas banned by &a%operator% &efor &a%duration% &edue to &a%reason%.'
+  announce: '&a%player% &eadlı oyuncu &a%operator% &etarafından &a%reason% &esebebiyle &a%duration% &esüre boyunca yasaklandı.'
   description: 'Bir oyuncuyu süreli yasakla.'
 ipban:
   punished: '&a%player% başarıyla yasaklandı.'
@@ -116,14 +116,14 @@ mute:
   alreadyPunished: '&e%player% zaten susturulmuş.'
   layout:
     - '&a%operator% &etarafından &a%reason% &esebebiyle susuturuldun.'
-  announce: '&a%player% &emuted by &a%operator% &edue to &a%reason%.'
+  announce: '&a%player% &eadlı oyuncu &a%operator% &etarafından &a%reason% &esebebiyle susturuldu.'
   description: 'Bir oyuncuyu sustur.'
 tempmute:
   punished: '&a%player% başarıyla susturuldu.'
   alreadyPunished: '&e%player% zaten susturulmuş.'
   layout:
     - '&a%operator% &eadlı yetkili tarafından &a%reason% &esebebiyle &a%duration% &esüre boyunca susturuldun.'
-  announce: '&a%player% &ewas muted by &a%operator% &efor &a%duration% &edue to &a%reason%.'
+  announce: '&a%player% &eadlı oyuncu &a%operator% &etarafından &a%reason% &esebebiyle &a%duration% &esüre boyunca susturuldu.'
   description: 'Bir oyuncuyu süreli sustur.'
 unban:
   notPunished: '&e%player% yasaklı değil.'
