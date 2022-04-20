@@ -1,8 +1,9 @@
-# Placeholders:
-# %reason% -> Cezanın sebebi.
-# %duration% -> Cezanın süresi.
-# %operator% -> Cezayı veren yetkili.
-# %player% -> Cezalandırılan oyuncunun adı.
+---
+#Placeholders:
+#%reason% -> Reason of punishment.
+#%duration% -> Duration of punishment.
+#%operator% -> Operator of punishment.
+#%player% -> Name of the player being punished.
 main:
   prefix: '&6PunishManager'
   exempt-player: 'Bu oyuncuyu cezalandıramazsınız.'
@@ -13,7 +14,7 @@ main:
   setdefaultlanguage: '&aSunucu için varsayılan dil {0} olarak ayarlandı.'
   mustInteger: '&cLütfen geçerli bir sayı giriniz.'
   timelayout:
-    #Cezanın süresini gösterirken kullanılacak değişkenler.
+    #Variables to be used when showing the duration of the punishment.
     year: '%y% yıl'
     month: '%mo% ay'
     week: '%w% hafta'
@@ -21,7 +22,6 @@ main:
     hour: '%h% saat'
     minute: '%m% dakika'
     second: '%s% saniye'
-
 gui:
   backbutton:
     name: '&7Geri'
@@ -49,7 +49,7 @@ gui:
       name: '&7Önceki Sayfa'
     punishment:
       name: '&bCeza #%id%'
-      # Variables: %player%, %uuid%, %type%, %reason%, %operator%, %ip%
+      #Variables: %player%, %uuid%, %type%, %reason%, %operator%, %ip%
       lore:
         - '&6İsim: &e%player%'
         - '&6Tür: &e%type%'
@@ -59,7 +59,6 @@ gui:
         - '&6Ip: &e%ip%'
   defaultlanguageselector:
     title: '&eVarsayılan Dil - Mevcut: &8{0}'
-
 ban:
   punished: '&a%player% başarıyla yasaklandı.'
   alreadyPunished: '&e%player% zaten yasaklı.'
@@ -67,13 +66,13 @@ ban:
     - '%prefix%'
     - '&eSunucudan Kalıcı Yasaklandınız!'
     - '&eYasaklayan: &a%operator%'
-    - "&eSebep &7» &2%reason%"
+    - '&eSebep &7» &2%reason%'
     - '&7'
     - '&eDestek İçin'
     - "&6Site &7» &eyakında"
     - "&6Discord &7» &eyakında"
+  announce: '&a%player% &eadlı oyuncu &a%operator% &etarafından &a%reason% &esebebiyle yasaklandı.'
   description: 'Bir oyuncuyu yasakla.'
-
 tempban:
   punished: '&a%player% başarıyla yasaklandı.'
   alreadyPunished: '&e%player% zaten yasaklı.'
@@ -82,14 +81,13 @@ tempban:
     - '&eSunucudan Yasaklandınız!'
     - '&eYasaklayan: &a%operator%'
     - '&7'
-    - "&eSebep &7» &a%reason%"
-    - "&eKalan süre &7» &a%duration%"
+    - '&eSebep &7» &a%reason%'
+    - '&eKalan süre &7» &a%duration%'
     - '&7'
-    - '&eDestek İçin'
+    - "&eDestek İçin"
     - "&6Site &7» &eyakında"
-    - "&6Discord &7» &eyakında"
+  announce: '&a%player% &eadlı oyuncu &a%operator% &etarafından &a%reason% &esebebiyle &a%duration% &esüre boyunca yasaklandı.'
   description: 'Bir oyuncuyu süreli yasakla.'
-
 ipban:
   punished: '&a%player% başarıyla yasaklandı.'
   alreadyPunished: '&e%player% zaten yasaklı.'
@@ -97,51 +95,48 @@ ipban:
     - '%prefix%'
     - '&eSunucudan Kalıcı Yasaklandınız!'
     - '&eYasaklayan: &a%operator%'
-    - "&eSebep &7» &2%reason%"
+    - '&eSebep &7» &2%reason%'
     - '&7'
     - '&eDestek İçin'
     - "&6Site &7» &eyakında"
     - "&6Discord &7» &eyakında"
+  announce: '&a%player% &ebanned by &a%operator% &edue to &a%reason%.'
   description: 'Bir oyuncunun ip adresini yasakla.'
-
 kick:
   punished: '&a%player% başarıyla atıldı.'
   notOnline: '&e%player% çevrimiçi değil.'
   layout:
     - '&eSunucudan Atıldın'
     - '&7'
-    - "&cSebep &7» &r%reason%"
+    - '&cSebep &7» &r%reason%'
+    - '&2Reason: &a%reason%'
   description: 'Bir oyuncuyu sunucudan at.'
-
 mute:
   punished: '&a%player% başarıyla susturuldu.'
   alreadyPunished: '&e%player% zaten susturulmuş.'
   layout:
     - '&a%operator% &etarafından &a%reason% &esebebiyle susuturuldun.'
+  announce: '&a%player% &eadlı oyuncu &a%operator% &etarafından &a%reason% &esebebiyle susturuldu.'
   description: 'Bir oyuncuyu sustur.'
-
 tempmute:
   punished: '&a%player% başarıyla susturuldu.'
   alreadyPunished: '&e%player% zaten susturulmuş.'
   layout:
     - '&a%operator% &eadlı yetkili tarafından &a%reason% &esebebiyle &a%duration% &esüre boyunca susturuldun.'
+  announce: '&a%player% &eadlı oyuncu &a%operator% &etarafından &a%reason% &esebebiyle &a%duration% &esüre boyunca susturuldu.'
   description: 'Bir oyuncuyu süreli sustur.'
-
 unban:
   notPunished: '&e%player% yasaklı değil.'
   done: '&a%player% adlı oyuncunun yasağı kaldırıldı.'
   description: 'Bir oyuncunun yasağını kaldır.'
-
 unmute:
   notPunished: '&e%player% susturulmamış.'
   done: '&a%player% adlı oyuncunun susturulması açıldı.'
   description: 'Bir oyuncunun susturmasını aş.'
-
 unpunish:
   notPunished: '&e%player% cezalandırılmamış.'
   done: '&a%player% adlı oyuncunun tüm cezaları kaldırıldı.'
   description: 'Bir oyuncunun tüm cezalarını kaldır.'
-
 check:
   checking: '&e%player% &akontrol ediliyor'
   playerNotFound: '&c%player% bulunamadı!'
@@ -157,19 +152,14 @@ check:
   punishId: '&e-> Ceza Id: &c%id%'
   notPunished: '&acezalandırılmamış'
   description: 'Bir oyuncunun anlık durumunu kontrol et.'
-
 punishmanager:
   description: 'Eklentinin ana komutu.'
-
 punishmanager-reload:
   description: 'Eklentiyi yeniden yükle.'
   done: '&aTüm yapılandırma dosyaları yeniden yüklendi.'
-
 punishmanager-help:
   description: 'Yardım komutu.'
-
 changereason:
   description: 'Bir cezanın sebebini değiştirir.'
   punishmentNotFound: '&eAranan ceza bulunamadı.'
   done: '&e#%id% &anumaralı cezanın sebebi &e%reason% &aolarak değiştirildi.'
-
