@@ -8,6 +8,7 @@ Advanced punish plugin for Minecraft servers.
 [![Discord](https://img.shields.io/discord/960495095055011841?label=discord&logo=discord)](https://discord.gg/MYjmmEqKvE)
 [![bStats Servers](https://img.shields.io/bstats/servers/14772)](https://bstats.org/plugin/bukkit/PunishManager/14772)
 [![bStats Players](https://img.shields.io/bstats/players/14772)](https://bstats.org/plugin/bukkit/PunishManager/14772)
+[![Crowdin](https://badges.crowdin.net/punishmanager/localized.svg)](https://crowdin.com/project/punishmanager)
 
 # Download Link
 
