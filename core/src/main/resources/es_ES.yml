@@ -159,6 +159,7 @@ check:
   muteStatus: '&eEstado de mute: &c%status%'
   muteReason: '&e-> Motivo de mute: &c%reason%'
   muteOperator: '&e-> Silenciado por: &c%operator%'
+  punishId: '&e-> Id de castigo: &c%id%'
   notPunished: '&aSin castigos'
   description: 'Comprueba el estado actual de un jugador.'
 
