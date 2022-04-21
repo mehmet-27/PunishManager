@@ -6,7 +6,8 @@ import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bungee.PMBungee;
 import com.mehmet_27.punishmanager.bungee.Utils.Utils;
-import com.mehmet_27.punishmanager.bungee.inventory.InventoryUtils;
+import com.mehmet_27.punishmanager.bungee.inventory.InventoryDrawer;
+import com.mehmet_27.punishmanager.bungee.inventory.inventories.MainFrame;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -22,7 +23,7 @@ public class PunishManagerCommand extends BaseCommand {
     @Conditions("requireProtocolize")
     public void punishManager(ProxiedPlayer sender) {
         //Main GUI
-        InventoryUtils.openMainInventory(sender);
+        InventoryDrawer.open(new MainFrame(sender));
     }
 
     @Subcommand("reload")

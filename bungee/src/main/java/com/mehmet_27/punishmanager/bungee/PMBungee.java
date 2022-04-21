@@ -2,6 +2,7 @@ package com.mehmet_27.punishmanager.bungee;
 
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bungee.events.PunishEvent;
+import com.mehmet_27.punishmanager.bungee.inventory.InventoryController;
 import com.mehmet_27.punishmanager.bungee.listeners.ChatListener;
 import com.mehmet_27.punishmanager.bungee.listeners.ConnectionListener;
 import com.mehmet_27.punishmanager.bungee.listeners.PunishListener;
@@ -15,6 +16,8 @@ public final class PMBungee extends Plugin {
 
     private BungeeConfigManager configManager;
     private PMBungeeCommandManager commandManager;
+
+    private InventoryController inventoryController;
 
     public static PMBungee getInstance() {
         return instance;
@@ -30,6 +33,8 @@ public final class PMBungee extends Plugin {
         getProxy().getPluginManager().registerListener(this, new ConnectionListener(this));
         getProxy().getPluginManager().registerListener(this, new ChatListener(this));
         getProxy().getPluginManager().registerListener(this, new PunishListener(this));
+
+        inventoryController = new InventoryController();
     }
 
     @Override
@@ -43,5 +48,9 @@ public final class PMBungee extends Plugin {
 
     public PMBungeeCommandManager getCommandManager() {
         return commandManager;
+    }
+
+    public InventoryController getInventoryController() {
+        return inventoryController;
     }
 }

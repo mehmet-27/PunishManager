@@ -2,9 +2,7 @@ package com.mehmet_27.punishmanager.bukkit.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
-import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bukkit.utils.Utils;
-import com.mehmet_27.punishmanager.managers.DiscordManager;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
@@ -32,7 +30,6 @@ public class UnMuteCommand extends BaseCommand {
             return;
         }
         storageManager.unPunishPlayer(punishment);
-        PunishManager.getInstance().getDiscordManager().updateRole(punishment, DiscordManager.DiscordAction.REMOVE);
         Utils.sendText(sender, playerName, "unmute.done");
     }
 }

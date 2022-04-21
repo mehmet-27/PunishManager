@@ -75,7 +75,7 @@ public class PunishManager {
     }
 
     public DiscordManager getDiscordManager() {
-        return discordManager == null ? discordManager = new DiscordManager() : discordManager;
+        return discordManager;
     }
 
     public Map<String, OfflinePlayer> getOfflinePlayers() {

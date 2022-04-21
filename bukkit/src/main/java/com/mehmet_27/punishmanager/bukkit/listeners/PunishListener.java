@@ -64,10 +64,6 @@ public class PunishListener implements Listener {
         announcement = UtilsCore.replacePunishmentPlaceholders(announcement, punishment);
         plugin.getServer().broadcastMessage(announcement);
 
-        //Give "punished role" on Discord
-        if (punishment.getPunishType().isMute()) {
-            discordManager.updateRole(punishment, DiscordManager.DiscordAction.ADD);
-        }
         discordManager.sendEmbed(punishment);
     }
 }

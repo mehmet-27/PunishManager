@@ -12,7 +12,7 @@ import java.sql.*;
 import java.util.*;
 
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType;
-import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.*;
+import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.IPBAN;
 
 public class StorageManager {
 
@@ -38,7 +38,7 @@ public class StorageManager {
         setup();
     }
 
-    public String getStorageProvider(){
+    public String getStorageProvider() {
         return mysqlEnabled ? "MySQL" : "H2";
     }
 
@@ -138,6 +138,7 @@ public class StorageManager {
         }
         return null;
     }
+
     public Punishment getPunishmentWithId(int punishmentId) {
         try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.GET_PUNISHMENT_WITH_ID.getQuery())) {
             ps.setInt(1, punishmentId);
@@ -270,9 +271,6 @@ public class StorageManager {
                 UUID playerUuid = UUID.fromString(result.getString("uuid"));
                 Punishment punishment = getPunishment(playerUuid);
                 if (punishment.getPunishType().isTemp() && punishment.isExpired()) {
-                    if (punishment.getPunishType().isMute()) {
-                        PunishManager.getInstance().getDiscordManager().updateRole(punishment, DiscordManager.DiscordAction.REMOVE);
-                    }
                     unPunishPlayer(punishment);
                     deleted++;
                 }
@@ -387,12 +385,13 @@ public class StorageManager {
         return new ArrayList<>();
     }
 
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isDiscordSRVTableExits() {
         try (Connection connection = source.getConnection()) {
             DatabaseMetaData dbm = connection.getMetaData();
             ResultSet tables = dbm.getTables(null, null, "discordsrv_accounts", null);
-            return tables.next();
+            if (tables.next()) {
+                return true;
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -414,7 +413,7 @@ public class StorageManager {
                 int id = result.getInt("id");
                 PunishType punishType = PunishType.valueOf(result.getString("type"));
                 Punishment punishment = new Punishment(playerName, UUID.fromString(uuid), ip, punishType, reason, operator, start, end, id);
-                if (!punishment.isExpired()){
+                if (!punishment.isExpired()) {
                     punishments.add(punishment);
                 }
             }

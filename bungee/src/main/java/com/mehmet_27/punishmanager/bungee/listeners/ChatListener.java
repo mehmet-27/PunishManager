@@ -4,7 +4,6 @@ import com.mehmet_27.punishmanager.ConfigurationAdapter;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bungee.PMBungee;
 import com.mehmet_27.punishmanager.bungee.Utils.Utils;
-import com.mehmet_27.punishmanager.managers.DiscordManager;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -20,7 +19,6 @@ public class ChatListener implements Listener {
     private final ConfigurationAdapter config;
     private final PunishManager punishManager = PunishManager.getInstance();
     private final StorageManager storageManager = punishManager.getStorageManager();
-    private final DiscordManager discordManager = punishManager.getDiscordManager();
 
     public ChatListener(PMBungee plugin) {
         config = plugin.getConfigManager().getConfig();
@@ -33,7 +31,6 @@ public class ChatListener implements Listener {
         if (punishment == null) return;
         if (punishment.isExpired()) {
             storageManager.unPunishPlayer(punishment);
-            discordManager.updateRole(punishment, DiscordManager.DiscordAction.REMOVE);
             return;
         }
         // If message is command

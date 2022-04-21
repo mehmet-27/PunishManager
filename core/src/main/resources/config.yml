@@ -43,9 +43,6 @@ discord:
   enable: false
   token: 'yourBotToken'
   serverId: 'yourServerId'
-  punish-role:
-    enable: false
-    punishedRoleId: 'yourPunishedRoleId'
   punish-announce:
     enable: false
     channel-id: 'yourAnnounceChannelId'

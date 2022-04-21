@@ -1,86 +1,79 @@
 package com.mehmet_27.punishmanager.bungee.inventory.inventories;
 
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.bungee.inventory.InventoryUtils;
+import com.mehmet_27.punishmanager.bungee.Utils.Paginator;
+import com.mehmet_27.punishmanager.bungee.inventory.*;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.utils.Messages;
 import com.mehmet_27.punishmanager.utils.UtilsCore;
-import dev.simplix.protocolize.api.Protocolize;
-import dev.simplix.protocolize.api.item.ItemStack;
-import dev.simplix.protocolize.api.player.ProtocolizePlayer;
 import dev.simplix.protocolize.data.ItemType;
-import dev.simplix.protocolize.data.inventory.InventoryType;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ManagePunishments extends UIFrame {
 
-    public ManagePunishments(@Nullable UIFrame parent, InventoryType type, @NotNull ProxiedPlayer viewer, int startIndex) {
-        super(parent, type, viewer);
-        StorageManager storageManager = PunishManager.getInstance().getStorageManager();
-        List<Punishment> punishments = storageManager.getAllPunishments();
+    private final Paginator paginator;
+    private final StorageManager storageManager = PunishManager.getInstance().getStorageManager();
+    private final List<Punishment> punishments = storageManager.getAllPunishments();
 
-        title(Messages.GUI_MANAGEPUNISHMENTS_TITLE.getString(viewer.getName())
-                .replace("{0}", "" + punishments.size()));
-        int index = 0;
-        for (int i = startIndex; i < punishments.size(); i++) {
-            if (index == 45) break;
+    public ManagePunishments(UIFrame parent, ProxiedPlayer viewer) {
+        super(parent, viewer);
+        paginator = new Paginator(getSize() - 9, punishments);
+    }
+
+    @Override
+    public String getTitle() {
+        return Messages.GUI_MANAGEPUNISHMENTS_TITLE.getString(getViewer().getName())
+                .replace("{0}", "" + punishments.size());
+    }
+
+    @Override
+    public int getSize() {
+        return 9 * 6;
+    }
+
+    @Override
+    public void createComponents() {
+        add(Components.getBackComponent(getParent(), 53, getViewer()));
+
+        int slot = 0;
+        for (int i = paginator.getMinIndex(); paginator.isValidIndex(i); i++) {
             Punishment punishment = punishments.get(i);
-            ItemStack is = new ItemStack(ItemType.PAPER);
-            is.displayName(Messages.GUI_MANAGEPUNISHMENTS_PUNISHMENT_NAME.getString(viewer.getName())
-                    .replace("%id%", "" + punishment.getId()));
-
-            List<String> lore = Messages.GUI_MANAGEPUNISHMENTS_PUNISHMENT_LORE.getStringList(viewer.getName())
-                    .stream().map(string -> UtilsCore.replacePunishmentPlaceholders(string, punishment)).collect(Collectors.toList());
-            is.lore(lore, true);
-            item(index, is);
-            index++;
-            startIndex++;
+            addPunish(slot, punishment);
+            slot++;
         }
-        int finalStartIndex = startIndex;
+        add(Components.getPreviousPageComponent(51, this::previousPage, paginator, getViewer()));
+        add(Components.getNextPageComponent(52, this::nextPage, paginator, getViewer()));
+    }
 
-        ItemStack backButton = new Item().back(viewer.getName());
-        item(53, backButton);
+    private void addPunish(int slot, Punishment punishment) {
+        UIComponent component = new UIComponentImpl.Builder(ItemType.PAPER)
+                .name(Messages.GUI_MANAGEPUNISHMENTS_PUNISHMENT_NAME.getString(getViewer().getName())
+                        .replace("%id%", "" + punishment.getId()))
+                .lore(Messages.GUI_MANAGEPUNISHMENTS_PUNISHMENT_LORE.getStringList(getViewer().getName())
+                        .stream().map(string -> UtilsCore.replacePunishmentPlaceholders(string, punishment))
+                        .collect(Collectors.toList()))
+                .slot(slot)
+                .build();
+        add(component);
+    }
 
-        // next button
-        ItemStack nextButton = new ItemStack(ItemType.ARROW);
-        nextButton.displayName(Messages.GUI_MANAGEPUNISHMENTS_NEXT_NAME.getString(viewer.getName()));
-        if (startIndex >= 0 && punishments.size() > startIndex) {
-            item(52, nextButton);
+    private void previousPage() {
+        if (paginator.previousPage()) {
+            updateFrame();
         }
+    }
 
-        // previous button
-        ItemStack previousButton = new ItemStack(ItemType.ARROW);
-        previousButton.displayName(Messages.GUI_MANAGEPUNISHMENTS_PREVIOUS_NAME.getString(viewer.getName()));
-        if (startIndex > 45) {
-            item(51, previousButton);
+    private void nextPage() {
+        if (paginator.nextPage()) {
+            updateFrame();
         }
+    }
 
-
-        onClick(click -> {
-            click.cancelled(true);
-            ItemStack clickedItem = click.clickedItem();
-            if (click.clickedItem() == null) return;
-            //back
-            if (clickedItem.equals(backButton)){
-                ProtocolizePlayer protocolizePlayer = Protocolize.playerProvider().player(viewer.getUniqueId());
-                InventoryUtils.openInventory(getParent(), protocolizePlayer);
-                return;
-            }
-            //next
-            if (clickedItem.equals(nextButton)) {
-                InventoryUtils.openInventory(new ManagePunishments(this, InventoryType.GENERIC_9X6, viewer, finalStartIndex), Protocolize.playerProvider().player(viewer.getUniqueId()));
-                return;
-            }
-            //previous
-            if (clickedItem.equals(previousButton)) {
-                InventoryUtils.openInventory(getParent(), Protocolize.playerProvider().player(viewer.getUniqueId()));
-            }
-        });
+    private void updateFrame() {
+        InventoryDrawer.open(this);
     }
 }
