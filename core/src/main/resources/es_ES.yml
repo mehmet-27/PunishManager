@@ -86,7 +86,7 @@ tempban:
     - '&eContacto & Support'
     - "&6Web &7» &epróximamente"
     - "&6Discord &7» &epróximamente"
-  announce: '&a%player% &ewas banned by &a%operator% &efor &a%duration% &edue to &a%reason%.'
+  announce: '&a%player% &fue prohibido por &a%operator% &edurante &a%duration% &edu por &a%motivo%.'
   description: 'Banea temporalmente a un jugador.'
 ipban:
   punished: '&a%player% baneado exitosamente.'
@@ -122,7 +122,7 @@ tempmute:
   punished: '&a%player% silenciado con éxito.'
   alreadyPunished: '&e%player% ya está silenciado.'
   layout:
-    - '&eFuiste silenciado por &a%operator% &epor &a%duration% &edebido a &a%reason%&e.'
+    - '&eFuiste silenciado por &a%operator% &edurante &a%duration% &edebido a &a%reason%&e.'
   announce: '&a%player% &efue silenciado por &a%operator% &epor &a%duration% &edebido a &a%reason%.'
   description: 'Temporalmente silencia a un jugador.a'
 unban:
@@ -149,7 +149,7 @@ check:
   muteStatus: '&eEstado de mute: &c%status%'
   muteReason: '&e-> Motivo de mute: &c%reason%'
   muteOperator: '&e-> Silenciado por: &c%operator%'
-  punishId: '&e-> Punish Id: &c%id%'
+  punishId: '&e-> Id de castigo: &c%id%'
   notPunished: '&aSin castigos'
   description: 'Comprueba el estado actual de un jugador.'
 punishmanager:
