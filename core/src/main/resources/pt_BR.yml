@@ -6,71 +6,71 @@
 #%player% -> Name of the player being punished.
 main:
   prefix: '&6PunishManager'
-  exempt-player: 'You can''t punish this player.'
-  defaultReason: 'none'
-  not-on-yourself: 'You cannot use this command on yourself!'
-  not-logged-server: '&cYou can''t punish someone who hasn''t been on the server before.'
-  setlanguage: '&aYour language is set to {0}.'
-  setdefaultlanguage: '&aThe default language for server is set to {0}.'
-  mustInteger: '&cPlease enter a valid integer value.'
+  exempt-player: 'Você não pode punir este jogador.'
+  defaultReason: 'nenhum'
+  not-on-yourself: 'Você não pode usar esse comando em si mesmo!'
+  not-logged-server: '&cVocê não pode punir alguém que nunca esteve no servidor.'
+  setlanguage: '&aSeu idioma está definido como {0}.'
+  setdefaultlanguage: '&aA linguagem padrão para o servidor está definida como {0}.'
+  mustInteger: '&cPor favor, insira um número inteiro válido.'
   timelayout:
     #Variables to be used when showing the duration of the punishment.
-    year: '%y% year(s)'
-    month: '%mo% month(s)'
-    week: '%w% week(s)'
-    day: '%d% day(s)'
-    hour: '%h% hour(s)'
-    minute: '%m% minute(s)'
-    second: '%s% second(s)'
+    year: '%y% ano(s)'
+    month: '%mo% mês(es)'
+    week: '%w% semana(s)'
+    day: '%d% dia(s)'
+    hour: '%h% hora(s)'
+    minute: '%m% minuto(s)'
+    second: '%s% segundo(s)'
 gui:
   backbutton:
-    name: '&7Back'
+    name: '&7Voltar'
   main:
     title: '&6&lPunishManager GUI'
     languageselector:
-      name: '&eLanguage Selector'
+      name: '&eSeletor de idiomas'
     managepunishments:
-      name: '&eManage Punishments'
+      name: '&eGerenciar Punições'
     adminpanel:
-      name: '&eAdmin Panel'
+      name: '&ePainel de Administração'
   languageselector:
-    title: '&eLanguage Selector - Current: &8{0}'
+    title: '&eSeletor de Idioma - Atual: &8{0}'
   adminpanel:
-    title: '&eAdmin Panel'
+    title: '&ePainel de Administração'
     reload:
-      name: '&aReload all configuration files'
+      name: '&aRecarregar todos os arquivos de configuração'
     defaultlanguageselector:
-      name: '&aDefault Language'
+      name: '&aLinguagem Padrão'
   managepunishments:
-    title: '&eManage Punishments - Total &6{0}'
+    title: '&eGerenciar Punições - Total &6{0}'
     next:
-      name: '&7Next Page'
+      name: '&7Próxima Página'
     previous:
-      name: '&7Previous Page'
+      name: '&7Página Anterior'
     punishment:
-      name: '&bPunishment #%id%'
+      name: '&bPunição #%id%'
       #Variables: %player%, %uuid%, %type%, %reason%, %operator%, %ip%
       lore:
-        - '&6Name: &e%player%'
-        - '&6Type: &e%type%'
-        - '&6Reason: &e%reason%'
-        - '&6Duration: &e%duration%'
-        - '&6Operator: &e%operator%'
-        - '&6Ip: &e%ip%'
+        - '&6Nome: &e%player%'
+        - '&6Tipo: &e%type%'
+        - '&6Motivo: &e%reason%'
+        - '&6Duração: &e%duration%'
+        - '&6Operador: &e%operator%'
+        - '&6IP: &e%ip%'
   defaultlanguageselector:
-    title: '&eDefault Language - Current: &8{0}'
+    title: '&eIdioma Padrão - Atual: &8{0}'
 ban:
-  punished: '&a%player% successfully banned.'
-  alreadyPunished: '&e%player% is already banned.'
+  punished: '&a%player% foi banido com sucesso.'
+  alreadyPunished: '&e%player% já foi banido.'
   layout:
     - '%prefix%'
     - '&7'
-    - '&6You banned from this server.'
-    - '&2Operator: &a%operator%'
-    - '&2Reason: &a%reason%'
-    - '&eContact & Support'
-    - "&6Web &7» &ecoming soon"
-    - "&6Discord &7» &ecoming soon"
+    - '&6Você foi banido deste servidor.'
+    - '&2Operador: &a%operator%'
+    - '&2Motivo: &a%reason%'
+    - '&eContato & Suporte'
+    - "&6Web &7» &eEm breve"
+    - "&6Discord &7» &eEm breve"
   announce: '&a%player% &ebanned by &a%operator% &edue to &a%reason%.'
   description: 'Ban a player.'
 tempban:
@@ -153,13 +153,13 @@ check:
   notPunished: '&anot punished'
   description: 'Checks the current status of a player.'
 punishmanager:
-  description: 'The main command of the plugin.'
+  description: 'O comando principal do plugin.'
 punishmanager-reload:
-  description: 'Reloads the plugin.'
-  done: '&aAll configuration files have been reloaded.'
+  description: 'Recarrega o plugin.'
+  done: '&aTodos os arquivos de configuração foram recarregados.'
 punishmanager-help:
-  description: 'Help command.'
+  description: 'Comando de ajuda.'
 changereason:
-  description: 'Changes the reason for a punish.'
-  punishmentNotFound: '&eSearched punishment not found.'
-  done: '&aThe reason for the &e#%id% &apunish has been changed to &e%reason%&a.'
+  description: 'Altera o motivo de uma punição.'
+  punishmentNotFound: '&ePunição pesquisada não encontrada.'
+  done: '&aO motivo da punição &e#%id% &afoi alterado para &e%reason%&a.'
