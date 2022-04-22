@@ -71,22 +71,22 @@ ban:
     - '&eContato & Suporte'
     - "&6Web &7» &eEm breve"
     - "&6Discord &7» &eEm breve"
-  announce: '&a%player% &ebanned by &a%operator% &edue to &a%reason%.'
-  description: 'Ban a player.'
+  announce: '&a%operator%&e baniu &a%player% &epor &a%reason%&e.'
+  description: 'Bane um jogador.'
 tempban:
-  punished: '&a%player% successfully banned.'
-  alreadyPunished: '&e%player% is already banned.'
+  punished: '&a%player% foi banido com sucesso.'
+  alreadyPunished: '&e%player% já foi banido.'
   layout:
     - '%prefix%'
     - '&7'
-    - '&6You banned from this server.'
-    - '&2Operator: &a%operator%'
-    - '&2Reason: &a%reason%'
-    - '&2Duration: &a%duration%'
-    - '&eContact & Support'
-    - "&6Web &7» &ecoming soon"
-    - "&6Discord &7» &ecoming soon"
-  announce: '&a%player% &ewas banned by &a%operator% &efor &a%duration% &edue to &a%reason%.'
+    - '&6Você foi banido deste servidor.'
+    - '&2Operador: &a%operator%'
+    - '&2Motivo: &a%reason%'
+    - '&2Duração: &a%duration%'
+    - '&eContato & Suporte'
+    - "&6Web &7» &eEm breve"
+    - "&6Discord &7» &eEm breve"
+  announce: '&a%operator%&e baniu &a%player% &edevido a &a%reason%&e por &a%duration%&e.'
   description: 'Temporarily bans a player.'
 ipban:
   punished: '&a%player% successfully banned.'
