@@ -5,161 +5,161 @@
 #%operator% -> Operator of punishment.
 #%player% -> Name of the player being punished.
 main:
-  prefix: '&6PunishManager'
-  exempt-player: 'You can''t punish this player.'
-  defaultReason: 'none'
-  not-on-yourself: 'You cannot use this command on yourself!'
-  not-logged-server: '&cYou can''t punish someone who hasn''t been on the server before.'
-  setlanguage: '&aYour language is set to {0}.'
-  setdefaultlanguage: '&aThe default language for server is set to {0}.'
-  mustInteger: '&cPlease enter a valid integer value.'
+  prefix: '&6惩戒管理'
+  exempt-player: '你不能惩戒此玩家。'
+  defaultReason: '无'
+  not-on-yourself: '你不能对自己使用该命令!'
+  not-logged-server: '&c你不可以惩戒未注册的玩家。'
+  setlanguage: '&a语言已设置为 {0}。'
+  setdefaultlanguage: '&a服务器默认语言已设置为 {0}。'
+  mustInteger: '&c请输入有效整数。'
   timelayout:
     #Variables to be used when showing the duration of the punishment.
-    year: '%y% year(s)'
-    month: '%mo% month(s)'
-    week: '%w% week(s)'
-    day: '%d% day(s)'
-    hour: '%h% hour(s)'
-    minute: '%m% minute(s)'
-    second: '%s% second(s)'
+    year: '%y% 年'
+    month: '%mo% 月'
+    week: '%w% 周'
+    day: '%d% 天'
+    hour: '%h% 时'
+    minute: '%m% 分'
+    second: '%s% 秒'
 gui:
   backbutton:
-    name: '&7Back'
+    name: '&7返回'
   main:
-    title: '&6&lPunishManager GUI'
+    title: '&6&l惩戒管理 界面'
     languageselector:
-      name: '&eLanguage Selector'
+      name: '&e语言选择'
     managepunishments:
-      name: '&eManage Punishments'
+      name: '&e管理惩戒'
     adminpanel:
-      name: '&eAdmin Panel'
+      name: '&e管理员界面'
   languageselector:
-    title: '&eLanguage Selector - Current: &8{0}'
+    title: '&e语言选择 - 当前语言: &8{0}'
   adminpanel:
-    title: '&eAdmin Panel'
+    title: '&e管理员界面'
     reload:
-      name: '&aReload all configuration files'
+      name: '&a重载所有配置文档'
     defaultlanguageselector:
-      name: '&aDefault Language'
+      name: '&a默认语言'
   managepunishments:
-    title: '&eManage Punishments - Total &6{0}'
+    title: '&e管理惩戒 - 共计种类 &6{0}'
     next:
-      name: '&7Next Page'
+      name: '&7下一页'
     previous:
-      name: '&7Previous Page'
+      name: '&7上一页'
     punishment:
-      name: '&bPunishment #%id%'
+      name: '&b惩戒 #%id%'
       #Variables: %player%, %uuid%, %type%, %reason%, %operator%, %ip%
       lore:
-        - '&6Name: &e%player%'
-        - '&6Type: &e%type%'
-        - '&6Reason: &e%reason%'
-        - '&6Duration: &e%duration%'
-        - '&6Operator: &e%operator%'
-        - '&6Ip: &e%ip%'
+        - '&6受惩玩家: &e%player%'
+        - '&6受惩种类: &e%type%'
+        - '&6受惩原因: &e%reason%'
+        - '&6持续时间: &e%duration%'
+        - '&6操作者: &e%operator%'
+        - '&6玩家IP: &e%ip%'
   defaultlanguageselector:
-    title: '&eDefault Language - Current: &8{0}'
+    title: '&e默认语言 - 当前语言: &8{0}'
 ban:
-  punished: '&a%player% successfully banned.'
-  alreadyPunished: '&e%player% is already banned.'
+  punished: '&a玩家 %player% 已被封禁。'
+  alreadyPunished: '&e玩家 %player% 已经被封禁过了。'
   layout:
     - '%prefix%'
     - '&7'
-    - '&6You banned from this server.'
-    - '&2Operator: &a%operator%'
-    - '&2Reason: &a%reason%'
-    - '&eContact & Support'
-    - "&6Web &7» &ecoming soon"
-    - "&6Discord &7» &ecoming soon"
-  announce: '&a%player% &ebanned by &a%operator% &edue to &a%reason%.'
-  description: 'Ban a player.'
+    - '&6你已被此服务器封禁'
+    - '&2操作者: &a%operator%'
+    - '&2操作理由: &a%reason%'
+    - '&e联系与支持'
+    - "&6服务器网站 &7» &e即将推出"
+    - "&6服务器群 &7» &e即将推出"
+  announce: '&e玩家 &a%player% &e已被管理员 &a%operator% &e封禁，理由为 &a%reason%'
+  description: '封禁一名玩家。'
 tempban:
-  punished: '&a%player% successfully banned.'
-  alreadyPunished: '&e%player% is already banned.'
+  punished: '&a玩家 %player% 已被封禁。'
+  alreadyPunished: '&e玩家 %player% 已经被封禁过了。'
   layout:
     - '%prefix%'
     - '&7'
-    - '&6You banned from this server.'
-    - '&2Operator: &a%operator%'
-    - '&2Reason: &a%reason%'
-    - '&2Duration: &a%duration%'
-    - '&eContact & Support'
-    - "&6Web &7» &ecoming soon"
-    - "&6Discord &7» &ecoming soon"
-  announce: '&a%player% &ewas banned by &a%operator% &efor &a%duration% &edue to &a%reason%.'
-  description: 'Temporarily bans a player.'
+    - '&6你已被此服务器封禁'
+    - '&2操作者: &a%operator%'
+    - '&2操作理由: &a%reason%'
+    - '&2持续时间: &a%duration%'
+    - '&e联系与支持'
+    - "&6服务器网站 &7» &e即将推出"
+    - "&6服务器群 &7» &e即将推出"
+  announce: '&e玩家 &a%player% &e已被管理员 &a%operator% &e封禁 &a%duration% &e，理由为 &a%reason%'
+  description: '暂时封禁一名玩家。'
 ipban:
-  punished: '&a%player% successfully banned.'
-  alreadyPunished: '&e%player% is already banned.'
+  punished: '&a玩家 %player% 已被封禁。'
+  alreadyPunished: '&e玩家 %player% 已经被封禁过了。'
   layout:
     - '%prefix%'
     - '&7'
-    - '&6You banned from this server.'
-    - '&2Operator: &a%operator%'
-    - '&2Reason: &a%reason%'
-    - '&eContact & Support'
-    - "&6Web &7» &ecoming soon"
-    - "&6Discord &7» &ecoming soon"
-  announce: '&a%player% &ebanned by &a%operator% &edue to &a%reason%.'
-  description: 'Bans a player''s ip address.'
+    - '&6你已被此服务器封禁'
+    - '&2操作者: &a%operator%'
+    - '&2操作理由: &a%reason%'
+    - '&e联系与支持'
+    - "&6服务器网站 &7» &e即将推出"
+    - "&6服务器群 &7» &e即将推出"
+  announce: '&e玩家 &a%player% &e已被管理员 &a%operator% &e封禁，理由为 &a%reason%'
+  description: '封禁指定玩家的 IP 地址。'
 kick:
-  punished: '&a%player% successfully kicked.'
-  notOnline: '&e%player% is not online.'
+  punished: '&a玩家 %player% 已被踢出。'
+  notOnline: '&e玩家 %player% 不在线！'
   layout:
     - '%prefix%'
     - '&7'
-    - '&6You kicked from this server.'
-    - '&2Reason: &a%reason%'
-  description: 'Kicks a player from the server.'
+    - '&6你已被此服务器踢出。'
+    - '&2操作理由: &a%reason%'
+  description: '从服务器踢出一位玩家。'
 mute:
-  punished: '&a%player% successfully muted.'
-  alreadyPunished: '&e%player% is already muted.'
+  punished: '&a玩家 %player% 已被禁言。'
+  alreadyPunished: '&e玩家 %player% 已经被禁言过了。'
   layout:
-    - '&eYou were muted by &a%operator% &edue to the &a%reason%&e.'
-  announce: '&a%player% &emuted by &a%operator% &edue to &a%reason%.'
-  description: 'Mute a player.'
+    - '&e你被 &a%operator% &e禁言，理由为 &a%reason%&e。'
+  announce: '&e玩家 &a%player% &e已被 &a%operator% &e禁言，理由为 &a%reason%。'
+  description: '禁言一名玩家。'
 tempmute:
-  punished: '&a%player% successfully muted.'
-  alreadyPunished: '&e%player% is already muted.'
+  punished: '&a玩家 %player% 已被禁言。'
+  alreadyPunished: '&e玩家 %player% 已被禁言。'
   layout:
-    - '&eYou were muted by &a%operator% &efor &a%duration% &edue to the &a%reason%&e.'
-  announce: '&a%player% &ewas muted by &a%operator% &efor &a%duration% &edue to &a%reason%.'
-  description: 'Temporarily mutes a player.'
+    - '&e你被 &a%operator% &e禁言 &a%duration% 时间 &e，理由为 &a%reason%'
+  announce: '&e玩家 &a%player% &e已被管理员 &a%operator% &e禁言 &a%duration% &e时间，理由为 &a%reason%'
+  description: '暂时禁言一名玩家。'
 unban:
-  notPunished: '&e%player% is not banned.'
-  done: '&a%player%''s ban has been removed.'
-  description: 'Removes a player''s ban.'
+  notPunished: '&e玩家 %player% 未被封禁。'
+  done: '&a玩家 %player% 的禁言已被移除。'
+  description: '接触玩家的封禁。'
 unmute:
-  notPunished: '&e%player% is not muted.'
-  done: '&a%player%''s mute has been removed.'
-  description: 'Removes a player''s mute.'
+  notPunished: '&e玩家 %player% 未被禁言。'
+  done: '&a玩家 %player% 的禁言已被移除。'
+  description: '解除玩家的封禁。'
 unpunish:
-  notPunished: '&e%player% is not punished.'
-  done: '&a%player%''s punishes has been removed.'
-  description: 'Removes all punishes from a player.'
+  notPunished: '&e玩家 %player% 未被惩戒。'
+  done: '&a玩家 %player% 的惩戒已被移除。'
+  description: '移除玩家的所有惩罚。'
 check:
-  checking: '&eChecking &a%player%'
-  playerNotFound: '&c%player% not found!'
+  checking: '&e正在检查玩家 &a%player%'
+  playerNotFound: '&c找不到玩家 %player%!'
   uuid: '&eUUID: &a%uuid%'
-  ip: '&eIP: &a%ip%'
-  language: '&eLanguage: &a%language%'
-  banStatus: '&eBan status: &c%status%'
-  banReason: '&e-> Ban reason: &c%reason%'
-  banOperator: '&e-> Ban operator: &c%operator%'
-  muteStatus: '&eMute status: &c%status%'
-  muteReason: '&e-> Mute reason: &c%reason%'
-  muteOperator: '&e-> Mute operator: &c%operator%'
-  punishId: '&e-> Punish Id: &c%id%'
-  notPunished: '&anot punished'
-  description: 'Checks the current status of a player.'
+  ip: '&e玩家IP: &a%ip%'
+  language: '&e所选语言: &a%language%'
+  banStatus: '&e封禁状态: &c%status%'
+  banReason: '&e-> 封禁理由: &c%reason%'
+  banOperator: '&e-> 封禁操作者: &c%operator%'
+  muteStatus: '&e禁言状态: &c%status%'
+  muteReason: '&e-> 禁言理由: &c%reason%'
+  muteOperator: '&e-> 禁言操作者: &c%operator%'
+  punishId: '&e-> 惩戒ID: &c%id%'
+  notPunished: '&a未受惩戒'
+  description: '显示一位玩家的当前状态。'
 punishmanager:
-  description: 'The main command of the plugin.'
+  description: '本插件主命令。'
 punishmanager-reload:
-  description: 'Reloads the plugin.'
-  done: '&aAll configuration files have been reloaded.'
+  description: '重载本插件。'
+  done: '&a所有配置文件已被重载。'
 punishmanager-help:
-  description: 'Help command.'
+  description: '帮助命令。'
 changereason:
-  description: 'Changes the reason for a punish.'
-  punishmentNotFound: '&eSearched punishment not found.'
-  done: '&aThe reason for the &e#%id% &apunish has been changed to &e%reason%&a.'
+  description: '修改封禁理由。'
+  punishmentNotFound: '&e搜索的惩罚不存在。'
+  done: '&e#%id% &a的惩戒理由已被修改为了 &e%reason%&a。'
