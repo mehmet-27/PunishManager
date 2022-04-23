@@ -37,6 +37,9 @@ banned-commands-while-mute:
   - 'say'
   - 'msg'
 
+# If you enable it, you will now need "punishmanager.command.check.ip" permission to see the ip info in the check command.
+check-command-show-ip-require-perm: false
+
 # NOTE: If you want to use the role cast feature in discord,
 # discordsrv's table must be in the same database as this plugin's table.
 discord:

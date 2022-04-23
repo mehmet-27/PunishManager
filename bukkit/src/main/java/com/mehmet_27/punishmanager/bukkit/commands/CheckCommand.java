@@ -38,7 +38,13 @@ public class CheckCommand extends BaseCommand {
         String muteStatus = (mute != null && mute.isMuted() && !mute.isExpired()) ? mute.getDuration() : PunishManager.getInstance().getConfigManager().getMessage("check.notPunished", sender.getName());
 
         Utils.sendText(sender, "check.uuid", message -> message.replace("%uuid%", uuid.toString()));
-        Utils.sendText(sender, "check.ip", message -> message.replace("%ip%", ip));
+        if (PunishManager.getInstance().getConfigManager().getConfig().getBoolean("check-command-show-ip-require-perm", false)){
+            if (sender.hasPermission("punishmanager.command.check.ip")){
+                Utils.sendText(sender, "check.ip", message -> message.replace("%ip%", ip));
+            }
+        } else {
+            Utils.sendText(sender, "check.ip", message -> message.replace("%ip%", ip));
+        }
         String language = storageManager.getOfflinePlayer(uuid).getLocale().toString();
         Utils.sendText(sender, "check.language", message -> message.replace("%language%", language));
         Utils.sendText(sender, "check.banStatus", message -> message.replace("%status%", banStatus));
