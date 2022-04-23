@@ -5,7 +5,6 @@
 #%operator% -> Operator of punishment.
 #%player% -> Name of the player being punished.
 main:
-  prefix: '&6PunishManager'
   exempt-player: 'Bu oyuncuyu cezalandıramazsınız.'
   defaultReason: 'yok'
   not-on-yourself: 'Bu komutu kendi üzerinizde kullanamazsınız.'
@@ -26,7 +25,6 @@ gui:
   backbutton:
     name: '&7Geri'
   main:
-    title: '&6&lPunishManager GUI'
     languageselector:
       name: '&eDil Seçici'
     managepunishments:
@@ -100,7 +98,6 @@ ipban:
     - '&eDestek İçin'
     - "&6Site &7» &eyakında"
     - "&6Discord &7» &eyakında"
-  announce: '&a%player% &ebanned by &a%operator% &edue to &a%reason%.'
   description: 'Bir oyuncunun ip adresini yasakla.'
 kick:
   punished: '&a%player% başarıyla atıldı.'
@@ -140,8 +137,6 @@ unpunish:
 check:
   checking: '&e%player% &akontrol ediliyor'
   playerNotFound: '&c%player% bulunamadı!'
-  uuid: '&eUUID: &a%uuid%'
-  ip: '&eIP: &a%ip%'
   language: '&eDil: &a%language%'
   banStatus: '&eYasaklanma durumu: &c%status%'
   banReason: '&e-> Yasaklanma sebebi: &c%reason%'
