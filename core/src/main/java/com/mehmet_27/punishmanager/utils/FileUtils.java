@@ -3,6 +3,7 @@ package com.mehmet_27.punishmanager.utils;
 import com.mehmet_27.punishmanager.PunishManager;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -79,5 +80,24 @@ public class FileUtils {
                 filter(type::isAssignableFrom).
                 map(aClass -> ((Class<? extends T>) aClass)).
                 collect(Collectors.toSet());
+    }
+
+    public static Set<File> getFilesIn(String path, Predicate<? super Path> filter) {
+        Set<File> files = new LinkedHashSet<>();
+        String packagePath = path.replace(".", "/");
+        try {
+            URI uri = PunishManager.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+            FileSystem fileSystem = FileSystems.newFileSystem(URI.create("jar:" + uri), Collections.emptyMap());
+            files = Files.walk(fileSystem.getPath(packagePath)).
+                    filter(Objects::nonNull).
+                    filter(filter).
+                    map(p -> new File(p.toString().substring(1))).
+                    collect(Collectors.toSet());
+            fileSystem.close();
+        } catch (URISyntaxException | IOException ex) {
+            PunishManager.getInstance().getLogger().
+                    log(Level.SEVERE, "An error occurred while trying to load files: " + ex.getMessage(), ex);
+        }
+        return files;
     }
 }

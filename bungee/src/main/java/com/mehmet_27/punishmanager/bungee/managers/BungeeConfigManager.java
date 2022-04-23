@@ -1,17 +1,22 @@
 package com.mehmet_27.punishmanager.bungee.managers;
 
-import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bungee.BungeeConfiguration;
 import com.mehmet_27.punishmanager.bungee.PMBungee;
-import com.mehmet_27.punishmanager.objects.PlayerLocale;
 import com.mehmet_27.punishmanager.bungee.Utils.Utils;
+import com.mehmet_27.punishmanager.managers.ConfigManager;
+import com.mehmet_27.punishmanager.objects.PlayerLocale;
+import com.mehmet_27.punishmanager.utils.FileUtils;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.FileSystem;
+import java.nio.file.*;
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class BungeeConfigManager implements ConfigManager {
@@ -23,7 +28,7 @@ public class BungeeConfigManager implements ConfigManager {
     private java.util.Locale defaultLocale;
     private List<String> exemptPlayers;
 
-    public BungeeConfigManager(PMBungee plugin){
+    public BungeeConfigManager(PMBungee plugin) {
         this.plugin = plugin;
     }
 
@@ -182,17 +187,12 @@ public class BungeeConfigManager implements ConfigManager {
     @Override
     public void setup() {
         Path dataFolder = plugin.getDataFolder().toPath();
-        copyFileFromResources(new File(dataFolder + File.separator  + "config.yml"));
-        config = new BungeeConfiguration(new File(dataFolder + File.separator  + "config.yml"));
-        copyFileFromResources(new File(dataFolder + File.separator  + "locales" + File.separator + "en_US.yml"));
-        copyFileFromResources(new File(dataFolder + File.separator  + "locales" + File.separator + "tr_TR.yml"));
-        copyFileFromResources(new File(dataFolder + File.separator  + "locales" + File.separator + "es_ES.yml"));
-        copyFileFromResources(new File(dataFolder + File.separator  + "embeds" + File.separator + "ban.json"));
-        copyFileFromResources(new File(dataFolder + File.separator  + "embeds" + File.separator + "ipban.json"));
-        copyFileFromResources(new File(dataFolder + File.separator  + "embeds" + File.separator + "mute.json"));
-        copyFileFromResources(new File(dataFolder + File.separator  + "embeds" + File.separator + "kick.json"));
-        copyFileFromResources(new File(dataFolder + File.separator  + "embeds" + File.separator + "tempban.json"));
-        copyFileFromResources(new File(dataFolder + File.separator  + "embeds" + File.separator + "tempmute.json"));
+        copyFileFromResources(new File(dataFolder + File.separator + "config.yml"));
+        config = new BungeeConfiguration(new File(dataFolder + File.separator + "config.yml"));
+        // Copies all locale files.
+        copyFilesFromFolder("locales");
+        // Copies all embed files.
+        copyFilesFromFolder("embeds");
 
         for (Map.Entry<Locale, Object> entry : getLocales().entrySet()) {
             locales.put(entry.getKey(), (BungeeConfiguration) entry.getValue());
@@ -202,20 +202,50 @@ public class BungeeConfigManager implements ConfigManager {
         this.exemptPlayers = getConfig().getStringList("exempt-players");
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void copyFileFromResources(File file) {
-        if (!file.getParentFile().exists()){
+        if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
         }
         if (!file.exists() && !file.isDirectory()) {
             try {
-                InputStream inputStream = PunishManager.getInstance().getResourceStream(file.getName());
+                InputStream inputStream = PunishManager.getInstance().getResourceStream(file.toString());
                 Files.copy(inputStream, file.toPath());
             } catch (IOException e) {
-                plugin.getLogger().severe(String.format("Error while trying to load file {0}: " + e.getMessage(), file.getName()));
+                plugin.getLogger().severe(String.format("Error while trying to load file %s.", file.getName()));
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    private void copyFilesFromFolder(String folder){
+        Predicate<? super Path> filter = entry -> {
+            String path = entry.getFileName().toString();
+            if (folder.equals("locales")){
+                return path.endsWith(".yml");
+            }
+            if (folder.equals("embeds")){
+                return path.endsWith(".json");
+            }
+            return false;
+        };
+        FileUtils.getFilesIn(folder, filter).forEach(file -> {
+            File destination = new File(plugin.getDataFolder().toPath() + File.separator + folder + File.separator + file.getName());
+            if (!destination.getParentFile().exists()) {
+                destination.getParentFile().mkdirs();
+            }
+            if (!destination.exists() && !destination.isDirectory()) {
+                try {
+                    InputStream inputStream = PunishManager.getInstance().getResourceStream(file.toString().replace("\\", "/"));
+                    Files.copy(inputStream, destination.toPath());
+
+                } catch (IOException e) {
+                    plugin.getLogger().severe(String.format("Error while trying to load file %s.", file.getName()));
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 }

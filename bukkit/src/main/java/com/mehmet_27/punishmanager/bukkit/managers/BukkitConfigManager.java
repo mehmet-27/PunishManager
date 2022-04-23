@@ -7,12 +7,14 @@ import com.mehmet_27.punishmanager.bukkit.BukkitConfiguration;
 import com.mehmet_27.punishmanager.bukkit.PMBukkit;
 import com.mehmet_27.punishmanager.bukkit.utils.Utils;
 import com.mehmet_27.punishmanager.objects.PlayerLocale;
+import com.mehmet_27.punishmanager.utils.FileUtils;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class BukkitConfigManager implements ConfigManager {
@@ -185,15 +187,10 @@ public class BukkitConfigManager implements ConfigManager {
         Path dataFolder = plugin.getDataFolder().toPath();
         copyFileFromResources(new File(dataFolder + File.separator  + "config.yml"));
         config = new BukkitConfiguration(new File(dataFolder + File.separator  + "config.yml"));
-        copyFileFromResources(new File(dataFolder + File.separator  + "locales" + File.separator + "en_US.yml"));
-        copyFileFromResources(new File(dataFolder + File.separator  + "locales" + File.separator + "tr_TR.yml"));
-        copyFileFromResources(new File(dataFolder + File.separator  + "locales" + File.separator + "es_ES.yml"));
-        copyFileFromResources(new File(dataFolder + File.separator  + "embeds" + File.separator + "ban.json"));
-        copyFileFromResources(new File(dataFolder + File.separator  + "embeds" + File.separator + "ipban.json"));
-        copyFileFromResources(new File(dataFolder + File.separator  + "embeds" + File.separator + "mute.json"));
-        copyFileFromResources(new File(dataFolder + File.separator  + "embeds" + File.separator + "kick.json"));
-        copyFileFromResources(new File(dataFolder + File.separator  + "embeds" + File.separator + "tempban.json"));
-        copyFileFromResources(new File(dataFolder + File.separator  + "embeds" + File.separator + "tempmute.json"));
+        // Copies all locale files.
+        copyFilesFromFolder("locales");
+        // Copies all embed files.
+        copyFilesFromFolder("embeds");
 
         for (Map.Entry<Locale, Object> entry : getLocales().entrySet()) {
             locales.put(entry.getKey(), (BukkitConfiguration) entry.getValue());
@@ -218,5 +215,35 @@ public class BukkitConfigManager implements ConfigManager {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    private void copyFilesFromFolder(String folder){
+        Predicate<? super Path> filter = entry -> {
+            String path = entry.getFileName().toString();
+            if (folder.equals("locales")){
+                return path.endsWith(".yml");
+            }
+            if (folder.equals("embeds")){
+                return path.endsWith(".json");
+            }
+            return false;
+        };
+        FileUtils.getFilesIn(folder, filter).forEach(file -> {
+            File destination = new File(plugin.getDataFolder().toPath() + File.separator + folder + File.separator + file.getName());
+            if (!destination.getParentFile().exists()) {
+                destination.getParentFile().mkdirs();
+            }
+            if (!destination.exists() && !destination.isDirectory()) {
+                try {
+                    InputStream inputStream = PunishManager.getInstance().getResourceStream(file.toString().replace("\\", "/"));
+                    Files.copy(inputStream, destination.toPath());
+
+                } catch (IOException e) {
+                    plugin.getLogger().severe(String.format("Error while trying to load file %s.", file.getName()));
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 }
