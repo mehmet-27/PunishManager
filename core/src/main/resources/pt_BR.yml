@@ -87,7 +87,7 @@ tempban:
     - "&6Web &7» &eEm breve"
     - "&6Discord &7» &eEm breve"
   announce: '&a%operator%&e baniu &a%player% &edevido a &a%reason%&e por &a%duration%&e.'
-  description: 'Temporarily bans a player.'
+  description: 'Temporariamente bane um jogador.'
 ipban:
   punished: '&a%player% successfully banned.'
   alreadyPunished: '&e%player% is already banned.'
