@@ -39,8 +39,6 @@ gui:
     title: '&e管理员界面'
     reload:
       name: '&a重载所有配置文档'
-    defaultlanguageselector:
-      name: '&a默认语言'
   managepunishments:
     title: '&e管理惩戒 - 共计种类 &6{0}'
     next:
@@ -140,6 +138,7 @@ unpunish:
 check:
   checking: '&e正在检查玩家 &a%player%'
   playerNotFound: '&c找不到玩家 %player%!'
+  uuid: '&eUUID: &a%uuid%'
   ip: '&e玩家IP: &a%ip%'
   language: '&e所选语言: &a%language%'
   banStatus: '&e封禁状态: &c%status%'
