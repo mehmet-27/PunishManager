@@ -5,6 +5,7 @@
 #%operator% -> Operator of punishment.
 #%player% -> Name of the player being punished.
 main:
+  prefix: '&6PunishManager'
   exempt-player: 'Você não pode punir este jogador.'
   defaultReason: 'nenhum'
   not-on-yourself: 'Você não pode usar esse comando em si mesmo!'
@@ -25,6 +26,7 @@ gui:
   backbutton:
     name: '&7Voltar'
   main:
+    title: '&6&lPunishManager GUI'
     languageselector:
       name: '&eSeletor de idiomas'
     managepunishments:
@@ -37,8 +39,6 @@ gui:
     title: '&ePainel de Administração'
     reload:
       name: '&aRecarregar todos os arquivos de configuração'
-    defaultlanguageselector:
-      name: '&aLinguagem Padrão'
   managepunishments:
     title: '&eGerenciar Punições - Total &6{0}'
     next:
@@ -135,6 +135,8 @@ unpunish:
 check:
   checking: '&eVerificando &a%player%'
   playerNotFound: '&c%player% não encontrado!'
+  uuid: '&eUUID: &a%uuid%'
+  ip: '&eIP: &a%ip%'
   language: '&eIdioma: &a%language%'
   banStatus: '&eStatus do banimento: &c%status%'
   banReason: '&e-> Motivo do banimento: &c%reason%'
