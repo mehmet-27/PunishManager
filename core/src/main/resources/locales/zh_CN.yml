@@ -57,8 +57,8 @@ gui:
         - '&6持续时间: &e%duration%'
         - '&6操作者: &e%operator%'
         - '&6玩家IP: &e%ip%'
-  defaultlanguageselector:
-    title: '&e默认语言 - 当前语言: &8{0}'
+        - '&7'
+        - '&7Left click to &eremove &7the punish.'
 ban:
   punished: '&a玩家 %player% 已被封禁。'
   alreadyPunished: '&e玩家 %player% 已经被封禁过了。'

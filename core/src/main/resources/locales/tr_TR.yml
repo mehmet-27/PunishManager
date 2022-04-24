@@ -55,8 +55,8 @@ gui:
         - '&6Süre: &e%duration%'
         - '&6Operatör: &e%operator%'
         - '&6Ip: &e%ip%'
-  defaultlanguageselector:
-    title: '&eVarsayılan Dil - Mevcut: &8{0}'
+        - '&7'
+        - '&7Left click to &eremove &7the punish.'
 ban:
   punished: '&a%player% başarıyla yasaklandı.'
   alreadyPunished: '&e%player% zaten yasaklı.'

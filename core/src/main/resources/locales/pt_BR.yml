@@ -55,8 +55,8 @@ gui:
         - '&6Duração: &e%duration%'
         - '&6Operador: &e%operator%'
         - '&6IP: &e%ip%'
-  defaultlanguageselector:
-    title: '&eIdioma Padrão - Atual: &8{0}'
+        - '&7'
+        - '&7Left click to &eremove &7the punish.'
 ban:
   punished: '&a%player% foi banido com sucesso.'
   alreadyPunished: '&e%player% já foi banido.'
