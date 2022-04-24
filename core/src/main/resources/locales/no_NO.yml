@@ -1,1 +1,163 @@
 ---
+#Placeholders:
+#%reason% -> Reason of punishment.
+#%duration% -> Duration of punishment.
+#%operator% -> Operator of punishment.
+#%player% -> Name of the player being punished.
+main:
+  prefix: '&6PunishManager'
+  exempt-player: 'Du kan ikke straffe denne spilleren.'
+  defaultReason: 'ingen'
+  not-on-yourself: 'Du kan ikke bruke denne kommandoen på deg selv!'
+  not-logged-server: '&cDu kan ikke straffe noen som ikke har vært på serveren tidligere.'
+  setlanguage: '&aDitt språk er satt til {0}.'
+  setdefaultlanguage: '&aStandardspråket for serveren er satt til {0}.'
+  mustInteger: '&cVennligst angi en gyldig verdi.'
+  timelayout:
+    #Variables to be used when showing the duration of the punishment.
+    year: '%y% år'
+    month: '%mo% måned(er)'
+    week: '%w% uke(r)'
+    day: '%d% dag(er)'
+    hour: '%h% time(r)'
+    minute: '%m% minutt(er)'
+    second: '%s% sekund(er)'
+gui:
+  backbutton:
+    name: '&7Tilbake'
+  main:
+    title: '&6&lPunishManager GUI'
+    languageselector:
+      name: '&eSpråkvelger'
+    managepunishments:
+      name: '&eBehandle straffer'
+    adminpanel:
+      name: '&eAdmin Panel'
+  languageselector:
+    title: '&eSpråk velger - Nåværende: &8{0}'
+  adminpanel:
+    title: '&eAdmin Panel'
+    reload:
+      name: '&aLast alle konfigurasjonsfiler på nytt'
+  managepunishments:
+    title: '&eBehandle straffer - totalt &6{0}'
+    next:
+      name: '&7Neste side'
+    previous:
+      name: '&7Forrige side'
+    punishment:
+      name: '&bStraff #%id%'
+      #Variables: %player%, %uuid%, %type%, %reason%, %operator%, %ip%
+      lore:
+        - '&6Navn: &e%player%'
+        - '&6Type: &e%type%'
+        - '&6Årsak: &e%reason%'
+        - '&6Lengde: &e%duration%'
+        - '&6Operatør: &e%operator%'
+        - '&6Ip: &e%ip%'
+        - '&7'
+        - '&7Left click to &eremove &7the punish.'
+ban:
+  punished: '&En%player% ble utestengt.'
+  alreadyPunished: '&e%player% er allerede utestengt.'
+  layout:
+    - '%prefix%'
+    - '&7'
+    - '&6Du er utestengt fra denne serveren.'
+    - '&2Operatør: &a%operator%'
+    - '&6Årsak: &a%reason%'
+    - '&eKontakt & Support'
+    - "&6Web &7» &ekomerer snart"
+    - "&6Discord &7» &ekomerer snart"
+  announce: '&a%player% &ebannet av &a%operator% &egrunnet: &a%reason%.'
+  description: 'Utestenger en spiller.'
+tempban:
+  punished: '&En%player% ble utestengt.'
+  alreadyPunished: '&e%player% er allerede utestengt.'
+  layout:
+    - '%prefix%'
+    - '&7'
+    - '&6Du er utestengt fra denne serveren.'
+    - '&2Operatør: &a%operator%'
+    - '&2Årsak: &a%reason%'
+    - '&2Lengde: &a%duration%'
+    - '&eKontakt & Support'
+    - "&6Web &7» &ekomerer snart"
+    - "&6Discord &7» &ekomerer snart"
+  announce: '&a%player% &eble utestengt av &a%operator% &efor &a%duration% &efor: &a%reason%.'
+  description: 'Banner en spiller midlertidig.'
+ipban:
+  punished: '&a%player% ble utestengt.'
+  alreadyPunished: '&e%player% er allerede utestengt.'
+  layout:
+    - '%prefix%'
+    - '&7'
+    - '&6Du er utestengt fra denne serveren.'
+    - '&2Operatør: &a%operator%'
+    - '&2Årsak: &a%reason%'
+    - '&eKontakt & Support'
+    - "&6Web &7» &ekomerer snart"
+    - "&6Discord &7» &ekomerer snart"
+  announce: '&a%player% &eble utestengt av &a%operator% &efor: &a%reason%.'
+  description: 'Utestenger en spillers IP-adresse.'
+kick:
+  punished: '&a%player% ble kastet ut.'
+  notOnline: '&e%player% er ikke pålogget.'
+  layout:
+    - '%prefix%'
+    - '&7'
+    - '&6Du sparket fra denne serveren.'
+    - '&6Årsak: &a%reason%'
+  description: 'Sparker en spiller ut fra serveren.'
+mute:
+  punished: '&a%player% ble dempet.'
+  alreadyPunished: '&e%player% er allerede dempet.'
+  layout:
+    - '&eDu ble dempet av &a%operator% &efor: &a%reason%&e.'
+  announce: '&a%player% &edempet av &a%operator% &efor: &a%reason%.'
+  description: 'Demp en spiller.'
+tempmute:
+  punished: '&a%player% ble dempet.'
+  alreadyPunished: '&e%player% er allerede dempet.'
+  layout:
+    - '&eDu ble dempet av &a%operator% &ai%duration% &efor: &a%reason%&e.'
+  announce: '&a%player% &eble dempet av &a%operator% &ei &a%duration% &efor: &a%reason%.'
+  description: 'Midlertidig demper en spiller.'
+unban:
+  notPunished: '&e%player% er ikke utestengt.'
+  done: '&a%player% sin utestengelse er fjernet.'
+  description: 'Fjerner en spillers utestengelse.'
+unmute:
+  notPunished: '&e%player% er ikke dempet.'
+  done: '&a%player% sin demping har blitt fjernet.'
+  description: 'Fjerner en spillers demping.'
+unpunish:
+  notPunished: '&e%player% er ikke straffet.'
+  done: '&a%player% sine straffer har blitt fjernet.'
+  description: 'Fjerner alle straffer fra en spiller.'
+check:
+  checking: '&eSjekker &a%player%'
+  playerNotFound: '&c%player% ikke funnet!'
+  uuid: '&eUUID: &a%uuid%'
+  ip: '&eIP: &a%ip%'
+  language: '&eSpråk: &a%language%'
+  banStatus: '&eBan status: &c%status%'
+  banReason: '&e-> Ban årsak: &c%reason%'
+  banOperator: '&e-> Ban operatør: &c%operator%'
+  muteStatus: '&eMute status: &c%status%'
+  muteReason: '&-> Mute årsak: &c%reason%'
+  muteOperator: '&e-> Mute operatør: &c%operator%'
+  punishId: '&e-> Straff Id: &c%id%'
+  notPunished: '&aikke straffet'
+  description: 'Sjekker gjeldende status for en spiller.'
+punishmanager:
+  description: 'Hovedkommandoen til pluginen.'
+punishmanager-reload:
+  description: 'Laster pluginen på nytt.'
+  done: '&aAlle konfigurasjonsfiler er lastet på nytt.'
+punishmanager-help:
+  description: 'Hjelpe kommandoen.'
+changereason:
+  description: 'Endrer årsaken til en straff.'
+  punishmentNotFound: '&eSøket straff ikke funnet.'
+  done: '&aÅrsaken til &e#%id% &astraff har blitt endret til &e%reason%&a.'
