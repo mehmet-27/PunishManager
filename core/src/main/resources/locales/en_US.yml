@@ -38,8 +38,6 @@ gui:
     title: '&eAdmin Panel'
     reload:
       name: '&aReload all configuration files'
-    defaultlanguageselector:
-      name: '&aDefault Language'
   managepunishments:
     title: '&eManage Punishments - Total &6{0}'
     next:
