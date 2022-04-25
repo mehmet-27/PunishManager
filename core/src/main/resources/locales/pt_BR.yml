@@ -55,8 +55,14 @@ gui:
         - '&6Duração: &e%duration%'
         - '&6Operador: &e%operator%'
         - '&6IP: &e%ip%'
-  defaultlanguageselector:
-    title: '&eIdioma Padrão - Atual: &8{0}'
+        - '&7'
+        - '&7Left click to &eremove &7the punish.'
+  confirmation:
+    title: '&eConfirmação'
+    confirm:
+      name: '&7Clique aqui para confirmar'
+    return:
+      name: '&7Clique aqui para voltar'
 ban:
   punished: '&a%player% foi banido com sucesso.'
   alreadyPunished: '&e%player% já foi banido.'
@@ -119,9 +125,6 @@ mute:
 tempmute:
   punished: '&a%player% foi silenciado com sucesso.'
   alreadyPunished: '&e%player% já foi silenciado.'
-  layout:
-    - '&eYou were muted by &a%operator% &efor &a%duration% &edue to the &a%reason%&e.'
-  announce: '&a%player% &ewas muted by &a%operator% &efor &a%duration% &edue to &a%reason%.'
   description: 'Silencia um jogador temporariamente.'
 unban:
   notPunished: '&e%player% não está banido.'
