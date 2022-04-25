@@ -1,1 +1,138 @@
 ---
+#Placeholders:
+#%reason% -> Reason of punishment.
+#%duration% -> Duration of punishment.
+#%operator% -> Operator of punishment.
+#%player% -> Name of the player being punished.
+main:
+  prefix: '&6PunishManager'
+  exempt-player: 'Вы не можете наказать этого игрока.'
+  defaultReason: 'нет'
+  not-on-yourself: 'Вы не можете использовать эту команду на себе!'
+  not-logged-server: '&cИгрок должен зайти на сервер хотя бы раз, чтобы была возможность наказать его.'
+  setlanguage: '&aВаш язык установлен на {0}.'
+  setdefaultlanguage: '&aЯзык для сервера установлен на {0}.'
+  mustInteger: '&cПожалуйста, укажите корректное числовое значение.'
+  timelayout:
+    #Variables to be used when showing the duration of the punishment.
+    year: '%y% год(-а)'
+    month: '%mo% месяца(-ев)'
+    week: '%w% недель'
+    day: '%d дней'
+    hour: '%h% час(-ов)'
+    minute: '%s минут(-ы)'
+    second: '%s секунд'
+gui:
+  backbutton:
+    name: '&7Назад'
+  main:
+    title: '&6&lPunishManager GUI'
+    languageselector:
+      name: '&eВыбор языка'
+    managepunishments:
+      name: '&eУправлять наказаниями'
+    adminpanel:
+      name: '&eПанель администратора'
+  languageselector:
+    title: '&eВыбор языка - Текущий: &8{0}'
+  adminpanel:
+    title: '&eПанель администратора'
+    reload:
+      name: '&aПерезагрузить все конфигурационные файлы'
+  managepunishments:
+    title: '&eУправление наказаниями - Всего &6{0}'
+    next:
+      name: '&7Следующая страница'
+    previous:
+      name: '&7Предыдущая страница'
+    punishment:
+      name: '&bНаказание #%id%'
+      #Variables: %player%, %uuid%, %type%, %reason%, %operator%, %ip%
+      lore:
+        - '&6Имя: &e%player%'
+        - '&6Тип: &e%type%'
+        - '&6Причина: &e%reason%'
+        - '&6Продолжительность: &e%duration%'
+        - '&6Оператор: &e%operator%'
+        - '&6Ip: &e%ip%'
+        - '&7'
+        - '&7Щелкните левой кнопкой мыши для &eУдалить &7наказания.'
+  confirmation:
+    title: '&eПодтверждение'
+    confirm:
+      name: '&7Нажмите, чтобы подтвердить'
+    return:
+      name: '&7Нажмите, чтобы вернуться'
+ban:
+  punished: '&a%player% успешно забанен.'
+  alreadyPunished: '&e%player% уже забанен.'
+  layout:
+    - '%prefix%'
+    - '&7'
+    - '&6Вы забанены на этом сервере.'
+    - '&2Оператор: &a%operator%'
+    - '&2Причина: &a%reason%'
+    - '&eСвязаться и поддержать'
+    - "&6Web &7» &eскоро"
+    - "&6Discord &7» &eскоро"
+  announce: '&a%player% &eзабанен &a%operator% &eиз-за &a%reason%.'
+  description: 'Забанить игрока.'
+tempban:
+  punished: '&a%player% успешно забанен.'
+  alreadyPunished: '&e%player% уже забанен.'
+  layout:
+    - '%prefix%'
+    - '&7'
+    - '&6Вы забанены на этом сервере.'
+    - '&2Оператор: &a%operator%'
+    - '&2Причина: &a%reason%'
+    - '&2Длительность: &a%duration%'
+    - '&eСвязаться и поддержать'
+    - "&6Web &7» &eскоро"
+    - "&6Discord &7» &eскоро"
+  announce: '&a%player% &eзабанен &a%operator% &eиз-за &a%reason%.'
+ipban:
+  punished: '&a%player% успешно забанен.'
+  alreadyPunished: '&e%player% уже забанен.'
+  layout:
+    - '%prefix%'
+    - '&7'
+    - '&6Вы забанены на этом сервере.'
+    - '&2Оператор: &a%operator%'
+    - '&2Причина: &a%reason%'
+    - '&eСвязаться и поддержать'
+    - "&6Web &7» &eскоро"
+    - "&6Discord &7» &eскоро"
+  announce: '&a%player% &eзабанен &a%operator% &eиз-за &a%reason%.'
+  description: 'Заблокировать игрока по IP-адресу.'
+kick:
+  layout:
+    - '%prefix%'
+    - '&7'
+    - '&6You kicked from this server.'
+    - '&2Причина: &a%reason%'
+  description: 'Выгоняет игрока с сервера.'
+check:
+  uuid: '&eUUID: &a%uuid%'
+  ip: '&eIP: &a%ip%'
+  language: '&eЯзык: &a%language%'
+  banStatus: '&eСтатус бана: &c%status%'
+  banReason: '&e-> Причина бана: &c%reason%'
+  banOperator: '&e-> Бан выдал: &c%operator%'
+  muteStatus: '&eСтатус мута: &c%status%'
+  muteReason: '&e-> Причина мута: &c%reason%'
+  muteOperator: '&e-> Мут выдал: &c%operator%'
+  punishId: '&e-> ID Наказания: &c%id%'
+  notPunished: '&aне наказан'
+  description: 'Проверить текущий статус игрока.'
+punishmanager:
+  description: 'Главная команда плагина.'
+punishmanager-reload:
+  description: 'Перезагрузить плагин.'
+  done: '&aВсе конфигурационные файлы были перезагружены.'
+punishmanager-help:
+  description: 'Команды справки.'
+changereason:
+  description: 'Изменить причину наказания.'
+  punishmentNotFound: '&eНаказания не найдены.'
+  done: '&aПричина &e#%id% &apunish была изменена на &e%reason%&a.'

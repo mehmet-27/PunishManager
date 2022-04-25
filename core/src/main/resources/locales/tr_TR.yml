@@ -5,6 +5,7 @@
 #%operator% -> Operator of punishment.
 #%player% -> Name of the player being punished.
 main:
+  prefix: '&6PunishManager'
   exempt-player: 'Bu oyuncuyu cezalandıramazsınız.'
   defaultReason: 'yok'
   not-on-yourself: 'Bu komutu kendi üzerinizde kullanamazsınız.'
@@ -25,6 +26,7 @@ gui:
   backbutton:
     name: '&7Geri'
   main:
+    title: '&6&lPunishManager GUI'
     languageselector:
       name: '&eDil Seçici'
     managepunishments:
@@ -37,8 +39,6 @@ gui:
     title: '&eAdmin Paneli'
     reload:
       name: '&aTüm yapılandırma dosyalarını yeniden yükle'
-    defaultlanguageselector:
-      name: '&aVarsayılan Dil'
   managepunishments:
     title: '&eCezaları Yönet - Toplam &6{0}'
     next:
@@ -56,7 +56,13 @@ gui:
         - '&6Operatör: &e%operator%'
         - '&6Ip: &e%ip%'
         - '&7'
-        - '&7Left click to &eremove &7the punish.'
+        - '&7Cezayı &ekaldırmak &7için sol tıklayın.'
+  confirmation:
+    title: '&eDoğrulama'
+    confirm:
+      name: '&7Onaylamak için buraya tıklayın'
+    return:
+      name: '&7Geri dönmek için buraya tıklayın'
 ban:
   punished: '&a%player% başarıyla yasaklandı.'
   alreadyPunished: '&e%player% zaten yasaklı.'
@@ -98,6 +104,7 @@ ipban:
     - '&eDestek İçin'
     - "&6Site &7» &eyakında"
     - "&6Discord &7» &eyakında"
+  announce: '&a%player% &eadlı oyuncu &a%operator% &etarafından &a%reason% &esebebiyle yasaklandı.'
   description: 'Bir oyuncunun ip adresini yasakla.'
 kick:
   punished: '&a%player% başarıyla atıldı.'
@@ -106,7 +113,7 @@ kick:
     - '&eSunucudan Atıldın'
     - '&7'
     - '&cSebep &7» &r%reason%'
-    - '&2Reason: &a%reason%'
+    - '&2Sebep: &a%reason%'
   description: 'Bir oyuncuyu sunucudan at.'
 mute:
   punished: '&a%player% başarıyla susturuldu.'
@@ -137,6 +144,8 @@ unpunish:
 check:
   checking: '&e%player% &akontrol ediliyor'
   playerNotFound: '&c%player% bulunamadı!'
+  uuid: '&eUUID: &a%uuid%'
+  ip: '&eIP: &a%ip%'
   language: '&eDil: &a%language%'
   banStatus: '&eYasaklanma durumu: &c%status%'
   banReason: '&e-> Yasaklanma sebebi: &c%reason%'

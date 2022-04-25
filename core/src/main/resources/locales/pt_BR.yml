@@ -39,8 +39,6 @@ gui:
     title: '&ePainel de Administração'
     reload:
       name: '&aRecarregar todos os arquivos de configuração'
-    defaultlanguageselector:
-      name: '&aLinguagem Padrão'
   managepunishments:
     title: '&eGerenciar Punições - Total &6{0}'
     next:
