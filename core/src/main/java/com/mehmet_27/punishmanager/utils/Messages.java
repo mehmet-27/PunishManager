@@ -20,7 +20,9 @@ public enum Messages {
     GUI_MANAGEPUNISHMENTS_NEXT_NAME("gui.managepunishments.next.name"),
     GUI_MANAGEPUNISHMENTS_PREVIOUS_NAME("gui.managepunishments.previous.name"),
     GUI_LANGUAGESELECTOR_TITLE("gui.languageselector.title"),
-    GUI_DEFAULTLANGUAGESELECTOR_TITLE("gui.defaultlanguageselector.title");
+    GUI_CONFIRMATION_TITLE("gui.confirmation.title"),
+    GUI_CONFIRMATION_CONFIRM_NAME("gui.confirmation.confirm.name"),
+    GUI_CONFIRMATION_RETURN_NAME("gui.confirmation.return.name");
 
     private final String path;
 

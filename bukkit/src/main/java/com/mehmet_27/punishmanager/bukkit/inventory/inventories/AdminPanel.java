@@ -2,10 +2,7 @@ package com.mehmet_27.punishmanager.bukkit.inventory.inventories;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.mehmet_27.punishmanager.bukkit.PMBukkit;
-import com.mehmet_27.punishmanager.bukkit.inventory.Components;
-import com.mehmet_27.punishmanager.bukkit.inventory.UIComponent;
-import com.mehmet_27.punishmanager.bukkit.inventory.UIComponentImpl;
-import com.mehmet_27.punishmanager.bukkit.inventory.UIFrame;
+import com.mehmet_27.punishmanager.bukkit.inventory.*;
 import com.mehmet_27.punishmanager.utils.Messages;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -38,6 +35,8 @@ public class AdminPanel extends UIFrame {
                 .slot(11).build();
         add(reloadButton);
         reloadButton.setPermission(ClickType.LEFT,"punishmanager.command.punishmanager.reload");
-        reloadButton.setListener(ClickType.LEFT, ()-> PMBukkit.getInstance().getServer().dispatchCommand(getViewer(), "punishmanager reload"));
+        reloadButton.setListener(ClickType.LEFT, ()-> {
+            InventoryController.runCommand(getViewer(), "punishmanager", true, "reload");
+        });
     }
 }

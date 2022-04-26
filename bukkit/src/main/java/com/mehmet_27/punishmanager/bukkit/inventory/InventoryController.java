@@ -1,6 +1,7 @@
 package com.mehmet_27.punishmanager.bukkit.inventory;
 
 import com.mehmet_27.punishmanager.bukkit.PMBukkit;
+import com.mehmet_27.punishmanager.bukkit.inventory.inventories.ConfirmationFrame;
 import com.mehmet_27.punishmanager.bukkit.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
@@ -65,6 +66,11 @@ public class InventoryController implements Listener {
             }
         }
 
+        if (component.isConfirmationRequired(click)) {
+            listener = () -> InventoryDrawer.open(new ConfirmationFrame(frame, frame.getViewer(), component.getListener(click)));
+        }
+
+        Runnable finalListener = listener;
         Bukkit.getScheduler().runTask(PMBukkit.getInstance(), () -> {
             ItemStack currentItem = event.getCurrentItem();
             if (currentItem == null) return;
@@ -73,7 +79,7 @@ public class InventoryController implements Listener {
             Objects.requireNonNull(itemMeta).setLore(Collections.singletonList(Utils.color("&7Loading...")));
             currentItem.setItemMeta(itemMeta);
 
-            listener.run();
+            finalListener.run();
         });
     }
 
@@ -87,5 +93,23 @@ public class InventoryController implements Listener {
 
     public static boolean isRegistered(Player player) {
         return frames.containsKey(player.getUniqueId());
+    }
+
+    public static void runCommand(Player player, String command, boolean update, String... args) {
+        PMBukkit plugin = PMBukkit.getInstance();
+        String finalCommand = command + " " + String.join(" ", args);
+
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            player.performCommand(finalCommand);
+            if (!update) {
+                player.closeInventory();
+            } else {
+                UIFrame currentFrame = frames.get(player.getUniqueId());
+                if (currentFrame instanceof ConfirmationFrame) {
+                    currentFrame = currentFrame.getParent();
+                }
+                InventoryDrawer.open(currentFrame);
+            }
+        });
     }
 }

@@ -9,14 +9,11 @@ import com.mehmet_27.punishmanager.objects.PlayerLocale;
 import com.mehmet_27.punishmanager.utils.FileUtils;
 
 import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.file.FileSystem;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class BungeeConfigManager implements ConfigManager {
@@ -220,13 +217,13 @@ public class BungeeConfigManager implements ConfigManager {
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    private void copyFilesFromFolder(String folder){
+    private void copyFilesFromFolder(String folder) {
         Predicate<? super Path> filter = entry -> {
             String path = entry.getFileName().toString();
-            if (folder.equals("locales")){
+            if (folder.equals("locales")) {
                 return path.endsWith(".yml");
             }
-            if (folder.equals("embeds")){
+            if (folder.equals("embeds")) {
                 return path.endsWith(".json");
             }
             return false;
@@ -238,8 +235,13 @@ public class BungeeConfigManager implements ConfigManager {
             }
             if (!destination.exists() && !destination.isDirectory()) {
                 try {
+                    Path destinationPath = destination.toPath();
+                    if (destinationPath.startsWith(".")) {
+                        destinationPath = destinationPath.subpath(1, (int) destination.length());
+                    }
                     InputStream inputStream = PunishManager.getInstance().getResourceStream(file.toString().replace("\\", "/"));
-                    Files.copy(inputStream, destination.toPath());
+                    PunishManager.getInstance().debug("File copy operation. \nInputStream: " + inputStream + "\nDestination Path: " + destinationPath);
+                    Files.copy(inputStream, destinationPath);
 
                 } catch (IOException e) {
                     plugin.getLogger().severe(String.format("Error while trying to load file %s.", file.getName()));

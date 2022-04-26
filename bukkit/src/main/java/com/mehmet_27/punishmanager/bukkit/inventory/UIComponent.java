@@ -5,11 +5,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public abstract class UIComponent {
 
     private final HashMap<ClickType, Runnable> listeners = new HashMap<>();
     private final HashMap<ClickType, String> permissions = new HashMap<>();
+    private final Set<ClickType> confirmationRequired = new HashSet<>();
 
     public abstract ItemStack getItem();
 
@@ -37,5 +40,13 @@ public abstract class UIComponent {
 
     public String getPermission(ClickType click) {
         return permissions.get(click);
+    }
+
+    public void setConfirmationRequired(ClickType click) {
+        confirmationRequired.add(click);
+    }
+
+    public boolean isConfirmationRequired(ClickType click) {
+        return confirmationRequired.contains(click);
     }
 }

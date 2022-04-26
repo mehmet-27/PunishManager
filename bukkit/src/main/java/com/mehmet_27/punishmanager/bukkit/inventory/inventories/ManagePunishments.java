@@ -9,6 +9,7 @@ import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.utils.Messages;
 import com.mehmet_27.punishmanager.utils.UtilsCore;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,14 +51,25 @@ public class ManagePunishments extends UIFrame {
     }
 
     private void addPunish(int slot, Punishment punishment) {
+        List<String> lore = Messages.GUI_MANAGEPUNISHMENTS_PUNISHMENT_LORE.getStringList(getViewer().getName())
+                .stream().map(string -> UtilsCore.replacePunishmentPlaceholders(string, punishment))
+                .collect(Collectors.toList());
         UIComponent component = new UIComponentImpl.Builder(XMaterial.PAPER)
                 .name(Messages.GUI_MANAGEPUNISHMENTS_PUNISHMENT_NAME.getString(getViewer().getName())
                         .replace("%id%", "" + punishment.getId()))
-                .lore(Messages.GUI_MANAGEPUNISHMENTS_PUNISHMENT_LORE.getStringList(getViewer().getName())
-                        .stream().map(string -> UtilsCore.replacePunishmentPlaceholders(string, punishment))
-                        .collect(Collectors.toList()))
+                .lore(lore)
                 .slot(slot)
                 .build();
+        component.setListener(ClickType.LEFT, () -> {
+            if (punishment.isMuted()){
+                InventoryController.runCommand(getViewer(), "unmute", true, punishment.getPlayerName());
+            }
+            if (punishment.isBanned()){
+                InventoryController.runCommand(getViewer(), "unban", true, punishment.getPlayerName());
+            }
+            punishments.remove(punishment);
+        });
+        component.setConfirmationRequired(ClickType.LEFT);
         add(component);
     }
 

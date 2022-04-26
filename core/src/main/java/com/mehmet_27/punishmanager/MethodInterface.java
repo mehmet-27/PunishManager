@@ -44,4 +44,6 @@ public interface MethodInterface {
     Logger getLogger();
 
     void scheduleAsync(Runnable task, long delay, long period, TimeUnit unit);
+
+    void runAsync(Runnable task);
 }

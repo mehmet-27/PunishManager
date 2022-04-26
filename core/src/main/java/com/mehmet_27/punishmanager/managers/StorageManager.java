@@ -43,11 +43,13 @@ public class StorageManager {
     }
 
     private void executeUpdate(String query) {
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        punishManager.getMethods().runAsync(() -> {
+            try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public void setup() {
@@ -357,19 +359,6 @@ public class StorageManager {
         }
     }
 
-    public String getUserDiscordId(UUID uuid) {
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.SELECT_DISCORDSRV_WITH_UUID.getQuery())) {
-            ps.setString(1, uuid.toString());
-            ResultSet result = ps.executeQuery();
-            if (result.next()) {
-                return result.getString("discord");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public List<String> getAllLoggedNames() {
         List<String> names = new ArrayList<>();
         try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.GET_ALL_LOGGED_NAMES.getQuery())) {
@@ -383,19 +372,6 @@ public class StorageManager {
             e.printStackTrace();
         }
         return new ArrayList<>();
-    }
-
-    public boolean isDiscordSRVTableExits() {
-        try (Connection connection = source.getConnection()) {
-            DatabaseMetaData dbm = connection.getMetaData();
-            ResultSet tables = dbm.getTables(null, null, "discordsrv_accounts", null);
-            if (tables.next()) {
-                return true;
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return false;
     }
 
     public List<Punishment> getAllPunishments() {

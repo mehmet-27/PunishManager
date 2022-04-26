@@ -110,4 +110,9 @@ public class BukkitMethods implements MethodInterface {
     public void scheduleAsync(Runnable task, long delay, long period, TimeUnit unit) {
         getPlugin().getServer().getScheduler().runTaskTimerAsynchronously(getPlugin(), task, unit.toMillis(delay), unit.toMillis(period));
     }
+
+    @Override
+    public void runAsync(Runnable task) {
+        getPlugin().getServer().getScheduler().runTaskAsynchronously(getPlugin(), task);
+    }
 }

@@ -1,11 +1,11 @@
 package com.mehmet_27.punishmanager.bukkit.managers;
 
-import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.ConfigurationAdapter;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bukkit.BukkitConfiguration;
 import com.mehmet_27.punishmanager.bukkit.PMBukkit;
 import com.mehmet_27.punishmanager.bukkit.utils.Utils;
+import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.objects.PlayerLocale;
 import com.mehmet_27.punishmanager.utils.FileUtils;
 
@@ -26,7 +26,7 @@ public class BukkitConfigManager implements ConfigManager {
     private java.util.Locale defaultLocale;
     private List<String> exemptPlayers;
 
-    public BukkitConfigManager(PMBukkit plugin){
+    public BukkitConfigManager(PMBukkit plugin) {
         this.plugin = plugin;
     }
 
@@ -185,8 +185,8 @@ public class BukkitConfigManager implements ConfigManager {
     @Override
     public void setup() {
         Path dataFolder = plugin.getDataFolder().toPath();
-        copyFileFromResources(new File(dataFolder + File.separator  + "config.yml"));
-        config = new BukkitConfiguration(new File(dataFolder + File.separator  + "config.yml"));
+        copyFileFromResources(new File(dataFolder + File.separator + "config.yml"));
+        config = new BukkitConfiguration(new File(dataFolder + File.separator + "config.yml"));
         // Copies all locale files.
         copyFilesFromFolder("locales");
         // Copies all embed files.
@@ -203,7 +203,7 @@ public class BukkitConfigManager implements ConfigManager {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
     public void copyFileFromResources(File file) {
-        if (!file.getParentFile().exists()){
+        if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
         }
         if (!file.exists() && !file.isDirectory()) {
@@ -218,13 +218,13 @@ public class BukkitConfigManager implements ConfigManager {
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    private void copyFilesFromFolder(String folder){
+    private void copyFilesFromFolder(String folder) {
         Predicate<? super Path> filter = entry -> {
             String path = entry.getFileName().toString();
-            if (folder.equals("locales")){
+            if (folder.equals("locales")) {
                 return path.endsWith(".yml");
             }
-            if (folder.equals("embeds")){
+            if (folder.equals("embeds")) {
                 return path.endsWith(".json");
             }
             return false;
@@ -236,8 +236,13 @@ public class BukkitConfigManager implements ConfigManager {
             }
             if (!destination.exists() && !destination.isDirectory()) {
                 try {
+                    Path destinationPath = destination.toPath();
+                    if (destinationPath.startsWith(".")) {
+                        destinationPath = destinationPath.subpath(1, (int) destination.length());
+                    }
                     InputStream inputStream = PunishManager.getInstance().getResourceStream(file.toString().replace("\\", "/"));
-                    Files.copy(inputStream, destination.toPath());
+                    PunishManager.getInstance().debug("File copy operation. \nInputStream: " + inputStream + "\nDestination Path: " + destinationPath);
+                    Files.copy(inputStream, destinationPath);
 
                 } catch (IOException e) {
                     plugin.getLogger().severe(String.format("Error while trying to load file %s.", file.getName()));

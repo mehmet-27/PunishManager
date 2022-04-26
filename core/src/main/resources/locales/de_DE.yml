@@ -5,7 +5,7 @@
 #%operator% -> Operator of punishment.
 #%player% -> Name of the player being punished.
 main:
-  prefix: '&6Bestrafung Manager'
+  prefix: '&6BestrafungManager'
   exempt-player: 'Du kannst diesen Spieler nicht bestrafen.'
   defaultReason: 'keine'
   not-on-yourself: 'Du kannst diesen Befehl nicht selbst verwenden!'

@@ -2,7 +2,9 @@ package com.mehmet_27.punishmanager.bungee.inventory;
 
 import com.mehmet_27.punishmanager.bungee.PMBungee;
 import com.mehmet_27.punishmanager.bungee.Utils.Utils;
+import com.mehmet_27.punishmanager.bungee.inventory.inventories.ConfirmationFrame;
 import dev.simplix.protocolize.api.ClickType;
+import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.inventory.InventoryClick;
 import dev.simplix.protocolize.api.inventory.InventoryClose;
 import dev.simplix.protocolize.api.item.ItemStack;
@@ -56,12 +58,17 @@ public class InventoryController {
             }
         }
 
+        if (component.isConfirmationRequired(clickType)) {
+            listener = () -> InventoryDrawer.open(new ConfirmationFrame(frame, frame.getViewer(), component.getListener(clickType)));
+        }
+
+        Runnable finalListener = listener;
         PMBungee.getInstance().getProxy().getScheduler().runAsync(PMBungee.getInstance(), () -> {
             ItemStack currentItem = click.clickedItem();
             if (currentItem == null) return;
 
             click.clickedItem().lore(Collections.singletonList(Utils.color("&7Loading...")), true);
-            listener.run();
+            finalListener.run();
         });
     }
 
@@ -75,5 +82,23 @@ public class InventoryController {
 
     public static boolean isRegistered(ProxiedPlayer player) {
         return frames.containsKey(player.getUniqueId());
+    }
+
+    public static void runCommand(ProxiedPlayer player, String command, boolean update, String... args) {
+        PMBungee plugin = PMBungee.getInstance();
+        String finalCommand = command + " " + String.join(" ", args);
+
+        plugin.getProxy().getScheduler().runAsync(plugin, () -> {
+            plugin.getProxy().getPluginManager().dispatchCommand(player, finalCommand);
+            if (!update) {
+                Protocolize.playerProvider().player(player.getUniqueId()).closeInventory();
+            } else {
+                UIFrame currentFrame = frames.get(player.getUniqueId());
+                if (currentFrame instanceof ConfirmationFrame) {
+                    currentFrame = currentFrame.getParent();
+                }
+                InventoryDrawer.open(currentFrame);
+            }
+        });
     }
 }

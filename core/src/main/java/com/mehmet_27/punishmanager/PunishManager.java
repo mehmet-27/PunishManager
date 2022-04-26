@@ -54,7 +54,9 @@ public class PunishManager {
     }
 
     public void onDisable() {
+        if (storageManager == null) return;
         storageManager.removeAllExpiredPunishes();
+        if (discordManager == null) return;
         discordManager.disconnectBot();
     }
 

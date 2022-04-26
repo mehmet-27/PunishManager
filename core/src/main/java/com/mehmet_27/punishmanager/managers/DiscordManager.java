@@ -22,13 +22,11 @@ public class DiscordManager {
     private final MethodInterface methods = punishManager.getMethods();
     private final ConfigManager configManager = methods.getConfigManager();
     private final ConfigurationAdapter config = configManager.getConfig();
-    private final StorageManager storageManager;
     private final boolean isEnabledInConfig;
     private JDA api;
     private TextChannel announceChannel;
 
     public DiscordManager() {
-        this.storageManager = PunishManager.getInstance().getStorageManager();
         this.isEnabledInConfig = config.getBoolean("discord.enable", false);
         if (isEnabledInConfig) {
             buildBot();
@@ -36,9 +34,6 @@ public class DiscordManager {
     }
 
     private void buildBot() {
-        if (!storageManager.isDiscordSRVTableExits()) {
-            methods.getLogger().warning("The Punished Role feature will not work because DiscordSRV cannot connect to the database.");
-        }
         try {
             api = JDABuilder.createDefault(config.getString("discord.token"))
                     .addEventListeners(new DiscordBotReadyEvent())
@@ -61,6 +56,7 @@ public class DiscordManager {
     }
 
     public void sendEmbed(Punishment punishment) {
+        if (!isEnabledInConfig) return;
         String path = "discord.punish-announce.embeds." + punishment.getPunishType().name().toLowerCase(Locale.ENGLISH);
         if (!(config.getBoolean("discord.punish-announce.enable") && config.getBoolean(path))) {
             return;

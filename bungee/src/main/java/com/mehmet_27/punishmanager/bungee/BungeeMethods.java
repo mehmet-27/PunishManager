@@ -108,4 +108,9 @@ public class BungeeMethods implements MethodInterface {
     public void scheduleAsync(Runnable task, long delay, long period, TimeUnit unit) {
         getPlugin().getProxy().getScheduler().schedule(getPlugin(), task, delay, period, unit);
     }
+
+    @Override
+    public void runAsync(Runnable task) {
+        getPlugin().getProxy().getScheduler().runAsync(getPlugin(), task);
+    }
 }
