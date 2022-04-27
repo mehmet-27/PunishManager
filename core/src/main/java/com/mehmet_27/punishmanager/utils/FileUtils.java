@@ -36,6 +36,9 @@ public class FileUtils {
 
         for (Path filesPath : getFilesPath(packageName, filter)) {
             String fileName = filesPath.toString().replace("/", ".").split(".class")[0];
+            if (fileName.startsWith(".")){
+                fileName = fileName.substring(1);
+            }
             try {
 
                 Class<?> clazz = Class.forName(fileName);
@@ -57,13 +60,6 @@ public class FileUtils {
             files = Files.walk(fileSystem.getPath(packagePath)).
                     filter(Objects::nonNull).
                     filter(filter).
-                    map(p -> {
-                        String pString = p.toString();
-                        if (pString.startsWith(".")){
-                            pString = pString.substring(1);
-                        }
-                        return Paths.get(pString);
-                    }).
                     collect(Collectors.toSet());
             fileSystem.close();
         } catch (URISyntaxException | IOException ex) {
