@@ -2,16 +2,12 @@ package com.mehmet_27.punishmanager.utils;
 
 import com.mehmet_27.punishmanager.PunishManager;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.*;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -40,9 +36,6 @@ public class FileUtils {
 
         for (Path filesPath : getFilesPath(packageName, filter)) {
             String fileName = filesPath.toString().replace("/", ".").split(".class")[0];
-            if (fileName.startsWith(".")){
-                fileName = fileName.substring(1);
-            }
             try {
 
                 Class<?> clazz = Class.forName(fileName);
@@ -64,6 +57,13 @@ public class FileUtils {
             files = Files.walk(fileSystem.getPath(packagePath)).
                     filter(Objects::nonNull).
                     filter(filter).
+                    map(p -> {
+                        String pString = p.toString();
+                        if (pString.startsWith(".")){
+                            pString = pString.substring(1);
+                        }
+                        return Paths.get(pString);
+                    }).
                     collect(Collectors.toSet());
             fileSystem.close();
         } catch (URISyntaxException | IOException ex) {
@@ -91,7 +91,13 @@ public class FileUtils {
             files = Files.walk(fileSystem.getPath(packagePath)).
                     filter(Objects::nonNull).
                     filter(filter).
-                    map(p -> new File(p.toString().substring(1))).
+                    map(p -> {
+                        String pString = p.toString();
+                        if (pString.startsWith(".")){
+                            pString = pString.substring(1);
+                        }
+                        return new File(pString);
+                    }).
                     collect(Collectors.toSet());
             fileSystem.close();
         } catch (URISyntaxException | IOException ex) {

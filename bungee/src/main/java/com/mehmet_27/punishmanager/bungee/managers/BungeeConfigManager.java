@@ -229,19 +229,15 @@ public class BungeeConfigManager implements ConfigManager {
             return false;
         };
         FileUtils.getFilesIn(folder, filter).forEach(file -> {
-            File destination = new File(plugin.getDataFolder().toPath() + File.separator + folder + File.separator + file.getName());
+            File destination = new File(plugin.getDataFolder() + File.separator + folder + File.separator + file.getName());
             if (!destination.getParentFile().exists()) {
                 destination.getParentFile().mkdirs();
             }
             if (!destination.exists() && !destination.isDirectory()) {
                 try {
-                    Path destinationPath = destination.toPath();
-                    if (destinationPath.startsWith(".")) {
-                        destinationPath = destinationPath.subpath(1, (int) destination.length());
-                    }
                     InputStream inputStream = PunishManager.getInstance().getResourceStream(file.toString().replace("\\", "/"));
-                    PunishManager.getInstance().debug("File copy operation. \nInputStream: " + inputStream + "\nDestination Path: " + destinationPath);
-                    Files.copy(inputStream, destinationPath);
+                    PunishManager.getInstance().debug("File copy operation. \nInputStream: " + inputStream + "\nDestination Path: " + destination);
+                    Files.copy(inputStream, destination.toPath());
 
                 } catch (IOException e) {
                     plugin.getLogger().severe(String.format("Error while trying to load file %s.", file.getName()));
