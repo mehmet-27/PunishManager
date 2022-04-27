@@ -91,6 +91,7 @@ tempban:
     - "&6Web &7» &eскоро"
     - "&6Discord &7» &eскоро"
   announce: '&a%player% &eзабанен &a%operator% &eиз-за &a%reason%.'
+  description: 'Временно запрещает игрока.'
 ipban:
   punished: '&a%player% успешно забанен.'
   alreadyPunished: '&e%player% уже забанен.'
@@ -106,12 +107,28 @@ ipban:
   announce: '&a%player% &eзабанен &a%operator% &eиз-за &a%reason%.'
   description: 'Заблокировать игрока по IP-адресу.'
 kick:
+  punished: '&a%player% успешно пнул.'
+  notOnline: '&eИгрок %player% не онлайн.'
   layout:
     - '%prefix%'
     - '&7'
-    - '&6You kicked from this server.'
+    - '&6Вы были удалены с этого сервера.'
     - '&2Причина: &a%reason%'
   description: 'Выгоняет игрока с сервера.'
+mute:
+  punished: '&a%player% успешно приглушенный.'
+  alreadyPunished: '&e%player% уже приглушенный.'
+  layout:
+    - '&eВы были отключены &a%operator% &eиз-за &a%reason%&e.'
+  announce: '&a%player% &eбыл приглушен &a%operator% &eиз-за &a%reason%.'
+  description: 'Отключить звук у игрока.'
+tempmute:
+  punished: '&a%player% успешно приглушены.'
+  alreadyPunished: '&e%player% уже отключен.'
+  layout:
+    - '&eВы были отключены &a%operator% &eдля &a%duration% &eиз-за &a%reason%&e.'
+  announce: '&a%player% &eбыл приглушен &a%operator% &eдля &a%duration% &eиз-за &a%reason%&e.'
+  description: 'Временно отключает звук игрока.'
 check:
   uuid: '&eUUID: &a%uuid%'
   ip: '&eIP: &a%ip%'
