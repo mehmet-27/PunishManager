@@ -56,7 +56,13 @@ gui:
         - '&6Operador: &e%operator%'
         - '&6Ip: &e%ip%'
         - '&7'
-        - '&7Left click to &eremove &7the punish.'
+        - '&7Clic izquierdo para &eeleminar &7el castigo.'
+  confirmation:
+    title: '&eConfirmación'
+    confirm:
+      name: '&7Haga clic aquí para &aconfirmar'
+    return:
+      name: '&7Pulse aquí para &cvolver'
 ban:
   punished: '&a%player% baneado exitosamente.'
   alreadyPunished: '&e%player% ya está baneado.'
