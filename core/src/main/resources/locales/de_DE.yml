@@ -127,6 +127,7 @@ tempmute:
   alreadyPunished: '&e%player% ist bereits stumm.'
   layout:
     - '&eDu wurdest von &a%operator% &efür &a%duration% &edue zum &a%reason%&e.'
+  announce: '&a%player% &ewurde von &a%operator% &efür &a%duration% &eaufgrund von &a%reason% &estummgeschalten.'
   description: 'Stummschaltung eines Spielers.'
 unban:
   notPunished: '&e%player% ist nicht gebannt.'
