@@ -236,7 +236,11 @@ public class BukkitConfigManager implements ConfigManager {
             }
             if (!destination.exists() && !destination.isDirectory()) {
                 try {
-                    InputStream inputStream = PunishManager.getInstance().getResourceStream(file.toString().replace("\\", "/"));
+                    String fileString = file.toString().replace("\\", "/");
+                    if (fileString.startsWith("/")){
+                        fileString = fileString.substring(1);
+                    }
+                    InputStream inputStream = PunishManager.getInstance().getResourceStream(fileString);
                     PunishManager.getInstance().debug("File copy operation. \nInputStream: " + inputStream + "\nDestination Path: " + destination);
                     Files.copy(inputStream, destination.toPath());
 
