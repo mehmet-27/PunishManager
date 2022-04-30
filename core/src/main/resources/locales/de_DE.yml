@@ -5,13 +5,13 @@
 #%operator% -> Operator of punishment.
 #%player% -> Name of the player being punished.
 main:
-  prefix: '&6BestrafungManager'
+  prefix: '&6Bestrafung Manager'
   exempt-player: 'Du kannst diesen Spieler nicht bestrafen.'
   defaultReason: 'keine'
-  not-on-yourself: 'Du kannst diesen Befehl nicht selbst verwenden!'
-  not-logged-server: '&cDu kannst jemanden nicht bestrafen, der vorher nicht auf dem Server war.'
-  setlanguage: '&aDeine Sprache ist auf {0} gesetzt.'
-  setdefaultlanguage: '&aDie Standardsprache für den Server ist auf {0} gesetzt.'
+  not-on-yourself: 'Du kannst diesen Befehl nicht an dir selbst verwenden!'
+  not-logged-server: '&cDu kannst niemanden bestrafen der den Server noch nicht betreten hat.'
+  setlanguage: '&aDeine Sprache wurde zu {0} gesetzt.'
+  setdefaultlanguage: '&aDie Standardsprache für den Server wurde zu {0} gesetzt.'
   mustInteger: '&cBitte geben Sie einen gültigen Integer-Wert ein.'
   timelayout:
     #Variables to be used when showing the duration of the punishment.
@@ -32,7 +32,7 @@ gui:
     managepunishments:
       name: '&eBestrafungen verwalten'
     adminpanel:
-      name: '&eAdmin Panel'
+      name: '&eAdministrationsbereich'
   languageselector:
     title: '&eSprachauswahl - Aktuell: &8{0}'
   adminpanel:
@@ -75,7 +75,7 @@ ban:
     - '&eKontakt & Support'
     - "&6Web &7» Bald"
     - "&6Discord &7» Bald"
-  announce: '&%player% &ebannt von &a%operator% &edue zu &a%reason%.'
+  announce: '&a%player% &ewurde von &a%operator% &eaufgrund von &e%reason% &egesperrt.'
   description: 'Spieler sperren.'
 tempban:
   punished: '&%player% erfolgreich gesperrt.'
@@ -83,28 +83,28 @@ tempban:
   layout:
     - '%prefix%'
     - '&7'
-    - '&6Du hast von diesem Server gebannt.'
-    - '&2Operator: &ein%operator%'
-    - '&2Grund: &ein%reason%'
-    - '&2Dauer: &ein%duration%'
+    - '&6Du wurdest von diesem Server gebannt.'
+    - '&2Operator: &a%operator%'
+    - '&2Grund: &a%reason%'
+    - '&2Dauer: &a%duration%'
     - '&eKontakt & Support'
-    - "&6Web &7» Bald"
-    - "&6Discord &7» Bald"
+    - "&6Web &7» Demnächst"
+    - "&6Discord &7» Demnächst"
   announce: '&a%player% &ewurde von &a%operator% &efür &a%duration% &edue für &a%reason% gebannt.'
-  description: 'Ein Spieler wird vorübergehend verboten.'
+  description: 'Sperrt vorübergehen einen Spieler.'
 ipban:
   punished: '&%player% erfolgreich gesperrt.'
   alreadyPunished: '&e%player% ist bereits gesperrt.'
   layout:
     - '%prefix%'
     - '&7'
-    - '&6Du hast von diesem Server gebannt.'
-    - '&2Operator: &ein%operator%'
-    - '&2Grund: &ein%reason%'
+    - '&6Du wurdest von diesem Server gesperrt.'
+    - '&2Operator: &a%operator%'
+    - '&2Grund: &a%reason%'
     - '&eKontakt & Support'
-    - "&6Web &7» Bald"
-    - "&6Discord &7» Bald"
-  announce: '&%player% &ebannt von &a%operator% &edue zu &a%reason%.'
+    - "&6Web &7» Demnächst"
+    - "&6Discord &7» Demnächst"
+  announce: '&a%player% &ewurde von &a%operator% &eaufgrund von &e%reason% &egesperrt.'
   description: 'Sperrt die IP-Adresse eines Spielers.'
 kick:
   punished: '&%player% erfolgreich gekickt.'
@@ -112,7 +112,7 @@ kick:
   layout:
     - '%prefix%'
     - '&7'
-    - '&6Du hast von diesem Server gekickt.'
+    - '&6Du wurdest von diesem Server gekickt.'
     - '&2Grund: &ein%reason%'
   description: 'Kickt einen Spieler vom Server.'
 mute:
@@ -127,6 +127,7 @@ tempmute:
   alreadyPunished: '&e%player% ist bereits stumm.'
   layout:
     - '&eDu wurdest von &a%operator% &efür &a%duration% &edue zum &a%reason%&e.'
+  announce: '&a%player% &ewurde von &a%operator% &efür &a%duration% &eaufgrund von &a%reason% &estummgeschalten.'
   description: 'Stummschaltung eines Spielers.'
 unban:
   notPunished: '&e%player% ist nicht gebannt.'
@@ -141,19 +142,19 @@ unpunish:
   done: '&Die Strafen von%player%wurden entfernt.'
   description: 'Entfernt alle Strafen von einem Spieler.'
 check:
-  checking: '&eChecking &a%player%'
+  checking: '&eÜberprüfung von &a%player%'
   playerNotFound: '&c%player% nicht gefunden!'
-  uuid: '&eUID: &ein%uuid%'
-  ip: '&eIP: &ein%ip%'
-  language: '&eSprache: &ein%language%'
-  banStatus: '&eBan-Status: &c%status%'
+  uuid: '&eUUID: &a%uuid%'
+  ip: '&eIP: &a%ip%'
+  language: '&eSprache: &a%language%'
+  banStatus: '&eSperr-Status: &c%status%'
   banReason: '&e-> Sperrgrund: &c%reason%'
-  banOperator: '&e-> Netzbetreiber: &c%operator%'
+  banOperator: '&e-> Ausgeführt durch: &c%operator%'
   muteStatus: '&eStummschalten Status: &c%status%'
   muteReason: '&e-> Grund stummschalten: &c%reason%'
-  muteOperator: '&e-> Operator stummschalten: &c%operator%'
-  punishId: '&e-> Bestrafe Id: &c%id%'
-  notPunished: '&anot bestraft'
+  muteOperator: '&e-> Ausgeführt durch: &c%operator%'
+  punishId: '&e-> Bestrafungs Id: &c%id%'
+  notPunished: '&anicht bestraft'
   description: 'Überprüft den aktuellen Status eines Spielers.'
 punishmanager:
   description: 'Der Hauptbefehl des Plugins.'
@@ -164,5 +165,5 @@ punishmanager-help:
   description: 'Hilfe-Befehl.'
 changereason:
   description: 'Ändert den Grund für eine Bestrafung.'
-  punishmentNotFound: '&eSuche Bestrafung nicht gefunden.'
-  done: '&aDer Grund für die &e#%id% &apunish wurde geändert in &e%reason%&a.'
+  punishmentNotFound: '&eGesuchte Bestrafung nicht gefunden.'
+  done: '&aDer Grund für die Bestrafung mit der ID &e#%id% &awurde zu &e%reason% &ageändert.'

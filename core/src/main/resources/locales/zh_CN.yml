@@ -56,7 +56,13 @@ gui:
         - '&6操作者: &e%operator%'
         - '&6玩家IP: &e%ip%'
         - '&7'
-        - '&7Left click to &eremove &7the punish.'
+        - '&7左键单击以&c移除&7的惩罚。'
+  confirmation:
+    title: '&e确认'
+    confirm:
+      name: '&7点击这里&a确认'
+    return:
+      name: '&7点击这里&c返回'
 ban:
   punished: '&a玩家 %player% 已被封禁。'
   alreadyPunished: '&e玩家 %player% 已经被封禁过了。'
