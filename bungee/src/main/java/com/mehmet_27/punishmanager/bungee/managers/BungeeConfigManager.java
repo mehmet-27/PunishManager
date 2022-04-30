@@ -77,7 +77,7 @@ public class BungeeConfigManager implements ConfigManager {
             }
         }
         plugin.getLogger().warning("The searched value was not found in the language file and the default language file: " + path);
-        return "";
+        return path;
     }
 
     @Override
@@ -89,6 +89,9 @@ public class BungeeConfigManager implements ConfigManager {
             message = locales.get(locale).getString(path);
             if (message == null || message.isEmpty()) {
                 message = locales.get(defaultLocale).getString(path);
+                if (message == null || message.isEmpty()){
+                    message = path;
+                }
             }
             prefix = locales.get(locale).getString("main.prefix", locales.get(defaultLocale).getString("main.prefix"));
         } else {
@@ -236,7 +239,7 @@ public class BungeeConfigManager implements ConfigManager {
             if (!destination.exists() && !destination.isDirectory()) {
                 try {
                     String fileString = file.toString().replace("\\", "/");
-                    if (fileString.startsWith("/")){
+                    if (fileString.startsWith("/")) {
                         fileString = fileString.substring(1);
                     }
                     InputStream inputStream = PunishManager.getInstance().getResourceStream(fileString);

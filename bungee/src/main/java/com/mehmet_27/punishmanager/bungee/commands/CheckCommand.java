@@ -7,8 +7,13 @@ import com.mehmet_27.punishmanager.bungee.Utils.Utils;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
+import com.mehmet_27.punishmanager.utils.UtilsCore;
 import net.md_5.bungee.api.CommandSender;
+import org.apache.commons.io.IOUtils;
 
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 @CommandAlias("punishmanager")
@@ -30,7 +35,7 @@ public class CheckCommand extends BaseCommand {
             return;
         }
 
-        String ip = PunishManager.getInstance().getMethods().getPlayerIp(uuid);
+        String ip = PunishManager.getInstance().getMethods().getPlayerIp(uuid).replaceAll("\\s+", "");
         Punishment ban = storageManager.getBan(uuid);
         Punishment mute = storageManager.getMute(uuid);
 
@@ -45,6 +50,8 @@ public class CheckCommand extends BaseCommand {
         } else {
             Utils.sendText(sender, "check.ip", message -> message.replace("%ip%", ip));
         }
+        String country = UtilsCore.getValueFromUrlJson("http://ip-api.com/json/" + ip + "?fields=country", "country");
+        Utils.sendText(sender, "check.country", message -> message.replace("%country%", country));
         String language = storageManager.getOfflinePlayer(uuid).getLocale().toString();
         Utils.sendText(sender, "check.language", message -> message.replace("%language%", language));
         Utils.sendText(sender, "check.banStatus", message -> message.replace("%status%", banStatus));

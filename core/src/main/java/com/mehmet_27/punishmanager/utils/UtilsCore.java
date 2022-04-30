@@ -1,9 +1,16 @@
 package com.mehmet_27.punishmanager.utils;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.mehmet_27.punishmanager.MethodInterface;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
+import org.apache.commons.io.IOUtils;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.regex.Pattern;
 
 public class UtilsCore {
@@ -39,5 +46,17 @@ public class UtilsCore {
             default:
                 return -1;
         }
+    }
+
+    public static String getValueFromUrlJson(String url, String key){
+        String value = "null";
+        try {
+            String string = IOUtils.toString(new URL(url), StandardCharsets.UTF_8);
+            JsonObject json = new Gson().fromJson(string, JsonObject.class);
+            value = json.get(key).toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return value;
     }
 }

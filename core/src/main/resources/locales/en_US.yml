@@ -145,6 +145,7 @@ check:
   playerNotFound: '&c%player% not found!'
   uuid: '&eUUID: &a%uuid%'
   ip: '&eIP: &a%ip%'
+  country: '&eCountry: &a%country%'
   language: '&eLanguage: &a%language%'
   banStatus: '&eBan status: &c%status%'
   banReason: '&e-> Ban reason: &c%reason%'

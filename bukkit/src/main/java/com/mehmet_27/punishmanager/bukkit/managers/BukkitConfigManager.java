@@ -78,7 +78,7 @@ public class BukkitConfigManager implements ConfigManager {
             }
         }
         plugin.getLogger().warning("The searched value was not found in the language file and the default language file: " + path);
-        return "";
+        return path;
     }
 
     @Override

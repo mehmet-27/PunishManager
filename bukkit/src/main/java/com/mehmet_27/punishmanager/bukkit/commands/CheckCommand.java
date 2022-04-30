@@ -7,8 +7,13 @@ import com.mehmet_27.punishmanager.bukkit.utils.Utils;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
+import com.mehmet_27.punishmanager.utils.UtilsCore;
+import org.apache.commons.io.IOUtils;
 import org.bukkit.command.CommandSender;
 
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 @CommandAlias("punishmanager")
@@ -30,7 +35,7 @@ public class CheckCommand extends BaseCommand {
             return;
         }
 
-        String ip = PunishManager.getInstance().getMethods().getPlayerIp(uuid);
+        String ip = PunishManager.getInstance().getMethods().getPlayerIp(uuid).replaceAll("\\s+", "");
         Punishment ban = storageManager.getBan(uuid);
         Punishment mute = storageManager.getMute(uuid);
 
@@ -38,13 +43,15 @@ public class CheckCommand extends BaseCommand {
         String muteStatus = (mute != null && mute.isMuted() && !mute.isExpired()) ? mute.getDuration() : PunishManager.getInstance().getConfigManager().getMessage("check.notPunished", sender.getName());
 
         Utils.sendText(sender, "check.uuid", message -> message.replace("%uuid%", uuid.toString()));
-        if (PunishManager.getInstance().getConfigManager().getConfig().getBoolean("check-command-show-ip-require-perm", false)){
-            if (sender.hasPermission("punishmanager.command.check.ip")){
+        if (PunishManager.getInstance().getConfigManager().getConfig().getBoolean("check-command-show-ip-require-perm", false)) {
+            if (sender.hasPermission("punishmanager.command.check.ip")) {
                 Utils.sendText(sender, "check.ip", message -> message.replace("%ip%", ip));
             }
         } else {
             Utils.sendText(sender, "check.ip", message -> message.replace("%ip%", ip));
         }
+        String country = UtilsCore.getValueFromUrlJson("http://ip-api.com/json/" + ip + "?fields=country", "country");
+        Utils.sendText(sender, "check.country", message -> message.replace("%country%", country));
         String language = storageManager.getOfflinePlayer(uuid).getLocale().toString();
         Utils.sendText(sender, "check.language", message -> message.replace("%language%", language));
         Utils.sendText(sender, "check.banStatus", message -> message.replace("%status%", banStatus));
