@@ -146,6 +146,7 @@ check:
   playerNotFound: '&c找不到玩家 %player%!'
   uuid: '&eUUID: &a%uuid%'
   ip: '&e玩家IP: &a%ip%'
+  country: '&e所在国家: &a%country%'
   language: '&e所选语言: &a%language%'
   banStatus: '&e封禁状态: &c%status%'
   banReason: '&e-> 封禁理由: &c%reason%'
