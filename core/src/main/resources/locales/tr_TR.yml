@@ -146,6 +146,7 @@ check:
   playerNotFound: '&c%player% bulunamadı!'
   uuid: '&eUUID: &a%uuid%'
   ip: '&eIP: &a%ip%'
+  country: '&eÜlke: &a%country%'
   language: '&eDil: &a%language%'
   banStatus: '&eYasaklanma durumu: &c%status%'
   banReason: '&e-> Yasaklanma sebebi: &c%reason%'
