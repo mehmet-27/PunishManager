@@ -142,7 +142,6 @@ unpunish:
   done: '&Die Strafen von%player%wurden entfernt.'
   description: 'Entfernt alle Strafen von einem Spieler.'
 check:
-  checking: '&eÜberprüfung von &a%player%'
   playerNotFound: '&c%player% nicht gefunden!'
   uuid: '&eUUID: &a%uuid%'
   ip: '&eIP: &a%ip%'
