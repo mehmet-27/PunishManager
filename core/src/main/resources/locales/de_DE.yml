@@ -13,6 +13,8 @@ main:
   setlanguage: '&aDeine Sprache wurde zu {0} gesetzt.'
   setdefaultlanguage: '&aDie Standardsprache für den Server wurde zu {0} gesetzt.'
   mustInteger: '&cBitte geben Sie einen gültigen Integer-Wert ein.'
+  online: '&aOnline'
+  offline: '&8Offline'
   timelayout:
     #Variables to be used when showing the duration of the punishment.
     year: '%y% Jahr(e)'
