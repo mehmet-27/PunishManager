@@ -142,10 +142,10 @@ unpunish:
   done: '&a%player% adlı oyuncunun tüm cezaları kaldırıldı.'
   description: 'Bir oyuncunun tüm cezalarını kaldır.'
 check:
-  checking: '&e%player% &akontrol ediliyor'
   playerNotFound: '&c%player% bulunamadı!'
   uuid: '&eUUID: &a%uuid%'
   ip: '&eIP: &a%ip%'
+  country: '&eÜlke: &a%country%'
   language: '&eDil: &a%language%'
   banStatus: '&eYasaklanma durumu: &c%status%'
   banReason: '&e-> Yasaklanma sebebi: &c%reason%'

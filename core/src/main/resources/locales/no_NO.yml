@@ -136,7 +136,6 @@ unpunish:
   done: '&a%player% sine straffer har blitt fjernet.'
   description: 'Fjerner alle straffer fra en spiller.'
 check:
-  checking: '&eSjekker &a%player%'
   playerNotFound: '&c%player% ikke funnet!'
   uuid: '&eUUID: &a%uuid%'
   ip: '&eIP: &a%ip%'
