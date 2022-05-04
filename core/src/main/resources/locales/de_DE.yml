@@ -5,7 +5,7 @@
 #%operator% -> Operator of punishment.
 #%player% -> Name of the player being punished.
 main:
-  prefix: '&6Bestrafung Manager'
+  prefix: '&6PunishManager'
   exempt-player: 'Du kannst diesen Spieler nicht bestrafen.'
   defaultReason: 'keine'
   not-on-yourself: 'Du kannst diesen Befehl nicht an dir selbst verwenden!'
@@ -144,9 +144,11 @@ unpunish:
   done: '&Die Strafen von%player%wurden entfernt.'
   description: 'Entfernt alle Strafen von einem Spieler.'
 check:
+  checking: '&eÜberprüfe &a%player% &7(%online%&7)'
   playerNotFound: '&c%player% nicht gefunden!'
   uuid: '&eUUID: &a%uuid%'
   ip: '&eIP: &a%ip%'
+  country: '&eLand: &a%country%'
   language: '&eSprache: &a%language%'
   banStatus: '&eSperr-Status: &c%status%'
   banReason: '&e-> Sperrgrund: &c%reason%'
