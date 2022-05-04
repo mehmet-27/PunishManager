@@ -142,7 +142,6 @@ unpunish:
   done: '&a玩家 %player% 的惩戒已被移除。'
   description: '移除玩家的所有惩罚。'
 check:
-  checking: '&e正在检查玩家 &a%player%'
   playerNotFound: '&c找不到玩家 %player%!'
   uuid: '&eUUID: &a%uuid%'
   ip: '&e玩家IP: &a%ip%'
