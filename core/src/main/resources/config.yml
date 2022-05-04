@@ -57,5 +57,10 @@ discord:
       tempban: true
       tempmute: true
 
+apis:
+  countryApi:
+    url: 'http://ip-api.com/json/%ip%?fields=country'
+    key: 'country'
+
 updateChecker: true
 debug: false

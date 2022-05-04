@@ -12,6 +12,8 @@ main:
   setlanguage: '&aYour language is set to {0}.'
   setdefaultlanguage: '&aThe default language for server is set to {0}.'
   mustInteger: '&cPlease enter a valid integer value.'
+  online: '&aOnline'
+  offline: '&8Offline'
   timelayout:
     #Variables to be used when showing the duration of the punishment.
     year: '%y% year(s)'
@@ -141,7 +143,7 @@ unpunish:
   done: '&a%player%''s punishes has been removed.'
   description: 'Removes all punishes from a player.'
 check:
-  checking: '&eChecking &a%player%'
+  checking: '&eChecking &a%player% &7(%online%&7)'
   playerNotFound: '&c%player% not found!'
   uuid: '&eUUID: &a%uuid%'
   ip: '&eIP: &a%ip%'

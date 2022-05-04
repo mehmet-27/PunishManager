@@ -3,22 +3,24 @@ package com.mehmet_27.punishmanager.bungee.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
+import com.mehmet_27.punishmanager.bungee.PMBungee;
 import com.mehmet_27.punishmanager.bungee.Utils.Utils;
+import com.mehmet_27.punishmanager.bungee.managers.BungeeConfigManager;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.utils.UtilsCore;
 import net.md_5.bungee.api.CommandSender;
-import org.apache.commons.io.IOUtils;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.io.IOException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 @CommandAlias("punishmanager")
 @CommandPermission("punishmanager.command.check")
 public class CheckCommand extends BaseCommand {
+
+    @Dependency
+    private BungeeConfigManager configManager;
 
     @Dependency
     private StorageManager storageManager;
@@ -29,7 +31,11 @@ public class CheckCommand extends BaseCommand {
     public void check(CommandSender sender, @Name("Player") OfflinePlayer player) {
         String playerName = player.getName();
         UUID uuid = player.getUniqueId();
-        Utils.sendText(sender, playerName, "check.checking");
+        ProxiedPlayer onlinePlayer = PMBungee.getInstance().getProxy().getPlayer(playerName);
+        String online = (onlinePlayer != null && onlinePlayer.isConnected()) ? configManager.getMessage("main.online") : configManager.getMessage("main.offline");
+        Utils.sendText(sender, "check.checking", message -> message
+                .replace("%player%", playerName)
+                .replace("%online%", online));
         if (!storageManager.isLoggedServer(uuid)) {
             com.mehmet_27.punishmanager.bungee.Utils.Utils.sendText(sender, playerName, "check.playerNotFound");
             return;
@@ -43,14 +49,14 @@ public class CheckCommand extends BaseCommand {
         String muteStatus = (mute != null && mute.isMuted() && !mute.isExpired()) ? mute.getDuration() : PunishManager.getInstance().getConfigManager().getMessage("check.notPunished", sender.getName());
 
         Utils.sendText(sender, "check.uuid", message -> message.replace("%uuid%", uuid.toString()));
-        if (PunishManager.getInstance().getConfigManager().getConfig().getBoolean("check-command-show-ip-require-perm", false)){
-            if (sender.hasPermission("punishmanager.command.check.ip")){
+        if (PunishManager.getInstance().getConfigManager().getConfig().getBoolean("check-command-show-ip-require-perm", false)) {
+            if (sender.hasPermission("punishmanager.command.check.ip")) {
                 Utils.sendText(sender, "check.ip", message -> message.replace("%ip%", ip));
             }
         } else {
             Utils.sendText(sender, "check.ip", message -> message.replace("%ip%", ip));
         }
-        String country = UtilsCore.getValueFromUrlJson("http://ip-api.com/json/" + ip + "?fields=country", "country");
+        String country = UtilsCore.getValueFromUrlJson(ip);
         Utils.sendText(sender, "check.country", message -> message.replace("%country%", country));
         String language = storageManager.getOfflinePlayer(uuid).getLocale().toString();
         Utils.sendText(sender, "check.language", message -> message.replace("%language%", language));

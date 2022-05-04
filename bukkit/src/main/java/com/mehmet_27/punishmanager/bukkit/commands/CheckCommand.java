@@ -3,22 +3,25 @@ package com.mehmet_27.punishmanager.bukkit.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
+import com.mehmet_27.punishmanager.bukkit.PMBukkit;
+import com.mehmet_27.punishmanager.bukkit.managers.BukkitConfigManager;
 import com.mehmet_27.punishmanager.bukkit.utils.Utils;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.utils.UtilsCore;
-import org.apache.commons.io.IOUtils;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
-import java.io.IOException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import java.util.UUID;
 
 @CommandAlias("punishmanager")
 @CommandPermission("punishmanager.command.check")
 public class CheckCommand extends BaseCommand {
+
+    @Dependency
+    private BukkitConfigManager configManager;
 
     @Dependency
     private StorageManager storageManager;
@@ -29,7 +32,11 @@ public class CheckCommand extends BaseCommand {
     public void check(CommandSender sender, @Name("Player") OfflinePlayer player) {
         String playerName = player.getName();
         UUID uuid = player.getUniqueId();
-        Utils.sendText(sender, playerName, "check.checking");
+        Player onlinePlayer = PMBukkit.getInstance().getServer().getPlayer(playerName);
+        String online = (onlinePlayer != null && onlinePlayer.isOnline()) ? configManager.getMessage("main.online") : configManager.getMessage("main.offline");
+        Utils.sendText(sender, "check.checking", message -> message
+                .replace("%player%", playerName)
+                .replace("%online%", online));
         if (!storageManager.isLoggedServer(uuid)) {
             Utils.sendText(sender, playerName, "check.playerNotFound");
             return;
@@ -50,7 +57,7 @@ public class CheckCommand extends BaseCommand {
         } else {
             Utils.sendText(sender, "check.ip", message -> message.replace("%ip%", ip));
         }
-        String country = UtilsCore.getValueFromUrlJson("http://ip-api.com/json/" + ip + "?fields=country", "country");
+        String country = UtilsCore.getValueFromUrlJson(ip);
         Utils.sendText(sender, "check.country", message -> message.replace("%country%", country));
         String language = storageManager.getOfflinePlayer(uuid).getLocale().toString();
         Utils.sendText(sender, "check.language", message -> message.replace("%language%", language));

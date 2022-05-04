@@ -90,6 +90,9 @@ public class BukkitConfigManager implements ConfigManager {
             message = locales.get(locale).getString(path);
             if (message == null || message.isEmpty()) {
                 message = locales.get(defaultLocale).getString(path);
+                if (message == null || message.isEmpty()){
+                    message = path;
+                }
             }
             prefix = locales.get(locale).getString("main.prefix", locales.get(defaultLocale).getString("main.prefix"));
         } else {
