@@ -8,7 +8,7 @@ main:
   prefix: '&6PunishManager'
   exempt-player: 'Bu oyuncuyu cezalandıramazsınız.'
   defaultReason: 'yok'
-  not-on-yourself: 'Bu komutu kendi üzerinizde kullanamazsınız.'
+  not-on-yourself: 'Bu komutu kendi üzerinizde kullanamazsınız!'
   not-logged-server: '&cDaha önce sunucuya girmemiş birini cezalandıramazsınız.'
   setlanguage: '&aDiliniz {0} olarak ayarlandı.'
   setdefaultlanguage: '&aSunucu için varsayılan dil {0} olarak ayarlandı.'
@@ -68,7 +68,7 @@ ban:
   alreadyPunished: '&e%player% zaten yasaklı.'
   layout:
     - '%prefix%'
-    - '&eSunucudan Kalıcı Yasaklandınız!'
+    - '&eSunucudan Kalıcı Yasaklandınız'
     - '&eYasaklayan: &a%operator%'
     - '&eSebep &7» &2%reason%'
     - '&7'
@@ -108,7 +108,7 @@ ipban:
   description: 'Bir oyuncunun ip adresini yasakla.'
 kick:
   punished: '&a%player% başarıyla atıldı.'
-  notOnline: '&e%player% çevrimiçi değil.'
+  notOnline: '&e%player% çevrim içi değil.'
   layout:
     - '&eSunucudan Atıldın'
     - '&7'
