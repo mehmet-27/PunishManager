@@ -6,7 +6,7 @@ public enum Dependency {
     PROTOCOLIZE_BUNGEECORD(
             "dev.simplix",
             "protocolize-bungeecord",
-            "2.1.2"
+            "2.2.1"
     );
 
     private final String mavenRepoPath;

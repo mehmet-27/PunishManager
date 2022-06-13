@@ -3,11 +3,13 @@ package com.mehmet_27.punishmanager.bungee.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
+import com.mehmet_27.punishmanager.bungee.PMBungee;
 import com.mehmet_27.punishmanager.bungee.Utils.Utils;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.UUID;
 
@@ -33,8 +35,15 @@ public class BanCommand extends BaseCommand {
             return;
         }
 
+        String server = "ALL";
+        ProxiedPlayer onlinePlayer = PMBungee.getInstance().getProxy().getPlayer(uuid);
+
+        if (onlinePlayer != null && onlinePlayer.isConnected()){
+            server = onlinePlayer.getServer().getInfo().getName();
+        }
+
         String ip = PunishManager.getInstance().getMethods().getPlayerIp(uuid);
-        punishment = new Punishment(playerName, uuid, ip, BAN, reason, sender.getName(), -1);
+        punishment = new Punishment(playerName, uuid, ip, BAN, reason, sender.getName(), server, -1);
         PunishManager.getInstance().getMethods().callPunishEvent(punishment);
     }
 }

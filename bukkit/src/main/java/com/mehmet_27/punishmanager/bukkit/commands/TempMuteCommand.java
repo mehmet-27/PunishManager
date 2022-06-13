@@ -44,7 +44,7 @@ public class TempMuteCommand extends BaseCommand {
         long start = System.currentTimeMillis();
         long end = start + UtilsCore.convertToMillis(number, unit);
         String ip = PunishManager.getInstance().getMethods().getPlayerIp(uuid);
-        punishment = new Punishment(playerName, uuid, ip, TEMPMUTE, reason, sender.getName(), start, end, -1);
+        punishment = new Punishment(playerName, uuid, ip, TEMPMUTE, reason, sender.getName(), "ALL", start, end, -1);
         PunishManager.getInstance().getMethods().callPunishEvent(punishment);
     }
 }

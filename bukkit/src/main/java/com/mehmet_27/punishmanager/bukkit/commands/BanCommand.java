@@ -34,7 +34,7 @@ public class BanCommand extends BaseCommand {
         }
 
         String ip = PunishManager.getInstance().getMethods().getPlayerIp(uuid);
-        punishment = new Punishment(playerName, uuid, ip, BAN, reason, sender.getName(), -1);
+        punishment = new Punishment(playerName, uuid, ip, BAN, reason, sender.getName(), "ALL", -1);
         PunishManager.getInstance().getMethods().callPunishEvent(punishment);
     }
 }

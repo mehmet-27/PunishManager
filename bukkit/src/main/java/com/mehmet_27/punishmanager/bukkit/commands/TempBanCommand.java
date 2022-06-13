@@ -14,6 +14,7 @@ import org.bukkit.command.CommandSender;
 import java.util.UUID;
 import java.util.regex.Matcher;
 
+import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.BAN;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.TEMPBAN;
 
 @CommandAlias("punishmanager")
@@ -44,7 +45,7 @@ public class TempBanCommand extends BaseCommand {
         long start = System.currentTimeMillis();
         long end = start + UtilsCore.convertToMillis(number, unit);
         String ip = PunishManager.getInstance().getMethods().getPlayerIp(uuid);
-        punishment = new Punishment(playerName, uuid, ip, TEMPBAN, reason, sender.getName(), start, end, -1);
+        punishment = new Punishment(playerName, uuid, ip, TEMPBAN, reason, sender.getName(), "ALL", start, end, -1);
         PunishManager.getInstance().getMethods().callPunishEvent(punishment);
     }
 }

@@ -3,6 +3,7 @@ package com.mehmet_27.punishmanager.bungee.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
+import com.mehmet_27.punishmanager.bungee.PMBungee;
 import com.mehmet_27.punishmanager.bungee.Utils.Utils;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
@@ -11,6 +12,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.UUID;
 
+import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.BAN;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.KICK;
 
 @CommandAlias("punishmanager")
@@ -29,8 +31,14 @@ public class KickCommand extends BaseCommand {
         }
         UUID uuid = player.getUniqueId();
 
+        String server = "ALL";
+
+        if (onlinePlayer.isConnected()){
+            server = onlinePlayer.getServer().getInfo().getName();
+        }
+
         String ip = PunishManager.getInstance().getMethods().getPlayerIp(uuid);
-        Punishment punishment = new Punishment(playerName, uuid, ip, KICK, reason, sender.getName(), -1);
+        Punishment punishment = new Punishment(playerName, uuid, ip, KICK, reason, sender.getName(), server, -1);
         onlinePlayer.disconnect(Utils.getLayout(punishment));
         Utils.sendText(sender, playerName, "kick.punished");
     }

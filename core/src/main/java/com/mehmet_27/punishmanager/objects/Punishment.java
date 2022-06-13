@@ -1,7 +1,7 @@
 package com.mehmet_27.punishmanager.objects;
 
-import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.PunishManager;
+import com.mehmet_27.punishmanager.managers.ConfigManager;
 
 import java.sql.Timestamp;
 import java.util.UUID;
@@ -15,22 +15,23 @@ public class Punishment {
     private static final int MINUTE = 60;
     private final ConfigManager configManager = PunishManager.getInstance().getMethods().getConfigManager();
     private final long start, end;
-    private String playerName, ip, reason, operator;
+    private String playerName, ip, reason, operator, server;
     private PunishType punishType;
     private UUID uuid;
     private final int id;
 
-    public Punishment(String playerName, UUID uuid, String ip, PunishType punishType, String reason, String operator, int id) {
-        this(playerName, uuid, ip, punishType, reason, operator, new Timestamp(System.currentTimeMillis()).getTime(), -1, id);
+    public Punishment(String playerName, UUID uuid, String ip, PunishType punishType, String reason, String operator, String server, int id) {
+        this(playerName, uuid, ip, punishType, reason, operator, server, new Timestamp(System.currentTimeMillis()).getTime(), -1, id);
     }
 
-    public Punishment(String playerName, UUID uuid, String ip, PunishType punishType, String reason, String operator, long start, long end, int id) {
+    public Punishment(String playerName, UUID uuid, String ip, PunishType punishType, String reason, String operator, String server, long start, long end, int id) {
         this.playerName = playerName;
         this.uuid = uuid;
         this.ip = ip;
         this.punishType = punishType;
         this.reason = reason;
         this.operator = operator;
+        this.server = server;
         this.start = start;
         this.end = end;
         this.id = id;
@@ -50,6 +51,14 @@ public class Punishment {
 
     public void setOperator(String operator) {
         this.operator = operator;
+    }
+
+    public String getServer() {
+        return server;
+    }
+
+    public void setServer(String server) {
+        this.server = server;
     }
 
     public String getReason() {
@@ -155,7 +164,7 @@ public class Punishment {
                     replaceAll("%s%", seconds);
         }
         // show short
-        else if (diff % MONTH == 0){
+        else if (diff % MONTH == 0) {
             return String.format("%s", monthFormat).
                     replaceAll("%mo%", months);
         }
@@ -242,7 +251,7 @@ public class Punishment {
         }
     }
 
-    public int getId(){
+    public int getId() {
         return id;
     }
 }

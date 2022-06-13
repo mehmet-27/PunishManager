@@ -23,6 +23,7 @@ public class UtilsCore {
         return message.replace("%reason%", punishment.getReason())
                 .replace("%duration%", punishment.getDuration())
                 .replace("%operator%", punishment.getOperator())
+                .replace("%server%", punishment.getServer())
                 .replace("%player%", punishment.getPlayerName())
                 .replace("%type%", punishment.getPunishType().name())
                 .replace("%ip%", "" + punishment.getIp())

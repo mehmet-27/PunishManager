@@ -31,7 +31,7 @@ public class UnPunishCommand extends BaseCommand {
             Utils.sendText(sender, playerName, "unpunish.notPunished");
             return;
         }
-        storageManager.removeAllPunishes(punishment);
+        storageManager.removePlayerAllPunishes(punishment);
         Utils.sendText(sender, playerName, "unpunish.done");
     }
 }

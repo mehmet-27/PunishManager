@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 
 import java.util.UUID;
 
+import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.BAN;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.IPBAN;
 
 @CommandAlias("punishmanager")
@@ -34,7 +35,7 @@ public class IpBanCommand extends BaseCommand {
         }
 
         String ip = PunishManager.getInstance().getMethods().getPlayerIp(uuid);
-        punishment = new Punishment(playerName, uuid, ip, IPBAN, reason, sender.getName(), -1);
+        punishment = new Punishment(playerName, uuid, ip, IPBAN, reason, sender.getName(), "ALL", -1);
         PunishManager.getInstance().getMethods().callPunishEvent(punishment);
     }
 }

@@ -239,6 +239,9 @@ public class BungeeConfigManager implements ConfigManager {
             if (!destination.exists() && !destination.isDirectory()) {
                 try {
                     String fileString = file.toString().replace("\\", "/");
+                    if (fileString.startsWith(".")) {
+                        fileString = fileString.substring(1);
+                    }
                     if (fileString.startsWith("/")) {
                         fileString = fileString.substring(1);
                     }

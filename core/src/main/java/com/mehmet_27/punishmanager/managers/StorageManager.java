@@ -5,10 +5,13 @@ import com.mehmet_27.punishmanager.MethodInterface;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
-import com.mehmet_27.punishmanager.utils.SqlQuery;
-import com.zaxxer.hikari.HikariDataSource;
+import com.mehmet_27.punishmanager.storage.DBCore;
+import com.mehmet_27.punishmanager.storage.H2Core;
+import com.mehmet_27.punishmanager.storage.MySQLCore;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType;
@@ -17,123 +20,141 @@ import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.IPBAN;
 public class StorageManager {
 
     private final PunishManager punishManager = PunishManager.getInstance();
+    private DBCore core;
     private final MethodInterface methods = punishManager.getMethods();
-    private final HikariDataSource source = new HikariDataSource();
-    boolean mysqlEnabled;
 
     public StorageManager() {
+        initializeTables();
+        checkNewColumns();
+    }
+
+    public void initializeTables() {
         ConfigurationAdapter config = methods.getConfig();
-        String pluginName = methods.getPluginName();
-        source.setPoolName("[" + pluginName + "]" + " Hikari");
-        mysqlEnabled = methods.getConfig().getBoolean("mysql.enable");
-        methods.getLogger().info("Loading storage provider: " + getStorageProvider());
-        if (mysqlEnabled) {
-            source.setJdbcUrl("jdbc:mysql://" + config.getString("mysql.host") + ":" + config.getString("mysql.port") + "/" + config.getString("mysql.database") + "?useSSL=false&characterEncoding=utf-8");
-            source.setUsername(config.getString("mysql.username"));
-            source.setPassword(config.getString("mysql.password"));
+        if (config.getBoolean("mysql.enable")) {
+            core = new MySQLCore(config.getString("mysql.host"),
+                    config.getString("mysql.database"),
+                    config.getInteger("mysql.port"),
+                    config.getString("mysql.username"),
+                    config.getString("mysql.password"));
         } else {
-            source.setDriverClassName("org.h2.Driver");
-            source.setJdbcUrl("jdbc:h2:./plugins/" + pluginName + "/" + pluginName);
+            core = new H2Core();
         }
-        setup();
+        if (!core.existsTable("punishmanager_punishments")) {
+            methods.getLogger().info("Creating table: punishmanager_punishments");
+            String query = "CREATE TABLE IF NOT EXISTS punishmanager_punishments (" +
+                    " id BIGINT(20) NOT NULL auto_increment," +
+                    " name VARCHAR(16)," +
+                    " uuid VARCHAR(72)," +
+                    " ip VARCHAR(25)," +
+                    " reason VARCHAR(255)," +
+                    " operator VARCHAR(16)," +
+                    " type VARCHAR(16)," +
+                    " start LONGTEXT," +
+                    " end LONGTEXT," +
+                    " PRIMARY KEY (id))";
+            core.execute(query);
+        }
+        if (!core.existsTable("punishmanager_punishmenthistory")) {
+            methods.getLogger().info("Creating table: punishmanager_punishmenthistory");
+            String query = "CREATE TABLE IF NOT EXISTS punishmanager_punishmenthistory (" +
+                    " id BIGINT(20) NOT NULL auto_increment," +
+                    " name VARCHAR(16)," +
+                    " uuid VARCHAR(72)," +
+                    " ip VARCHAR(25)," +
+                    " reason VARCHAR(255)," +
+                    " operator VARCHAR(16)," +
+                    " type VARCHAR(16)," +
+                    " start LONGTEXT," +
+                    " end LONGTEXT," +
+                    " PRIMARY KEY (id))";
+            core.execute(query);
+        }
+        if (!core.existsTable("punishmanager_players")) {
+            methods.getLogger().info("Creating table: punishmanager_players");
+            String query = "CREATE TABLE IF NOT EXISTS punishmanager_players (" +
+                    " uuid VARCHAR(72) NOT NULL," +
+                    " name VARCHAR(16)," +
+                    " ip VARCHAR(25)," +
+                    " language VARCHAR(10)," +
+                    " first_login LONGTEXT NOT NULL," +
+                    " last_login LONGTEXT NOT NULL," +
+                    " PRIMARY KEY (uuid))";
+            core.execute(query);
+        }
+    }
+
+    public void checkNewColumns() {
+        core.execute(String.format("ALTER TABLE %s ADD COLUMN IF NOT EXISTS %s",
+                "punishmanager_players", "first_login LONGTEXT NOT NULL"));
+        core.execute(String.format("ALTER TABLE %s ADD COLUMN IF NOT EXISTS %s",
+                "punishmanager_players", "last_login LONGTEXT NOT NULL"));
+        core.execute(String.format("ALTER TABLE %s ADD COLUMN IF NOT EXISTS %s",
+                "punishmanager_punishments", "server LONGTEXT DEFAULT 'ALL' NOT NULL AFTER operator"));
+        core.execute(String.format("ALTER TABLE %s ADD COLUMN IF NOT EXISTS %s",
+                "punishmanager_punishmenthistory", "server LONGTEXT DEFAULT 'ALL' NOT NULL AFTER operator"));
     }
 
     public String getStorageProvider() {
-        return mysqlEnabled ? "MySQL" : "H2";
-    }
-
-    private void executeUpdate(String query) {
-        punishManager.getMethods().runAsync(() -> {
-            try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(query)) {
-                ps.executeUpdate();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-    public void setup() {
-        executeUpdate(SqlQuery.CREATE_PUNISHMENTS_TABLE.getQuery());
-        executeUpdate(SqlQuery.CREATE_PUNISHMENTHISTORY_TABLE.getQuery());
-        executeUpdate(SqlQuery.CREATE_PLAYERS_TABLE.getQuery());
-        executeUpdate(SqlQuery.ADD_COLUMN_IF_NOT_EXISTS.getQuery()
-                .replace("{0}", "punishmanager_players")
-                .replace("{1}", "first_login LONGTEXT NOT NULL"));
-        executeUpdate(SqlQuery.ADD_COLUMN_IF_NOT_EXISTS.getQuery()
-                .replace("{0}", "punishmanager_players")
-                .replace("{1}", "last_login LONGTEXT NOT NULL"));
+        return methods.getConfig().getBoolean("mysql.enable") ? "MySQL" : "H2";
     }
 
     public void addPunishToPunishments(Punishment punishment) {
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.ADD_PUNISH_TO_PUNISHMENTS.getQuery())) {
-            ps.setString(1, punishment.getPlayerName());
-            ps.setString(2, punishment.getUuid().toString());
-            ps.setString(3, punishment.getIp());
-            ps.setString(4, punishment.getReason());
-            ps.setString(5, punishment.getOperator());
-            ps.setString(6, punishment.getPunishType().toString());
-            ps.setString(7, String.valueOf(punishment.getStart()));
-            ps.setString(8, String.valueOf(punishment.getEnd()));
-            punishManager.debug("Method: addPunishToPunishments, Statement: " + ps);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        String query = String.format("INSERT INTO punishmanager_punishments (name, uuid, ip, reason, operator, type, start, end) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s')",
+                punishment.getPlayerName(),
+                punishment.getUuid().toString(),
+                punishment.getIp(),
+                punishment.getReason(),
+                punishment.getOperator(),
+                punishment.getPunishType().toString(),
+                punishment.getStart(),
+                punishment.getEnd());
+        core.executeUpdateAsync(query);
     }
 
     public void addPunishToHistory(Punishment punishment) {
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.ADD_PUNISH_TO_PUNISHMENTHISTORY.getQuery())) {
-            ps.setString(1, punishment.getPlayerName());
-            ps.setString(2, punishment.getUuid().toString());
-            ps.setString(3, punishment.getIp());
-            ps.setString(4, punishment.getReason());
-            ps.setString(5, punishment.getOperator());
-            ps.setString(6, punishment.getPunishType().toString());
-            ps.setString(7, String.valueOf(punishment.getStart()));
-            ps.setString(8, String.valueOf(punishment.getEnd()));
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        String query = String.format("INSERT INTO punishmanager_punishmenthistory (name, uuid, ip, reason, operator, type, start, end) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s')",
+                punishment.getPlayerName(),
+                punishment.getUuid().toString(),
+                punishment.getIp(),
+                punishment.getReason(),
+                punishment.getOperator(),
+                punishment.getPunishType().toString(),
+                punishment.getStart(),
+                punishment.getEnd());
+        core.executeUpdateAsync(query);
     }
 
     public void unPunishPlayer(Punishment punishment) {
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.DELETE_PUNISHMENT_WITH_TYPE.getQuery())) {
-            ps.setString(1, punishment.getUuid().toString());
-            ps.setString(2, punishment.getPunishType().toString());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        String query = String.format("DELETE FROM punishmanager_punishments WHERE uuid = '%s' and type = '%s'",
+                punishment.getUuid().toString(),
+                punishment.getPunishType().toString());
+        core.executeUpdateAsync(query);
         if (punishment.getPunishType().equals(IPBAN)) {
             PunishManager.getInstance().getBannedIps().remove(punishment.getIp());
         }
     }
 
-    public void removeAllPunishes(Punishment punishment) {
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.DELETE_PUNISHMENT.getQuery())) {
-            ps.setString(1, punishment.getUuid().toString());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public void removePlayerAllPunishes(Punishment punishment) {
+        String query = String.format("DELETE FROM punishmanager_punishments WHERE uuid = '%s'", punishment.getUuid().toString());
+        core.executeUpdateAsync(query);
     }
 
     public Punishment getPunishment(UUID wantedPlayer) {
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.GET_PUNISHMENT.getQuery())) {
-            ps.setString(1, wantedPlayer.toString());
-            ResultSet result = ps.executeQuery();
+        String query = String.format("SELECT * FROM punishmanager_punishments WHERE uuid = '%s'", wantedPlayer);
+        try (Connection connection = core.getDataSource().getConnection()) {
+            ResultSet result = connection.createStatement().executeQuery(query);
             if (result.next()) {
                 String playerName = result.getString("name");
                 String uuid = result.getString("uuid");
                 String ip = result.getString("ip");
                 String reason = result.getString("reason");
                 String operator = result.getString("operator");
+                String server = result.getString("server");
                 long start = result.getLong("start");
                 long end = result.getLong("end");
                 PunishType punishType = PunishType.valueOf(result.getString("type"));
                 int id = result.getInt("id");
-                return new Punishment(playerName, UUID.fromString(uuid), ip, punishType, reason, operator, start, end, id);
+                return new Punishment(playerName, UUID.fromString(uuid), ip, punishType, reason, operator, server, start, end, id);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -142,20 +163,21 @@ public class StorageManager {
     }
 
     public Punishment getPunishmentWithId(int punishmentId) {
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.GET_PUNISHMENT_WITH_ID.getQuery())) {
-            ps.setInt(1, punishmentId);
-            ResultSet result = ps.executeQuery();
+        String query = String.format("SELECT * FROM punishmanager_punishments WHERE id = '%s'", punishmentId);
+        try (Connection connection = core.getDataSource().getConnection()) {
+            ResultSet result = connection.createStatement().executeQuery(query);
             if (result.next()) {
                 String playerName = result.getString("name");
                 String uuid = result.getString("uuid");
                 String ip = result.getString("ip");
                 String reason = result.getString("reason");
                 String operator = result.getString("operator");
+                String server = result.getString("server");
                 long start = result.getLong("start");
                 long end = result.getLong("end");
                 PunishType punishType = PunishType.valueOf(result.getString("type"));
                 int id = result.getInt("id");
-                return new Punishment(playerName, UUID.fromString(uuid), ip, punishType, reason, operator, start, end, id);
+                return new Punishment(playerName, UUID.fromString(uuid), ip, punishType, reason, operator, server, start, end, id);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -164,9 +186,9 @@ public class StorageManager {
     }
 
     public OfflinePlayer getOfflinePlayer(UUID wantedPlayer) {
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.SELECT_PLAYER_WITH_UUID.getQuery())) {
-            ps.setString(1, wantedPlayer.toString());
-            ResultSet result = ps.executeQuery();
+        String query = String.format("SELECT * FROM punishmanager_players WHERE uuid = '%s'", wantedPlayer);
+        try (Connection connection = core.getDataSource().getConnection()) {
+            ResultSet result = connection.createStatement().executeQuery(query);
             if (result.next()) {
                 UUID uuid = UUID.fromString(result.getString("uuid"));
                 String playerName = result.getString("name");
@@ -182,8 +204,9 @@ public class StorageManager {
     }
 
     public Map<String, OfflinePlayer> getAllOfflinePlayers() {
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.SELECT_ALL_PLAYERS.getQuery())) {
-            ResultSet result = ps.executeQuery();
+        String query = "SELECT * FROM punishmanager_players";
+        try (Connection connection = core.getDataSource().getConnection()) {
+            ResultSet result = connection.createStatement().executeQuery(query);
             Map<String, OfflinePlayer> offlinePlayers = new HashMap<>();
             while (result.next()) {
                 UUID uuid = UUID.fromString(result.getString("uuid"));
@@ -210,21 +233,22 @@ public class StorageManager {
     }
 
     public Punishment getPunishment(UUID playerUuid, String type) {
+        String query = String.format("SELECT * FROM punishmanager_punishments WHERE uuid = '%s'", playerUuid.toString());
         List<Punishment> punishments = new ArrayList<>();
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.GET_PUNISHMENT.getQuery())) {
-            ps.setString(1, playerUuid.toString());
-            ResultSet result = ps.executeQuery();
+        try (Connection connection = core.getDataSource().getConnection()) {
+            ResultSet result = connection.createStatement().executeQuery(query);
             while (result.next()) {
                 String playerName = result.getString("name");
                 String uuid = result.getString("uuid");
                 String ip = result.getString("ip");
                 String reason = result.getString("reason");
                 String operator = result.getString("operator");
+                String server = result.getString("server");
                 long start = result.getLong("start");
                 long end = result.getLong("end");
                 int id = result.getInt("id");
                 PunishType punishType = PunishType.valueOf(result.getString("type"));
-                punishments.add(new Punishment(playerName, UUID.fromString(uuid), ip, punishType, reason, operator, start, end, id));
+                punishments.add(new Punishment(playerName, UUID.fromString(uuid), ip, punishType, reason, operator, server, start, end, id));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -237,10 +261,10 @@ public class StorageManager {
         return null;
     }
 
-    public boolean isLoggedServer(UUID wantedPlayer) {
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.SELECT_PLAYER_WITH_UUID.getQuery())) {
-            ps.setString(1, wantedPlayer.toString());
-            ResultSet result = ps.executeQuery();
+    public Boolean isLoggedServer(UUID wantedPlayer) {
+        String query = String.format("SELECT * FROM punishmanager_players WHERE uuid = '%s'", wantedPlayer);
+        try (Connection connection = core.getDataSource().getConnection()) {
+            ResultSet result = connection.createStatement().executeQuery(query);
             if (result.next()) {
                 return true;
             }
@@ -251,9 +275,10 @@ public class StorageManager {
     }
 
     public List<String> getBannedIps() {
+        String query = "SELECT * FROM punishmanager_punishments";
         List<String> ips = new ArrayList<>();
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.SELECT_ALL_PUNISHMENTS.getQuery())) {
-            ResultSet result = ps.executeQuery();
+        try (Connection connection = core.getDataSource().getConnection()) {
+            ResultSet result = connection.createStatement().executeQuery(query);
             if (result.next()) {
                 if (result.getString("type").equals("IPBAN")) {
                     ips.add(result.getString("ip"));
@@ -266,9 +291,10 @@ public class StorageManager {
     }
 
     public void removeAllExpiredPunishes() {
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.SELECT_ALL_PUNISHMENTS.getQuery())) {
+        String query = "SELECT * FROM punishmanager_punishments";
+        try (Connection connection = core.getDataSource().getConnection()) {
+            ResultSet result = connection.createStatement().executeQuery(query);
             int deleted = 0;
-            ResultSet result = ps.executeQuery();
             while (result.next()) {
                 UUID playerUuid = UUID.fromString(result.getString("uuid"));
                 Punishment punishment = getPunishment(playerUuid);
@@ -288,9 +314,10 @@ public class StorageManager {
     }
 
     public int getPunishmentsCount() {
+        String query = "SELECT COUNT(*) FROM punishmanager_punishments";
         int count = 0;
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT COUNT(*) FROM `punishmanager_punishments`")) {
-            ResultSet result = ps.executeQuery();
+        try (Connection connection = core.getDataSource().getConnection()) {
+            ResultSet result = connection.createStatement().executeQuery(query);
             result.next();
             count = result.getInt(1);
             return count;
@@ -301,68 +328,53 @@ public class StorageManager {
     }
 
     public void addPlayer(OfflinePlayer player) {
-        String ip = player.getPlayerIp();
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.ADD_PLAYER_TO_PLAYERS_TABLE.getQuery())) {
-            ps.setString(1, player.getUniqueId().toString());
-            ps.setString(2, player.getName());
-            ps.setString(3, ip);
-            ps.setString(4, methods.getConfigManager().getDefaultLocale().toString());
-            ps.setString(5, String.valueOf(System.currentTimeMillis()));
-            ps.setString(6, String.valueOf(System.currentTimeMillis()));
-            ps.executeUpdate();
-            punishManager.debug(String.format("%s has been successfully added to the database.", player.getName()));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        String query = String.format("INSERT INTO punishmanager_players ( uuid, name, ip, language, first_login, last_login) VALUES ('%s','%s','%s','%s','%s','%s')",
+                player.getUniqueId().toString(),
+                player.getName(),
+                player.getPlayerIp(),
+                methods.getConfigManager().getDefaultLocale().toString(),
+                System.currentTimeMillis(),
+                System.currentTimeMillis());
+        core.executeUpdateAsync(query);
+        punishManager.debug(String.format("%s has been successfully added to the database.", player.getName()));
     }
 
     public void updatePlayerName(OfflinePlayer player) {
+        String query = String.format("UPDATE punishmanager_players SET name = '%s' WHERE uuid = '%s'",
+                player.getName(),
+                player.getUniqueId().toString());
+        core.executeUpdateAsync(query);
         String oldName = PunishManager.getInstance().getOfflinePlayers().get(player.getName()).getName();
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.UPDATE_PLAYER_NAME.getQuery())) {
-            ps.setString(1, player.getName());
-            ps.setString(2, player.getUniqueId().toString());
-            punishManager.debug(String.format("Update player name: %s -> %s", oldName, player.getName()));
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        punishManager.debug(String.format("Update player name: %s -> %s", oldName, player.getName()));
     }
 
     public void updatePlayerLastLogin(UUID uuid) {
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.UPDATE_PLAYER_LAST_LOGIN.getQuery())) {
-            ps.setLong(1, System.currentTimeMillis());
-            ps.setString(2, uuid.toString());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        String query = String.format("UPDATE punishmanager_players SET last_login = '%s' WHERE uuid = '%s'",
+                System.currentTimeMillis(),
+                uuid.toString());
+        core.executeUpdateAsync(query);
     }
 
     public void updatePlayerIp(OfflinePlayer player) {
         String newIp = player.getPlayerIp();
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.UPDATE_PLAYER_IP.getQuery())) {
-            ps.setString(1, newIp);
-            ps.setString(2, player.getUniqueId().toString());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        String query = String.format("UPDATE punishmanager_players SET ip = '%s' WHERE uuid = '%s'",
+                newIp,
+                player.getUniqueId().toString());
+        core.executeUpdateAsync(query);
     }
 
     public void updateLanguage(UUID uuid, Locale locale) {
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.UPDATE_PLAYER_LOCALE.getQuery())) {
-            ps.setString(1, locale.toString());
-            ps.setString(2, uuid.toString());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        String query = String.format("UPDATE punishmanager_players SET language = '%s' WHERE uuid = '%s'",
+                locale.toString(),
+                uuid.toString());
+        core.executeUpdateAsync(query);
     }
 
     public List<String> getAllLoggedNames() {
+        String query = "SELECT name FROM punishmanager_players";
         List<String> names = new ArrayList<>();
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.GET_ALL_LOGGED_NAMES.getQuery())) {
-            ResultSet result = ps.executeQuery();
+        try (Connection connection = core.getDataSource().getConnection()) {
+            ResultSet result = connection.createStatement().executeQuery(query);
             while (result.next()) {
                 names.add(result.getString("name"));
             }
@@ -375,20 +387,22 @@ public class StorageManager {
     }
 
     public List<Punishment> getAllPunishments() {
+        String query = "SELECT * FROM punishmanager_punishments";
         List<Punishment> punishments = new ArrayList<>();
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.SELECT_ALL_PUNISHMENTS.getQuery())) {
-            ResultSet result = ps.executeQuery();
+        try (Connection connection = core.getDataSource().getConnection()) {
+            ResultSet result = connection.createStatement().executeQuery(query);
             while (result.next()) {
                 String playerName = result.getString("name");
                 String uuid = result.getString("uuid");
                 String ip = result.getString("ip");
                 String reason = result.getString("reason");
                 String operator = result.getString("operator");
+                String server = result.getString("server");
                 long start = result.getLong("start");
                 long end = result.getLong("end");
                 int id = result.getInt("id");
                 PunishType punishType = PunishType.valueOf(result.getString("type"));
-                Punishment punishment = new Punishment(playerName, UUID.fromString(uuid), ip, punishType, reason, operator, start, end, id);
+                Punishment punishment = new Punishment(playerName, UUID.fromString(uuid), ip, punishType, reason, operator, server, start, end, id);
                 if (!punishment.isExpired()) {
                     punishments.add(punishment);
                 }
@@ -400,12 +414,9 @@ public class StorageManager {
     }
 
     public void updatePunishmentReason(int punishmentId, String newReason) {
-        try (Connection connection = source.getConnection(); PreparedStatement ps = connection.prepareStatement(SqlQuery.UPDATE_PUNISHMENT_REASON.getQuery())) {
-            ps.setString(1, newReason);
-            ps.setInt(2, punishmentId);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        String query = String.format("UPDATE punishmanager_punishments SET reason = '%s' WHERE id = '%s'",
+                newReason,
+                punishmentId);
+        core.executeUpdateAsync(query);
     }
 }

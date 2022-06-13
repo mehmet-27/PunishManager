@@ -240,7 +240,10 @@ public class BukkitConfigManager implements ConfigManager {
             if (!destination.exists() && !destination.isDirectory()) {
                 try {
                     String fileString = file.toString().replace("\\", "/");
-                    if (fileString.startsWith("/")){
+                    if (fileString.startsWith(".")) {
+                        fileString = fileString.substring(1);
+                    }
+                    if (fileString.startsWith("/")) {
                         fileString = fileString.substring(1);
                     }
                     InputStream inputStream = PunishManager.getInstance().getResourceStream(fileString);
