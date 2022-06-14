@@ -6,7 +6,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 public class OfflinePlayer {
-    private final Locale defaultLocale = PunishManager.getInstance().getMethods().getConfigManager().getDefaultLocale();
+    private final Locale defaultLocale = PunishManager.getInstance().getConfigManager().getDefaultLocale();
     private String name, playerIp;
     private UUID uuid;
     private Locale locale;

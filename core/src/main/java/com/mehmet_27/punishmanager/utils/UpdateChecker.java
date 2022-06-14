@@ -2,8 +2,9 @@ package com.mehmet_27.punishmanager.utils;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.mehmet_27.punishmanager.ConfigurationAdapter;
-import com.mehmet_27.punishmanager.MethodInterface;
+import com.mehmet_27.punishmanager.MethodProvider;
+import com.mehmet_27.punishmanager.PunishManager;
+import com.mehmet_27.punishmanager.configuration.Configuration;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,14 +13,14 @@ import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 public class UpdateChecker {
-    private final MethodInterface methods;
-    private final ConfigurationAdapter config;
+    private final MethodProvider methods;
+    private final Configuration config;
     private final String currentVersion;
     private String latestVersion;
 
-    public UpdateChecker(MethodInterface methods) {
+    public UpdateChecker(MethodProvider methods) {
         this.methods = methods;
-        this.config = methods.getConfig();
+        this.config = PunishManager.getInstance().getConfigManager().getConfig();
         this.currentVersion = methods.getPluginVersion();
     }
 

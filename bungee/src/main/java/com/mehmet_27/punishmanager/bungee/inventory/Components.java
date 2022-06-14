@@ -1,7 +1,7 @@
 package com.mehmet_27.punishmanager.bungee.inventory;
 
-import com.mehmet_27.punishmanager.bungee.Utils.Paginator;
 import com.mehmet_27.punishmanager.utils.Messages;
+import com.mehmet_27.punishmanager.utils.Paginator;
 import dev.simplix.protocolize.api.ClickType;
 import dev.simplix.protocolize.data.ItemType;
 import net.md_5.bungee.api.connection.ProxiedPlayer;

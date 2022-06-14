@@ -3,8 +3,7 @@ package com.mehmet_27.punishmanager.bukkit.utils;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bukkit.PMBukkit;
 import com.mehmet_27.punishmanager.objects.Punishment;
-import com.mehmet_27.punishmanager.utils.UtilsCore;
-import org.bukkit.ChatColor;
+import com.mehmet_27.punishmanager.utils.Utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -12,28 +11,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.function.Function;
 
-public class Utils {
-    public static String color(String message) {
-        return ChatColor.translateAlternateColorCodes('&', message);
-    }
+public class BukkitUtils {
 
-    public static Locale stringToLocale(String loc){
-        String[] localeStr = loc.split("_");
-        return new Locale(localeStr[0], localeStr[1]);
-    }
-
-    public static boolean isPluginEnabled(String pluginName){
+    public static boolean isPluginEnabled(String pluginName) {
         JavaPlugin plugin = (JavaPlugin) PMBukkit.getInstance().getServer().getPluginManager().getPlugin(pluginName);
         return plugin != null;
-    }
-
-    public static boolean isInteger(String value){
-        try {
-            Integer.parseInt(value);
-            return true;
-        } catch (NumberFormatException e){
-            return false;
-        }
     }
 
     public static void sendText(CommandSender sender, String path) {
@@ -57,7 +39,7 @@ public class Utils {
         for (String message : messages) {
             message = message.replace("%prefix%", PunishManager.getInstance().getConfigManager().getMessage("main.prefix", punishment.getPlayerName()));
             // Replace general punishment placeholders
-            message = UtilsCore.replacePunishmentPlaceholders(message, punishment);
+            message = Utils.replacePunishmentPlaceholders(message, punishment);
             layout = layout.concat(message + "\n");
         }
         return layout;

@@ -6,15 +6,15 @@ import com.mehmet_27.punishmanager.bukkit.listeners.ChatListener;
 import com.mehmet_27.punishmanager.bukkit.listeners.CommandListener;
 import com.mehmet_27.punishmanager.bukkit.listeners.ConnectionListener;
 import com.mehmet_27.punishmanager.bukkit.listeners.PunishListener;
-import com.mehmet_27.punishmanager.bukkit.managers.BukkitConfigManager;
 import com.mehmet_27.punishmanager.bukkit.managers.PMBukkitCommandManager;
+import com.mehmet_27.punishmanager.managers.ConfigManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class PMBukkit extends JavaPlugin {
 
     private static PMBukkit instance;
 
-    private BukkitConfigManager configManager;
+    private ConfigManager configManager;
     private PMBukkitCommandManager commandManager;
 
     public static PMBukkit getInstance() {
@@ -24,8 +24,8 @@ public class PMBukkit extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        configManager = new BukkitConfigManager(this);
         PunishManager.getInstance().onEnable(new BukkitMethods());
+        configManager = PunishManager.getInstance().getConfigManager();
         commandManager = new PMBukkitCommandManager(this);
 
         getServer().getPluginManager().registerEvents(new ConnectionListener(this), this);
@@ -40,7 +40,7 @@ public class PMBukkit extends JavaPlugin {
         PunishManager.getInstance().onDisable();
     }
 
-    public BukkitConfigManager getConfigManager() {
+    public ConfigManager getConfigManager() {
         return configManager;
     }
 

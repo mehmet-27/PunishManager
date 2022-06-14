@@ -3,8 +3,7 @@ package com.mehmet_27.punishmanager.bungee.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.bungee.PMBungee;
-import com.mehmet_27.punishmanager.bungee.Utils.Utils;
+import com.mehmet_27.punishmanager.bungee.Utils.BungeeUtils;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import net.md_5.bungee.api.CommandSender;
@@ -12,7 +11,6 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.UUID;
 
-import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.BAN;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.KICK;
 
 @CommandAlias("punishmanager")
@@ -26,7 +24,7 @@ public class KickCommand extends BaseCommand {
         String playerName = player.getName();
         ProxiedPlayer onlinePlayer = (ProxiedPlayer) PunishManager.getInstance().getMethods().getPlayer(playerName);
         if (onlinePlayer == null || !onlinePlayer.isConnected()) {
-            com.mehmet_27.punishmanager.bungee.Utils.Utils.sendText(sender, playerName, "kick.notOnline");
+            BungeeUtils.sendText(sender, playerName, "kick.notOnline");
             return;
         }
         UUID uuid = player.getUniqueId();
@@ -39,7 +37,7 @@ public class KickCommand extends BaseCommand {
 
         String ip = PunishManager.getInstance().getMethods().getPlayerIp(uuid);
         Punishment punishment = new Punishment(playerName, uuid, ip, KICK, reason, sender.getName(), server, -1);
-        onlinePlayer.disconnect(Utils.getLayout(punishment));
-        Utils.sendText(sender, playerName, "kick.punished");
+        onlinePlayer.disconnect(BungeeUtils.getLayout(punishment));
+        BungeeUtils.sendText(sender, playerName, "kick.punished");
     }
 }

@@ -1,12 +1,12 @@
 package com.mehmet_27.punishmanager.objects;
 
-import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.PunishManager;
+import com.mehmet_27.punishmanager.managers.ConfigManager;
 
 import java.util.Locale;
 
 public class PlayerLocale {
-    private final ConfigManager configManager = PunishManager.getInstance().getMethods().getConfigManager();
+    private final ConfigManager configManager = PunishManager.getInstance().getConfigManager();
     private final String playerName;
 
     public PlayerLocale(String playerName) {

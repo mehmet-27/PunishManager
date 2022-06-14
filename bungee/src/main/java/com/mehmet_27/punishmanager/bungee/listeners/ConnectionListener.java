@@ -2,11 +2,10 @@ package com.mehmet_27.punishmanager.bungee.listeners;
 
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bungee.PMBungee;
-import com.mehmet_27.punishmanager.bungee.Utils.Utils;
+import com.mehmet_27.punishmanager.bungee.Utils.BungeeUtils;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
-import com.mehmet_27.punishmanager.utils.UtilsCore;
 import net.md_5.bungee.api.connection.PendingConnection;
 import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
@@ -60,11 +59,11 @@ public class ConnectionListener implements Listener {
         }
         if (bannedIps.contains(player.getPlayerIp())) {
             PunishManager.getInstance().debug("This player's IP address is banned: " + player.getName() + " IP: " + player.getPlayerIp());
-            event.setCancelReason(Utils.getLayout(punishment));
+            event.setCancelReason(BungeeUtils.getLayout(punishment));
             event.setCancelled(true);
             return;
         }
-        event.setCancelReason(Utils.getLayout(punishment));
+        event.setCancelReason(BungeeUtils.getLayout(punishment));
         event.setCancelled(true);
     }
 

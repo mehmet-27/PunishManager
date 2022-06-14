@@ -1,6 +1,5 @@
 package com.mehmet_27.punishmanager;
 
-import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.objects.Platform;
 import com.mehmet_27.punishmanager.objects.Punishment;
 
@@ -9,7 +8,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-public interface MethodInterface {
+public interface MethodProvider {
 
     Object getPlugin();
 
@@ -28,10 +27,6 @@ public interface MethodInterface {
     Object getPlayer(UUID uuid);
 
     String getPlayerIp(UUID uuid);
-
-    ConfigManager getConfigManager();
-
-    ConfigurationAdapter getConfig();
 
     void sendMessage(Object player, String message);
 

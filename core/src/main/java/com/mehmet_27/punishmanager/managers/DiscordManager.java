@@ -1,10 +1,10 @@
 package com.mehmet_27.punishmanager.managers;
 
-import com.mehmet_27.punishmanager.ConfigurationAdapter;
-import com.mehmet_27.punishmanager.MethodInterface;
+import com.mehmet_27.punishmanager.MethodProvider;
 import com.mehmet_27.punishmanager.PunishManager;
+import com.mehmet_27.punishmanager.configuration.Configuration;
 import com.mehmet_27.punishmanager.objects.Punishment;
-import com.mehmet_27.punishmanager.utils.UtilsCore;
+import com.mehmet_27.punishmanager.utils.Utils;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -19,9 +19,9 @@ import java.util.Locale;
 
 public class DiscordManager {
     private final PunishManager punishManager = PunishManager.getInstance();
-    private final MethodInterface methods = punishManager.getMethods();
-    private final ConfigManager configManager = methods.getConfigManager();
-    private final ConfigurationAdapter config = configManager.getConfig();
+    private final MethodProvider methods = punishManager.getMethods();
+    private final ConfigManager configManager = punishManager.getConfigManager();
+    private final Configuration config = configManager.getConfig();
     private final boolean isEnabledInConfig;
     private JDA api;
     private TextChannel announceChannel;
@@ -61,7 +61,7 @@ public class DiscordManager {
         if (!(config.getBoolean("discord.punish-announce.enable") && config.getBoolean(path))) {
             return;
         }
-        String json = UtilsCore.replacePunishmentPlaceholders(configManager.getEmbed(punishment.getPunishType().name()), punishment);
+        String json = Utils.replacePunishmentPlaceholders(configManager.getEmbed(punishment.getPunishType().name()), punishment);
         announceChannel.sendMessageEmbeds(((JDAImpl) api).getEntityBuilder().createMessageEmbed(DataObject.fromJson(json))).queue();
     }
 

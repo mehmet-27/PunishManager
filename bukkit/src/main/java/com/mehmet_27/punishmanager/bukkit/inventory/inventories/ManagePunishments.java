@@ -3,11 +3,11 @@ package com.mehmet_27.punishmanager.bukkit.inventory.inventories;
 import com.cryptomorin.xseries.XMaterial;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bukkit.inventory.*;
-import com.mehmet_27.punishmanager.bukkit.utils.Paginator;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.utils.Messages;
-import com.mehmet_27.punishmanager.utils.UtilsCore;
+import com.mehmet_27.punishmanager.utils.Paginator;
+import com.mehmet_27.punishmanager.utils.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 
@@ -52,7 +52,7 @@ public class ManagePunishments extends UIFrame {
 
     private void addPunish(int slot, Punishment punishment) {
         List<String> lore = Messages.GUI_MANAGEPUNISHMENTS_PUNISHMENT_LORE.getStringList(getViewer().getName())
-                .stream().map(string -> UtilsCore.replacePunishmentPlaceholders(string, punishment))
+                .stream().map(string -> Utils.replacePunishmentPlaceholders(string, punishment))
                 .collect(Collectors.toList());
         UIComponent component = new UIComponentImpl.Builder(XMaterial.PAPER)
                 .name(Messages.GUI_MANAGEPUNISHMENTS_PUNISHMENT_NAME.getString(getViewer().getName())

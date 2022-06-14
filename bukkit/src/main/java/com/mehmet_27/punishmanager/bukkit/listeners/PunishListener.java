@@ -3,11 +3,11 @@ package com.mehmet_27.punishmanager.bukkit.listeners;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bukkit.PMBukkit;
 import com.mehmet_27.punishmanager.bukkit.events.PunishEvent;
-import com.mehmet_27.punishmanager.bukkit.managers.BukkitConfigManager;
-import com.mehmet_27.punishmanager.bukkit.utils.Utils;
+import com.mehmet_27.punishmanager.bukkit.utils.BukkitUtils;
+import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.managers.DiscordManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
-import com.mehmet_27.punishmanager.utils.UtilsCore;
+import com.mehmet_27.punishmanager.utils.Utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,7 +21,7 @@ public class PunishListener implements Listener {
 
     private final PMBukkit plugin;
     private final PunishManager punishManager = PunishManager.getInstance();
-    private final BukkitConfigManager configManager;
+    private final ConfigManager configManager;
     private final DiscordManager discordManager = punishManager.getDiscordManager();
 
     public PunishListener(PMBukkit plugin) {
@@ -45,23 +45,23 @@ public class PunishListener implements Listener {
 
         //Sending successfully punished message to operator
         String path = punishment.getPunishType().name().toLowerCase(Locale.ENGLISH) + ".punished";
-        Utils.sendText(operator, punishment.getPlayerName(), path);
+        BukkitUtils.sendText(operator, punishment.getPlayerName(), path);
 
         //Sends the punish message
         Player player = plugin.getServer().getPlayer(punishment.getUuid());
 
         if (player != null && player.isOnline()) {
             if (punishment.isBanned()) {
-                player.kickPlayer(Utils.getLayout(punishment));
+                player.kickPlayer(BukkitUtils.getLayout(punishment));
             } else if (punishment.isMuted()) {
-                player.sendMessage(Utils.getLayout(punishment));
+                player.sendMessage(BukkitUtils.getLayout(punishment));
             }
         }
 
         //Sending to punish announcement
         String announcement = event.getAnnounceMessage();
         if (announcement == null || announcement.isEmpty()) return;
-        announcement = UtilsCore.replacePunishmentPlaceholders(announcement, punishment);
+        announcement = Utils.replacePunishmentPlaceholders(announcement, punishment);
         plugin.getServer().broadcastMessage(announcement);
 
         discordManager.sendEmbed(punishment);

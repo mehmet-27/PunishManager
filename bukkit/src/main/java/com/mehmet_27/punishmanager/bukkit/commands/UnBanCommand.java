@@ -2,7 +2,7 @@ package com.mehmet_27.punishmanager.bukkit.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
-import com.mehmet_27.punishmanager.bukkit.utils.Utils;
+import com.mehmet_27.punishmanager.bukkit.utils.BukkitUtils;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
@@ -26,11 +26,11 @@ public class UnBanCommand extends BaseCommand {
         Punishment punishment = storageManager.getBan(uuid);
 
         if (punishment == null || !punishment.isBanned()) {
-            Utils.sendText(sender, playerName, "unban.notPunished");
+            BukkitUtils.sendText(sender, playerName, "unban.notPunished");
             return;
         }
 
         storageManager.unPunishPlayer(punishment);
-        Utils.sendText(sender, playerName, "unban.done");
+        BukkitUtils.sendText(sender, playerName, "unban.done");
     }
 }

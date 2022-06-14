@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 public class PunishManager {
     private static PunishManager instance = null;
 
-    private MethodInterface methods;
+    private MethodProvider methods;
 
     private ConfigManager configManager;
     private DependencyManager dependencyManager;
@@ -32,10 +32,10 @@ public class PunishManager {
         return instance == null ? instance = new PunishManager() : instance;
     }
 
-    public void onEnable(MethodInterface methodInterface) {
-        this.methods = methodInterface;
+    public void onEnable(MethodProvider methodProvider) {
+        this.methods = methodProvider;
         methods.getLogger().info("Platform: " + methods.getPlatform().getFriendlyName());
-        this.configManager = methods.getConfigManager();
+        this.configManager = new ConfigManager(this);
         configManager.setup();
         this.dependencyManager = new DependencyManager();
         // Download protocolize-bungeecord.jar
@@ -48,7 +48,7 @@ public class PunishManager {
         this.bannedIps = storageManager.getBannedIps();
         this.discordManager = new DiscordManager();
 
-        methodInterface.setupMetrics();
+        methodProvider.setupMetrics();
 
         new UpdateChecker(methods).start();
     }
@@ -60,7 +60,7 @@ public class PunishManager {
         discordManager.disconnectBot();
     }
 
-    public MethodInterface getMethods() {
+    public MethodProvider getMethods() {
         return methods;
     }
 
@@ -101,7 +101,7 @@ public class PunishManager {
     }
 
     public void debug(String message) {
-        if (!methods.getConfig().getBoolean("debug", false)) return;
+        if (!configManager.getConfig().getBoolean("debug", false)) return;
         methods.getLogger().info(message);
     }
 }

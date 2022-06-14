@@ -1,8 +1,8 @@
 package com.mehmet_27.punishmanager.managers;
 
-import com.mehmet_27.punishmanager.ConfigurationAdapter;
-import com.mehmet_27.punishmanager.MethodInterface;
+import com.mehmet_27.punishmanager.MethodProvider;
 import com.mehmet_27.punishmanager.PunishManager;
+import com.mehmet_27.punishmanager.configuration.Configuration;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.storage.DBCore;
@@ -21,7 +21,7 @@ public class StorageManager {
 
     private final PunishManager punishManager = PunishManager.getInstance();
     private DBCore core;
-    private final MethodInterface methods = punishManager.getMethods();
+    private final MethodProvider methods = punishManager.getMethods();
 
     public StorageManager() {
         initializeTables();
@@ -29,11 +29,11 @@ public class StorageManager {
     }
 
     public void initializeTables() {
-        ConfigurationAdapter config = methods.getConfig();
+        Configuration config = punishManager.getConfigManager().getConfig();
         if (config.getBoolean("mysql.enable")) {
             core = new MySQLCore(config.getString("mysql.host"),
                     config.getString("mysql.database"),
-                    config.getInteger("mysql.port"),
+                    config.getInt("mysql.port"),
                     config.getString("mysql.username"),
                     config.getString("mysql.password"));
         } else {
@@ -95,7 +95,7 @@ public class StorageManager {
     }
 
     public String getStorageProvider() {
-        return methods.getConfig().getBoolean("mysql.enable") ? "MySQL" : "H2";
+        return punishManager.getConfigManager().getConfig().getBoolean("mysql.enable") ? "MySQL" : "H2";
     }
 
     public void addPunishToPunishments(Punishment punishment) {
@@ -332,7 +332,7 @@ public class StorageManager {
                 player.getUniqueId().toString(),
                 player.getName(),
                 player.getPlayerIp(),
-                methods.getConfigManager().getDefaultLocale().toString(),
+                punishManager.getConfigManager().getDefaultLocale().toString(),
                 System.currentTimeMillis(),
                 System.currentTimeMillis());
         core.executeUpdateAsync(query);

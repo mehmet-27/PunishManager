@@ -3,39 +3,19 @@ package com.mehmet_27.punishmanager.bungee.Utils;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bungee.PMBungee;
 import com.mehmet_27.punishmanager.objects.Punishment;
-import com.mehmet_27.punishmanager.utils.UtilsCore;
-import net.md_5.bungee.api.ChatColor;
+import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Function;
 
-public class Utils {
-    public static String color(String message) {
-        return ChatColor.translateAlternateColorCodes('&', message);
-    }
-
-    public static Locale stringToLocale(String loc){
-        String[] localeStr = loc.split("_");
-        return new Locale(localeStr[0], localeStr[1]);
-    }
-
-    public static boolean isPluginEnabled(String pluginName){
+public class BungeeUtils {
+    public static boolean isPluginEnabled(String pluginName) {
         Plugin plugin = PMBungee.getInstance().getProxy().getPluginManager().getPlugin(pluginName);
         return plugin != null;
-    }
-
-    public static boolean isInteger(String value){
-        try {
-            Integer.parseInt(value);
-            return true;
-        } catch (NumberFormatException e){
-            return false;
-        }
     }
 
     public static void sendText(CommandSender sender, String path) {
@@ -59,7 +39,7 @@ public class Utils {
         for (String message : messages) {
             message = message.replace("%prefix%", PunishManager.getInstance().getConfigManager().getMessage("main.prefix", punishment.getPlayerName()));
             // Replace general punishment placeholders
-            message = UtilsCore.replacePunishmentPlaceholders(message, punishment);
+            message = Utils.replacePunishmentPlaceholders(message, punishment);
             layout.addExtra(message + "\n");
         }
         return layout;

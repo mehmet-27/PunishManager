@@ -4,11 +4,11 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.bukkit.utils.Utils;
+import com.mehmet_27.punishmanager.bukkit.utils.BukkitUtils;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
-import com.mehmet_27.punishmanager.utils.UtilsCore;
+import com.mehmet_27.punishmanager.utils.Utils;
 import org.bukkit.command.CommandSender;
 
 import java.util.UUID;
@@ -32,17 +32,17 @@ public class TempMuteCommand extends BaseCommand {
 
         Punishment punishment = storageManager.getMute(uuid);
         if (punishment != null && punishment.isMuted()) {
-            Utils.sendText(sender, playerName, "tempmute.alreadyPunished");
+            BukkitUtils.sendText(sender, playerName, "tempmute.alreadyPunished");
             return;
         }
-        Matcher matcher = UtilsCore.NumberAndUnit.matcher(time.toLowerCase());
+        Matcher matcher = Utils.NumberAndUnit.matcher(time.toLowerCase());
         if (!matcher.find()) {
             throw new InvalidCommandArgument();
         }
         int number = Integer.parseInt(matcher.group("number"));
         String unit = matcher.group("unit");
         long start = System.currentTimeMillis();
-        long end = start + UtilsCore.convertToMillis(number, unit);
+        long end = start + Utils.convertToMillis(number, unit);
         String ip = PunishManager.getInstance().getMethods().getPlayerIp(uuid);
         punishment = new Punishment(playerName, uuid, ip, TEMPMUTE, reason, sender.getName(), "ALL", start, end, -1);
         PunishManager.getInstance().getMethods().callPunishEvent(punishment);

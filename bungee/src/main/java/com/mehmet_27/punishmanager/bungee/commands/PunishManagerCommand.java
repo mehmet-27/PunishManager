@@ -5,7 +5,7 @@ import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bungee.PMBungee;
-import com.mehmet_27.punishmanager.bungee.Utils.Utils;
+import com.mehmet_27.punishmanager.bungee.Utils.BungeeUtils;
 import com.mehmet_27.punishmanager.bungee.inventory.InventoryDrawer;
 import com.mehmet_27.punishmanager.bungee.inventory.inventories.MainFrame;
 import net.md_5.bungee.api.CommandSender;
@@ -32,7 +32,7 @@ public class PunishManagerCommand extends BaseCommand {
     public void reload(CommandSender sender) {
         plugin.getConfigManager().setup();
         plugin.getCommandManager().updateDefaultLocale();
-        Utils.sendText(sender, "punishmanager-reload.done");
+        BungeeUtils.sendText(sender, "punishmanager-reload.done");
     }
 
     @Subcommand("about")

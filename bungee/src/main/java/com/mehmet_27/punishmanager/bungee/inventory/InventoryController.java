@@ -1,8 +1,8 @@
 package com.mehmet_27.punishmanager.bungee.inventory;
 
 import com.mehmet_27.punishmanager.bungee.PMBungee;
-import com.mehmet_27.punishmanager.bungee.Utils.Utils;
 import com.mehmet_27.punishmanager.bungee.inventory.inventories.ConfirmationFrame;
+import com.mehmet_27.punishmanager.utils.Utils;
 import dev.simplix.protocolize.api.ClickType;
 import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.inventory.InventoryClick;

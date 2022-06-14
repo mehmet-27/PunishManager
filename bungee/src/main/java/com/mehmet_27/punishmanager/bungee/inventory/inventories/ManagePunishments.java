@@ -1,13 +1,12 @@
 package com.mehmet_27.punishmanager.bungee.inventory.inventories;
 
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.bungee.PMBungee;
-import com.mehmet_27.punishmanager.bungee.Utils.Paginator;
 import com.mehmet_27.punishmanager.bungee.inventory.*;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.utils.Messages;
-import com.mehmet_27.punishmanager.utils.UtilsCore;
+import com.mehmet_27.punishmanager.utils.Paginator;
+import com.mehmet_27.punishmanager.utils.Utils;
 import dev.simplix.protocolize.api.ClickType;
 import dev.simplix.protocolize.data.ItemType;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -53,7 +52,7 @@ public class ManagePunishments extends UIFrame {
 
     private void addPunish(int slot, Punishment punishment) {
         List<String> lore = Messages.GUI_MANAGEPUNISHMENTS_PUNISHMENT_LORE.getStringList(getViewer().getName())
-                .stream().map(string -> UtilsCore.replacePunishmentPlaceholders(string, punishment))
+                .stream().map(string -> Utils.replacePunishmentPlaceholders(string, punishment))
                 .collect(Collectors.toList());
         UIComponent component = new UIComponentImpl.Builder(ItemType.PAPER)
                 .name(Messages.GUI_MANAGEPUNISHMENTS_PUNISHMENT_NAME.getString(getViewer().getName())

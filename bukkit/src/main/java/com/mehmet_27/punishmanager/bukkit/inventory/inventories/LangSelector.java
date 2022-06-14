@@ -4,9 +4,10 @@ import com.cryptomorin.xseries.XMaterial;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bukkit.PMBukkit;
 import com.mehmet_27.punishmanager.bukkit.inventory.*;
-import com.mehmet_27.punishmanager.bukkit.utils.Utils;
+import com.mehmet_27.punishmanager.bukkit.utils.BukkitUtils;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.utils.Messages;
+import com.mehmet_27.punishmanager.utils.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -53,7 +54,7 @@ public class LangSelector extends UIFrame {
                 punishManager.getOfflinePlayers().get(getViewer().getName()).setLocale(newLocale);
                 PMBukkit.getInstance().getCommandManager().setPlayerLocale(getViewer(),
                         punishManager.getOfflinePlayers().get(getViewer().getName()).getLocale());
-                Utils.sendText(getViewer(), "main.setlanguage", message -> message.replace("{0}", newLocale.toString()));
+                BukkitUtils.sendText(getViewer(), "main.setlanguage", message -> message.replace("{0}", newLocale.toString()));
                 updateFrame();
             });
             add(component);

@@ -1,6 +1,6 @@
 package com.mehmet_27.punishmanager.storage;
 
-import com.mehmet_27.punishmanager.MethodInterface;
+import com.mehmet_27.punishmanager.MethodProvider;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -11,7 +11,7 @@ import java.sql.SQLException;
 public class MySQLCore implements DBCore {
 
     private final PunishManager punishManager = PunishManager.getInstance();
-    private final MethodInterface methods = punishManager.getMethods();
+    private final MethodProvider methods = punishManager.getMethods();
     private final HikariDataSource dataSource = new HikariDataSource();
 
     private final String host, database, username, password;

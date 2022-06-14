@@ -2,7 +2,7 @@ package com.mehmet_27.punishmanager.bukkit.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
-import com.mehmet_27.punishmanager.bukkit.utils.Utils;
+import com.mehmet_27.punishmanager.bukkit.utils.BukkitUtils;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
@@ -26,10 +26,10 @@ public class UnMuteCommand extends BaseCommand {
         Punishment punishment = storageManager.getMute(uuid);
 
         if (punishment == null || !punishment.isMuted()) {
-            Utils.sendText(sender, playerName, "unmute.notPunished");
+            BukkitUtils.sendText(sender, playerName, "unmute.notPunished");
             return;
         }
         storageManager.unPunishPlayer(punishment);
-        Utils.sendText(sender, playerName, "unmute.done");
+        BukkitUtils.sendText(sender, playerName, "unmute.done");
     }
 }
