@@ -1,7 +1,7 @@
 package com.mehmet_27.punishmanager.bungee.events;
 
-import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.PunishManager;
+import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import net.md_5.bungee.api.plugin.Cancellable;
 import net.md_5.bungee.api.plugin.Event;
@@ -16,7 +16,7 @@ public class PunishEvent extends Event implements Cancellable {
     public PunishEvent(Punishment punishment) {
         this.punishment = punishment;
         String path = punishment.getPunishType().name().toLowerCase(Locale.ENGLISH) + ".announce";
-        ConfigManager configManager = PunishManager.getInstance().getMethods().getConfigManager();
+        ConfigManager configManager = PunishManager.getInstance().getConfigManager();
         this.announceMessage = configManager.getMessage(path);
     }
 

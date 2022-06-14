@@ -13,7 +13,7 @@ public class Punishment {
     private static final int DAY = 60 * 60 * 24;
     private static final int HOUR = 60 * 60;
     private static final int MINUTE = 60;
-    private final ConfigManager configManager = PunishManager.getInstance().getMethods().getConfigManager();
+    private final ConfigManager configManager = PunishManager.getInstance().getConfigManager();
     private final long start, end;
     private String playerName, ip, reason, operator, server;
     private PunishType punishType;

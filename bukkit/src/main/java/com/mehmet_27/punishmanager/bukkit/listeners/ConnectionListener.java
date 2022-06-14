@@ -2,7 +2,7 @@ package com.mehmet_27.punishmanager.bukkit.listeners;
 
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bukkit.PMBukkit;
-import com.mehmet_27.punishmanager.bukkit.utils.Utils;
+import com.mehmet_27.punishmanager.bukkit.utils.BukkitUtils;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
@@ -62,10 +62,10 @@ public class ConnectionListener implements Listener {
         }
         if (bannedIps.contains(player.getPlayerIp())) {
             punishManager.debug("This player's IP address is banned: " + player.getName() + " IP: " + player.getPlayerIp());
-            connection.kickPlayer(Utils.getLayout(punishment));
+            connection.kickPlayer(BukkitUtils.getLayout(punishment));
             return;
         }
-        connection.kickPlayer(Utils.getLayout(punishment));
+        connection.kickPlayer(BukkitUtils.getLayout(punishment));
     }
 
     @EventHandler

@@ -4,11 +4,12 @@ import co.aikar.commands.*;
 import co.aikar.locales.MessageKey;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bukkit.PMBukkit;
-import com.mehmet_27.punishmanager.bukkit.utils.Utils;
 import com.mehmet_27.punishmanager.managers.CommandManager;
+import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.utils.FileUtils;
+import com.mehmet_27.punishmanager.utils.Utils;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 
@@ -33,7 +34,7 @@ public class PMBukkitCommandManager extends PaperCommandManager implements Comma
 
     @Override
     public void registerDependencies() {
-        registerDependency(BukkitConfigManager.class, PunishManager.getInstance().getConfigManager());
+        registerDependency(ConfigManager.class, PunishManager.getInstance().getConfigManager());
         registerDependency(StorageManager.class, PunishManager.getInstance().getStorageManager());
     }
 

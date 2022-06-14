@@ -1,4 +1,4 @@
-package com.mehmet_27.punishmanager.bungee.Utils;
+package com.mehmet_27.punishmanager.utils;
 
 import java.util.Collection;
 
@@ -29,9 +29,7 @@ public class Paginator {
     }
 
     /**
-     *
      * @return the total elements
-     *
      * @author RoinujNosde
      */
     public int getTotalElements() {
@@ -42,9 +40,7 @@ public class Paginator {
     }
 
     /**
-     *
      * @return the size per page
-     *
      * @author RoinujNosde
      */
     public int getSizePerPage() {
@@ -52,9 +48,7 @@ public class Paginator {
     }
 
     /**
-     *
      * @return the minimal index based on the current page
-     *
      * @author RoinujNosde
      */
     public int getMinIndex() {
@@ -62,9 +56,7 @@ public class Paginator {
     }
 
     /**
-     *
      * @return the max index based on the current page
-     *
      * @author RoinujNosde
      */
     public int getMaxIndex() {
@@ -72,9 +64,7 @@ public class Paginator {
     }
 
     /**
-     *
      * @return the current page, starting at 0
-     *
      * @author RoinujNosde
      */
     public int getCurrentPage() {
@@ -123,10 +113,8 @@ public class Paginator {
     }
 
     /**
-     *
      * @param index the index
      * @return if this index will not cause any IndexOutOfBoundsException
-     *
      * @author RoinujNosde
      */
     public boolean isValidIndex(int index) {

@@ -3,7 +3,7 @@ package com.mehmet_27.punishmanager.bukkit.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.bukkit.utils.Utils;
+import com.mehmet_27.punishmanager.bukkit.utils.BukkitUtils;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
@@ -11,7 +11,6 @@ import org.bukkit.command.CommandSender;
 
 import java.util.UUID;
 
-import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.BAN;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.MUTE;
 
 @CommandAlias("punishmanager")
@@ -30,7 +29,7 @@ public class MuteCommand extends BaseCommand {
 
         Punishment punishment = storageManager.getMute(uuid);
         if (punishment != null && punishment.isMuted()) {
-            Utils.sendText(sender, playerName, "mute.alreadyPunished");
+            BukkitUtils.sendText(sender, playerName, "mute.alreadyPunished");
             return;
         }
 

@@ -7,7 +7,7 @@ import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bukkit.PMBukkit;
 import com.mehmet_27.punishmanager.bukkit.inventory.InventoryDrawer;
 import com.mehmet_27.punishmanager.bukkit.inventory.inventories.MainFrame;
-import com.mehmet_27.punishmanager.bukkit.utils.Utils;
+import com.mehmet_27.punishmanager.bukkit.utils.BukkitUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -31,7 +31,7 @@ public class PunishManagerCommand extends BaseCommand {
     public void reload(CommandSender sender) {
         plugin.getConfigManager().setup();
         plugin.getCommandManager().updateDefaultLocale();
-        Utils.sendText(sender, "punishmanager-reload.done");
+        BukkitUtils.sendText(sender, "punishmanager-reload.done");
     }
 
     @Subcommand("about")

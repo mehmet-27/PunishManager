@@ -1,14 +1,12 @@
 package com.mehmet_27.punishmanager.bukkit;
 
-import com.mehmet_27.punishmanager.ConfigurationAdapter;
-import com.mehmet_27.punishmanager.MethodInterface;
+import com.mehmet_27.punishmanager.MethodProvider;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bukkit.events.PunishEvent;
-import com.mehmet_27.punishmanager.bukkit.utils.Utils;
-import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.Platform;
 import com.mehmet_27.punishmanager.objects.Punishment;
+import com.mehmet_27.punishmanager.utils.Utils;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SingleLineChart;
 import org.bukkit.command.CommandSender;
@@ -20,7 +18,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-public class BukkitMethods implements MethodInterface {
+public class BukkitMethods implements MethodProvider {
 
     @Override
     public PMBukkit getPlugin() {
@@ -43,7 +41,7 @@ public class BukkitMethods implements MethodInterface {
     }
 
     @Override
-    public Path getPluginsFolder(){
+    public Path getPluginsFolder() {
         return getDataFolder().getParent();
     }
 
@@ -68,16 +66,6 @@ public class BukkitMethods implements MethodInterface {
         Player player = getPlayer(uuid);
         StorageManager storageManager = PunishManager.getInstance().getStorageManager();
         return player != null && player.isOnline() ? Objects.requireNonNull(player.getAddress()).getHostName() : storageManager.getOfflinePlayer(uuid).getPlayerIp();
-    }
-
-    @Override
-    public ConfigManager getConfigManager() {
-        return getPlugin().getConfigManager();
-    }
-
-    @Override
-    public ConfigurationAdapter getConfig() {
-        return getConfigManager().getConfig();
     }
 
     @Override

@@ -45,7 +45,7 @@ public enum Messages {
         return configManager.getStringList(path, player);
     }
 
-    public String getPath(){
+    public String getPath() {
         return path;
     }
 }

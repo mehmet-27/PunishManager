@@ -4,7 +4,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bungee.PMBungee;
-import com.mehmet_27.punishmanager.bungee.Utils.Utils;
+import com.mehmet_27.punishmanager.bungee.Utils.BungeeUtils;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
@@ -31,7 +31,7 @@ public class BanCommand extends BaseCommand {
 
         Punishment punishment = storageManager.getBan(uuid);
         if (punishment != null && punishment.isBanned()) {
-            Utils.sendText(sender, playerName, "ban.alreadyPunished");
+            BungeeUtils.sendText(sender, playerName, "ban.alreadyPunished");
             return;
         }
 

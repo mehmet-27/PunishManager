@@ -1,7 +1,7 @@
 package com.mehmet_27.punishmanager.bukkit.listeners;
 
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.bukkit.utils.Utils;
+import com.mehmet_27.punishmanager.bukkit.utils.BukkitUtils;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import org.bukkit.entity.Player;
@@ -25,6 +25,6 @@ public class ChatListener implements Listener {
             return;
         }
         event.setCancelled(true);
-        player.sendMessage(Utils.getLayout(punishment));
+        player.sendMessage(BukkitUtils.getLayout(punishment));
     }
 }

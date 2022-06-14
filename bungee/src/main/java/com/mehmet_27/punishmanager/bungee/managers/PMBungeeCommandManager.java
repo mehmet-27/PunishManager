@@ -4,11 +4,13 @@ import co.aikar.commands.*;
 import co.aikar.locales.MessageKey;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bungee.PMBungee;
-import com.mehmet_27.punishmanager.bungee.Utils.Utils;
+import com.mehmet_27.punishmanager.bungee.Utils.BungeeUtils;
 import com.mehmet_27.punishmanager.managers.CommandManager;
+import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.utils.FileUtils;
+import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.io.File;
@@ -20,7 +22,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class PMBungeeCommandManager extends BungeeCommandManager implements CommandManager{
+public class PMBungeeCommandManager extends BungeeCommandManager implements CommandManager {
 
     private final PMBungee plugin;
 
@@ -32,7 +34,7 @@ public class PMBungeeCommandManager extends BungeeCommandManager implements Comm
 
     @Override
     public void registerDependencies() {
-        registerDependency(BungeeConfigManager.class, PunishManager.getInstance().getConfigManager());
+        registerDependency(ConfigManager.class, PunishManager.getInstance().getConfigManager());
         registerDependency(StorageManager.class, PunishManager.getInstance().getStorageManager());
     }
 
@@ -68,7 +70,7 @@ public class PMBungeeCommandManager extends BungeeCommandManager implements Comm
             }
         });
         getCommandConditions().addCondition("requireProtocolize", (context) -> {
-            if (!Utils.isPluginEnabled("Protocolize")) {
+            if (!BungeeUtils.isPluginEnabled("Protocolize")) {
                 throw new ConditionFailedException(Utils.color("The gui feature will not work because the Protocolize plugin cannot be found."));
             }
         });

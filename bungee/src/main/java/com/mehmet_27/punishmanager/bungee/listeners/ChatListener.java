@@ -1,9 +1,9 @@
 package com.mehmet_27.punishmanager.bungee.listeners;
 
-import com.mehmet_27.punishmanager.ConfigurationAdapter;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bungee.PMBungee;
-import com.mehmet_27.punishmanager.bungee.Utils.Utils;
+import com.mehmet_27.punishmanager.bungee.Utils.BungeeUtils;
+import com.mehmet_27.punishmanager.configuration.Configuration;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ChatListener implements Listener {
 
-    private final ConfigurationAdapter config;
+    private final Configuration config;
     private final PunishManager punishManager = PunishManager.getInstance();
     private final StorageManager storageManager = punishManager.getStorageManager();
 
@@ -39,11 +39,11 @@ public class ChatListener implements Listener {
             String command = event.getMessage().substring(1).split(" ")[0];
             if (bannedCommands.contains(command)) {
                 event.setCancelled(true);
-                player.sendMessage(Utils.getLayout(punishment));
+                player.sendMessage(BungeeUtils.getLayout(punishment));
             }
         } else {
             event.setCancelled(true);
-            player.sendMessage(Utils.getLayout(punishment));
+            player.sendMessage(BungeeUtils.getLayout(punishment));
         }
     }
 }

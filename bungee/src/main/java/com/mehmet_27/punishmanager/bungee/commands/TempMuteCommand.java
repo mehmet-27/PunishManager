@@ -5,18 +5,17 @@ import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bungee.PMBungee;
-import com.mehmet_27.punishmanager.bungee.Utils.Utils;
+import com.mehmet_27.punishmanager.bungee.Utils.BungeeUtils;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
-import com.mehmet_27.punishmanager.utils.UtilsCore;
+import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.UUID;
 import java.util.regex.Matcher;
 
-import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.BAN;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.TEMPMUTE;
 
 @CommandAlias("punishmanager")
@@ -35,17 +34,17 @@ public class TempMuteCommand extends BaseCommand {
 
         Punishment punishment = storageManager.getMute(uuid);
         if (punishment != null && punishment.isMuted()) {
-            Utils.sendText(sender, playerName, "tempmute.alreadyPunished");
+            BungeeUtils.sendText(sender, playerName, "tempmute.alreadyPunished");
             return;
         }
-        Matcher matcher = UtilsCore.NumberAndUnit.matcher(time.toLowerCase());
+        Matcher matcher = Utils.NumberAndUnit.matcher(time.toLowerCase());
         if (!matcher.find()) {
             throw new InvalidCommandArgument();
         }
         int number = Integer.parseInt(matcher.group("number"));
         String unit = matcher.group("unit");
         long start = System.currentTimeMillis();
-        long end = start + UtilsCore.convertToMillis(number, unit);
+        long end = start + Utils.convertToMillis(number, unit);
         String server = "ALL";
         ProxiedPlayer onlinePlayer = PMBungee.getInstance().getProxy().getPlayer(uuid);
 

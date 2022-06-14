@@ -1,9 +1,8 @@
 package com.mehmet_27.punishmanager.managers;
 
-import com.mehmet_27.punishmanager.ConfigurationAdapter;
-import com.mehmet_27.punishmanager.MethodInterface;
+import com.mehmet_27.punishmanager.MethodProvider;
 import com.mehmet_27.punishmanager.PunishManager;
-import net.dv8tion.jda.api.JDA;
+import com.mehmet_27.punishmanager.configuration.Configuration;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -11,8 +10,8 @@ import org.jetbrains.annotations.NotNull;
 public class DiscordBotReadyEvent extends ListenerAdapter {
 
     private final PunishManager punishManager = PunishManager.getInstance();
-    private final MethodInterface methods = punishManager.getMethods();
-    private final ConfigurationAdapter config = methods.getConfig();
+    private final MethodProvider methods = punishManager.getMethods();
+    private final Configuration config = punishManager.getConfigManager().getConfig();
 
     @Override
     public void onReady(@NotNull ReadyEvent event) {

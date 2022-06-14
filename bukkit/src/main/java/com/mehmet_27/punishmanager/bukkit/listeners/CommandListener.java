@@ -1,9 +1,9 @@
 package com.mehmet_27.punishmanager.bukkit.listeners;
 
-import com.mehmet_27.punishmanager.ConfigurationAdapter;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bukkit.PMBukkit;
-import com.mehmet_27.punishmanager.bukkit.utils.Utils;
+import com.mehmet_27.punishmanager.bukkit.utils.BukkitUtils;
+import com.mehmet_27.punishmanager.configuration.Configuration;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import org.bukkit.entity.Player;
@@ -16,7 +16,7 @@ import java.util.List;
 
 public class CommandListener implements Listener {
 
-    private final ConfigurationAdapter config;
+    private final Configuration config;
     private final PunishManager punishManager = PunishManager.getInstance();
     private final StorageManager storageManager = punishManager.getStorageManager();
 
@@ -37,7 +37,7 @@ public class CommandListener implements Listener {
         String command = event.getMessage().substring(1).split(" ")[0];
         if (bannedCommands.contains(command)) {
             event.setCancelled(true);
-            player.sendMessage(Utils.getLayout(punishment));
+            player.sendMessage(BukkitUtils.getLayout(punishment));
         }
     }
 }

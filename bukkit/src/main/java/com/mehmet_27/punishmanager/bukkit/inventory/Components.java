@@ -1,8 +1,8 @@
 package com.mehmet_27.punishmanager.bukkit.inventory;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.mehmet_27.punishmanager.bukkit.utils.Paginator;
 import com.mehmet_27.punishmanager.utils.Messages;
+import com.mehmet_27.punishmanager.utils.Paginator;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 
