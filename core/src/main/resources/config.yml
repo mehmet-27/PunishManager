@@ -16,8 +16,6 @@ mysql:
 # messages in this language will be used.
 #
 # NOTE: Definitely don't use locale which is not a perfectly valid language file
-# NOTE: Command descriptions in the help command will only be displayed in the default language for now.
-# Language support by player is not available in command descriptions.
 default-server-language: 'en_US'
 
 # You can enter the names of the players you want to protect from all punish commands.
@@ -40,8 +38,21 @@ banned-commands-while-mute:
 # If you enable it, you will now need "punishmanager.command.check.ip" permission to see the ip info in the check command.
 check-command-show-ip-require-perm: false
 
-# NOTE: If you want to use the role cast feature in discord,
-# discordsrv's table must be in the same database as this plugin's table.
+templates:
+  1:
+    permission: 'test.1'
+    type: TEMPMUTE
+    duration: 1d
+    reason: 'Test'
+  2:
+    permission: 'test.2'
+    type: BAN
+    reason: 'Test'
+  3:
+    permission: 'test.3'
+    type: KICK
+    reason: 'Test'
+
 discord:
   enable: false
   token: 'yourBotToken'
@@ -57,6 +68,7 @@ discord:
       tempban: true
       tempmute: true
 
+# Use %ip% variable for player's ip address
 apis:
   countryApi:
     url: 'http://ip-api.com/json/%ip%?fields=country'

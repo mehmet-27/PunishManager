@@ -1,5 +1,6 @@
 package com.mehmet_27.punishmanager.bungee.inventory;
 
+import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bungee.PMBungee;
 import com.mehmet_27.punishmanager.bungee.inventory.inventories.ConfirmationFrame;
 import com.mehmet_27.punishmanager.utils.Utils;
@@ -53,7 +54,9 @@ public class InventoryController {
 
         String permission = component.getPermission(clickType);
         if (permission != null) {
-            if (!hasPermission(PMBungee.getInstance().getProxy().getPlayer(player.uniqueId()), permission)) {
+            ProxiedPlayer proxiedPlayer = PMBungee.getInstance().getProxy().getPlayer(player.uniqueId());
+            if (!hasPermission(proxiedPlayer, permission)) {
+                PunishManager.getInstance().getMethods().sendMessage(proxiedPlayer, PunishManager.getInstance().getConfigManager().getMessage("gui.clickNoPerm"));
                 return;
             }
         }

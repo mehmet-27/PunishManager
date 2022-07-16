@@ -26,15 +26,8 @@ public class IpBanCommand extends BaseCommand {
     public void banIp(CommandSender sender, @Conditions("other_player") @Name("Player") OfflinePlayer player, @Optional @Name("Reason") String reason) {
         UUID uuid = player.getUniqueId();
         String playerName = player.getName();
-
-        Punishment punishment = storageManager.getBan(uuid);
-        if (punishment != null && punishment.isBanned()) {
-            BukkitUtils.sendText(sender, playerName, "ipban.alreadyPunished");
-            return;
-        }
-
         String ip = PunishManager.getInstance().getMethods().getPlayerIp(uuid);
-        punishment = new Punishment(playerName, uuid, ip, IPBAN, reason, sender.getName(), "ALL", -1);
+        Punishment punishment = new Punishment(playerName, uuid, ip, IPBAN, reason, sender.getName(), "ALL", -1);
         PunishManager.getInstance().getMethods().callPunishEvent(punishment);
     }
 }

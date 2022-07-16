@@ -3,7 +3,6 @@ package com.mehmet_27.punishmanager.bukkit.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.bukkit.utils.BukkitUtils;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
@@ -26,15 +25,8 @@ public class BanCommand extends BaseCommand {
     public void ban(CommandSender sender, @Conditions("other_player") @Name("Player") OfflinePlayer player, @Optional @Name("Reason") @Default("none") String reason) {
         UUID uuid = player.getUniqueId();
         String playerName = player.getName();
-
-        Punishment punishment = storageManager.getBan(uuid);
-        if (punishment != null && punishment.isBanned()) {
-            BukkitUtils.sendText(sender, playerName, "ban.alreadyPunished");
-            return;
-        }
-
         String ip = PunishManager.getInstance().getMethods().getPlayerIp(uuid);
-        punishment = new Punishment(playerName, uuid, ip, BAN, reason, sender.getName(), "ALL", -1);
+        Punishment punishment = new Punishment(playerName, uuid, ip, BAN, reason, sender.getName(), "ALL", -1);
         PunishManager.getInstance().getMethods().callPunishEvent(punishment);
     }
 }

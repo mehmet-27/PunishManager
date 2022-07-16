@@ -34,13 +34,38 @@ public class PunishListener implements Listener {
         Punishment punishment = event.getPunishment();
         CommandSender operator = "CONSOLE".equals(punishment.getOperator()) ? plugin.getServer().getConsoleSender() : plugin.getServer().getPlayer(punishment.getOperator());
 
+        if (!punishment.getPunishType().equals(Punishment.PunishType.KICK)) {
+            if (punishment.getPunishType().isBan()) {
+                Punishment oldBan = punishManager.getStorageManager().getBan(punishment.getUuid());
+                if (oldBan != null) {
+                    if (oldBan.isBanned()) {
+                        BukkitUtils.sendText(operator, oldBan.getPlayerName(),
+                                oldBan.getPunishType().toString().toLowerCase(Locale.ENGLISH) + ".alreadyPunished");
+                        return;
+                    }
+                }
+            }
+            if (punishment.getPunishType().isMute()) {
+                Punishment oldMute = punishManager.getStorageManager().getMute(punishment.getUuid());
+                if (oldMute != null) {
+                    if (oldMute.isMuted()) {
+                        BukkitUtils.sendText(operator, oldMute.getPlayerName(),
+                                oldMute.getPunishType().toString().toLowerCase(Locale.ENGLISH) + ".alreadyPunished");
+                        return;
+                    }
+                }
+            }
+        }
+
         if (configManager.getExemptPlayers().contains(punishment.getPlayerName())) {
             Objects.requireNonNull(operator).sendMessage(configManager.getMessage("main.exempt-player", operator.getName()));
             return;
         }
 
         //Adding punish to database
-        punishManager.getStorageManager().addPunishToPunishments(punishment);
+        if (!punishment.getPunishType().equals(Punishment.PunishType.KICK)) {
+            punishManager.getStorageManager().addPunishToPunishments(punishment);
+        }
         punishManager.getStorageManager().addPunishToHistory(punishment);
 
         //Sending successfully punished message to operator
@@ -55,6 +80,8 @@ public class PunishListener implements Listener {
                 player.kickPlayer(BukkitUtils.getLayout(punishment));
             } else if (punishment.isMuted()) {
                 player.sendMessage(BukkitUtils.getLayout(punishment));
+            } else if (punishment.getPunishType().equals(Punishment.PunishType.KICK)) {
+                player.kickPlayer(BukkitUtils.getLayout(punishment));
             }
         }
 

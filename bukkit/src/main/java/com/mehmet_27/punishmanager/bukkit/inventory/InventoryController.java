@@ -1,5 +1,6 @@
 package com.mehmet_27.punishmanager.bukkit.inventory;
 
+import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bukkit.PMBukkit;
 import com.mehmet_27.punishmanager.bukkit.inventory.inventories.ConfirmationFrame;
 import com.mehmet_27.punishmanager.utils.Utils;
@@ -62,6 +63,7 @@ public class InventoryController implements Listener {
         String permission = component.getPermission(click);
         if (permission != null) {
             if (!hasPermission((Player) entity, permission)) {
+                PunishManager.getInstance().getMethods().sendMessage(entity, PunishManager.getInstance().getConfigManager().getMessage("gui.clickNoPerm"));
                 return;
             }
         }

@@ -34,13 +34,38 @@ public class PunishListener implements Listener {
         Punishment punishment = event.getPunishment();
         CommandSender operator = "CONSOLE".equals(punishment.getOperator()) ? plugin.getProxy().getConsole() : plugin.getProxy().getPlayer(punishment.getOperator());
 
+        if (!punishment.getPunishType().equals(Punishment.PunishType.KICK)) {
+            if (punishment.getPunishType().isBan()) {
+                Punishment oldBan = punishManager.getStorageManager().getBan(punishment.getUuid());
+                if (oldBan != null) {
+                    if (oldBan.isBanned()) {
+                        BungeeUtils.sendText(operator, oldBan.getPlayerName(),
+                                oldBan.getPunishType().toString().toLowerCase(Locale.ENGLISH) + ".alreadyPunished");
+                        return;
+                    }
+                }
+            }
+            if (punishment.getPunishType().isMute()) {
+                Punishment oldMute = punishManager.getStorageManager().getMute(punishment.getUuid());
+                if (oldMute != null) {
+                    if (oldMute.isMuted()) {
+                        BungeeUtils.sendText(operator, oldMute.getPlayerName(),
+                                oldMute.getPunishType().toString().toLowerCase(Locale.ENGLISH) + ".alreadyPunished");
+                        return;
+                    }
+                }
+            }
+        }
+
         if (configManager.getExemptPlayers().contains(punishment.getPlayerName())) {
             operator.sendMessage(new TextComponent(configManager.getMessage("main.exempt-player", operator.getName())));
             return;
         }
 
         //Adding punish to database
-        punishManager.getStorageManager().addPunishToPunishments(punishment);
+        if (!punishment.getPunishType().equals(Punishment.PunishType.KICK)) {
+            punishManager.getStorageManager().addPunishToPunishments(punishment);
+        }
         punishManager.getStorageManager().addPunishToHistory(punishment);
 
         //Sending successfully punished message to operator
@@ -55,6 +80,8 @@ public class PunishListener implements Listener {
                 player.disconnect(BungeeUtils.getLayout(punishment));
             } else if (punishment.isMuted()) {
                 player.sendMessage(BungeeUtils.getLayout(punishment));
+            } else if (punishment.getPunishType().equals(Punishment.PunishType.KICK)) {
+                player.disconnect(BungeeUtils.getLayout(punishment));
             }
         }
 

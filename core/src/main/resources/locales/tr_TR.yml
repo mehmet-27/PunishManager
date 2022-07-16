@@ -23,6 +23,7 @@ main:
     minute: '%m% dakika'
     second: '%s% saniye'
 gui:
+  clickNoPerm: '&cBunun için izniniz yok.'
   backbutton:
     name: '&7Geri'
   main:
@@ -63,6 +64,16 @@ gui:
       name: '&7Onaylamak için buraya tıklayın'
     return:
       name: '&7Geri dönmek için buraya tıklayın'
+  punish:
+    title: '&6Cezalandır: &e%player%'
+    info:
+      name: '&bOyuncu &3%player%'
+    template:
+      name: '&bŞablon &3%template%'
+      lore:
+        - '&6Tür: &e%type%'
+        - '&6Sebep: &e%reason%'
+        - '&6Süre: &e%duration%'
 ban:
   punished: '&a%player% başarıyla yasaklandı.'
   alreadyPunished: '&e%player% zaten yasaklı.'
@@ -113,7 +124,7 @@ kick:
     - '&eSunucudan Atıldın'
     - '&7'
     - '&cSebep &7» &r%reason%'
-    - '&2Sebep: &a%reason%'
+  announce: '&a%player% &eadlı oyuncu &a%operator% &etarafından &a%reason% &esebebiyle sunucudan atıldı.'
   description: 'Bir oyuncuyu sunucudan at.'
 mute:
   punished: '&a%player% başarıyla susturuldu.'

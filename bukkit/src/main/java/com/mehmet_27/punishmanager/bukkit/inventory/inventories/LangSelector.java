@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 
 public class LangSelector extends UIFrame {
 
-    PunishManager punishManager = PunishManager.getInstance();
-    ConfigManager configManager = punishManager.getConfigManager();
+    private final PunishManager punishManager = PunishManager.getInstance();
+    private final ConfigManager configManager = punishManager.getConfigManager();
 
     public LangSelector(UIFrame parent, Player viewer) {
         super(parent, viewer);

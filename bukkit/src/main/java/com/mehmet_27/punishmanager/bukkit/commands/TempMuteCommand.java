@@ -30,11 +30,6 @@ public class TempMuteCommand extends BaseCommand {
         UUID uuid = player.getUniqueId();
         String playerName = player.getName();
 
-        Punishment punishment = storageManager.getMute(uuid);
-        if (punishment != null && punishment.isMuted()) {
-            BukkitUtils.sendText(sender, playerName, "tempmute.alreadyPunished");
-            return;
-        }
         Matcher matcher = Utils.NumberAndUnit.matcher(time.toLowerCase());
         if (!matcher.find()) {
             throw new InvalidCommandArgument();
@@ -44,7 +39,7 @@ public class TempMuteCommand extends BaseCommand {
         long start = System.currentTimeMillis();
         long end = start + Utils.convertToMillis(number, unit);
         String ip = PunishManager.getInstance().getMethods().getPlayerIp(uuid);
-        punishment = new Punishment(playerName, uuid, ip, TEMPMUTE, reason, sender.getName(), "ALL", start, end, -1);
+        Punishment punishment = new Punishment(playerName, uuid, ip, TEMPMUTE, reason, sender.getName(), "ALL", start, end, -1);
         PunishManager.getInstance().getMethods().callPunishEvent(punishment);
     }
 }

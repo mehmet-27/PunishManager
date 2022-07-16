@@ -26,15 +26,8 @@ public class MuteCommand extends BaseCommand {
     public void mute(CommandSender sender, @Conditions("other_player") @Name("Player") OfflinePlayer player, @Optional @Name("Reason") String reason) {
         UUID uuid = player.getUniqueId();
         String playerName = player.getName();
-
-        Punishment punishment = storageManager.getMute(uuid);
-        if (punishment != null && punishment.isMuted()) {
-            BukkitUtils.sendText(sender, playerName, "mute.alreadyPunished");
-            return;
-        }
-
         String ip = PunishManager.getInstance().getMethods().getPlayerIp(uuid);
-        punishment = new Punishment(playerName, uuid, ip, MUTE, reason, sender.getName(), "ALL", -1);
+        Punishment punishment = new Punishment(playerName, uuid, ip, MUTE, reason, sender.getName(), "ALL", -1);
         PunishManager.getInstance().getMethods().callPunishEvent(punishment);
     }
 }

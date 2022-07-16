@@ -24,6 +24,7 @@ main:
     minute: '%m% minute(s)'
     second: '%s% second(s)'
 gui:
+  clickNoPerm: '&cYou don''t have permission for this.'
   backbutton:
     name: '&7Back'
   main:
@@ -64,6 +65,17 @@ gui:
       name: '&7Click here to &aConfirm'
     return:
       name: '&7Click here to &cReturn'
+  punish:
+    title: '&6Punish &e%player%'
+    info:
+      name: '&bPlayer &3%player%'
+    template:
+      name: '&bTemplate &3%template%'
+      lore:
+        - '&6Type: &e%type%'
+        - '&6Reason: &e%reason%'
+        - '&6Duration: &e%duration%'
+
 ban:
   punished: '&a%player% successfully banned.'
   alreadyPunished: '&e%player% is already banned.'
@@ -116,6 +128,7 @@ kick:
     - '&6You kicked from this server.'
     - '&2Reason: &a%reason%'
   description: 'Kicks a player from the server.'
+  announce: '&a%player% &ekicked by &a%operator% &edue to &a%reason%.'
 mute:
   punished: '&a%player% successfully muted.'
   alreadyPunished: '&e%player% is already muted.'

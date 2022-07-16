@@ -4,6 +4,7 @@ import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
 
 import java.util.List;
+import java.util.function.Function;
 
 public enum Messages {
     GUI_BACKBUTTON_NAME("gui.backbutton.name"),
@@ -13,7 +14,6 @@ public enum Messages {
     GUI_MAIN_MANAGEPUNISHMENTS_NAME("gui.main.managepunishments.name"),
     GUI_ADMINPANEL_TITLE("gui.adminpanel.title"),
     GUI_ADMINPANEL_RELOAD_NAME("gui.adminpanel.reload.name"),
-    GUI_ADMINPANEL_DEFAULTLANGUAGESELECTOR_NAME("gui.adminpanel.defaultlanguageselector.name"),
     GUI_MANAGEPUNISHMENTS_TITLE("gui.managepunishments.title"),
     GUI_MANAGEPUNISHMENTS_PUNISHMENT_NAME("gui.managepunishments.punishment.name"),
     GUI_MANAGEPUNISHMENTS_PUNISHMENT_LORE("gui.managepunishments.punishment.lore"),
@@ -22,7 +22,11 @@ public enum Messages {
     GUI_LANGUAGESELECTOR_TITLE("gui.languageselector.title"),
     GUI_CONFIRMATION_TITLE("gui.confirmation.title"),
     GUI_CONFIRMATION_CONFIRM_NAME("gui.confirmation.confirm.name"),
-    GUI_CONFIRMATION_RETURN_NAME("gui.confirmation.return.name");
+    GUI_CONFIRMATION_RETURN_NAME("gui.confirmation.return.name"),
+    GUI_PUNISH_TITLE("gui.punish.title"),
+    GUI_PUNISH_INFO_NAME("gui.punish.info.name"),
+    GUI_PUNISH_TEMPLATE_NAME("gui.punish.template.name"),
+    GUI_PUNISH_TEMPLATE_LORE("gui.punish.template.lore");
 
     private final String path;
 
