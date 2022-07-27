@@ -229,13 +229,7 @@ public class ConfigManager {
             }
             if (!destination.exists() && !destination.isDirectory()) {
                 try {
-                    String fileString = file.toString().replace("\\", "/");
-                    if (fileString.startsWith(".")) {
-                        fileString = fileString.substring(1);
-                    }
-                    if (fileString.startsWith("/")) {
-                        fileString = fileString.substring(1);
-                    }
+                    String fileString = folder + "/" + file.getName();
                     InputStream inputStream = PunishManager.getInstance().getResourceStream(fileString);
                     PunishManager.getInstance().debug("File copy operation. \nInputStream: " + inputStream + "\nDestination Path: " + destination);
                     Files.copy(inputStream, destination.toPath());

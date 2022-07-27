@@ -100,7 +100,7 @@ public class PunishFrame extends UIFrame {
             Configuration template = templates.getSection(String.valueOf(i));
             String duration = template.getString("duration", "permanent");
             String reason = template.getString("reason");
-            String permission = template.getString("permission");
+            String permission = template.getString("permission", null);
             Punishment.PunishType type = Punishment.PunishType.valueOf(template.getString("type").toUpperCase(Locale.ENGLISH));
 
             UIComponent component = new UIComponentImpl.Builder(XMaterial.PAPER)
@@ -110,7 +110,9 @@ public class PunishFrame extends UIFrame {
                                     .replace("%reason%", reason)
                                     .replace("%duration%", duration)).collect(Collectors.toList()))
                     .slot(i + 18).build();
-            component.setPermission(ClickType.LEFT, permission);
+            if (permission != null){
+                component.setPermission(ClickType.LEFT, permission);
+            }
             component.setListener(ClickType.LEFT, () -> {
                 String ip = PunishManager.getInstance().getMethods().getPlayerIp(target.getUniqueId());
                 Punishment punishment;
