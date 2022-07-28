@@ -11,6 +11,7 @@ import com.mehmet_27.punishmanager.utils.Utils;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -175,7 +176,7 @@ public class ConfigManager {
 
     public void setup() {
         Path dataFolder = plugin.getMethods().getDataFolder();
-        copyFileFromResources(new File(dataFolder + File.separator + "config.yml"));
+        copyFileFromResources(new File("config.yml"), Paths.get(dataFolder + File.separator + "config.yml"));
         try {
             config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(dataFolder + File.separator + "config.yml"));
         } catch (IOException e) {
@@ -195,14 +196,14 @@ public class ConfigManager {
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void copyFileFromResources(File file) {
-        if (!file.getParentFile().exists()) {
-            file.getParentFile().mkdirs();
+    public void copyFileFromResources(File file, Path target) {
+        if (!target.toFile().getParentFile().exists()) {
+            target.toFile().getParentFile().mkdirs();
         }
-        if (!file.exists() && !file.isDirectory()) {
+        if (!target.toFile().exists() && !target.toFile().isDirectory()) {
             try {
                 InputStream inputStream = PunishManager.getInstance().getResourceStream(file.toString());
-                Files.copy(inputStream, file.toPath());
+                Files.copy(inputStream, target);
             } catch (IOException e) {
                 plugin.getLogger().severe(String.format("Error while trying to load file %s.", file.getName()));
                 throw new RuntimeException(e);
