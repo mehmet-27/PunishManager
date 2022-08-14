@@ -11,9 +11,9 @@
 
     <modules>
         <module>api</module>
-        <module>velocity</module>
-        <module>bungee</module>
         <module>bukkit</module>
+        <module>bungee</module>
+        <module>velocity</module>
         <module>bundle</module>
     </modules>
 

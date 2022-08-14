@@ -13,10 +13,36 @@
     <artifactId>PunishManager-Velocity</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-        <java.version>11</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
+                            <relocations>
+                                <relocation>
+                                    <pattern>co.aikar.commands</pattern>
+                                    <shadedPattern>com.mehmet_27.punishmanager.libraries.acf</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>co.aikar.locales</pattern>
+                                    <shadedPattern>com.mehmet_27.punishmanager.libraries.locales</shadedPattern>
+                                </relocation>
+                            </relocations>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
     <repositories>
         <repository>
@@ -41,12 +67,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.mehmet_27.punishmanager</groupId>
-            <artifactId>PunishManager-Api</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-velocity</artifactId>
             <version>3.0.0</version>
@@ -69,10 +89,10 @@
             <version>8.0.27</version>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.30</version>
+            <groupId>com.mehmet_27.punishmanager</groupId>
+            <artifactId>PunishManager-Api</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
         </dependency>
-
     </dependencies>
 </project>
