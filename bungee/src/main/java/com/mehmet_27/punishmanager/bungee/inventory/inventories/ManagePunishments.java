@@ -27,7 +27,7 @@ public class ManagePunishments extends UIFrame {
 
     @Override
     public String getTitle() {
-        return Messages.GUI_MANAGEPUNISHMENTS_TITLE.getString(getViewer().getName())
+        return Messages.GUI_MANAGEPUNISHMENTS_TITLE.getString(getViewer().getUniqueId())
                 .replace("{0}", "" + punishments.size());
     }
 
@@ -51,20 +51,20 @@ public class ManagePunishments extends UIFrame {
     }
 
     private void addPunish(int slot, Punishment punishment) {
-        List<String> lore = Messages.GUI_MANAGEPUNISHMENTS_PUNISHMENT_LORE.getStringList(getViewer().getName())
+        List<String> lore = Messages.GUI_MANAGEPUNISHMENTS_PUNISHMENT_LORE.getStringList(getViewer().getUniqueId())
                 .stream().map(string -> Utils.replacePunishmentPlaceholders(string, punishment))
                 .collect(Collectors.toList());
         UIComponent component = new UIComponentImpl.Builder(ItemType.PAPER)
-                .name(Messages.GUI_MANAGEPUNISHMENTS_PUNISHMENT_NAME.getString(getViewer().getName())
+                .name(Messages.GUI_MANAGEPUNISHMENTS_PUNISHMENT_NAME.getString(getViewer().getUniqueId())
                         .replace("%id%", "" + punishment.getId()))
                 .lore(lore)
                 .slot(slot)
                 .build();
         component.setListener(ClickType.LEFT_CLICK, () -> {
-            if (punishment.isMuted()){
+            if (punishment.isMuted()) {
                 InventoryController.runCommand(getViewer(), "unmute", true, punishment.getPlayerName());
             }
-            if (punishment.isBanned()){
+            if (punishment.isBanned()) {
                 InventoryController.runCommand(getViewer(), "unban", true, punishment.getPlayerName());
             }
             punishments.remove(punishment);

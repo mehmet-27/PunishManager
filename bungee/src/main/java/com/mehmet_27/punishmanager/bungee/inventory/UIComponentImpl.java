@@ -33,13 +33,6 @@ public class UIComponentImpl extends UIComponent {
             component.item = new ItemStack(material);
         }
 
-        public Builder(ItemStack item) {
-            if (item == null) {
-                item = new ItemStack(ItemType.STONE);
-            }
-            component.item = item;
-        }
-
         public Builder name(String displayName) {
             component.getItem().displayName(displayName);
             return this;
@@ -56,7 +49,7 @@ public class UIComponentImpl extends UIComponent {
         }
 
         public UIComponent build() {
-            if (lore != null){
+            if (lore != null) {
                 component.getItem().lore(lore, true);
             }
             return component;

@@ -3,15 +3,20 @@ package com.mehmet_27.punishmanager.bukkit;
 import com.mehmet_27.punishmanager.MethodProvider;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bukkit.events.PunishEvent;
+import com.mehmet_27.punishmanager.bukkit.inventory.InventoryDrawer;
+import com.mehmet_27.punishmanager.bukkit.inventory.inventories.MainFrame;
+import com.mehmet_27.punishmanager.bukkit.inventory.inventories.PunishFrame;
+import com.mehmet_27.punishmanager.managers.CommandManager;
 import com.mehmet_27.punishmanager.managers.StorageManager;
+import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Platform;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.utils.Utils;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SingleLineChart;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nullable;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.UUID;
@@ -69,8 +74,15 @@ public class BukkitMethods implements MethodProvider {
     }
 
     @Override
-    public void sendMessage(Object player, String message) {
-        ((CommandSender) player).sendMessage(Utils.color(message));
+    public void sendMessage(@Nullable UUID uuid, String message) {
+        if (uuid == null) {
+            getPlugin().getServer().getConsoleSender().sendMessage(Utils.color(message));
+        } else {
+            Player player = getPlayer(uuid);
+            if (player != null && player.isOnline()) {
+                player.sendMessage(Utils.color(message));
+            }
+        }
     }
 
     @Override
@@ -100,7 +112,41 @@ public class BukkitMethods implements MethodProvider {
     }
 
     @Override
+    public boolean isOnline(UUID uuid) {
+        Player player = getPlayer(uuid);
+        return player != null && player.isOnline();
+    }
+
+    @Override
+    public String getServer(UUID uuid) {
+        return getPlayer(uuid).getServer().getName();
+    }
+
+    @Override
     public void runAsync(Runnable task) {
         getPlugin().getServer().getScheduler().runTaskAsynchronously(getPlugin(), task);
+    }
+
+    @Override
+    public CommandManager getCommandManager() {
+        return getPlugin().getCommandManager();
+    }
+
+    @Override
+    public void openMainInventory(Object player) {
+        InventoryDrawer.open(new MainFrame((Player) player));
+    }
+
+    @Override
+    public void openPunishFrame(Object sender, OfflinePlayer player) {
+        InventoryDrawer.open(new PunishFrame((Player) sender, player));
+    }
+
+    @Override
+    public void kickPlayer(UUID uuid, String message) {
+        Player onlinePlayer = getPlayer(uuid);
+        if (onlinePlayer.isOnline()) {
+            onlinePlayer.kickPlayer(message);
+        }
     }
 }

@@ -1,7 +1,6 @@
 package com.mehmet_27.punishmanager.bukkit.inventory.inventories;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.mehmet_27.punishmanager.bukkit.PMBukkit;
 import com.mehmet_27.punishmanager.bukkit.inventory.*;
 import com.mehmet_27.punishmanager.utils.Messages;
 import org.bukkit.entity.Player;
@@ -15,7 +14,7 @@ public class AdminPanel extends UIFrame {
 
     @Override
     public String getTitle() {
-        return Messages.GUI_ADMINPANEL_TITLE.getString(getViewer().getName());
+        return Messages.GUI_ADMINPANEL_TITLE.getString(getViewer().getUniqueId());
     }
 
     @Override
@@ -31,12 +30,10 @@ public class AdminPanel extends UIFrame {
 
     private void addReloadButton() {
         UIComponent reloadButton = new UIComponentImpl.Builder(XMaterial.LIME_DYE)
-                .name(Messages.GUI_ADMINPANEL_RELOAD_NAME.getString(getViewer().getName()))
+                .name(Messages.GUI_ADMINPANEL_RELOAD_NAME.getString(getViewer().getUniqueId()))
                 .slot(11).build();
         add(reloadButton);
-        reloadButton.setPermission(ClickType.LEFT,"punishmanager.command.punishmanager.reload");
-        reloadButton.setListener(ClickType.LEFT, ()-> {
-            InventoryController.runCommand(getViewer(), "punishmanager", true, "reload");
-        });
+        reloadButton.setPermission(ClickType.LEFT, "punishmanager.command.punishmanager.reload");
+        reloadButton.setListener(ClickType.LEFT, () -> InventoryController.runCommand(getViewer(), "punishmanager", true, "reload"));
     }
 }

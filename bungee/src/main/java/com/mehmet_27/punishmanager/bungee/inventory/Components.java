@@ -9,7 +9,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 public class Components {
     public static UIComponent getBackComponent(UIFrame parent, int slot, ProxiedPlayer viewer) {
         UIComponent back = new UIComponentImpl.Builder(ItemType.ARROW)
-                .name(Messages.GUI_BACKBUTTON_NAME.getString(viewer.getName()))
+                .name(Messages.GUI_BACKBUTTON_NAME.getString(viewer.getUniqueId()))
                 .slot(slot)
                 .build();
         back.setListener(ClickType.LEFT_CLICK, () -> InventoryDrawer.open(parent));
@@ -28,7 +28,7 @@ public class Components {
             return getAirComponent(slot);
         }
         UIComponent c = new UIComponentImpl.Builder(ItemType.FEATHER)
-                .name(Messages.GUI_MANAGEPUNISHMENTS_PREVIOUS_NAME.getString(viewer.getName()))
+                .name(Messages.GUI_MANAGEPUNISHMENTS_PREVIOUS_NAME.getString(viewer.getUniqueId()))
                 .slot(slot)
                 .build();
         setOneTimeUseListener(c, listener);
@@ -40,7 +40,7 @@ public class Components {
             return getAirComponent(slot);
         }
         UIComponent c = new UIComponentImpl.Builder(ItemType.FEATHER)
-                .name(Messages.GUI_MANAGEPUNISHMENTS_NEXT_NAME.getString(viewer.getName()))
+                .name(Messages.GUI_MANAGEPUNISHMENTS_NEXT_NAME.getString(viewer.getUniqueId()))
                 .slot(slot)
                 .build();
         setOneTimeUseListener(c, listener);

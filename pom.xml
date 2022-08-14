@@ -6,11 +6,12 @@
 
     <groupId>com.mehmet_27.punishmanager</groupId>
     <artifactId>PunishManager</artifactId>
-    <version>1.3.11</version>
+    <version>1.4.0</version>
     <packaging>pom</packaging>
 
     <modules>
-        <module>core</module>
+        <module>api</module>
+        <module>velocity</module>
         <module>bungee</module>
         <module>bukkit</module>
         <module>bundle</module>
@@ -49,31 +50,23 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
                             <relocations>
                                 <relocation>
-                                    <pattern>co.aikar.commands</pattern>
-                                    <shadedPattern>com.mehmet_27.punishmanager.lib.acf</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>co.aikar.locales</pattern>
-                                    <shadedPattern>com.mehmet_27.punishmanager.lib.locales</shadedPattern>
-                                </relocation>
-                                <relocation>
                                     <pattern>com.zaxxer.hikari</pattern>
-                                    <shadedPattern>com.mehmet_27.punishmanager.lib.hikari</shadedPattern>
+                                    <shadedPattern>com.mehmet_27.punishmanager.libraries.hikari</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>net.dv8tion.jda</pattern>
-                                    <shadedPattern>com.mehmet_27.punishmanager.lib.jda</shadedPattern>
+                                    <shadedPattern>com.mehmet_27.punishmanager.libraries.jda</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>org.h2</pattern>
-                                    <shadedPattern>com.mehmet_27.punishmanager.lib.h2</shadedPattern>
+                                    <shadedPattern>com.mehmet_27.punishmanager.libraries.h2</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>org.bstats</pattern>
-                                    <shadedPattern>com.mehmet_27.punishmanager.lib.bstats</shadedPattern>
+                                    <shadedPattern>com.mehmet_27.punishmanager.libraries.bstats</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>

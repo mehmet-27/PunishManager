@@ -30,6 +30,7 @@ public class PunishFrame extends UIFrame {
     private final ConfigManager configManager = PunishManager.getInstance().getConfigManager();
 
     private final OfflinePlayer target;
+    private final UUID viewerUuid = getViewer().getUniqueId();
 
     public PunishFrame(ProxiedPlayer viewer, OfflinePlayer target) {
         super(null, viewer);
@@ -38,7 +39,7 @@ public class PunishFrame extends UIFrame {
 
     @Override
     public String getTitle() {
-        return Messages.GUI_PUNISH_TITLE.getString(getViewer().getName()).replace("%player%", target.getName());
+        return Messages.GUI_PUNISH_TITLE.getString(getViewer().getUniqueId()).replace("%player%", target.getName());
     }
 
     @Override
@@ -48,46 +49,45 @@ public class PunishFrame extends UIFrame {
 
     @Override
     public void createComponents() {
-        String viewer = getViewer().getName();
         List<String> lore = new ArrayList<>();
         UUID uuid = target.getUniqueId();
         String ip = PunishManager.getInstance().getMethods().getPlayerIp(uuid).replaceAll("\\s+", "");
         Punishment ban = storageManager.getBan(uuid);
         Punishment mute = storageManager.getMute(uuid);
 
-        String banStatus = (ban != null && ban.isBanned() && !ban.isExpired()) ? ban.getDuration() : PunishManager.getInstance().getConfigManager().getMessage("check.notPunished", viewer);
-        String muteStatus = (mute != null && mute.isMuted() && !mute.isExpired()) ? mute.getDuration() : PunishManager.getInstance().getConfigManager().getMessage("check.notPunished", viewer);
+        String banStatus = (ban != null && ban.isBanned() && !ban.isExpired()) ? ban.getDuration() : PunishManager.getInstance().getConfigManager().getMessage("check.notPunished", viewerUuid);
+        String muteStatus = (mute != null && mute.isMuted() && !mute.isExpired()) ? mute.getDuration() : PunishManager.getInstance().getConfigManager().getMessage("check.notPunished", viewerUuid);
 
-        lore.add(configManager.getMessage("check.uuid", viewer, message -> message.replace("%uuid%", uuid.toString())));
+        lore.add(configManager.getMessage("check.uuid", viewerUuid, message -> message.replace("%uuid%", uuid.toString())));
         if (PunishManager.getInstance().getConfigManager().getConfig().getBoolean("check-command-show-ip-require-perm", false)) {
             if (getViewer().hasPermission("punishmanager.command.check.ip")) {
-                lore.add(configManager.getMessage("check.ip", viewer, message -> message.replace("%ip%", ip)));
+                lore.add(configManager.getMessage("check.ip", viewerUuid, message -> message.replace("%ip%", ip)));
             }
         } else {
-            lore.add(configManager.getMessage("check.ip", viewer, message -> message.replace("%ip%", ip)));
+            lore.add(configManager.getMessage("check.ip", viewerUuid, message -> message.replace("%ip%", ip)));
         }
         String country = Utils.getValueFromUrlJson(ip);
-        lore.add(configManager.getMessage("check.country", viewer, message -> message.replace("%country%", country)));
+        lore.add(configManager.getMessage("check.country", viewerUuid, message -> message.replace("%country%", country)));
         String language = storageManager.getOfflinePlayer(uuid).getLocale().toString();
-        lore.add(configManager.getMessage("check.language", viewer, message -> message.replace("%language%", language)));
-        lore.add(configManager.getMessage("check.banStatus", viewer, message -> message.replace("%status%", banStatus)));
+        lore.add(configManager.getMessage("check.language", viewerUuid, message -> message.replace("%language%", language)));
+        lore.add(configManager.getMessage("check.banStatus", viewerUuid, message -> message.replace("%status%", banStatus)));
 
         if (ban != null && ban.isBanned()) {
-            lore.add(configManager.getMessage("check.punishId", viewer, message -> message.replace("%id%", ban.getId() + "")));
-            lore.add(configManager.getMessage("check.banReason", viewer, message -> message.replace("%reason%", ban.getReason())));
-            lore.add(configManager.getMessage("check.banOperator", viewer, message -> message.replace("%operator%", ban.getOperator())));
-            lore.add(configManager.getMessage("check.banServer", viewer, message -> message.replace("%server%", ban.getServer())));
+            lore.add(configManager.getMessage("check.punishId", viewerUuid, message -> message.replace("%id%", ban.getId() + "")));
+            lore.add(configManager.getMessage("check.banReason", viewerUuid, message -> message.replace("%reason%", ban.getReason())));
+            lore.add(configManager.getMessage("check.banOperator", viewerUuid, message -> message.replace("%operator%", ban.getOperator())));
+            lore.add(configManager.getMessage("check.banServer", viewerUuid, message -> message.replace("%server%", ban.getServer())));
         }
 
-        lore.add(configManager.getMessage("check.muteStatus", viewer, message -> message.replace("%status%", muteStatus)));
+        lore.add(configManager.getMessage("check.muteStatus", viewerUuid, message -> message.replace("%status%", muteStatus)));
         if (mute != null && mute.isMuted()) {
-            lore.add(configManager.getMessage("check.punishId", viewer, message -> message.replace("%id%", mute.getId() + "")));
-            lore.add(configManager.getMessage("check.muteReason", viewer, message -> message.replace("%reason%", mute.getReason())));
-            lore.add(configManager.getMessage("check.muteOperator", viewer, message -> message.replace("%operator%", mute.getOperator())));
-            lore.add(configManager.getMessage("check.muteServer", viewer, message -> message.replace("%server%", mute.getServer())));
+            lore.add(configManager.getMessage("check.punishId", viewerUuid, message -> message.replace("%id%", mute.getId() + "")));
+            lore.add(configManager.getMessage("check.muteReason", viewerUuid, message -> message.replace("%reason%", mute.getReason())));
+            lore.add(configManager.getMessage("check.muteOperator", viewerUuid, message -> message.replace("%operator%", mute.getOperator())));
+            lore.add(configManager.getMessage("check.muteServer", viewerUuid, message -> message.replace("%server%", mute.getServer())));
         }
         UIComponent infoComponent = new UIComponentImpl.Builder(ItemType.PLAYER_HEAD)
-                .name(Messages.GUI_PUNISH_INFO_NAME.getString(getViewer().getName()).replace("%player%", target.getName()))
+                .name(Messages.GUI_PUNISH_INFO_NAME.getString(viewerUuid).replace("%player%", target.getName()))
                 .lore(lore)
                 .slot(4).build();
         add(infoComponent);
@@ -104,13 +104,13 @@ public class PunishFrame extends UIFrame {
             Punishment.PunishType type = Punishment.PunishType.valueOf(template.getString("type").toUpperCase(Locale.ENGLISH));
 
             UIComponent component = new UIComponentImpl.Builder(ItemType.PAPER)
-                    .name(Messages.GUI_PUNISH_TEMPLATE_NAME.getString(getViewer().getName()).replace("%template%", String.valueOf(i + 1)))
-                    .lore(Messages.GUI_PUNISH_TEMPLATE_LORE.getStringList(getViewer().getName())
+                    .name(Messages.GUI_PUNISH_TEMPLATE_NAME.getString(viewerUuid).replace("%template%", String.valueOf(i + 1)))
+                    .lore(Messages.GUI_PUNISH_TEMPLATE_LORE.getStringList(viewerUuid)
                             .stream().map(s -> s.replace("%type%", type.name())
                                     .replace("%reason%", reason)
                                     .replace("%duration%", duration)).collect(Collectors.toList()))
                     .slot(i + 18).build();
-            if (permission != null){
+            if (permission != null) {
                 component.setPermission(ClickType.LEFT_CLICK, permission);
             }
             component.setListener(ClickType.LEFT_CLICK, () -> {
@@ -126,12 +126,12 @@ public class PunishFrame extends UIFrame {
                     long start = System.currentTimeMillis();
                     long end = start + Utils.convertToMillis(number, unit);
 
-                    punishment = new Punishment(target.getName(), target.getUniqueId(), ip, type, reason, getViewer().getName(), "ALL", start, end, -1);
+                    punishment = new Punishment(target.getName(), target.getUniqueId(), ip, type, reason, getViewer().getName(), getViewer().getUniqueId(), "ALL", start, end, -1);
                 } else {
-                    punishment = new Punishment(target.getName(), target.getUniqueId(), ip, type, reason, getViewer().getName(), "ALL", -1);
+                    punishment = new Punishment(target.getName(), target.getUniqueId(), ip, type, reason, getViewer().getName(), getViewer().getUniqueId(), "ALL", -1);
                 }
                 PunishManager.getInstance().getMethods().callPunishEvent(punishment);
-                if (!punishment.getPunishType().equals(Punishment.PunishType.KICK)){
+                if (!punishment.getPunishType().equals(Punishment.PunishType.KICK)) {
                     updateFrame();
                 }
             });

@@ -2,10 +2,10 @@ package com.mehmet_27.punishmanager.bukkit.listeners;
 
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bukkit.PMBukkit;
-import com.mehmet_27.punishmanager.bukkit.utils.BukkitUtils;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
+import com.mehmet_27.punishmanager.utils.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,7 +23,7 @@ public class ConnectionListener implements Listener {
 
     private final List<String> bannedIps = punishManager.getBannedIps();
 
-    public ConnectionListener(PMBukkit plugin){
+    public ConnectionListener(PMBukkit plugin) {
         this.plugin = plugin;
     }
 
@@ -40,10 +40,10 @@ public class ConnectionListener implements Listener {
                 plugin.getConfigManager().getDefaultLocale());
 
         // If the player is entering the server for the first time, save it
-        if (!punishManager.getOfflinePlayers().containsKey(player.getName())) {
+        if (!punishManager.getOfflinePlayers().containsKey(player.getUniqueId())) {
             punishManager.debug(String.format("%s is entering the server for the first time.", player.getName()));
             storageManager.addPlayer(player);
-            punishManager.getOfflinePlayers().put(player.getName(), player);
+            punishManager.getOfflinePlayers().put(player.getUniqueId(), player);
             if (!punishManager.getAllPlayerNames().contains(player.getName())) {
                 punishManager.getAllPlayerNames().add(player.getName());
             }
@@ -51,7 +51,7 @@ public class ConnectionListener implements Listener {
             storageManager.updatePlayerName(player);
             storageManager.updatePlayerIp(player);
             plugin.getCommandManager().setPlayerLocale(connection,
-                    punishManager.getOfflinePlayers().get(player.getName()).getLocale());
+                    punishManager.getOfflinePlayers().get(player.getUniqueId()).getLocale());
         }
 
         Punishment punishment = storageManager.getBan(player.getUniqueId());
@@ -62,10 +62,10 @@ public class ConnectionListener implements Listener {
         }
         if (bannedIps.contains(player.getPlayerIp())) {
             punishManager.debug("This player's IP address is banned: " + player.getName() + " IP: " + player.getPlayerIp());
-            connection.kickPlayer(BukkitUtils.getLayout(punishment));
+            connection.kickPlayer(Utils.getLayout(punishment));
             return;
         }
-        connection.kickPlayer(BukkitUtils.getLayout(punishment));
+        connection.kickPlayer(Utils.getLayout(punishment));
     }
 
     @EventHandler

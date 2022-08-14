@@ -2,13 +2,11 @@ package com.mehmet_27.punishmanager.bungee.listeners;
 
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bungee.PMBungee;
-import com.mehmet_27.punishmanager.bungee.Utils.BungeeUtils;
 import com.mehmet_27.punishmanager.bungee.events.PunishEvent;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.managers.DiscordManager;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.utils.Utils;
-import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Listener;
@@ -16,6 +14,7 @@ import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
 
 import java.util.Locale;
+import java.util.UUID;
 
 public class PunishListener implements Listener {
 
@@ -32,14 +31,13 @@ public class PunishListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPunish(PunishEvent event) {
         Punishment punishment = event.getPunishment();
-        CommandSender operator = "CONSOLE".equals(punishment.getOperator()) ? plugin.getProxy().getConsole() : plugin.getProxy().getPlayer(punishment.getOperator());
 
         if (!punishment.getPunishType().equals(Punishment.PunishType.KICK)) {
             if (punishment.getPunishType().isBan()) {
                 Punishment oldBan = punishManager.getStorageManager().getBan(punishment.getUuid());
                 if (oldBan != null) {
                     if (oldBan.isBanned()) {
-                        BungeeUtils.sendText(operator, oldBan.getPlayerName(),
+                        Utils.sendText(punishment.getOperatorUUID(), oldBan.getPlayerName(),
                                 oldBan.getPunishType().toString().toLowerCase(Locale.ENGLISH) + ".alreadyPunished");
                         return;
                     }
@@ -49,7 +47,7 @@ public class PunishListener implements Listener {
                 Punishment oldMute = punishManager.getStorageManager().getMute(punishment.getUuid());
                 if (oldMute != null) {
                     if (oldMute.isMuted()) {
-                        BungeeUtils.sendText(operator, oldMute.getPlayerName(),
+                        Utils.sendText(punishment.getOperatorUUID(), oldMute.getPlayerName(),
                                 oldMute.getPunishType().toString().toLowerCase(Locale.ENGLISH) + ".alreadyPunished");
                         return;
                     }
@@ -58,7 +56,8 @@ public class PunishListener implements Listener {
         }
 
         if (configManager.getExemptPlayers().contains(punishment.getPlayerName())) {
-            operator.sendMessage(new TextComponent(configManager.getMessage("main.exempt-player", operator.getName())));
+            UUID operatorUUID = punishment.getOperatorUUID();
+            punishManager.getMethods().sendMessage(operatorUUID, configManager.getMessage("main.exempt-player", operatorUUID));
             return;
         }
 
@@ -70,18 +69,18 @@ public class PunishListener implements Listener {
 
         //Sending successfully punished message to operator
         String path = punishment.getPunishType().name().toLowerCase(Locale.ENGLISH) + ".punished";
-        BungeeUtils.sendText(operator, punishment.getPlayerName(), path);
+        Utils.sendText(punishment.getOperatorUUID(), punishment.getPlayerName(), path);
 
         //Sends the punish message
         ProxiedPlayer player = plugin.getProxy().getPlayer(punishment.getUuid());
 
         if (player != null && player.isConnected()) {
             if (punishment.isBanned()) {
-                player.disconnect(BungeeUtils.getLayout(punishment));
+                player.disconnect(TextComponent.fromLegacyText(Utils.getLayout(punishment)));
             } else if (punishment.isMuted()) {
-                player.sendMessage(BungeeUtils.getLayout(punishment));
+                player.sendMessage(TextComponent.fromLegacyText(Utils.getLayout(punishment)));
             } else if (punishment.getPunishType().equals(Punishment.PunishType.KICK)) {
-                player.disconnect(BungeeUtils.getLayout(punishment));
+                player.disconnect(TextComponent.fromLegacyText(Utils.getLayout(punishment)));
             }
         }
 

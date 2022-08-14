@@ -10,7 +10,7 @@ public class Components {
 
     public static UIComponent getBackComponent(UIFrame parent, int slot, Player viewer) {
         UIComponent back = new UIComponentImpl.Builder(XMaterial.ARROW)
-                .name(Messages.GUI_BACKBUTTON_NAME.getString(viewer.getName()))
+                .name(Messages.GUI_BACKBUTTON_NAME.getString(viewer.getUniqueId()))
                 .slot(slot)
                 .build();
         back.setListener(ClickType.LEFT, () -> InventoryDrawer.open(parent));
@@ -29,7 +29,7 @@ public class Components {
             return getAirComponent(slot);
         }
         UIComponent c = new UIComponentImpl.Builder(XMaterial.FEATHER)
-                .name(Messages.GUI_MANAGEPUNISHMENTS_PREVIOUS_NAME.getString(viewer.getName()))
+                .name(Messages.GUI_MANAGEPUNISHMENTS_PREVIOUS_NAME.getString(viewer.getUniqueId()))
                 .slot(slot)
                 .build();
         setOneTimeUseListener(c, listener);
@@ -41,7 +41,7 @@ public class Components {
             return getAirComponent(slot);
         }
         UIComponent c = new UIComponentImpl.Builder(XMaterial.FEATHER)
-                .name(Messages.GUI_MANAGEPUNISHMENTS_NEXT_NAME.getString(viewer.getName()))
+                .name(Messages.GUI_MANAGEPUNISHMENTS_NEXT_NAME.getString(viewer.getUniqueId()))
                 .slot(slot)
                 .build();
         setOneTimeUseListener(c, listener);

@@ -4,7 +4,6 @@ import com.cryptomorin.xseries.XMaterial;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bukkit.PMBukkit;
 import com.mehmet_27.punishmanager.bukkit.inventory.*;
-import com.mehmet_27.punishmanager.bukkit.utils.BukkitUtils;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.utils.Messages;
 import com.mehmet_27.punishmanager.utils.Utils;
@@ -27,14 +26,14 @@ public class LangSelector extends UIFrame {
 
     @Override
     public String getTitle() {
-        Locale viewerLocale = punishManager.getOfflinePlayers().get(getViewer().getName()).getLocale();
-        return Messages.GUI_LANGUAGESELECTOR_TITLE.getString(getViewer().getName())
+        Locale viewerLocale = punishManager.getOfflinePlayers().get(getViewer().getUniqueId()).getLocale();
+        return Messages.GUI_LANGUAGESELECTOR_TITLE.getString(getViewer().getUniqueId())
                 .replace("{0}", viewerLocale.toString());
     }
 
     @Override
     public int getSize() {
-        return 9*6;
+        return 9 * 6;
     }
 
     @Override
@@ -42,7 +41,7 @@ public class LangSelector extends UIFrame {
         add(Components.getBackComponent(getParent(), 53, getViewer()));
 
         List<String> localeNames = configManager.getAvailableLocales().stream().map(Locale::toString).sorted().collect(Collectors.toList());
-        for (int i = 0; i < localeNames.size(); i++){
+        for (int i = 0; i < localeNames.size(); i++) {
             UIComponent component = new UIComponentImpl.Builder(XMaterial.PAPER)
                     .name(localeNames.get(i))
                     .slot(i)
@@ -51,10 +50,10 @@ public class LangSelector extends UIFrame {
                 String name = ChatColor.stripColor(component.getItemMeta().getDisplayName());
                 Locale newLocale = Utils.stringToLocale(name);
                 punishManager.getStorageManager().updateLanguage(getViewer().getUniqueId(), newLocale);
-                punishManager.getOfflinePlayers().get(getViewer().getName()).setLocale(newLocale);
+                punishManager.getOfflinePlayers().get(getViewer().getUniqueId()).setLocale(newLocale);
                 PMBukkit.getInstance().getCommandManager().setPlayerLocale(getViewer(),
-                        punishManager.getOfflinePlayers().get(getViewer().getName()).getLocale());
-                BukkitUtils.sendText(getViewer(), "main.setlanguage", message -> message.replace("{0}", newLocale.toString()));
+                        punishManager.getOfflinePlayers().get(getViewer().getUniqueId()).getLocale());
+                Utils.sendText(getViewer().getUniqueId(), "main.setlanguage", message -> message.replace("{0}", newLocale.toString()));
                 updateFrame();
             });
             add(component);

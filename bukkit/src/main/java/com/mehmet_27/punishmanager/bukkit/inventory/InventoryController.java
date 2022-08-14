@@ -63,7 +63,7 @@ public class InventoryController implements Listener {
         String permission = component.getPermission(click);
         if (permission != null) {
             if (!hasPermission((Player) entity, permission)) {
-                PunishManager.getInstance().getMethods().sendMessage(entity, PunishManager.getInstance().getConfigManager().getMessage("gui.clickNoPerm"));
+                PunishManager.getInstance().getMethods().sendMessage(entity.getUniqueId(), PunishManager.getInstance().getConfigManager().getMessage("gui.clickNoPerm"));
                 return;
             }
         }

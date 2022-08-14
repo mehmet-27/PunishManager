@@ -10,6 +10,7 @@ import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.utils.FileUtils;
 import com.mehmet_27.punishmanager.utils.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 
@@ -34,13 +35,14 @@ public class PMBukkitCommandManager extends PaperCommandManager implements Comma
 
     @Override
     public void registerDependencies() {
+        registerDependency(PunishManager.class, PunishManager.getInstance());
         registerDependency(ConfigManager.class, PunishManager.getInstance().getConfigManager());
         registerDependency(StorageManager.class, PunishManager.getInstance().getStorageManager());
     }
 
     @Override
     public void registerCommands() {
-        Set<Class<? extends BaseCommand>> commands = FileUtils.getClassesBySubType("com.mehmet_27.punishmanager.bukkit.commands", BaseCommand.class);
+        Set<Class<? extends BaseCommand>> commands = FileUtils.getClassesBySubType("com.mehmet_27.punishmanager.core.commands", BaseCommand.class);
         plugin.getLogger().info(String.format("Registering %d base commands...", commands.size()));
 
         for (Class<? extends BaseCommand> c : commands) {
@@ -80,12 +82,23 @@ public class PMBukkitCommandManager extends PaperCommandManager implements Comma
     @Override
     public void registerContexts() {
         getCommandContexts().registerContext(OfflinePlayer.class, c -> {
-            String playerName = c.popFirstArg();
-            OfflinePlayer offlinePlayer = PunishManager.getInstance().getOfflinePlayers().get(playerName);
-            if (offlinePlayer == null) {
+            OfflinePlayer player;
+            String arg = c.popFirstArg();
+            UUID uuid;
+            try {
+                uuid = UUID.fromString(arg);
+            } catch (IllegalArgumentException e) {
+                uuid = null;
+            }
+            if (uuid != null) {
+                player = PunishManager.getInstance().getOfflinePlayers().get(uuid);
+            } else {
+                player = PunishManager.getInstance().getStorageManager().getOfflinePlayer(arg);
+            }
+            if (player == null) {
                 throw new InvalidCommandArgument(getMessage(c.getIssuer(), "main.not-logged-server"));
             }
-            return PunishManager.getInstance().getOfflinePlayers().get(playerName);
+            return player;
         });
     }
 

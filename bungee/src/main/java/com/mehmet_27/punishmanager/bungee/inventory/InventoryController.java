@@ -56,7 +56,7 @@ public class InventoryController {
         if (permission != null) {
             ProxiedPlayer proxiedPlayer = PMBungee.getInstance().getProxy().getPlayer(player.uniqueId());
             if (!hasPermission(proxiedPlayer, permission)) {
-                PunishManager.getInstance().getMethods().sendMessage(proxiedPlayer, PunishManager.getInstance().getConfigManager().getMessage("gui.clickNoPerm"));
+                PunishManager.getInstance().getMethods().sendMessage(proxiedPlayer.getUniqueId(), PunishManager.getInstance().getConfigManager().getMessage("gui.clickNoPerm"));
                 return;
             }
         }
@@ -67,7 +67,7 @@ public class InventoryController {
 
         Runnable finalListener = listener;
         PMBungee.getInstance().getProxy().getScheduler().runAsync(PMBungee.getInstance(), () -> {
-            ItemStack currentItem = click.clickedItem();
+            ItemStack currentItem = (ItemStack) click.clickedItem();
             if (currentItem == null) return;
 
             click.clickedItem().lore(Collections.singletonList(Utils.color("&7Loading...")), true);

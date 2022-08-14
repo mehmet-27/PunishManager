@@ -17,7 +17,7 @@ public class MainFrame extends UIFrame {
 
     @Override
     public String getTitle() {
-        return Messages.GUI_MAIN_TITLE.getString(getViewer().getName());
+        return Messages.GUI_MAIN_TITLE.getString(getViewer().getUniqueId());
     }
 
     @Override
@@ -34,7 +34,8 @@ public class MainFrame extends UIFrame {
 
     private void addLanguageSelector() {
         UIComponent languageSelector = new UIComponentImpl.Builder(XMaterial.WHITE_BANNER)
-                .name(Messages.GUI_MAIN_LANGUAGESELECTOR_NAME.getString(getViewer().getName()))
+                .name(Messages.GUI_MAIN_LANGUAGESELECTOR_NAME.getString(getViewer().getUniqueId()))
+                .lore(Messages.GUI_MAIN_LANGUAGESELECTOR_LORE.getStringList(getViewer().getUniqueId()))
                 .slot(11).build();
         languageSelector.setListener(ClickType.LEFT, () -> InventoryDrawer.open(new LangSelector(this, getViewer())));
         add(languageSelector);
@@ -43,7 +44,8 @@ public class MainFrame extends UIFrame {
     private void addManagePunishments() {
         if (!getViewer().hasPermission("punishmanager.gui.managepunishments")) return;
         UIComponent managePunishments = new UIComponentImpl.Builder(XMaterial.DIAMOND_AXE)
-                .name(Messages.GUI_MAIN_MANAGEPUNISHMENTS_NAME.getString(getViewer().getName()))
+                .name(Messages.GUI_MAIN_MANAGEPUNISHMENTS_NAME.getString(getViewer().getUniqueId()))
+                .lore(Messages.GUI_MAIN_MANAGEPUNISHMENTS_LORE.getStringList(getViewer().getUniqueId()))
                 .slot(13).build();
         managePunishments.setListener(ClickType.LEFT, () -> InventoryDrawer.open(new ManagePunishments(this, getViewer())));
         add(managePunishments);
@@ -52,7 +54,8 @@ public class MainFrame extends UIFrame {
     private void addAdminPanel() {
         if (!getViewer().hasPermission("punishmanager.gui.admin")) return;
         UIComponent adminPanel = new UIComponentImpl.Builder(XMaterial.COMMAND_BLOCK)
-                .name(Messages.GUI_MAIN_ADMINPANEL_NAME.getString(getViewer().getName()))
+                .name(Messages.GUI_MAIN_ADMINPANEL_NAME.getString(getViewer().getUniqueId()))
+                .lore(Messages.GUI_MAIN_ADMINPANEL_LORE.getStringList(getViewer().getUniqueId()))
                 .slot(15).build();
         adminPanel.setPermission(ClickType.LEFT, "punishmanager.gui.admin");
         adminPanel.setListener(ClickType.LEFT, () -> InventoryDrawer.open(new AdminPanel(this, getViewer())));

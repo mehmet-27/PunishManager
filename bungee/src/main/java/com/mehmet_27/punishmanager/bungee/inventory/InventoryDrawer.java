@@ -32,6 +32,7 @@ public class InventoryDrawer {
                 return;
             }
             plugin.getProxy().getScheduler().runAsync(plugin, () -> {
+                if (frame.getViewer().getUniqueId() == null) return;
                 Protocolize.playerProvider().player(frame.getViewer().getUniqueId()).openInventory(inventory);
                 InventoryController.register(frame);
                 OPENING.remove(uuid);

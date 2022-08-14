@@ -20,23 +20,23 @@ public class ConfirmationFrame extends UIFrame {
 
     @Override
     public String getTitle() {
-        return Messages.GUI_CONFIRMATION_TITLE.getString(getViewer().getName());
+        return Messages.GUI_CONFIRMATION_TITLE.getString(getViewer().getUniqueId());
     }
 
     @Override
     public int getSize() {
-        return 9*3;
+        return 9 * 3;
     }
 
     @Override
     public void createComponents() {
         UIComponent confirmComponent = new UIComponentImpl.Builder(ItemType.LIME_WOOL)
-                .name(Messages.GUI_CONFIRMATION_CONFIRM_NAME.getString(getViewer().getName())).slot(12).build();
+                .name(Messages.GUI_CONFIRMATION_CONFIRM_NAME.getString(getViewer().getUniqueId())).slot(12).build();
         confirmComponent.setListener(ClickType.LEFT_CLICK, listener);
         add(confirmComponent);
 
         UIComponent returnComponent = new UIComponentImpl.Builder(ItemType.RED_WOOL)
-                .name(Messages.GUI_CONFIRMATION_RETURN_NAME.getString(getViewer().getName())).slot(14).build();
+                .name(Messages.GUI_CONFIRMATION_RETURN_NAME.getString(getViewer().getUniqueId())).slot(14).build();
         returnComponent.setListener(ClickType.LEFT_CLICK, () -> InventoryDrawer.open(getParent()));
         add(returnComponent);
     }

@@ -2,10 +2,11 @@ package com.mehmet_27.punishmanager.bungee.listeners;
 
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bungee.PMBungee;
-import com.mehmet_27.punishmanager.bungee.Utils.BungeeUtils;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
+import com.mehmet_27.punishmanager.utils.Utils;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.PendingConnection;
 import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
@@ -39,10 +40,10 @@ public class ConnectionListener implements Listener {
                 plugin.getConfigManager().getDefaultLocale());
 
         // If the player is entering the server for the first time, save it
-        if (!punishManager.getOfflinePlayers().containsKey(player.getName())) {
+        if (!punishManager.getOfflinePlayers().containsKey(player.getUniqueId())) {
             PunishManager.getInstance().debug(String.format("%s is entering the server for the first time.", player.getName()));
             storageManager.addPlayer(player);
-            punishManager.getOfflinePlayers().put(player.getName(), player);
+            punishManager.getOfflinePlayers().put(player.getUniqueId(), player);
             if (!punishManager.getAllPlayerNames().contains(player.getName())) {
                 punishManager.getAllPlayerNames().add(player.getName());
             }
@@ -59,18 +60,18 @@ public class ConnectionListener implements Listener {
         }
         if (bannedIps.contains(player.getPlayerIp())) {
             PunishManager.getInstance().debug("This player's IP address is banned: " + player.getName() + " IP: " + player.getPlayerIp());
-            event.setCancelReason(BungeeUtils.getLayout(punishment));
+            event.setCancelReason(TextComponent.fromLegacyText(Utils.getLayout(punishment)));
             event.setCancelled(true);
             return;
         }
-        event.setCancelReason(BungeeUtils.getLayout(punishment));
+        event.setCancelReason(TextComponent.fromLegacyText(Utils.getLayout(punishment)));
         event.setCancelled(true);
     }
 
     @EventHandler
-    public void onPostLogin(PostLoginEvent event){
+    public void onPostLogin(PostLoginEvent event) {
         plugin.getCommandManager().setIssuerLocale(event.getPlayer(),
-                punishManager.getOfflinePlayers().get(event.getPlayer().getName()).getLocale());
+                punishManager.getOfflinePlayers().get(event.getPlayer().getUniqueId()).getLocale());
     }
 
     @EventHandler
