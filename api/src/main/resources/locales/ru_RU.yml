@@ -13,6 +13,8 @@ main:
   setlanguage: '&aВаш язык установлен на {0}.'
   setdefaultlanguage: '&aЯзык для сервера установлен на {0}.'
   mustInteger: '&cПожалуйста, укажите корректное числовое значение.'
+  online: '&aВ сети'
+  offline: '&8Не в сети'
   timelayout:
     #Variables to be used when showing the duration of the punishment.
     year: '%y% год(-а)'
@@ -23,6 +25,7 @@ main:
     minute: '%s минут(-ы)'
     second: '%s секунд'
 gui:
+  clickNoPerm: '&cУ вас нет прав для этого.'
   backbutton:
     name: '&7Назад'
   main:
@@ -63,6 +66,16 @@ gui:
       name: '&7Нажмите, чтобы подтвердить'
     return:
       name: '&7Нажмите, чтобы вернуться'
+  punish:
+    title: '&6Наказать &e%player%'
+    info:
+      name: '&bИгрок &3%player%'
+    template:
+      name: '&bШаблон &3%template%'
+      lore:
+        - '&6Тип: &e%type%'
+        - '&6Причина: &e%reason%'
+        - '&6Длительность: &e%duration%'
 ban:
   punished: '&a%player% успешно забанен.'
   alreadyPunished: '&e%player% уже забанен.'
@@ -115,6 +128,7 @@ kick:
     - '&6Вы были удалены с этого сервера.'
     - '&2Причина: &a%reason%'
   description: 'Выгоняет игрока с сервера.'
+  announce: '&a%player% &eбыл кикнут &a%operator% &eпо причине &a%reason%.'
 mute:
   punished: '&a%player% успешно приглушенный.'
   alreadyPunished: '&e%player% уже приглушенный.'
@@ -129,16 +143,33 @@ tempmute:
     - '&eВы были отключены &a%operator% &eдля &a%duration% &eиз-за &a%reason%&e.'
   announce: '&a%player% &eбыл приглушен &a%operator% &eдля &a%duration% &eиз-за &a%reason%&e.'
   description: 'Временно отключает звук игрока.'
+unban:
+  notPunished: '&e%player% не забанен.'
+  done: '&aБан %player% был убран.'
+  description: 'Убирает бан с игрока.'
+unmute:
+  notPunished: '&e%player% не приглушен.'
+  done: '&aПриглушение у %player% было убрано.'
+  description: 'Убирает приглушение с игрока.'
+unpunish:
+  notPunished: '&e%player% не наказан.'
+  done: '&aНаказание %player% было удалено.'
+  description: 'Удаляет все наказания у игрока.'
 check:
+  checking: '&eПроверяю &a%player% &7(%online%&7)'
+  playerNotFound: '&c%player% не найден!'
   uuid: '&eUUID: &a%uuid%'
   ip: '&eIP: &a%ip%'
+  country: '&eСтрана: &a%country%'
   language: '&eЯзык: &a%language%'
   banStatus: '&eСтатус бана: &c%status%'
   banReason: '&e-> Причина бана: &c%reason%'
   banOperator: '&e-> Бан выдал: &c%operator%'
+  banServer: '&e-> Бан сервера: &c%server%'
   muteStatus: '&eСтатус мута: &c%status%'
   muteReason: '&e-> Причина мута: &c%reason%'
   muteOperator: '&e-> Мут выдал: &c%operator%'
+  muteServer: '&e-> Приглушение сервера: &c%server%'
   punishId: '&e-> ID Наказания: &c%id%'
   notPunished: '&aне наказан'
   description: 'Проверить текущий статус игрока.'

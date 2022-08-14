@@ -1,1 +1,71 @@
 ---
+#Placeholders:
+#%reason% -> Reason of punishment.
+#%duration% -> Duration of punishment.
+#%operator% -> Operator of punishment.
+#%player% -> Name of the player being punished.
+main:
+  exempt-player: 'Tu ne peux pas punir ce joueur.'
+  defaultReason: 'aucun'
+  not-on-yourself: 'Tu ne peux pas utiliser cette commande sur toi-même !'
+  not-logged-server: '&cTu ne peux pas punir un joueur inconnu du serveur.'
+  setlanguage: '&aLangage définit sur {0}.'
+  setdefaultlanguage: '&aLa langue par défaut du serveur à été changé sur {0}.'
+  mustInteger: '&cMerci de renseigner un chiffre corret.'
+  online: '&aEn ligne'
+  offline: '&8Hors-ligne'
+  timelayout:
+    #Variables to be used when showing the duration of the punishment.
+    year: '%y% année(s)'
+    month: '%mo% mois(s)'
+    week: '%w% semaine(s)'
+    day: '%d% jour(s)'
+    hour: '%h% heure(s)'
+    minute: '%m% minute(s)'
+    second: '%s% seconde(s)'
+gui:
+  clickNoPerm: '&cTu n''as pas la permission.'
+  backbutton:
+    name: '&7Retour'
+  main:
+    title: '&6&lPunishManager GUI'
+    languageselector:
+      name: '&eSélecteur de langue'
+    managepunishments:
+      name: '&eGérer les punitions'
+    adminpanel:
+      name: '&ePanel Admin'
+  languageselector:
+    title: '&eSélecteur de langue - Actuel : &8{0}'
+  adminpanel:
+    title: '&ePanel Admin'
+    reload:
+      name: '&aReload des fichiers de configuration'
+  managepunishments:
+    title: '&eGérer les punitions - Total &6{0}'
+    next:
+      name: '&7Page suivante'
+    previous:
+      name: '&7Page précédente'
+    punishment:
+      name: '&bPunition #%id%'
+      #Variables: %player%, %uuid%, %type%, %reason%, %operator%, %ip%
+      lore:
+        - '&6Joueur: &e%player%'
+        - '&6Type: &e%type%'
+        - '&6Raison : &e%reason%'
+        - '&6Durée: &e%duration%'
+        - '&6Par: &e%operator%'
+        - '&6Ip: &e%ip%'
+        - '&7'
+        - '&7Clic-gauche pour &eretirer &7cette punition.'
+  confirmation:
+    title: '&eConfirmer'
+    confirm:
+      name: '&7Clic-ici pour &aConfirmer'
+    return:
+      name: '&7Clic-ici pour &cAnnuler'
+  punish:
+    title: '&6Punir &e%player%'
+    info:
+      name: '&bJoueur &3%player%'
