@@ -14,6 +14,8 @@ Advanced punish plugin for Minecraft servers.
 [![bStats Servers](https://img.shields.io/bstats/servers/14772?label=Bungee%20Servers)](https://bstats.org/plugin/bungeecord/PunishManager/14772)
 [![bStats Players](https://img.shields.io/bstats/players/14772?label=Bungee%20Players)](https://bstats.org/plugin/bungeecord/PunishManager/14772)
 
+[![bStats Servers](https://img.shields.io/bstats/servers/15231?label=Velocity%20Servers)](https://bstats.org/plugin/velocity/PunishManager%20Velocity/15231)
+[![bStats Players](https://img.shields.io/bstats/servers/15231?label=Velocity%20Players)](https://bstats.org/plugin/velocity/PunishManager%20Velocity/15231)
 # Download Link
 
 [Download from Spigot](https://www.spigotmc.org/resources/96062/)
