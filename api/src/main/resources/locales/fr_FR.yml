@@ -1,4 +1,3 @@
----
 #Placeholders:
 #%reason% -> Reason of punishment.
 #%duration% -> Duration of punishment.
@@ -21,14 +20,12 @@ main:
     week: '%w% semaine(s)'
     day: '%d% jour(s)'
     hour: '%h% heure(s)'
-    minute: '%m% minute(s)'
     second: '%s% seconde(s)'
 gui:
   clickNoPerm: '&cTu n''as pas la permission.'
   backbutton:
     name: '&7Retour'
   main:
-    title: '&6&lPunishManager GUI'
     languageselector:
       name: '&eSélecteur de langue'
     managepunishments:
