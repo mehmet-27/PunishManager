@@ -1,11 +1,9 @@
----
 #Placeholders:
 #%reason% -> Reason of punishment.
 #%duration% -> Duration of punishment.
 #%operator% -> Operator of punishment.
 #%player% -> Name of the player being punished.
 main:
-  prefix: '&6PunishManager'
   exempt-player: 'Вы не можете наказать этого игрока.'
   defaultReason: 'нет'
   not-on-yourself: 'Вы не можете использовать эту команду на себе!'
@@ -29,7 +27,6 @@ gui:
   backbutton:
     name: '&7Назад'
   main:
-    title: '&6&lPunishManager GUI'
     languageselector:
       name: '&eВыбор языка'
     managepunishments:
@@ -158,8 +155,6 @@ unpunish:
 check:
   checking: '&eПроверяю &a%player% &7(%online%&7)'
   playerNotFound: '&c%player% не найден!'
-  uuid: '&eUUID: &a%uuid%'
-  ip: '&eIP: &a%ip%'
   country: '&eСтрана: &a%country%'
   language: '&eЯзык: &a%language%'
   banStatus: '&eСтатус бана: &c%status%'
