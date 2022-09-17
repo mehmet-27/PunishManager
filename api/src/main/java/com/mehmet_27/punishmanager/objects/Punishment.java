@@ -16,17 +16,18 @@ public class Punishment {
     private static final int MINUTE = 60;
     private final ConfigManager configManager = PunishManager.getInstance().getConfigManager();
     private final long start, end;
-    private String playerName, ip, reason, operator, server;
+    private String playerName, reason, operator, server;
+    private @Nullable String ip;
     private PunishType punishType;
     private UUID uuid;
     private @Nullable UUID operatorUUID;
     private final int id;
 
-    public Punishment(String playerName, UUID uuid, String ip, PunishType punishType, String reason, String operator, @Nullable UUID operatorUUID, String server, int id) {
+    public Punishment(String playerName, UUID uuid, @Nullable String ip, PunishType punishType, String reason, String operator, @Nullable UUID operatorUUID, String server, int id) {
         this(playerName, uuid, ip, punishType, reason, operator, operatorUUID, server, new Timestamp(System.currentTimeMillis()).getTime(), -1, id);
     }
 
-    public Punishment(String playerName, UUID uuid, String ip, PunishType punishType, String reason, String operator, @Nullable UUID operatorUUID, String server, long start, long end, int id) {
+    public Punishment(String playerName, UUID uuid, @Nullable String ip, PunishType punishType, String reason, String operator, @Nullable UUID operatorUUID, String server, long start, long end, int id) {
         this.playerName = playerName;
         this.uuid = uuid;
         this.ip = ip;
@@ -99,11 +100,11 @@ public class Punishment {
         this.uuid = uuid;
     }
 
-    public String getIp() {
+    public @Nullable String getIp() {
         return ip;
     }
 
-    public void setIp(String ip) {
+    public void setIp(@Nullable String ip) {
         this.ip = ip;
     }
 

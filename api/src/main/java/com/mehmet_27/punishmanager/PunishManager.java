@@ -42,7 +42,7 @@ public class PunishManager {
         // Download protocolize-bungeecord.jar
         if (methods.getPlatform().equals(Platform.BUNGEECORD)) {
             dependencyManager.downloadDependency(Dependency.PROTOCOLIZE_BUNGEECORD, methods.getPluginsFolder().resolve(Dependency.PROTOCOLIZE_BUNGEECORD.getFileName()));
-        }else if (methods.getPlatform().equals(Platform.VELOCITY)){
+        } else if (methods.getPlatform().equals(Platform.VELOCITY)) {
             dependencyManager.downloadDependency(Dependency.PROTOCOLIZE_VELOCITY, methods.getPluginsFolder().resolve(Dependency.PROTOCOLIZE_VELOCITY.getFileName()));
         }
         this.storageManager = new StorageManager();
@@ -59,6 +59,7 @@ public class PunishManager {
     public void onDisable() {
         if (storageManager == null) return;
         storageManager.removeAllExpiredPunishes();
+        storageManager.getCore().getDataSource().close();
         if (discordManager == null) return;
         discordManager.disconnectBot();
     }
