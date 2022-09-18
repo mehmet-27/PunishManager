@@ -143,11 +143,6 @@ check:
   description: 'Sjekker gjeldende status for en spiller.'
 punishmanager:
   description: 'Hovedkommandoen til pluginen.'
-punishmanager-reload:
-  description: 'Laster pluginen på nytt.'
-  done: '&aAlle konfigurasjonsfiler er lastet på nytt.'
-punishmanager-help:
-  description: 'Hjelpe kommandoen.'
 changereason:
   description: 'Endrer årsaken til en straff.'
   punishmentNotFound: '&eSøket straff ikke funnet.'
