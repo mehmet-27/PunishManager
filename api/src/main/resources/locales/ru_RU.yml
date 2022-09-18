@@ -183,11 +183,6 @@ check:
   description: 'Проверить текущий статус игрока.'
 punishmanager:
   description: 'Главная команда плагина.'
-punishmanager-reload:
-  description: 'Перезагрузить плагин.'
-  done: '&aВсе конфигурационные файлы были перезагружены.'
-punishmanager-help:
-  description: 'Команды справки.'
 changereason:
   description: 'Изменить причину наказания.'
   punishmentNotFound: '&eНаказания не найдены.'
