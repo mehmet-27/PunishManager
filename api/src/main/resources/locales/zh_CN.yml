@@ -156,11 +156,6 @@ check:
   description: '显示一位玩家的当前状态。'
 punishmanager:
   description: '本插件主命令。'
-punishmanager-reload:
-  description: '重载本插件。'
-  done: '&a所有配置文件已被重载。'
-punishmanager-help:
-  description: '帮助命令。'
 changereason:
   description: '修改封禁理由。'
   punishmentNotFound: '&e搜索的惩罚不存在。'
