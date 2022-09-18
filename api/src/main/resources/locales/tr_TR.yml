@@ -174,11 +174,6 @@ check:
   description: 'Bir oyuncunun anlık durumunu kontrol et.'
 punishmanager:
   description: 'Eklentinin ana komutu.'
-punishmanager-reload:
-  description: 'Eklentiyi yeniden yükle.'
-  done: '&aTüm yapılandırma dosyaları yeniden yüklendi.'
-punishmanager-help:
-  description: 'Yardım komutu.'
 changereason:
   description: 'Bir cezanın sebebini değiştirir.'
   punishmentNotFound: '&eAranan ceza bulunamadı.'
