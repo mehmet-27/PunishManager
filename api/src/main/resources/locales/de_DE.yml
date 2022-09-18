@@ -153,11 +153,6 @@ check:
   description: 'Überprüft den aktuellen Status eines Spielers.'
 punishmanager:
   description: 'Der Hauptbefehl des Plugins.'
-punishmanager-reload:
-  description: 'Lädt das Plugin neu.'
-  done: '&aAlle Konfigurationsdateien wurden neu geladen.'
-punishmanager-help:
-  description: 'Hilfe-Befehl.'
 changereason:
   description: 'Ändert den Grund für eine Bestrafung.'
   punishmentNotFound: '&eGesuchte Bestrafung nicht gefunden.'
