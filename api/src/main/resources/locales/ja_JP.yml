@@ -1,1 +1,109 @@
----
+#Placeholders:
+#%reason% -> Reason of punishment.
+#%duration% -> Duration of punishment.
+#%operator% -> Operator of punishment.
+#%player% -> Name of the player being punished.
+main:
+  prefix: '&6PunishManager'
+  exempt-player: 'このプレイヤーを罰することはできません。'
+  defaultReason: 'なし'
+  not-on-yourself: 'このコマンドを自分自身に使うことはできません。'
+  not-logged-server: '&c以前にサーバーに参加したことない人を罰することはできません。'
+  setlanguage: '&aあなたの言語は {0} に設定されました。'
+  setdefaultlanguage: '&aサーバーのデフォルト言語は {0} に設定されています。'
+  mustInteger: '&c整数値で入力してください。'
+  online: '&aオンライン'
+  offline: '&8オフライン'
+gui:
+  clickNoPerm: '&c権限がありません。'
+  backbutton:
+    name: '&7戻る'
+  main:
+    title: '&6&lPunishManager GUI'
+    languageselector:
+      lore:
+        - '&7'
+        - '&e言語を選択してください。'
+    managepunishments:
+      name: '&6罰の管理'
+      lore:
+        - '&7'
+        - '&eクリックするだけで既存のすべての罰を管理できます。'
+    adminpanel:
+      name: '&6管理者用パネル'
+      lore:
+        - '&7'
+        - '&eGUIを使用してプラグインを管理します。'
+  languageselector:
+    title: '&e言語選択 - 現在: &8{0}'
+  adminpanel:
+    title: '&e管理者用パネル'
+    reload:
+      name: '&a設定ファイルを再読み込みする'
+  managepunishments:
+    title: '&e罰を管理 - 合計 &6{0}'
+    next:
+      name: '&7次のページ'
+    previous:
+      name: '&7前のページ'
+    punishment:
+      name: '&b罰 #%id%'
+      #Variables: %player%, %uuid%, %type%, %reason%, %operator%, %ip%
+      lore:
+        - '&6プレイヤー名: &e%player%'
+        - '&6種類: &e%type%'
+        - '&6理由: &e%reason%'
+        - '&6期間: &e%duration%'
+        - '&6オペレーター: &e%operator%'
+        - '&6IPアドレス: &e%ip%'
+        - '&7'
+        - '&7左クリックで罰を&e削除&7する。'
+  confirmation:
+    title: '&e確認'
+    confirm:
+      name: '&7ここをクリックして&a確認&7する'
+    return:
+      name: '&7ここをクリックして&c戻る'
+  punish:
+    title: '&e%player%を&6罰する'
+    info:
+      name: '&bプレイヤー &3%player%'
+    template:
+      name: '&bテンプレート &3%template%'
+tempban:
+  layout:
+    - '%prefix%'
+    - '&7'
+    - '&6You banned from this server.'
+    - '&2Operator: &a%operator%'
+    - '&2Reason: &a%reason%'
+    - '&2Duration: &a%duration%'
+    - '&eContact & Support'
+    - "&6Web &7» &ecoming soon"
+    - "&6Discord &7» &ecoming soon"
+ipban:
+  layout:
+    - '%prefix%'
+    - '&7'
+    - '&6あなたはこのサーバーへの接続が禁止されています。'
+    - '&2オペレーター: &a%operator%'
+    - '&2理由: &a%reason%'
+    - '&eContact & Support'
+    - "&6ウェブ &7» &e近日実装"
+    - "&6Discord &7» &e近日実装"
+kick:
+  layout:
+    - '%prefix%'
+    - '&7'
+    - '&6あなたはこのサーバーからキックされました。'
+    - '&2理由: &a%reason%'
+  description: 'サーバーからプレイヤーをキックする。'
+  announce: '&a%player% &eは &a%operator% &eに &a%reason% &eという理由でキックされました。'
+mute:
+  punished: '&a%player%をミュートしました。'
+  alreadyPunished: '&e%player%は既にミュートされています。'
+check:
+  uuid: '&eUUID: &a%uuid%'
+  ip: '&eIP: &a%ip%'
+  country: '&e国: &a%country%'
+  language: '&e言語: &a%language%'
