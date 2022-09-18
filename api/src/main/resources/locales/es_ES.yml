@@ -151,11 +151,6 @@ check:
   description: 'Comprueba el estado actual de un jugador.'
 punishmanager:
   description: 'Comando principal del complemento.'
-punishmanager-reload:
-  description: 'Vuelve a cargar el complemento.'
-  done: '&aTodos los archivos de configuración han sido recargados.'
-punishmanager-help:
-  description: 'Comando de ayuda.'
 changereason:
   description: 'Cambia el motivo de un castigo.'
   punishmentNotFound: '&eCastigo buscado no encontrado.'
