@@ -196,6 +196,7 @@ punishmanager:
       unsupportedPlugin: '&eThis plugin is currently not supported. If there is a plugin you want to be supported, you can contact me.'
       unsupportedPunishType: '&eThe punish is skipped because it is an unsupported punish type: %type%'
       found: '&aTotal %total% punishes found.'
+      tookMs: '&aImporting the punishes took %long% ms.'
       imported: '&aTotal %total% punishes imported.'
     reload:
       description: 'Reloads the plugin.'

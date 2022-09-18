@@ -18,6 +18,7 @@ import com.mehmet_27.punishmanager.utils.Utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -87,6 +88,7 @@ public class AdminCommand extends BaseCommand {
             }
 
             Utils.sendText(issuerUuid, "punishmanager.admin.import.start");
+            long startTime = System.currentTimeMillis();
 
             if (plugin.equals(SupportedPlugins.ADVANCEDBAN)) {
                 Utils.sendText(issuerUuid, "punishmanager.admin.import.connecting");
@@ -101,12 +103,6 @@ public class AdminCommand extends BaseCommand {
                     ResultSet result = connection.createStatement().executeQuery(query);
                     while (result.next()) {
                         String playerName = result.getString("name");
-                        UUID uuid = UUID.fromString(result.getString("uuid"));
-                        String reason = result.getString("reason");
-                        String operator = result.getString("operator");
-                        String server = "ALL";
-                        long start = result.getLong("start");
-                        long end = result.getLong("end");
                         AdvancedBanPunishmentType advancedBanPunishmentType;
                         Punishment.PunishType punishType;
                         try {
@@ -117,7 +113,22 @@ public class AdminCommand extends BaseCommand {
                             continue;
                         }
                         punishType = advancedBanPunishmentType.getType();
-                        Punishment punishment = new Punishment(playerName, uuid, null, punishType, reason, operator, null, server, start, end, 0);
+                        UUID uuid;
+                        try {
+                            uuid = UUID.fromString(result.getString("uuid"));
+                        } catch (IllegalArgumentException e) {
+                            uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + playerName).getBytes(StandardCharsets.UTF_8));
+                        }
+                        String reason = result.getString("reason");
+                        String operator = result.getString("operator");
+                        String server = "ALL";
+                        String ip = null;
+                        if (punishType.equals(Punishment.PunishType.IPBAN)) {
+                            ip = result.getString("uuid");
+                        }
+                        long start = result.getLong("start");
+                        long end = result.getLong("end");
+                        Punishment punishment = new Punishment(playerName, uuid, ip, punishType, reason, operator, null, server, start, end, 0);
                         punishments.add(punishment);
                     }
                     Utils.sendText(issuerUuid, "punishmanager.admin.import.found", message ->
@@ -138,6 +149,9 @@ public class AdminCommand extends BaseCommand {
                 Utils.sendText(issuerUuid, "punishmanager.admin.import.imported", message ->
                         message.replace("%total%", String.valueOf(finalImported)));
                 core.getDataSource().close();
+                long diff = System.currentTimeMillis() - startTime;
+                Utils.sendText(issuerUuid, "punishmanager.admin.import.tookMs", message ->
+                        message.replace("%long%", String.valueOf(diff)));
                 Utils.sendText(issuerUuid, "punishmanager.admin.import.end");
             }
         }
