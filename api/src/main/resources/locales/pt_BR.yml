@@ -149,11 +149,6 @@ check:
   description: 'Verifica o status atual de um jogador.'
 punishmanager:
   description: 'O comando principal do plugin.'
-punishmanager-reload:
-  description: 'Recarrega o plugin.'
-  done: '&aTodos os arquivos de configuração foram recarregados.'
-punishmanager-help:
-  description: 'Comando de ajuda.'
 changereason:
   description: 'Altera o motivo de uma punição.'
   punishmentNotFound: '&ePunição pesquisada não encontrada.'
