@@ -11,6 +11,7 @@ import com.mehmet_27.punishmanager.velocity.listeners.PunishListener;
 import com.mehmet_27.punishmanager.velocity.managers.PMVelocityCommandManager;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
+import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
@@ -69,6 +70,11 @@ public class PMVelocity {
 
         Metrics metrics = metricsFactory.make(this, 15231);
         metrics.addCustomChart(new SingleLineChart("punishments", () -> PunishManager.getInstance().getStorageManager().getPunishmentsCount()));
+    }
+
+    @Subscribe
+    public void onDisable(ProxyShutdownEvent event){
+        PunishManager.getInstance().onDisable();
     }
 
     public ConfigManager getConfigManager() {

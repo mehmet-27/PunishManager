@@ -449,4 +449,8 @@ public class StorageManager {
                 punishmentId);
         core.executeUpdateAsync(query);
     }
+
+    public DBCore getCore() {
+        return core;
+    }
 }

@@ -25,6 +25,7 @@ public class ConfigManager {
     private Map<String, String> embeds;
     private java.util.Locale defaultLocale;
     private List<String> exemptPlayers;
+    private Path dataFolder;
 
     public ConfigManager(PunishManager plugin) {
         this.plugin = plugin;
@@ -176,7 +177,7 @@ public class ConfigManager {
     }
 
     public void setup() {
-        Path dataFolder = plugin.getMethods().getDataFolder();
+        dataFolder = plugin.getMethods().getDataFolder();
         copyFileFromResources(new File("config.yml"), Paths.get(dataFolder + File.separator + "config.yml"));
         try {
             config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(dataFolder + File.separator + "config.yml"));
@@ -242,5 +243,22 @@ public class ConfigManager {
                 }
             }
         });
+    }
+
+    public Path getDataFolder() {
+        return dataFolder;
+    }
+
+    public void createFile(File file){
+        try {
+            if (file.createNewFile()) {
+                plugin.getLogger().info("File created: " + file.getName());
+            } else {
+                plugin.getLogger().info("File already exists.");
+            }
+        } catch (IOException e) {
+            plugin.getLogger().severe("An error occurred while creating the file: " + file.getName());
+            e.printStackTrace();
+        }
     }
 }

@@ -34,6 +34,6 @@ public class AdminPanel extends UIFrame {
                 .slot(11).build();
         add(reloadButton);
         reloadButton.setPermission(ClickType.LEFT_CLICK, "punishmanager.command.punishmanager.reload");
-        reloadButton.setListener(ClickType.LEFT_CLICK, () -> InventoryController.runCommand(getViewer(), "punishmanager", true, "reload"));
+        reloadButton.setListener(ClickType.LEFT_CLICK, () -> InventoryController.runCommand(getViewer(), "punishmanager", true, "admin reload"));
     }
 }

@@ -5,7 +5,6 @@ import co.aikar.commands.CommandHelp;
 import co.aikar.commands.CommandIssuer;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.utils.Utils;
 
 import java.util.UUID;
 
@@ -27,16 +26,6 @@ public class PunishManagerCommand extends BaseCommand {
         punishManager.getMethods().openMainInventory(player);
     }
 
-    @Subcommand("reload")
-    @Description("{@@punishmanager-reload.description}")
-    @CommandPermission("punishmanager.command.punishmanager.reload")
-    public void reload(CommandIssuer sender) {
-        punishManager.getConfigManager().setup();
-        UUID operatorUuid = sender.isPlayer() ? sender.getUniqueId() : null;
-        punishManager.getMethods().getCommandManager().updateDefaultLocale();
-        Utils.sendText(operatorUuid, "punishmanager-reload.done");
-    }
-
     @Subcommand("about")
     public void about(CommandIssuer sender) {
         UUID uuid = sender.isPlayer() ? sender.getUniqueId() : null;
@@ -55,7 +44,7 @@ public class PunishManagerCommand extends BaseCommand {
     }
 
     @Subcommand("help")
-    @Description("{@@punishmanager-help.description}")
+    @Description("{@@punishmanager.help.description}")
     public void help(CommandIssuer sender, CommandHelp help) {
         help.showHelp();
     }
