@@ -1,4 +1,3 @@
----
 #Placeholders:
 #%reason% -> Reason of punishment.
 #%duration% -> Duration of punishment.
@@ -143,7 +142,6 @@ unpunish:
   description: '移除玩家的所有惩罚。'
 check:
   playerNotFound: '&c找不到玩家 %player%!'
-  uuid: '&eUUID: &a%uuid%'
   ip: '&e玩家IP: &a%ip%'
   country: '&e所在国家: &a%country%'
   language: '&e所选语言: &a%language%'
@@ -158,11 +156,6 @@ check:
   description: '显示一位玩家的当前状态。'
 punishmanager:
   description: '本插件主命令。'
-punishmanager-reload:
-  description: '重载本插件。'
-  done: '&a所有配置文件已被重载。'
-punishmanager-help:
-  description: '帮助命令。'
 changereason:
   description: '修改封禁理由。'
   punishmentNotFound: '&e搜索的惩罚不存在。'
