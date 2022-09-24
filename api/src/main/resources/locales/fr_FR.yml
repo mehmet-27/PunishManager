@@ -165,9 +165,28 @@ unpunish:
   description: 'Supprimer toutes les punitions d''un joueur.'
 check:
   checking: '&eAnalyse &a%player% &7(%online%&7)'
+  playerNotFound: '&c%player% est introuvable !'
+  uuid: '&eUUID: &a%uuid%'
+  ip: '&eIP: &a%ip%'
+  country: '&ePays: &a%country%'
+  language: '&eLangage: &a%language%'
+  banStatus: '&eStatut du bannissement : &c%status%'
+  banReason: '&e-> Raison du bannissement : &c%reason%'
+  banOperator: '&e-> Opérateur du Ban: &c%operator%'
+  banServer: '&e-> Serveur du Ban: &c%server%'
+  muteStatus: '&eStatus du Mute: &c%status%'
+  muteReason: '&e-> Raison du Mute: &c%reason%'
+  muteOperator: '&e-> Opérateur du Mute: &c%operator%'
+  muteServer: '&e-> Serveur du Mute: &c%server%'
+  punishId: '&e-> Id de la Punition : &c%id%'
+  notPunished: '&anon sanctionné'
+  description: 'Vérifie le statut actuel d''un joueur.'
 punishmanager:
+  description: 'Commande principale du plugin.'
   admin:
+    description: 'Commande admin.'
     import:
+      description: 'Importer les punitions des autres plugins.'
       start: '&aL''importation a démarré.'
       end: '&aImportation terminée.'
       connecting: '&aConnexion à la base de données...'
