@@ -4,6 +4,7 @@
 #%operator% -> Operator of punishment.
 #%player% -> Name of the player being punished.
 main:
+  prefix: '&6PunishManager'
   exempt-player: 'Bu oyuncuyu cezalandıramazsınız.'
   defaultReason: 'yok'
   not-on-yourself: 'Bu komutu kendi üzerinizde kullanamazsınız!'
@@ -11,6 +12,8 @@ main:
   setlanguage: '&aDiliniz {0} olarak ayarlandı.'
   setdefaultlanguage: '&aSunucu için varsayılan dil {0} olarak ayarlandı.'
   mustInteger: '&cLütfen geçerli bir sayı giriniz.'
+  online: '&aÇevrimiçi'
+  offline: '&8Çevrimdışı'
   timelayout:
     #Variables to be used when showing the duration of the punishment.
     year: '%y% yıl'
@@ -25,6 +28,7 @@ gui:
   backbutton:
     name: '&7Geri'
   main:
+    title: '&6&lPunishManager Menü'
     languageselector:
       name: '&6Dil Seçici'
       lore:
@@ -80,7 +84,6 @@ gui:
         - '&6Tür: &e%type%'
         - '&6Sebep: &e%reason%'
         - '&6Süre: &e%duration%'
-
 commandReplacements:
   ban: 'ban'
   tempban: 'tempban'
@@ -97,9 +100,8 @@ commandReplacements:
   admin: 'admin'
   reload: 'reload'
   import: 'import'
-  about: 'hakkında'
-  help: 'yardım'
-
+  about: 'about'
+  help: 'help'
 ban:
   punished: '&a%player% başarıyla yasaklandı.'
   alreadyPunished: '&e%player% zaten yasaklı.'
@@ -150,7 +152,7 @@ kick:
     - '&eSunucudan Atıldın'
     - '&7'
     - '&cSebep &7» &r%reason%'
-    - '&2Reason: &a%reason%'
+    - '&2Sebep: &a%reason%'
   description: 'Bir oyuncuyu sunucudan at.'
   announce: '&a%player% &eadlı oyuncu &a%operator% &etarafından &a%reason% &esebebiyle sunucudan atıldı.'
 mute:
@@ -180,15 +182,20 @@ unpunish:
   done: '&a%player% adlı oyuncunun tüm cezaları kaldırıldı.'
   description: 'Bir oyuncunun tüm cezalarını kaldır.'
 check:
+  checking: '&a%player% &ekontrol ediliyor &7(%online%&7)'
   playerNotFound: '&c%player% bulunamadı!'
+  uuid: '&eUUID: &a%uuid%'
+  ip: '&eIP: &a%ip%'
   country: '&eÜlke: &a%country%'
   language: '&eDil: &a%language%'
   banStatus: '&eYasaklanma durumu: &c%status%'
   banReason: '&e-> Yasaklanma sebebi: &c%reason%'
   banOperator: '&e-> Yasaklayan yetkili: &c%operator%'
+  banServer: '&e-> Yasaklandığı sunucu: &c%server%'
   muteStatus: '&eSusturulma durumu: &c%status%'
   muteReason: '&e-> Susturulma sebebi: &c%reason%'
   muteOperator: '&e-> Susturan yetkili: &c%operator%'
+  muteServer: '&e-> Susturulduğu sunucu: &c%server%'
   punishId: '&e-> Ceza Id: &c%id%'
   notPunished: '&acezalandırılmamış'
   description: 'Bir oyuncunun anlık durumunu kontrol et.'
@@ -198,21 +205,21 @@ punishmanager:
     description: 'Yönetici komutu.'
     import:
       description: 'Diğer eklentilerden cezaları içe aktar.'
-      start: '&aİçe aktarma başlatıldı.'
+      start: '&aİçe aktarma başladı.'
       end: '&aİçe aktarma tamamlandı.'
       connecting: '&aVeritabanına bağlanılıyor...'
-      fileCreated: '&eimport.yml oluşturuldu. Lütfen düzgünce bilgileri düzenleyin.'
+      fileCreated: '&eimport.yml oluşturuldu. Lütfen düzenleyin ve tekrar deneyin.'
       nullConfiguration: '&cİçe aktarma yapılandırması boş.'
-      unsupportedPlugin: '&eBu eklenti şu anda desteklenmiyor. Desteklenmesini istediğiniz bir eklenti varsa benimle iletişime geçin.'
-      unsupportedPunishType: '&eCeza atlandı çünkü desteklenmeyen bir ceza türüne sahip: %type%'
+      unsupportedPlugin: '&eBu eklenti şu anda desteklenmiyor. Desteklenmesini istediğiniz bir eklenti var ise bana ulaşabilirsiniz.'
+      unsupportedPunishType: '&eCeza, desteklenmeyen bir ceza türü olduğu için atlandı: %type%'
       found: '&aToplam %total% ceza bulundu.'
-      tookMs: '&aİçe aktarma %long% ms sürdü.'
+      tookMs: '&aCezaları içe aktarma %long% ms sürdü.'
       imported: '&aToplam %total% ceza içe aktarıldı.'
     reload:
       description: 'Eklentiyi yeniden yükler.'
       done: '&aTüm yapılandırma dosyaları yeniden yüklendi.'
   help:
-    description: 'Help command.'
+    description: 'Yardım komutu.'
 changereason:
   description: 'Bir cezanın sebebini değiştirir.'
   punishmentNotFound: '&eAranan ceza bulunamadı.'
