@@ -80,26 +80,6 @@ gui:
         - '&6Tür: &e%type%'
         - '&6Sebep: &e%reason%'
         - '&6Süre: &e%duration%'
-
-commandReplacements:
-  ban: 'ban'
-  tempban: 'tempban'
-  ipban: 'ipban'
-  mute: 'mute'
-  tempmute: 'tempmute'
-  kick: 'kick'
-  unban: 'unban'
-  unmute: 'unmute'
-  unpunish: 'unpunish'
-  punish: 'punish'
-  check: 'check'
-  changereason: 'changereason'
-  admin: 'admin'
-  reload: 'reload'
-  import: 'import'
-  about: 'hakkında'
-  help: 'yardım'
-
 ban:
   punished: '&a%player% başarıyla yasaklandı.'
   alreadyPunished: '&e%player% zaten yasaklı.'
@@ -194,25 +174,6 @@ check:
   description: 'Bir oyuncunun anlık durumunu kontrol et.'
 punishmanager:
   description: 'Eklentinin ana komutu.'
-  admin:
-    description: 'Yönetici komutu.'
-    import:
-      description: 'Diğer eklentilerden cezaları içe aktar.'
-      start: '&aİçe aktarma başlatıldı.'
-      end: '&aİçe aktarma tamamlandı.'
-      connecting: '&aVeritabanına bağlanılıyor...'
-      fileCreated: '&eimport.yml oluşturuldu. Lütfen düzgünce bilgileri düzenleyin.'
-      nullConfiguration: '&cİçe aktarma yapılandırması boş.'
-      unsupportedPlugin: '&eBu eklenti şu anda desteklenmiyor. Desteklenmesini istediğiniz bir eklenti varsa benimle iletişime geçin.'
-      unsupportedPunishType: '&eCeza atlandı çünkü desteklenmeyen bir ceza türüne sahip: %type%'
-      found: '&aToplam %total% ceza bulundu.'
-      tookMs: '&aİçe aktarma %long% ms sürdü.'
-      imported: '&aToplam %total% ceza içe aktarıldı.'
-    reload:
-      description: 'Eklentiyi yeniden yükler.'
-      done: '&aTüm yapılandırma dosyaları yeniden yüklendi.'
-  help:
-    description: 'Help command.'
 changereason:
   description: 'Bir cezanın sebebini değiştirir.'
   punishmentNotFound: '&eAranan ceza bulunamadı.'
