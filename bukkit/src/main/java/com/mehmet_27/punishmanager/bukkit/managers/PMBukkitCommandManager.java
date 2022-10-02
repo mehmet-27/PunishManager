@@ -43,8 +43,6 @@ public class PMBukkitCommandManager extends PaperCommandManager implements Comma
     @Override
     public void registerCommands() {
         Set<Class<? extends BaseCommand>> commands = FileUtils.getClassesBySubType("com.mehmet_27.punishmanager.core.commands", BaseCommand.class);
-        plugin.getLogger().info(String.format("Registering %d base commands...", commands.size()));
-
         for (Class<? extends BaseCommand> c : commands) {
             // ACF already registers nested classes
             if (c.isMemberClass() || Modifier.isStatic(c.getModifiers())) {
