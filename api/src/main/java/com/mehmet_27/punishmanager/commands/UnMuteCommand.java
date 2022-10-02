@@ -10,7 +10,7 @@ import com.mehmet_27.punishmanager.utils.Utils;
 
 import java.util.UUID;
 
-@CommandAlias("punishmanager")
+@CommandAlias("%punishmanager")
 @CommandPermission("punishmanager.command.unmute")
 public class UnMuteCommand extends BaseCommand {
 
@@ -19,7 +19,7 @@ public class UnMuteCommand extends BaseCommand {
 
     @CommandCompletion("@players")
     @Description("{@@unmute.description}")
-    @CommandAlias("unmute")
+    @CommandAlias("%unmute")
     public void unMute(CommandIssuer sender, @Name("Player") OfflinePlayer player) {
         String playerName = player.getName();
         UUID uuid = player.getUniqueId();

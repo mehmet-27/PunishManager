@@ -82,6 +82,16 @@ public class ConfigManager {
         return path;
     }
 
+    public String getMessageOrDefault(String path, String def) {
+        if (locales.containsKey(defaultLocale)) {
+            String msg = locales.get(defaultLocale).getString(path);
+            if (msg != null && msg.length() != 0) {
+                return Utils.color(msg);
+            }
+        }
+        return Utils.color(def);
+    }
+
     public String getMessage(String path, @Nullable UUID uuid) {
         Locale locale = new PlayerLocale(uuid).getLocale();
         String message;

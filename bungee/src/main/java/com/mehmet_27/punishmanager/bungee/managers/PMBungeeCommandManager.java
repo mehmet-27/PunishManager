@@ -5,7 +5,6 @@ import co.aikar.locales.MessageKey;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bungee.PMBungee;
 import com.mehmet_27.punishmanager.bungee.Utils.BungeeUtils;
-import com.mehmet_27.punishmanager.commands.MuteCommand;
 import com.mehmet_27.punishmanager.managers.CommandManager;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.managers.StorageManager;
@@ -26,6 +25,7 @@ import java.util.stream.Collectors;
 public class PMBungeeCommandManager extends BungeeCommandManager implements CommandManager {
 
     private final PMBungee plugin;
+    private static final List<String> SUBCOMMANDS;
 
     public PMBungeeCommandManager(PMBungee plugin) {
         super(plugin);
@@ -160,11 +160,33 @@ public class PMBungeeCommandManager extends BungeeCommandManager implements Comm
         loadLocaleFiles(PunishManager.getInstance().getConfigManager().getLocaleFiles());
         updateDefaultLocale();
         registerDependencies();
+        addCommandReplacements();
         enableUnstableAPI("help");
         registerContexts();
         registerCommands();
         registerConditions();
         registerCompletions();
         usePerIssuerLocale(true);
+    }
+
+    private void addCommandReplacements() {
+        getCommandReplacements().addReplacements(
+                "punishmanager", "punishmanager|puma"
+        );
+
+        SUBCOMMANDS.forEach(sub -> {
+            String command = plugin.getConfigManager().getMessage("commandNames." + sub);
+            if (command == null) {
+                command = sub;
+            }
+            command = command.replace(" ", "");
+            String replacement = command.equals(sub) ? sub : command + "|" + sub;
+            getCommandReplacements().addReplacement(sub, replacement);
+        });
+    }
+
+    static {
+        SUBCOMMANDS = Arrays.asList("ban", "tempban", "ipban", "mute", "tempmute", "kick", "unban",
+                "unmute", "unpunish", "punish", "check", "changereason", "admin", "reload", "import", "help", "about");
     }
 }

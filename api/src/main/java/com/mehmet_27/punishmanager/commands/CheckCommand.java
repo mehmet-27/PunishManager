@@ -12,7 +12,7 @@ import com.mehmet_27.punishmanager.utils.Utils;
 
 import java.util.UUID;
 
-@CommandAlias("punishmanager")
+@CommandAlias("%punishmanager")
 @CommandPermission("punishmanager.command.check")
 public class CheckCommand extends BaseCommand {
 
@@ -27,7 +27,7 @@ public class CheckCommand extends BaseCommand {
 
     @CommandCompletion("@players")
     @Description("{@@check.description}")
-    @CommandAlias("check")
+    @CommandAlias("%check")
     public void check(CommandIssuer sender, @Name("Player") OfflinePlayer player) {
         String playerName = player.getName();
         UUID uuid = player.getUniqueId();
@@ -45,8 +45,8 @@ public class CheckCommand extends BaseCommand {
         Punishment ban = storageManager.getBan(uuid);
         Punishment mute = storageManager.getMute(uuid);
 
-        String banStatus = (ban != null && ban.isBanned() && !ban.isExpired()) ? ban.getDuration() : PunishManager.getInstance().getConfigManager().getMessage("check.notPunished", operatorUuid);
-        String muteStatus = (mute != null && mute.isMuted() && !mute.isExpired()) ? mute.getDuration() : PunishManager.getInstance().getConfigManager().getMessage("check.notPunished", operatorUuid);
+        String banStatus = (ban != null && ban.isBanned() && !ban.isExpired()) ? ban.getDuration(operatorUuid) : PunishManager.getInstance().getConfigManager().getMessage("check.notPunished", operatorUuid);
+        String muteStatus = (mute != null && mute.isMuted() && !mute.isExpired()) ? mute.getDuration(operatorUuid) : PunishManager.getInstance().getConfigManager().getMessage("check.notPunished", operatorUuid);
 
         Utils.sendText(operatorUuid, "check.uuid", message -> message.replace("%uuid%", uuid.toString()));
         if (PunishManager.getInstance().getConfigManager().getConfig().getBoolean("check-command-show-ip-require-perm", false)) {

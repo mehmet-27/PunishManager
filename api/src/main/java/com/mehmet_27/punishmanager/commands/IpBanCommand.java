@@ -13,7 +13,7 @@ import java.util.UUID;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.BAN;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.IPBAN;
 
-@CommandAlias("punishmanager")
+@CommandAlias("%punishmanager")
 @CommandPermission("punishmanager.command.banip")
 public class IpBanCommand extends BaseCommand {
 
@@ -25,7 +25,7 @@ public class IpBanCommand extends BaseCommand {
 
     @CommandCompletion("@players Reason")
     @Description("{@@ipban.description}")
-    @CommandAlias("ipban")
+    @CommandAlias("%ipban")
     public void banIp(CommandIssuer sender, @Conditions("other_player") @Name("Player") OfflinePlayer player, @Optional @Name("Reason") String reason) {
         UUID uuid = player.getUniqueId();
         String playerName = player.getName();

@@ -11,7 +11,7 @@ import com.mehmet_27.punishmanager.utils.Utils;
 import java.util.UUID;
 
 
-@CommandAlias("punishmanager")
+@CommandAlias("%punishmanager")
 @CommandPermission("punishmanager.command.changereason")
 public class ChangeReasonCommand extends BaseCommand {
 
@@ -23,7 +23,7 @@ public class ChangeReasonCommand extends BaseCommand {
 
     @CommandCompletion("id newReason")
     @Description("{@@changereason.description}")
-    @CommandAlias("changereason")
+    @CommandAlias("%changereason")
     public void changeReason(CommandIssuer sender, @Conditions("mustInteger") @Name("Id") String punishmentId, @Name("newReason") String newReason) {
 
         Punishment punishment = storageManager.getPunishmentWithId(Integer.parseInt(punishmentId));

@@ -15,7 +15,7 @@ import java.util.regex.Matcher;
 
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.TEMPMUTE;
 
-@CommandAlias("punishmanager")
+@CommandAlias("%punishmanager")
 @CommandPermission("punishmanager.command.tempmute")
 public class TempMuteCommand extends BaseCommand {
 
@@ -27,7 +27,7 @@ public class TempMuteCommand extends BaseCommand {
 
     @CommandCompletion("@players @units Reason")
     @Description("{@@tempmute.description}")
-    @CommandAlias("tempmute")
+    @CommandAlias("%tempmute")
     public void tempMute(CommandIssuer sender, @Conditions("other_player") @Name("Player") OfflinePlayer player, @Name("Time") String time, @Optional @Name("Reason") String reason) {
         UUID uuid = player.getUniqueId();
         String playerName = player.getName();

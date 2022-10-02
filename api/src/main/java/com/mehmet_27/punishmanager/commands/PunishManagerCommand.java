@@ -8,7 +8,7 @@ import com.mehmet_27.punishmanager.PunishManager;
 
 import java.util.UUID;
 
-@CommandAlias("punishmanager")
+@CommandAlias("%punishmanager")
 @Description("The main command of the plugin.")
 public class PunishManagerCommand extends BaseCommand {
 
@@ -26,7 +26,7 @@ public class PunishManagerCommand extends BaseCommand {
         punishManager.getMethods().openMainInventory(player);
     }
 
-    @Subcommand("about")
+    @Subcommand("%about")
     public void about(CommandIssuer sender) {
         UUID uuid = sender.isPlayer() ? sender.getUniqueId() : null;
         PunishManager.getInstance().getMethods().sendMessage(uuid, "&a&m+                                                        +");
@@ -43,7 +43,7 @@ public class PunishManagerCommand extends BaseCommand {
         PunishManager.getInstance().getMethods().sendMessage(uuid, "&eUse &a/punishmanager help &efor help.");
     }
 
-    @Subcommand("help")
+    @Subcommand("%help")
     @Description("{@@punishmanager.help.description}")
     public void help(CommandIssuer sender, CommandHelp help) {
         help.showHelp();

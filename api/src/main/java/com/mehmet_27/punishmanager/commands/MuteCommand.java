@@ -12,7 +12,7 @@ import java.util.UUID;
 
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.MUTE;
 
-@CommandAlias("punishmanager")
+@CommandAlias("%punishmanager")
 @CommandPermission("punishmanager.command.mute")
 public class MuteCommand extends BaseCommand {
 
@@ -24,7 +24,7 @@ public class MuteCommand extends BaseCommand {
 
     @CommandCompletion("@players Reason")
     @Description("{@@mute.description}")
-    @CommandAlias("mute")
+    @CommandAlias("%mute")
     public void mute(CommandIssuer sender, @Conditions("other_player") @Name("Player") OfflinePlayer player, @Optional @Name("Reason") String reason) {
         UUID uuid = player.getUniqueId();
         String playerName = player.getName();

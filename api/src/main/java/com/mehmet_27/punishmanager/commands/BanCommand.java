@@ -12,7 +12,7 @@ import java.util.UUID;
 
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.BAN;
 
-@CommandAlias("punishmanager")
+@CommandAlias("%punishmanager")
 @CommandPermission("punishmanager.command.ban")
 public class BanCommand extends BaseCommand {
 
@@ -24,7 +24,7 @@ public class BanCommand extends BaseCommand {
 
     @CommandCompletion("@players Reason")
     @Description("{@@ban.description}")
-    @CommandAlias("ban")
+    @CommandAlias("%ban")
     public void ban(CommandIssuer sender, @Conditions("other_player") @Name("Player") OfflinePlayer player, @Optional @Name("Reason") @Default("none") String reason) {
         UUID uuid = player.getUniqueId();
         String playerName = player.getName();

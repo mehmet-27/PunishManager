@@ -55,8 +55,8 @@ public class PunishFrame extends UIFrame {
         Punishment ban = storageManager.getBan(uuid);
         Punishment mute = storageManager.getMute(uuid);
 
-        String banStatus = (ban != null && ban.isBanned() && !ban.isExpired()) ? ban.getDuration() : PunishManager.getInstance().getConfigManager().getMessage("check.notPunished", viewerUuid);
-        String muteStatus = (mute != null && mute.isMuted() && !mute.isExpired()) ? mute.getDuration() : PunishManager.getInstance().getConfigManager().getMessage("check.notPunished", viewerUuid);
+        String banStatus = (ban != null && ban.isBanned() && !ban.isExpired()) ? ban.getDuration(viewerUuid) : PunishManager.getInstance().getConfigManager().getMessage("check.notPunished", viewerUuid);
+        String muteStatus = (mute != null && mute.isMuted() && !mute.isExpired()) ? mute.getDuration(viewerUuid) : PunishManager.getInstance().getConfigManager().getMessage("check.notPunished", viewerUuid);
 
         lore.add(configManager.getMessage("check.uuid", viewerUuid, message -> message.replace("%uuid%", uuid.toString())));
         if (PunishManager.getInstance().getConfigManager().getConfig().getBoolean("check-command-show-ip-require-perm", false)) {

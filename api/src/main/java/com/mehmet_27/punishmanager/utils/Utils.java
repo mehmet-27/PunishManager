@@ -24,17 +24,22 @@ public class Utils {
     private static final ConfigManager configManager = PunishManager.getInstance().getConfigManager();
     public static final char COLOR_CHAR = '\u00A7';
     public static final String ALL_CODES = "0123456789AaBbCcDdEeFfKkLlMmNnOoRrXx";
-    public static final Pattern STRIP_COLOR_PATTERN = Pattern.compile( "(?i)" + COLOR_CHAR + "[0-9A-FK-ORX]" );
+    public static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + COLOR_CHAR + "[0-9A-FK-ORX]");
 
     public static String replacePunishmentPlaceholders(String message, Punishment punishment) {
         return message.replace("%reason%", punishment.getReason())
-                .replace("%duration%", punishment.getDuration())
+                .replace("%duration%", punishment.getDuration(punishment.getOperatorUUID()))
                 .replace("%operator%", punishment.getOperator())
                 .replace("%server%", punishment.getServer())
                 .replace("%player%", punishment.getPlayerName())
                 .replace("%type%", punishment.getPunishType().name())
                 .replace("%ip%", "" + punishment.getIp())
-                .replace("%uuid%", punishment.getUuid().toString());
+                .replace("%uuid%", punishment.getUuid().toString())
+                .replace("%id%", String.valueOf(punishment.getId()))
+                .replace("%start%", String.valueOf(punishment.getStart() / 1000))
+                .replace("%end%", String.valueOf(punishment.getEnd() / 1000))
+                .replace("%startMillis%", String.valueOf(punishment.getStart()))
+                .replace("%endMillis%", String.valueOf(punishment.getEnd()));
     }
 
     public static void sendText(@Nullable UUID sender, String path) {
@@ -132,14 +137,12 @@ public class Utils {
         return new String(b);
     }
 
-    public static String stripColor(final String input)
-    {
-        if ( input == null )
-        {
+    public static String stripColor(final String input) {
+        if (input == null) {
             return null;
         }
 
-        return STRIP_COLOR_PATTERN.matcher( input ).replaceAll( "" );
+        return STRIP_COLOR_PATTERN.matcher(input).replaceAll("");
     }
 
     public static boolean isInteger(String value) {

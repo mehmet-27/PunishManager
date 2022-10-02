@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-@CommandAlias("punishmanager")
+@CommandAlias("%punishmanager")
 @CommandPermission("punishmanager.command.admin")
 public class AdminCommand extends BaseCommand {
 
@@ -42,20 +42,27 @@ public class AdminCommand extends BaseCommand {
 
     @CommandCompletion("@players Reason")
     @Description("{@@admin.description}")
-    @Subcommand("admin")
+    @Subcommand("%admin")
     public void admin(CommandIssuer issuer) {
 
     }
 
     @Description("{@@admin.description}")
-    @Subcommand("admin")
+    @Subcommand("%admin")
     public class AdminSubCommands extends BaseCommand {
 
-        @Subcommand("import")
+        @Subcommand("%import")
         @CommandCompletion("AdvancedBan")
         @Description("{@@admin.import.description}")
         public void importC(CommandIssuer issuer, String pluginName) {
             UUID issuerUuid = issuer.isPlayer() ? issuer.getUniqueId() : null;
+            SupportedPlugins plugin;
+            try {
+                plugin = SupportedPlugins.valueOf(pluginName.toUpperCase(Locale.ROOT));
+            } catch (IllegalArgumentException e) {
+                Utils.sendText(issuerUuid, "punishmanager.admin.import.unsupportedPlugin");
+                return;
+            }
             Configuration importConfig = null;
             try {
                 File importFile = new File(configManager.getDataFolder() + File.separator + "import.yml");
@@ -67,6 +74,7 @@ public class AdminCommand extends BaseCommand {
                     newImport.set("database", "database");
                     newImport.set("username", "username");
                     newImport.set("password", "password");
+                    //if (plugin.equals(SupportedPlugins.LITEBANS)) newImport.set("tablePrefix", "litebans_");
                     ConfigurationProvider.getProvider(YamlConfiguration.class).save(newImport, importFile);
                     Utils.sendText(issuerUuid, "punishmanager.admin.import.fileCreated");
                     return;
@@ -77,13 +85,6 @@ public class AdminCommand extends BaseCommand {
             }
             if (importConfig == null) {
                 Utils.sendText(issuerUuid, "punishmanager.admin.import.nullConfiguration");
-                return;
-            }
-            SupportedPlugins plugin;
-            try {
-                plugin = SupportedPlugins.valueOf(pluginName.toUpperCase(Locale.ROOT));
-            } catch (IllegalArgumentException e) {
-                Utils.sendText(issuerUuid, "punishmanager.admin.import.unsupportedPlugin");
                 return;
             }
 
@@ -154,9 +155,75 @@ public class AdminCommand extends BaseCommand {
                         message.replace("%long%", String.valueOf(diff)));
                 Utils.sendText(issuerUuid, "punishmanager.admin.import.end");
             }
+
+            /*if (plugin.equals(SupportedPlugins.LITEBANS)) {
+                Utils.sendText(issuerUuid, "punishmanager.admin.import.connecting");
+                DBCore core = new MySQLCore(importConfig.getString("host"),
+                        importConfig.getString("database"),
+                        importConfig.getInt("port"),
+                        importConfig.getString("username"),
+                        importConfig.getString("password"));
+                String tablePrefix = importConfig.getString("tablePrefix", "litebans_");
+                String query = "SELECT * FROM " + tablePrefix + "mutes";
+                List<Punishment> punishments = new ArrayList<>();
+                try (Connection connection = core.getDataSource().getConnection()) {
+                    ResultSet result = connection.createStatement().executeQuery(query);
+                    while (result.next()) {
+                        String playerName = result.getString("name");
+                        AdvancedBanPunishmentType advancedBanPunishmentType;
+                        Punishment.PunishType punishType;
+                        try {
+                            advancedBanPunishmentType = AdvancedBanPunishmentType.valueOf(result.getString("punishmentType"));
+                        } catch (IllegalArgumentException e) {
+                            punishManager.getLogger().warning(configManager.getMessage("punishmanager.admin.import.unsupportedPunishType")
+                                    .replace("%type%", result.getString("punishmentType")));
+                            continue;
+                        }
+                        punishType = advancedBanPunishmentType.getType();
+                        UUID uuid;
+                        try {
+                            uuid = UUID.fromString(result.getString("uuid"));
+                        } catch (IllegalArgumentException e) {
+                            uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + playerName).getBytes(StandardCharsets.UTF_8));
+                        }
+                        String reason = result.getString("reason");
+                        String operator = result.getString("operator");
+                        String server = "ALL";
+                        String ip = null;
+                        if (punishType.equals(Punishment.PunishType.IPBAN)) {
+                            ip = result.getString("uuid");
+                        }
+                        long start = result.getLong("start");
+                        long end = result.getLong("end");
+                        Punishment punishment = new Punishment(playerName, uuid, ip, punishType, reason, operator, null, server, start, end, 0);
+                        punishments.add(punishment);
+                    }
+                    Utils.sendText(issuerUuid, "punishmanager.admin.import.found", message ->
+                            message.replace("%total%", String.valueOf(punishments.size())));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+                int imported = 0;
+                for (Punishment punishment : punishments) {
+                    if (!punishment.isExpired()) {
+                        storageManager.addPunishToPunishments(punishment);
+                        imported++;
+                    }
+                    storageManager.addPunishToHistory(punishment);
+                }
+                int finalImported = imported;
+                Utils.sendText(issuerUuid, "punishmanager.admin.import.imported", message ->
+                        message.replace("%total%", String.valueOf(finalImported)));
+                core.getDataSource().close();
+                long diff = System.currentTimeMillis() - startTime;
+                Utils.sendText(issuerUuid, "punishmanager.admin.import.tookMs", message ->
+                        message.replace("%long%", String.valueOf(diff)));
+                Utils.sendText(issuerUuid, "punishmanager.admin.import.end");
+            }*/
         }
 
-        @Subcommand("reload")
+        @Subcommand("%reload")
         @Description("{@@punishmanager.admin.reload.description}")
         public void reload(CommandIssuer sender) {
             punishManager.getConfigManager().setup();

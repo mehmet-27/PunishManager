@@ -7,7 +7,7 @@ import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 
-@CommandAlias("punishmanager")
+@CommandAlias("%punishmanager")
 @CommandPermission("punishmanager.command.punish")
 public class PunishCommand extends BaseCommand {
 
@@ -19,7 +19,7 @@ public class PunishCommand extends BaseCommand {
 
     @CommandCompletion("@players")
     @Description("{@@punish.description}")
-    @CommandAlias("punish")
+    @CommandAlias("%punish")
     public void punish(CommandIssuer sender, @Conditions("other_player") @Name("Player") OfflinePlayer player) {
         if (!sender.isPlayer()) return;
         Object senderPlayer = punishManager.getMethods().getPlayer(sender.getUniqueId());

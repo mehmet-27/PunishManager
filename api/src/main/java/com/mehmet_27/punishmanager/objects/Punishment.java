@@ -17,10 +17,12 @@ public class Punishment {
     private final ConfigManager configManager = PunishManager.getInstance().getConfigManager();
     private final long start, end;
     private String playerName, reason, operator, server;
-    private @Nullable String ip;
+    private @Nullable
+    String ip;
     private PunishType punishType;
     private UUID uuid;
-    private @Nullable UUID operatorUUID;
+    private @Nullable
+    UUID operatorUUID;
     private final int id;
 
     public Punishment(String playerName, UUID uuid, @Nullable String ip, PunishType punishType, String reason, String operator, @Nullable UUID operatorUUID, String server, int id) {
@@ -57,7 +59,8 @@ public class Punishment {
         this.operator = operator;
     }
 
-    public @Nullable UUID getOperatorUUID() {
+    public @Nullable
+    UUID getOperatorUUID() {
         return operatorUUID;
     }
 
@@ -100,7 +103,8 @@ public class Punishment {
         this.uuid = uuid;
     }
 
-    public @Nullable String getIp() {
+    public @Nullable
+    String getIp() {
         return ip;
     }
 
@@ -136,7 +140,7 @@ public class Punishment {
         return end;
     }
 
-    public String getDuration() {
+    public String getDuration(UUID uuid) {
         if (getEnd() == -1) {
             return "permanent";
         }
@@ -246,6 +250,11 @@ public class Punishment {
                     replaceAll("%s%", seconds);
         }
     }
+
+    public String getDuration() {
+        return getDuration(null);
+    }
+
 
     public enum PunishType {
         BAN, KICK, MUTE, TEMPMUTE, TEMPBAN, IPBAN, NONE;

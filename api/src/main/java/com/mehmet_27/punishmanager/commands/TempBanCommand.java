@@ -15,7 +15,7 @@ import java.util.regex.Matcher;
 
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.TEMPBAN;
 
-@CommandAlias("punishmanager")
+@CommandAlias("%punishmanager")
 @CommandPermission("punishmanager.command.tempban")
 public class TempBanCommand extends BaseCommand {
 
@@ -27,7 +27,7 @@ public class TempBanCommand extends BaseCommand {
 
     @CommandCompletion("@players @units Reason")
     @Description("{@@tempban.description}")
-    @CommandAlias("tempban")
+    @CommandAlias("%tempban")
     public void tempBan(CommandIssuer sender, @Conditions("other_player") @Name("Player") OfflinePlayer player, @Name("Time") String time, @Optional @Name("Reason") String reason) {
         UUID uuid = player.getUniqueId();
         String playerName = player.getName();

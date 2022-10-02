@@ -3,7 +3,6 @@ package com.mehmet_27.punishmanager.velocity.managers;
 import co.aikar.commands.*;
 import co.aikar.locales.MessageKey;
 import com.mehmet_27.punishmanager.PunishManager;
-import com.mehmet_27.punishmanager.commands.MuteCommand;
 import com.mehmet_27.punishmanager.configuration.Configuration;
 import com.mehmet_27.punishmanager.configuration.ConfigurationProvider;
 import com.mehmet_27.punishmanager.configuration.YamlConfiguration;
@@ -30,6 +29,7 @@ import java.util.stream.Collectors;
 public class PMVelocityCommandManager extends VelocityCommandManager implements CommandManager {
 
     private final PMVelocity plugin;
+    private static final List<String> SUBCOMMANDS;
 
     public PMVelocityCommandManager(ProxyServer proxy, PMVelocity plugin) {
         super(proxy, plugin);
@@ -164,6 +164,7 @@ public class PMVelocityCommandManager extends VelocityCommandManager implements 
         loadLocaleFiles(PunishManager.getInstance().getConfigManager().getLocaleFiles());
         updateDefaultLocale();
         registerDependencies();
+        addCommandReplacements();
         enableUnstableAPI("help");
         registerContexts();
         registerCommands();
@@ -195,5 +196,26 @@ public class PMVelocityCommandManager extends VelocityCommandManager implements 
                 getLocales().addMessage(locale, MessageKey.of(key), value);
             }
         }
+    }
+
+    private void addCommandReplacements() {
+        getCommandReplacements().addReplacements(
+                "punishmanager", "punishmanager|puma"
+        );
+
+        SUBCOMMANDS.forEach(sub -> {
+            String command = plugin.getConfigManager().getMessage("commandNames." + sub);
+            if (command == null) {
+                command = sub;
+            }
+            command = command.replace(" ", "");
+            String replacement = command.equals(sub) ? sub : command + "|" + sub;
+            getCommandReplacements().addReplacement(sub, replacement);
+        });
+    }
+
+    static {
+        SUBCOMMANDS = Arrays.asList("ban", "tempban", "ipban", "mute", "tempmute", "kick", "unban",
+                "unmute", "unpunish", "punish", "check", "changereason", "admin", "reload", "import", "help", "about");
     }
 }

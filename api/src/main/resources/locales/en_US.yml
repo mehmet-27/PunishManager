@@ -85,6 +85,25 @@ gui:
         - '&6Reason: &e%reason%'
         - '&6Duration: &e%duration%'
 
+commandReplacements:
+  ban: 'ban'
+  tempban: 'tempban'
+  ipban: 'ipban'
+  mute: 'mute'
+  tempmute: 'tempmute'
+  kick: 'kick'
+  unban: 'unban'
+  unmute: 'unmute'
+  unpunish: 'unpunish'
+  punish: 'punish'
+  check: 'check'
+  changereason: 'changereason'
+  admin: 'admin'
+  reload: 'reload'
+  import: 'import'
+  about: 'about'
+  help: 'help'
+
 ban:
   punished: '&a%player% successfully banned.'
   alreadyPunished: '&e%player% is already banned.'

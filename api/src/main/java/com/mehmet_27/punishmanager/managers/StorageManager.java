@@ -399,22 +399,6 @@ public class StorageManager {
         core.executeUpdateAsync(query);
     }
 
-    public List<String> getAllLoggedNames() {
-        String query = "SELECT name FROM punishmanager_players";
-        List<String> names = new ArrayList<>();
-        try (Connection connection = core.getDataSource().getConnection()) {
-            ResultSet result = connection.createStatement().executeQuery(query);
-            while (result.next()) {
-                names.add(result.getString("name"));
-            }
-            methods.getLogger().info(names.size() + " player names loaded.");
-            return names;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return new ArrayList<>();
-    }
-
     public List<Punishment> getAllPunishments() {
         String query = "SELECT * FROM punishmanager_punishments";
         List<Punishment> punishments = new ArrayList<>();

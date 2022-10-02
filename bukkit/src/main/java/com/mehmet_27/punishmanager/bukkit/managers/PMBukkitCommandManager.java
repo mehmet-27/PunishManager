@@ -10,7 +10,6 @@ import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.utils.FileUtils;
 import com.mehmet_27.punishmanager.utils.Utils;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 
@@ -26,6 +25,7 @@ import java.util.stream.Collectors;
 public class PMBukkitCommandManager extends PaperCommandManager implements CommandManager {
 
     private final PMBukkit plugin;
+    private static final List<String> SUBCOMMANDS;
 
     public PMBukkitCommandManager(PMBukkit plugin) {
         super(plugin);
@@ -154,11 +154,30 @@ public class PMBukkitCommandManager extends PaperCommandManager implements Comma
         loadLocaleFiles(PunishManager.getInstance().getConfigManager().getLocaleFiles());
         updateDefaultLocale();
         registerDependencies();
+        addCommandReplacements();
         enableUnstableAPI("help");
         registerContexts();
         registerCommands();
         registerConditions();
         registerCompletions();
         usePerIssuerLocale(true, false);
+    }
+
+    private void addCommandReplacements() {
+        getCommandReplacements().addReplacements(
+                "punishmanager", "punishmanager|puma"
+        );
+
+        SUBCOMMANDS.forEach(sub -> {
+            String command = plugin.getConfigManager().getMessageOrDefault("commandNames." + sub, sub);
+            command = command.replace(" ", "");
+            String replacement = command.equals(sub) ? sub : command + "|" + sub;
+            getCommandReplacements().addReplacement(sub, replacement);
+        });
+    }
+
+    static {
+        SUBCOMMANDS = Arrays.asList("ban", "tempban", "ipban", "mute", "tempmute", "kick", "unban",
+                "unmute", "unpunish", "punish", "check", "changereason", "admin", "reload", "import", "help", "about");
     }
 }

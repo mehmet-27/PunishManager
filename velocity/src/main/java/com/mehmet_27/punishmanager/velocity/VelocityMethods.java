@@ -116,7 +116,8 @@ public class VelocityMethods implements MethodProvider {
 
     @Override
     public boolean isOnline(UUID uuid) {
-        return getPlayer(uuid).isActive();
+        Player player = getPlayer(uuid);
+        return player != null && player.isActive();
     }
 
     @Override

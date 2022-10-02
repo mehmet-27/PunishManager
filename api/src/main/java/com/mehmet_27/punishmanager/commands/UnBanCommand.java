@@ -10,7 +10,7 @@ import com.mehmet_27.punishmanager.utils.Utils;
 
 import java.util.UUID;
 
-@CommandAlias("punishmanager")
+@CommandAlias("%punishmanager")
 @CommandPermission("punishmanager.command.unban")
 public class UnBanCommand extends BaseCommand {
 
@@ -19,7 +19,7 @@ public class UnBanCommand extends BaseCommand {
 
     @CommandCompletion("@players")
     @Description("{@@unban.description}")
-    @CommandAlias("unban")
+    @CommandAlias("%unban")
     public void unBan(CommandIssuer sender, @Name("Player") OfflinePlayer player) {
         String playerName = player.getName();
         UUID uuid = player.getUniqueId();

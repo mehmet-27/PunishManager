@@ -14,7 +14,7 @@ import java.util.UUID;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.BAN;
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.KICK;
 
-@CommandAlias("punishmanager")
+@CommandAlias("%punishmanager")
 @CommandPermission("punishmanager.command.kick")
 public class KickCommand extends BaseCommand {
 
@@ -26,11 +26,12 @@ public class KickCommand extends BaseCommand {
 
     @CommandCompletion("@players Reason")
     @Description("{@@kick.description}")
-    @CommandAlias("kick")
+    @CommandAlias("%kick")
     public void kick(CommandIssuer sender, @Conditions("other_player") @Name("Player") OfflinePlayer player, @Optional @Name("Reason") String reason) {
         String playerName = player.getName();
-        if (punishManager.getMethods().isOnline(player.getUniqueId())) {
-            Utils.sendText(sender.getUniqueId(), playerName, "kick.notOnline");
+        UUID operatorUuid = sender.isPlayer() ? sender.getUniqueId() : null;
+        if (!punishManager.getMethods().isOnline(player.getUniqueId())) {
+            Utils.sendText(operatorUuid, playerName, "kick.notOnline");
             return;
         }
         UUID uuid = player.getUniqueId();
@@ -42,7 +43,6 @@ public class KickCommand extends BaseCommand {
         }
 
         String operator = sender.isPlayer() ? storageManager.getOfflinePlayer(sender.getUniqueId()).getName() : "CONSOLE";
-        UUID operatorUuid = sender.isPlayer() ? sender.getUniqueId() : null;
         String ip = PunishManager.getInstance().getMethods().getPlayerIp(uuid);
         Punishment punishment = new Punishment(playerName, uuid, ip, KICK, reason, operator, operatorUuid, server, -1);
         punishManager.getMethods().kickPlayer(uuid, Utils.getLayout(punishment));

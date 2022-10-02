@@ -9,7 +9,8 @@ import java.util.UUID;
 
 public class PlayerLocale {
     private final ConfigManager configManager = PunishManager.getInstance().getConfigManager();
-    private final @Nullable UUID uuid;
+    private final @Nullable
+    UUID uuid;
 
     public PlayerLocale(@Nullable UUID uuid) {
         this.uuid = uuid;
@@ -17,7 +18,8 @@ public class PlayerLocale {
 
     public Locale getLocale() {
         if (uuid != null) {
-            return PunishManager.getInstance().getOfflinePlayers().get(uuid).getLocale();
+            OfflinePlayer offlinePlayer = PunishManager.getInstance().getOfflinePlayers().get(uuid);
+            return offlinePlayer != null ? offlinePlayer.getLocale() : configManager.getDefaultLocale();
         } else {
             return configManager.getDefaultLocale();
         }

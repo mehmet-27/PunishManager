@@ -12,7 +12,7 @@ import java.util.UUID;
 
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.NONE;
 
-@CommandAlias("punishmanager")
+@CommandAlias("%punishmanager")
 @CommandPermission("punishmanager.command.unpunish")
 public class UnPunishCommand extends BaseCommand {
 
@@ -21,7 +21,7 @@ public class UnPunishCommand extends BaseCommand {
 
     @CommandCompletion("@players")
     @Description("{@@unpunish.description}")
-    @CommandAlias("unpunish")
+    @CommandAlias("%unpunish")
     public void unPunish(CommandIssuer sender, @Name("Player") OfflinePlayer player) {
         String playerName = player.getName();
         UUID uuid = player.getUniqueId();
