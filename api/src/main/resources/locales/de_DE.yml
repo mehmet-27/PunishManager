@@ -4,6 +4,7 @@
 #%operator% -> Operator of punishment.
 #%player% -> Name of the player being punished.
 main:
+  prefix: '&6PunishManager'
   exempt-player: 'Du kannst diesen Spieler nicht bestrafen.'
   defaultReason: 'keine'
   not-on-yourself: 'Du kannst diesen Befehl nicht an dir selbst verwenden!'
@@ -11,6 +12,8 @@ main:
   setlanguage: '&aDeine Sprache wurde zu {0} gesetzt.'
   setdefaultlanguage: '&aDie Standardsprache für den Server wurde zu {0} gesetzt.'
   mustInteger: '&cBitte geben Sie einen gültigen Integer-Wert ein.'
+  online: '&aOnline'
+  offline: '&8Offline'
   timelayout:
     #Variables to be used when showing the duration of the punishment.
     year: '%y% Jahr(e)'
@@ -21,18 +24,30 @@ main:
     minute: '%m% Minute(n)'
     second: '%s% Sekunde(n)'
 gui:
+  clickNoPerm: '&cDu hast keine Berechtigung dafür.'
   backbutton:
     name: '&7Zurück'
   main:
+    title: '&6&lPunishManager GUI'
     languageselector:
       name: '&eSprachauswahl'
+      lore:
+        - '&7'
+        - '&eWähle die Sprache des Plugins für dich selbst.'
     managepunishments:
       name: '&eBestrafungen verwalten'
+      lore:
+        - '&7'
+        - '&eVerwalte alle bestehenden Bestrafungen durch Anklicken.'
     adminpanel:
       name: '&eAdministrationsbereich'
+      lore:
+        - '&7'
+        - '&eVerwalte das Plugin über eine Benutzeroberfläche.'
   languageselector:
     title: '&eSprachauswahl - Aktuell: &8{0}'
   adminpanel:
+    title: '&eAdminbereich'
     reload:
       name: '&aAlle Konfigurationsdateien neu laden'
   managepunishments:
