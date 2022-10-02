@@ -1,11 +1,9 @@
----
 #Placeholders:
 #%reason% -> Reason of punishment.
 #%duration% -> Duration of punishment.
 #%operator% -> Operator of punishment.
 #%player% -> Name of the player being punished.
 main:
-  prefix: '&6PunishManager'
   exempt-player: 'Bu oyuncuyu cezalandıramazsınız.'
   defaultReason: 'yok'
   not-on-yourself: 'Bu komutu kendi üzerinizde kullanamazsınız!'
@@ -27,7 +25,6 @@ gui:
   backbutton:
     name: '&7Geri'
   main:
-    title: '&6&lPunishManager GUI'
     languageselector:
       name: '&6Dil Seçici'
       lore:
@@ -153,8 +150,9 @@ kick:
     - '&eSunucudan Atıldın'
     - '&7'
     - '&cSebep &7» &r%reason%'
-  announce: '&a%player% &eadlı oyuncu &a%operator% &etarafından &a%reason% &esebebiyle sunucudan atıldı.'
+    - '&2Reason: &a%reason%'
   description: 'Bir oyuncuyu sunucudan at.'
+  announce: '&a%player% &eadlı oyuncu &a%operator% &etarafından &a%reason% &esebebiyle sunucudan atıldı.'
 mute:
   punished: '&a%player% başarıyla susturuldu.'
   alreadyPunished: '&e%player% zaten susturulmuş.'
@@ -183,8 +181,6 @@ unpunish:
   description: 'Bir oyuncunun tüm cezalarını kaldır.'
 check:
   playerNotFound: '&c%player% bulunamadı!'
-  uuid: '&eUUID: &a%uuid%'
-  ip: '&eIP: &a%ip%'
   country: '&eÜlke: &a%country%'
   language: '&eDil: &a%language%'
   banStatus: '&eYasaklanma durumu: &c%status%'

@@ -1,11 +1,9 @@
----
 #Placeholders:
 #%reason% -> Reason of punishment.
 #%duration% -> Duration of punishment.
 #%operator% -> Operator of punishment.
 #%player% -> Name of the player being punished.
 main:
-  prefix: '&6PunishManager'
   exempt-player: 'Du kannst diesen Spieler nicht bestrafen.'
   defaultReason: 'keine'
   not-on-yourself: 'Du kannst diesen Befehl nicht an dir selbst verwenden!'
@@ -13,8 +11,6 @@ main:
   setlanguage: '&aDeine Sprache wurde zu {0} gesetzt.'
   setdefaultlanguage: '&aDie Standardsprache für den Server wurde zu {0} gesetzt.'
   mustInteger: '&cBitte geben Sie einen gültigen Integer-Wert ein.'
-  online: '&aOnline'
-  offline: '&8Offline'
   timelayout:
     #Variables to be used when showing the duration of the punishment.
     year: '%y% Jahr(e)'
@@ -28,7 +24,6 @@ gui:
   backbutton:
     name: '&7Zurück'
   main:
-    title: '&6&lPunishManager GUI'
     languageselector:
       name: '&eSprachauswahl'
     managepunishments:
@@ -38,7 +33,6 @@ gui:
   languageselector:
     title: '&eSprachauswahl - Aktuell: &8{0}'
   adminpanel:
-    title: '&eAdmin Panel'
     reload:
       name: '&aAlle Konfigurationsdateien neu laden'
   managepunishments:
@@ -146,8 +140,6 @@ unpunish:
 check:
   checking: '&eÜberprüfe &a%player% &7(%online%&7)'
   playerNotFound: '&c%player% nicht gefunden!'
-  uuid: '&eUUID: &a%uuid%'
-  ip: '&eIP: &a%ip%'
   country: '&eLand: &a%country%'
   language: '&eSprache: &a%language%'
   banStatus: '&eSperr-Status: &c%status%'
@@ -161,11 +153,6 @@ check:
   description: 'Überprüft den aktuellen Status eines Spielers.'
 punishmanager:
   description: 'Der Hauptbefehl des Plugins.'
-punishmanager-reload:
-  description: 'Lädt das Plugin neu.'
-  done: '&aAlle Konfigurationsdateien wurden neu geladen.'
-punishmanager-help:
-  description: 'Hilfe-Befehl.'
 changereason:
   description: 'Ändert den Grund für eine Bestrafung.'
   punishmentNotFound: '&eGesuchte Bestrafung nicht gefunden.'

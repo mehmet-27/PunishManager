@@ -1,11 +1,9 @@
----
 #Placeholders:
 #%reason% -> Reason of punishment.
 #%duration% -> Duration of punishment.
 #%operator% -> Operator of punishment.
 #%player% -> Name of the player being punished.
 main:
-  prefix: '&6PunishManager'
   exempt-player: 'Du kan ikke straffe denne spilleren.'
   defaultReason: 'ingen'
   not-on-yourself: 'Du kan ikke bruke denne kommandoen på deg selv!'
@@ -26,7 +24,6 @@ gui:
   backbutton:
     name: '&7Tilbake'
   main:
-    title: '&6&lPunishManager GUI'
     languageselector:
       name: '&eSpråkvelger'
     managepunishments:
@@ -36,7 +33,6 @@ gui:
   languageselector:
     title: '&eSpråk velger - Nåværende: &8{0}'
   adminpanel:
-    title: '&eAdmin Panel'
     reload:
       name: '&aLast alle konfigurasjonsfiler på nytt'
   managepunishments:
@@ -137,13 +133,9 @@ unpunish:
   description: 'Fjerner alle straffer fra en spiller.'
 check:
   playerNotFound: '&c%player% ikke funnet!'
-  uuid: '&eUUID: &a%uuid%'
-  ip: '&eIP: &a%ip%'
   language: '&eSpråk: &a%language%'
-  banStatus: '&eBan status: &c%status%'
   banReason: '&e-> Ban årsak: &c%reason%'
   banOperator: '&e-> Ban operatør: &c%operator%'
-  muteStatus: '&eMute status: &c%status%'
   muteReason: '&-> Mute årsak: &c%reason%'
   muteOperator: '&e-> Mute operatør: &c%operator%'
   punishId: '&e-> Straff Id: &c%id%'
@@ -151,11 +143,6 @@ check:
   description: 'Sjekker gjeldende status for en spiller.'
 punishmanager:
   description: 'Hovedkommandoen til pluginen.'
-punishmanager-reload:
-  description: 'Laster pluginen på nytt.'
-  done: '&aAlle konfigurasjonsfiler er lastet på nytt.'
-punishmanager-help:
-  description: 'Hjelpe kommandoen.'
 changereason:
   description: 'Endrer årsaken til en straff.'
   punishmentNotFound: '&eSøket straff ikke funnet.'
