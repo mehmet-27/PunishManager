@@ -75,6 +75,7 @@ public class BukkitMethods implements MethodProvider {
 
     @Override
     public void sendMessage(@Nullable UUID uuid, String message) {
+        if (message.isEmpty()) return;
         if (uuid == null) {
             getPlugin().getServer().getConsoleSender().sendMessage(Utils.color(message));
         } else {

@@ -74,7 +74,7 @@ public class ConfigManager {
     public String getMessage(String path) {
         if (locales.containsKey(defaultLocale)) {
             String msg = locales.get(defaultLocale).getString(path);
-            if (msg != null && msg.length() != 0) {
+            if (msg != null) {
                 return Utils.color(msg);
             }
         }
@@ -85,7 +85,7 @@ public class ConfigManager {
     public String getMessageOrDefault(String path, String def) {
         if (locales.containsKey(defaultLocale)) {
             String msg = locales.get(defaultLocale).getString(path);
-            if (msg != null && msg.length() != 0) {
+            if (msg != null) {
                 return Utils.color(msg);
             }
         }
@@ -98,9 +98,9 @@ public class ConfigManager {
         String prefix = "";
         if (locales.containsKey(locale)) {
             message = locales.get(locale).getString(path);
-            if (message == null || message.isEmpty()) {
+            if (message == null) {
                 message = locales.get(defaultLocale).getString(path);
-                if (message == null || message.isEmpty()) {
+                if (message == null) {
                     message = path;
                 }
             }

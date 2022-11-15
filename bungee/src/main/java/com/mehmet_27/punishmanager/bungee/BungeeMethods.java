@@ -75,6 +75,7 @@ public class BungeeMethods implements MethodProvider {
 
     @Override
     public void sendMessage(@Nullable UUID uuid, String message) {
+        if (message.isEmpty()) return;
         if (uuid == null) {
             getPlugin().getProxy().getConsole().sendMessage(new TextComponent(Utils.color(message)));
         } else {

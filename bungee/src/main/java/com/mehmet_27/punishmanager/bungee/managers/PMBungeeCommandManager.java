@@ -42,7 +42,7 @@ public class PMBungeeCommandManager extends BungeeCommandManager implements Comm
 
     @Override
     public void registerCommands() {
-        Set<Class<? extends BaseCommand>> commands = FileUtils.getClassesBySubType("com.mehmet_27.punishmanager.commands", BaseCommand.class);
+        Set<Class<? extends BaseCommand>> commands = FileUtils.getClassesBySubType(PunishManager.COMMANDS_PACKAGE, BaseCommand.class);
         for (Class<? extends BaseCommand> c : commands) {
             // ACF already registers nested classes
             if (c.isMemberClass() || Modifier.isStatic(c.getModifiers())) {

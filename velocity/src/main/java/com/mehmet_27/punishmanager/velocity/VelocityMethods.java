@@ -76,6 +76,7 @@ public class VelocityMethods implements MethodProvider {
 
     @Override
     public void sendMessage(UUID uuid, String message) {
+        if (message.isEmpty()) return;
         if (uuid == null) {
             getPlugin().getServer().getConsoleCommandSource().sendMessage(Component.text(Utils.color(message)));
         } else {

@@ -33,6 +33,8 @@ public class PunishManager {
     private List<String> allPlayerNames;
     private List<String> bannedIps;
 
+    public static final String COMMANDS_PACKAGE = "com.mehmet_27.punishmanager.commands";
+
     public static PunishManager getInstance() {
         return instance == null ? instance = new PunishManager() : instance;
     }
