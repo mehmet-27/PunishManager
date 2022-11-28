@@ -202,7 +202,7 @@ public class PMVelocityCommandManager extends VelocityCommandManager implements 
         );
 
         SUBCOMMANDS.forEach(sub -> {
-            String command = plugin.getConfigManager().getMessage("commandNames." + sub);
+            String command = plugin.getConfigManager().getMessage("commandReplacements." + sub);
             if (command == null) {
                 command = sub;
             }

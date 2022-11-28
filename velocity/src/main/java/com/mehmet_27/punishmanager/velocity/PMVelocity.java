@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 @Plugin(
         id = "punishmanager",
         name = "PunishManager",
-        version = "1.4.3",
+        version = "1.4.5",
         description = "Advanced punish management plugin.",
         authors = {"Mehmet_27"}
 )

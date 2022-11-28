@@ -167,7 +167,7 @@ public class PMBukkitCommandManager extends PaperCommandManager implements Comma
         );
 
         SUBCOMMANDS.forEach(sub -> {
-            String command = plugin.getConfigManager().getMessageOrDefault("commandNames." + sub, sub);
+            String command = plugin.getConfigManager().getMessageOrDefault("commandReplacements." + sub, sub);
             command = command.replace(" ", "");
             String replacement = command.equals(sub) ? sub : command + "|" + sub;
             getCommandReplacements().addReplacement(sub, replacement);
