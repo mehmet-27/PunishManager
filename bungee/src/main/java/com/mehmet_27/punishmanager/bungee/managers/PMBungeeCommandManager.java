@@ -173,10 +173,7 @@ public class PMBungeeCommandManager extends BungeeCommandManager implements Comm
         );
 
         SUBCOMMANDS.forEach(sub -> {
-            String command = plugin.getConfigManager().getMessage("commandReplacements." + sub);
-            if (command == null) {
-                command = sub;
-            }
+            String command = plugin.getConfigManager().getReplacementsOrDefault("commandReplacements." + sub, sub);
             command = command.replace(" ", "");
             String replacement = command.equals(sub) ? sub : command + "|" + sub;
             getCommandReplacements().addReplacement(sub, replacement);

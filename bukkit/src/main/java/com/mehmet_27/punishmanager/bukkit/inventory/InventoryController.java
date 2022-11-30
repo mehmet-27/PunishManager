@@ -18,7 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
-public class InventoryController implements Listener {
+public class  InventoryController implements Listener {
 
     private static final Map<UUID, UIFrame> frames = new HashMap<>();
 
@@ -101,7 +101,7 @@ public class InventoryController implements Listener {
         PMBukkit plugin = PMBukkit.getInstance();
         String finalCommand = command + " " + String.join(" ", args);
 
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+        plugin.getServer().getScheduler().runTask(plugin, () -> {
             player.performCommand(finalCommand);
             if (!update) {
                 player.closeInventory();

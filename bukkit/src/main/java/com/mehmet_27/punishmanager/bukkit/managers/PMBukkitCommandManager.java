@@ -75,6 +75,7 @@ public class PMBukkitCommandManager extends PaperCommandManager implements Comma
                 throw new ConditionFailedException(getMessage(issuer, "main.mustInteger"));
             }
         });
+        getCommandConditions().addCondition("requireProtocolize", (context) -> {});
     }
 
     @Override
@@ -167,7 +168,7 @@ public class PMBukkitCommandManager extends PaperCommandManager implements Comma
         );
 
         SUBCOMMANDS.forEach(sub -> {
-            String command = plugin.getConfigManager().getMessageOrDefault("commandReplacements." + sub, sub);
+            String command = plugin.getConfigManager().getReplacementsOrDefault("commandReplacements." + sub, sub);
             command = command.replace(" ", "");
             String replacement = command.equals(sub) ? sub : command + "|" + sub;
             getCommandReplacements().addReplacement(sub, replacement);

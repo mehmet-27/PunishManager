@@ -82,10 +82,10 @@ public class ConfigManager {
         return path;
     }
 
-    public String getMessageOrDefault(String path, String def) {
+    public String getReplacementsOrDefault(String path, String def) {
         if (locales.containsKey(defaultLocale)) {
             String msg = locales.get(defaultLocale).getString(path);
-            if (msg != null) {
+            if (msg != null && !msg.isEmpty()) {
                 return Utils.color(msg);
             }
         }
