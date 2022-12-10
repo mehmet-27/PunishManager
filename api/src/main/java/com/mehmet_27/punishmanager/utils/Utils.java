@@ -93,19 +93,25 @@ public class Utils {
         Matcher minutesMatcher = MINUTES.matcher(time);
         Matcher secondsMatcher = SECONDS.matcher(time);
 
-        boolean foundYears = yearsMatcher.find(),
-                foundMonths = monthsMatcher.find(),
-                foundWeeks = weeksMatcher.find(),
-                foundDays = daysMatcher.find(),
-                foundHours = hoursMatcher.find(),
-                foundMinutes = minutesMatcher.find(),
-                foundSeconds = secondsMatcher.find();
+        boolean foundYears = yearsMatcher.find();
+        boolean foundMonths = monthsMatcher.find();
+        boolean foundWeeks = weeksMatcher.find();
+        boolean foundDays = daysMatcher.find();
+        boolean foundHours = hoursMatcher.find();
+        boolean foundMinutes = minutesMatcher.find();
+        boolean foundSeconds = secondsMatcher.find();
 
         if (!foundYears && !foundMonths && !foundWeeks && !foundDays && !foundHours && !foundMinutes && !foundSeconds) {
             throw new InvalidCommandArgument();
         }
 
-        int years = 0, months = 0, weeks = 0, days = 0, hours = 0, minutes = 0, seconds = 0;
+        int years = 0;
+        int months = 0;
+        int weeks = 0;
+        int days = 0;
+        int hours = 0;
+        int minutes = 0;
+        int seconds = 0;
 
         if (foundYears) {
             years = Integer.parseInt(yearsMatcher.group(1).substring(0, yearsMatcher.group(1).length() - 1));
