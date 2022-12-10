@@ -16,6 +16,7 @@ import com.velocitypowered.api.plugin.PluginContainer;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ServerConnection;
 import net.kyori.adventure.text.Component;
+import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
 import java.util.Optional;
@@ -75,7 +76,7 @@ public class VelocityMethods implements MethodProvider {
     }
 
     @Override
-    public void sendMessage(UUID uuid, String message) {
+    public void sendMessage(@Nullable UUID uuid, String message) {
         if (message.isEmpty()) return;
         if (uuid == null) {
             getPlugin().getServer().getConsoleCommandSource().sendMessage(Component.text(Utils.color(message)));

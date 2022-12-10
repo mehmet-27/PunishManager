@@ -2,7 +2,6 @@ package com.mehmet_27.punishmanager.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandIssuer;
-import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.annotation.*;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.StorageManager;
@@ -11,7 +10,6 @@ import com.mehmet_27.punishmanager.objects.Punishment;
 import com.mehmet_27.punishmanager.utils.Utils;
 
 import java.util.UUID;
-import java.util.regex.Matcher;
 
 import static com.mehmet_27.punishmanager.objects.Punishment.PunishType.TEMPBAN;
 
@@ -32,14 +30,8 @@ public class TempBanCommand extends BaseCommand {
         UUID uuid = player.getUniqueId();
         String playerName = player.getName();
 
-        Matcher matcher = Utils.NumberAndUnit.matcher(time.toLowerCase());
-        if (!matcher.find()) {
-            throw new InvalidCommandArgument();
-        }
-        int number = Integer.parseInt(matcher.group("number"));
-        String unit = matcher.group("unit");
         long start = System.currentTimeMillis();
-        long end = start + Utils.convertToMillis(number, unit);
+        long end = start + Utils.convertToMillis(time);
         String server = "ALL";
         if (punishManager.getMethods().isOnline(uuid)) {
             server = punishManager.getMethods().getServer(uuid);

@@ -117,14 +117,8 @@ public class PunishFrame extends UIFrame {
                 String ip = PunishManager.getInstance().getMethods().getPlayerIp(target.getUniqueId());
                 Punishment punishment;
                 if (type.isTemp()) {
-                    Matcher matcher = Utils.NumberAndUnit.matcher(duration.toLowerCase());
-                    if (!matcher.find()) {
-                        throw new InvalidCommandArgument();
-                    }
-                    int number = Integer.parseInt(matcher.group("number"));
-                    String unit = matcher.group("unit");
                     long start = System.currentTimeMillis();
-                    long end = start + Utils.convertToMillis(number, unit);
+                    long end = start + Utils.convertToMillis(duration);
 
                     punishment = new Punishment(target.getName(), target.getUniqueId(), ip, type, reason, getViewer().getName(), viewerUUID, "ALL", start, end, -1);
                 } else {

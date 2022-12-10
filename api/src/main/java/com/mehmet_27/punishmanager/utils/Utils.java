@@ -1,5 +1,6 @@
 package com.mehmet_27.punishmanager.utils;
 
+import co.aikar.commands.InvalidCommandArgument;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -8,8 +9,8 @@ import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
 import org.apache.commons.io.IOUtils;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -17,12 +18,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Utils {
-    public static final Pattern NumberAndUnit = Pattern.compile("(?<number>[0-9]+)(?<unit>mo|[ywdhms])");
     private static final ConfigManager configManager = PunishManager.getInstance().getConfigManager();
-    public static final char COLOR_CHAR = '\u00A7';
+    public static final char COLOR_CHAR = '§';
     public static final String ALL_CODES = "0123456789AaBbCcDdEeFfKkLlMmNnOoRrXx";
     public static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + COLOR_CHAR + "[0-9A-FK-ORX]");
 
@@ -75,32 +76,66 @@ public class Utils {
         return TextComponentBuilder(PunishManager.getInstance().getConfigManager().getStringList(path, punishment.getUuid()), punishment);
     }
 
-    public static long convertToMillis(int number, String unit) {
-        switch (unit) {
-            case "s":
-                return (long) number * 1000;
-            case "m":
-                return (long) number * 1000 * 60;
-            case "h":
-                return (long) number * 1000 * 60 * 60;
-            case "d":
-                return (long) number * 1000 * 60 * 60 * 24;
-            case "w":
-                return (long) number * 1000 * 60 * 60 * 24 * 7;
-            case "mo":
-                return (long) number * 1000 * 60 * 60 * 24 * 28;
-            case "y":
-                return (long) number * 1000 * 60 * 60 * 24 * 28 * 12;
-            default:
-                return -1;
+    public static long convertToMillis(String time) {
+        Pattern YEARS = Pattern.compile("([0-9]+y)", Pattern.CASE_INSENSITIVE);
+        Pattern MONTHS = Pattern.compile("([0-9]+mo)", Pattern.CASE_INSENSITIVE);
+        Pattern WEEKS = Pattern.compile("([0-9]+w)", Pattern.CASE_INSENSITIVE);
+        Pattern DAYS = Pattern.compile("([0-9]+d)", Pattern.CASE_INSENSITIVE);
+        Pattern HOURS = Pattern.compile("([0-9]+h)", Pattern.CASE_INSENSITIVE);
+        Pattern MINUTES = Pattern.compile("([0-9]+m)", Pattern.CASE_INSENSITIVE);
+        Pattern SECONDS = Pattern.compile("([0-9]+s)", Pattern.CASE_INSENSITIVE);
+
+        Matcher yearsMatcher = YEARS.matcher(time);
+        Matcher monthsMatcher = MONTHS.matcher(time);
+        Matcher weeksMatcher = WEEKS.matcher(time);
+        Matcher daysMatcher = DAYS.matcher(time);
+        Matcher hoursMatcher = HOURS.matcher(time);
+        Matcher minutesMatcher = MINUTES.matcher(time);
+        Matcher secondsMatcher = SECONDS.matcher(time);
+
+        boolean foundYears = yearsMatcher.find(),
+                foundMonths = monthsMatcher.find(),
+                foundWeeks = weeksMatcher.find(),
+                foundDays = daysMatcher.find(),
+                foundHours = hoursMatcher.find(),
+                foundMinutes = minutesMatcher.find(),
+                foundSeconds = secondsMatcher.find();
+
+        if (!foundYears && !foundMonths && !foundWeeks && !foundDays && !foundHours && !foundMinutes && !foundSeconds) {
+            throw new InvalidCommandArgument();
         }
+
+        int years = 0, months = 0, weeks = 0, days = 0, hours = 0, minutes = 0, seconds = 0;
+
+        if (foundYears) {
+            years = Integer.parseInt(yearsMatcher.group(1).substring(0, yearsMatcher.group(1).length() - 1));
+        }
+        if (foundMonths) {
+            months = Integer.parseInt(monthsMatcher.group(1).substring(0, monthsMatcher.group(1).length() - 2));
+        }
+        if (foundWeeks) {
+            weeks = Integer.parseInt(weeksMatcher.group(1).substring(0, weeksMatcher.group(1).length() - 1));
+        }
+        if (foundDays) {
+            days = Integer.parseInt(daysMatcher.group(1).substring(0, daysMatcher.group(1).length() - 1));
+        }
+        if (foundHours) {
+            hours = Integer.parseInt(hoursMatcher.group(1).substring(0, hoursMatcher.group(1).length() - 1));
+        }
+        if (foundMinutes) {
+            minutes = Integer.parseInt(minutesMatcher.group(1).substring(0, minutesMatcher.group(1).length() - 1));
+        }
+        if (foundSeconds) {
+            seconds = Integer.parseInt(secondsMatcher.group(1).substring(0, secondsMatcher.group(1).length() - 1));
+        }
+        return (years * 31536000000L) + (months * 2592000000L) + (weeks * 604800000L) + (days * 86400000L) + (hours * 3600000L) + (minutes * 60000L) + (seconds * 1000L);
     }
 
     public static String getValueFromUrlJson(String ip) {
         String value = "error";
         if (ip.equals("127.0.0.1")) return value;
         String url = configManager.getConfig().getString("apis.countryApi.url",
-                "http://ip-api.com/json/%ip%?fields=country").replaceAll("%ip%", ip);
+                "https://ip-api.com/json/%ip%?fields=country").replaceAll("%ip%", ip);
         String key = configManager.getConfig().getString("apis.countryApi.key", "country");
         try {
             String string = IOUtils.toString(new URL(url), StandardCharsets.UTF_8);

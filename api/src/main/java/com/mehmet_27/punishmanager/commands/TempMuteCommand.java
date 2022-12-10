@@ -32,14 +32,8 @@ public class TempMuteCommand extends BaseCommand {
         UUID uuid = player.getUniqueId();
         String playerName = player.getName();
 
-        Matcher matcher = Utils.NumberAndUnit.matcher(time.toLowerCase());
-        if (!matcher.find()) {
-            throw new InvalidCommandArgument();
-        }
-        int number = Integer.parseInt(matcher.group("number"));
-        String unit = matcher.group("unit");
         long start = System.currentTimeMillis();
-        long end = start + Utils.convertToMillis(number, unit);
+        long end = start + Utils.convertToMillis(time);
         String server = "ALL";
         if (punishManager.getMethods().isOnline(uuid)) {
             server = punishManager.getMethods().getServer(uuid);

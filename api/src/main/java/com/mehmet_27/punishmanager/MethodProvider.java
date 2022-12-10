@@ -4,8 +4,8 @@ import com.mehmet_27.punishmanager.managers.CommandManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Platform;
 import com.mehmet_27.punishmanager.objects.Punishment;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.nio.file.Path;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
