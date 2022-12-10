@@ -2,10 +2,7 @@ package com.mehmet_27.punishmanager.bukkit;
 
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bukkit.inventory.InventoryController;
-import com.mehmet_27.punishmanager.bukkit.listeners.ChatListener;
-import com.mehmet_27.punishmanager.bukkit.listeners.CommandListener;
-import com.mehmet_27.punishmanager.bukkit.listeners.ConnectionListener;
-import com.mehmet_27.punishmanager.bukkit.listeners.PunishListener;
+import com.mehmet_27.punishmanager.bukkit.listeners.*;
 import com.mehmet_27.punishmanager.bukkit.managers.PMBukkitCommandManager;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -32,6 +29,7 @@ public class PMBukkit extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ChatListener(), this);
         getServer().getPluginManager().registerEvents(new CommandListener(this), this);
         getServer().getPluginManager().registerEvents(new PunishListener(this), this);
+        getServer().getPluginManager().registerEvents(new PunishRevokeListener(this), this);
         getServer().getPluginManager().registerEvents(new InventoryController(), this);
     }
 

@@ -3,6 +3,7 @@ package com.mehmet_27.punishmanager.managers;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.configuration.Configuration;
 import com.mehmet_27.punishmanager.objects.Punishment;
+import com.mehmet_27.punishmanager.objects.PunishmentRevoke;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -50,10 +51,20 @@ public class DiscordManager {
     public void sendEmbed(Punishment punishment) {
         if (!isEnabledInConfig) return;
         String path = "discord.punish-announce.embeds." + punishment.getPunishType().name().toLowerCase(Locale.ENGLISH);
-        if (!(config.getBoolean("discord.punish-announce.enable") && config.getBoolean(path))) {
+        if (!(config.getBoolean("discord.punish-announce.enable", true) && config.getBoolean(path, true))) {
             return;
         }
         String json = Utils.replacePunishmentPlaceholders(configManager.getEmbed(punishment.getPunishType().name()), punishment);
+        announceChannel.sendMessageEmbeds(((JDAImpl) api).getEntityBuilder().createMessageEmbed(DataObject.fromJson(json))).queue();
+    }
+
+    public void sendRevokeEmbed(PunishmentRevoke punishmentRevoke) {
+        if (!isEnabledInConfig) return;
+        String path = "discord.punish-announce.embeds." + punishmentRevoke.getRevokeType().name().toLowerCase(Locale.ENGLISH);
+        if (!(config.getBoolean("discord.punish-announce.enable", true) && config.getBoolean(path, true))) {
+            return;
+        }
+        String json = Utils.replacePunishmentRevokePlaceholders(configManager.getEmbed(punishmentRevoke.getRevokeType().name()), punishmentRevoke);
         announceChannel.sendMessageEmbeds(((JDAImpl) api).getEntityBuilder().createMessageEmbed(DataObject.fromJson(json))).queue();
     }
 

@@ -96,20 +96,27 @@ public class PunishFrame extends UIFrame {
 
     private void addTemplates() {
         Configuration templates = PunishManager.getInstance().getConfigManager().getConfig().getSection("templates");
-        for (int i = 0; i < templates.getKeys().size() && i < 18; i++) {
-            Configuration template = templates.getSection(String.valueOf(i + 1));
+        for (String key : templates.getKeys()) {
+            Configuration template = templates.getSection(String.valueOf(key));
             String duration = template.getString("duration", "permanent");
             String reason = template.getString("reason");
+            int slot = template.getInt("slot", 0);
             String permission = template.getString("permission", null);
-            Punishment.PunishType type = Punishment.PunishType.valueOf(template.getString("type").toUpperCase(Locale.ENGLISH));
+            Punishment.PunishType type;
+            try {
+                type = Punishment.PunishType.valueOf(template.getString("type").toUpperCase(Locale.ENGLISH));
+            } catch (IllegalArgumentException e){
+                PunishManager.getInstance().getLogger().warning(String.format("Template %s has an unknown punish type: %s", key,template.getString("type")));
+                continue;
+            }
 
             UIComponent component = new UIComponentImpl.Builder(ItemType.PAPER)
-                    .name(Messages.GUI_PUNISH_TEMPLATE_NAME.getString(viewerUuid).replace("%template%", String.valueOf(i + 1)))
+                    .name(Messages.GUI_PUNISH_TEMPLATE_NAME.getString(viewerUuid).replace("%template%", String.valueOf(key)))
                     .lore(Messages.GUI_PUNISH_TEMPLATE_LORE.getStringList(viewerUuid)
                             .stream().map(s -> s.replace("%type%", type.name())
                                     .replace("%reason%", reason)
                                     .replace("%duration%", duration)).collect(Collectors.toList()))
-                    .slot(i + 18).build();
+                    .slot(slot).build();
             if (permission != null) {
                 component.setPermission(ClickType.LEFT_CLICK, permission);
             }

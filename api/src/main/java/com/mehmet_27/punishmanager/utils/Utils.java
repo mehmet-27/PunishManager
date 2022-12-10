@@ -8,6 +8,7 @@ import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Punishment;
+import com.mehmet_27.punishmanager.objects.PunishmentRevoke;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,6 +42,15 @@ public class Utils {
                 .replace("%end%", String.valueOf(punishment.getEnd() / 1000))
                 .replace("%startMillis%", String.valueOf(punishment.getStart()))
                 .replace("%endMillis%", String.valueOf(punishment.getEnd()));
+    }
+    public static String replacePunishmentRevokePlaceholders(String message, PunishmentRevoke punishmentRevoke) {
+        return message.replace("%reason%", punishmentRevoke.getReason())
+                .replace("%operator%", punishmentRevoke.getOperator())
+                .replace("%player%", punishmentRevoke.getPlayerName())
+                .replace("%type%", punishmentRevoke.getRevokeType().name())
+                .replace("%uuid%", punishmentRevoke.getUuid().toString())
+                .replace("%id%", String.valueOf(punishmentRevoke.getId()))
+                .replace("%time%", String.valueOf(punishmentRevoke.getTime() / 1000));
     }
 
     public static void sendText(@Nullable UUID sender, String path) {
