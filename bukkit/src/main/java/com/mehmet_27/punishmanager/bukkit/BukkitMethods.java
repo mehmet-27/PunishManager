@@ -15,8 +15,8 @@ import com.mehmet_27.punishmanager.utils.Utils;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SingleLineChart;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.UUID;

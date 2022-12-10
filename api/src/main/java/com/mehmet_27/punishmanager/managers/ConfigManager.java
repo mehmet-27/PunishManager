@@ -7,8 +7,8 @@ import com.mehmet_27.punishmanager.configuration.YamlConfiguration;
 import com.mehmet_27.punishmanager.objects.PlayerLocale;
 import com.mehmet_27.punishmanager.utils.FileUtils;
 import com.mehmet_27.punishmanager.utils.Utils;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
