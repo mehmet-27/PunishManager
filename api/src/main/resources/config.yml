@@ -40,16 +40,23 @@ check-command-show-ip-require-perm: false
 
 templates:
   1:
-    permission: 'test.1'
+    type: MUTE
+    reason: 'Test'
+  2:
     type: TEMPMUTE
     duration: 1d
     reason: 'Test'
-  2:
-    permission: 'test.2'
+  3:
     type: BAN
     reason: 'Test'
-  3:
-    permission: 'test.3'
+  4:
+    type: TEMPBAN
+    duration: 1d
+    reason: 'Test'
+  5:
+    type: IPBAN
+    reason: 'Test'
+  6:
     type: KICK
     reason: 'Test'
 
