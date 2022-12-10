@@ -10,6 +10,7 @@ import com.mehmet_27.punishmanager.managers.CommandManager;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
+import com.mehmet_27.punishmanager.objects.Replacements;
 import com.mehmet_27.punishmanager.utils.FileUtils;
 import com.mehmet_27.punishmanager.utils.Utils;
 import com.mehmet_27.punishmanager.velocity.PMVelocity;
@@ -29,8 +30,6 @@ import java.util.stream.Collectors;
 public class PMVelocityCommandManager extends VelocityCommandManager implements CommandManager {
 
     private final PMVelocity plugin;
-    private static final List<String> SUBCOMMANDS;
-
     public PMVelocityCommandManager(ProxyServer proxy, PMVelocity plugin) {
         super(proxy, plugin);
         this.plugin = plugin;
@@ -201,16 +200,12 @@ public class PMVelocityCommandManager extends VelocityCommandManager implements 
                 "punishmanager", "punishmanager|puma"
         );
 
-        SUBCOMMANDS.forEach(sub -> {
-            String command = plugin.getConfigManager().getReplacementsOrDefault("commandReplacements." + sub, sub);
+        for (Replacements value : Replacements.values()) {
+            String command = plugin.getConfigManager().getMessage(value.getPath());
+            if (command == null || command.isEmpty()) command = value.getDef();
             command = command.replace(" ", "");
-            String replacement = command.equals(sub) ? sub : command + "|" + sub;
-            getCommandReplacements().addReplacement(sub, replacement);
-        });
-    }
-
-    static {
-        SUBCOMMANDS = Arrays.asList("ban", "tempban", "ipban", "mute", "tempmute", "kick", "unban",
-                "unmute", "unpunish", "punish", "check", "changereason", "admin", "reload", "import", "help", "about");
+            String replacement = command.equals(value.getDef()) ? value.getDef() : command + "|" + value.getDef();
+            getCommandReplacements().addReplacement(value.getDef(), replacement);
+        }
     }
 }

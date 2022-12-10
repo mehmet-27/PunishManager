@@ -1,6 +1,5 @@
 package com.mehmet_27.punishmanager.bukkit.inventory.inventories;
 
-import co.aikar.commands.InvalidCommandArgument;
 import com.cryptomorin.xseries.XMaterial;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bukkit.inventory.InventoryDrawer;
@@ -21,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
-import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
 public class PunishFrame extends UIFrame {
@@ -96,7 +94,7 @@ public class PunishFrame extends UIFrame {
 
     private void addTemplates() {
         Configuration templates = PunishManager.getInstance().getConfigManager().getConfig().getSection("templates");
-        for (int i = 1; i < templates.getKeys().size() && i < 19; i++) {
+        for (int i = 0; i < templates.getKeys().size() && i < 19; i++) {
             Configuration template = templates.getSection(String.valueOf(i));
             String duration = template.getString("duration", "permanent");
             String reason = template.getString("reason");

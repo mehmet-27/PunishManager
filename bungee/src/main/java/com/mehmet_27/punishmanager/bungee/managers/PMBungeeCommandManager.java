@@ -9,6 +9,7 @@ import com.mehmet_27.punishmanager.managers.CommandManager;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
+import com.mehmet_27.punishmanager.objects.Replacements;
 import com.mehmet_27.punishmanager.utils.FileUtils;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -25,7 +26,6 @@ import java.util.stream.Collectors;
 public class PMBungeeCommandManager extends BungeeCommandManager implements CommandManager {
 
     private final PMBungee plugin;
-    private static final List<String> SUBCOMMANDS;
 
     public PMBungeeCommandManager(PMBungee plugin) {
         super(plugin);
@@ -172,16 +172,12 @@ public class PMBungeeCommandManager extends BungeeCommandManager implements Comm
                 "punishmanager", "punishmanager|puma"
         );
 
-        SUBCOMMANDS.forEach(sub -> {
-            String command = plugin.getConfigManager().getReplacementsOrDefault("commandReplacements." + sub, sub);
+        for (Replacements value : Replacements.values()) {
+            String command = plugin.getConfigManager().getMessage(value.getPath());
+            if (command == null || command.isEmpty()) command = value.getDef();
             command = command.replace(" ", "");
-            String replacement = command.equals(sub) ? sub : command + "|" + sub;
-            getCommandReplacements().addReplacement(sub, replacement);
-        });
-    }
-
-    static {
-        SUBCOMMANDS = Arrays.asList("ban", "tempban", "ipban", "mute", "tempmute", "kick", "unban",
-                "unmute", "unpunish", "punish", "check", "changereason", "admin", "reload", "import", "help", "about");
+            String replacement = command.equals(value.getDef()) ? value.getDef() : command + "|" + value.getDef();
+            getCommandReplacements().addReplacement(value.getDef(), replacement);
+        }
     }
 }
