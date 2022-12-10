@@ -85,6 +85,7 @@ gui:
         - '&6Sebep: &e%reason%'
         - '&6Süre: &e%duration%'
 ban:
+  name: 'ban'
   punished: '&a%player% başarıyla yasaklandı.'
   alreadyPunished: '&e%player% zaten yasaklı.'
   layout:
@@ -99,6 +100,7 @@ ban:
   announce: '&a%player% &eadlı oyuncu &a%operator% &etarafından &a%reason% &esebebiyle yasaklandı.'
   description: 'Bir oyuncuyu yasakla.'
 tempban:
+  name: 'tempban'
   punished: '&a%player% başarıyla yasaklandı.'
   alreadyPunished: '&e%player% zaten yasaklı.'
   layout:
@@ -114,6 +116,7 @@ tempban:
   announce: '&a%player% &eadlı oyuncu &a%operator% &etarafından &a%reason% &esebebiyle &a%duration% &esüre boyunca yasaklandı.'
   description: 'Bir oyuncuyu süreli yasakla.'
 ipban:
+  name: 'ipban'
   punished: '&a%player% başarıyla yasaklandı.'
   alreadyPunished: '&e%player% zaten yasaklı.'
   layout:
@@ -128,6 +131,7 @@ ipban:
   announce: '&a%player% &eadlı oyuncu &a%operator% &etarafından &a%reason% &esebebiyle yasaklandı.'
   description: 'Bir oyuncunun ip adresini yasakla.'
 kick:
+  name: 'kick'
   punished: '&a%player% başarıyla atıldı.'
   notOnline: '&e%player% çevrim içi değil.'
   layout:
@@ -138,6 +142,7 @@ kick:
   description: 'Bir oyuncuyu sunucudan at.'
   announce: '&a%player% &eadlı oyuncu &a%operator% &etarafından &a%reason% &esebebiyle sunucudan atıldı.'
 mute:
+  name: 'mute'
   punished: '&a%player% başarıyla susturuldu.'
   alreadyPunished: '&e%player% zaten susturulmuş.'
   layout:
@@ -145,6 +150,7 @@ mute:
   announce: '&a%player% &eadlı oyuncu &a%operator% &etarafından &a%reason% &esebebiyle susturuldu.'
   description: 'Bir oyuncuyu sustur.'
 tempmute:
+  name: 'tempmute'
   punished: '&a%player% başarıyla susturuldu.'
   alreadyPunished: '&e%player% zaten susturulmuş.'
   layout:
@@ -152,18 +158,22 @@ tempmute:
   announce: '&a%player% &eadlı oyuncu &a%operator% &etarafından &a%reason% &esebebiyle &a%duration% &esüre boyunca susturuldu.'
   description: 'Bir oyuncuyu süreli sustur.'
 unban:
+  name: 'unban'
   notPunished: '&e%player% yasaklı değil.'
   done: '&a%player% adlı oyuncunun yasağı kaldırıldı.'
   description: 'Bir oyuncunun yasağını kaldır.'
 unmute:
+  name: 'unmute'
   notPunished: '&e%player% susturulmamış.'
   done: '&a%player% adlı oyuncunun susturulması açıldı.'
   description: 'Bir oyuncunun susturmasını aş.'
 unpunish:
+  name: 'unpunish'
   notPunished: '&e%player% cezalandırılmamış.'
   done: '&a%player% adlı oyuncunun tüm cezaları kaldırıldı.'
   description: 'Bir oyuncunun tüm cezalarını kaldır.'
 check:
+  name: 'check'
   checking: '&a%player% &ekontrol ediliyor &7(%online%&7)'
   playerNotFound: '&c%player% bulunamadı!'
   uuid: '&eUUID: &a%uuid%'
@@ -184,8 +194,10 @@ check:
 punishmanager:
   description: 'Eklentinin ana komutu.'
   admin:
+    name: 'admin'
     description: 'Yönetici komutu.'
     import:
+      name: 'import'
       description: 'Diğer eklentilerden cezaları içe aktar.'
       start: '&aİçe aktarma başladı.'
       end: '&aİçe aktarma tamamlandı.'
@@ -198,11 +210,20 @@ punishmanager:
       tookMs: '&aCezaları içe aktarma %long% ms sürdü.'
       imported: '&aToplam %total% ceza içe aktarıldı.'
     reload:
+      name: 'reload'
       description: 'Eklentiyi yeniden yükler.'
       done: '&aTüm yapılandırma dosyaları yeniden yüklendi.'
   help:
+    name: 'help'
+    description: 'Yardım komutu.'
+  about:
+    name: 'about'
     description: 'Yardım komutu.'
 changereason:
+  name: 'changereason'
   description: 'Bir cezanın sebebini değiştirir.'
   punishmentNotFound: '&eAranan ceza bulunamadı.'
   done: '&e#%id% &anumaralı cezanın sebebi &e%reason% &aolarak değiştirildi.'
+punish:
+  name: 'punish'
+  description: 'Bir oyuncuyu GUI aracılığıyla cezalandırın.'
