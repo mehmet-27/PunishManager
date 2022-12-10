@@ -7,8 +7,10 @@ import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Platform;
 import com.mehmet_27.punishmanager.objects.Punishment;
+import com.mehmet_27.punishmanager.objects.PunishmentRevoke;
 import com.mehmet_27.punishmanager.utils.Utils;
 import com.mehmet_27.punishmanager.velocity.events.PunishEvent;
+import com.mehmet_27.punishmanager.velocity.events.PunishRevokeEvent;
 import com.mehmet_27.punishmanager.velocity.inventory.InventoryDrawer;
 import com.mehmet_27.punishmanager.velocity.inventory.inventories.MainFrame;
 import com.mehmet_27.punishmanager.velocity.inventory.inventories.PunishFrame;
@@ -101,6 +103,11 @@ public class VelocityMethods implements MethodProvider {
     @Override
     public void callPunishEvent(Punishment punishment) {
         getPlugin().getServer().getEventManager().fire(new PunishEvent(punishment));
+    }
+
+    @Override
+    public void callPunishRevokeEvent(PunishmentRevoke punishmentRevoke) {
+        getPlugin().getServer().getEventManager().fire(new PunishRevokeEvent(punishmentRevoke));
     }
 
     @Override

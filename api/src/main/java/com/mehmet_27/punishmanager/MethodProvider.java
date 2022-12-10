@@ -4,6 +4,7 @@ import com.mehmet_27.punishmanager.managers.CommandManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Platform;
 import com.mehmet_27.punishmanager.objects.Punishment;
+import com.mehmet_27.punishmanager.objects.PunishmentRevoke;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
@@ -38,6 +39,8 @@ public interface MethodProvider {
     boolean isOnline(String name);
 
     void callPunishEvent(Punishment punishment);
+
+    void callPunishRevokeEvent(PunishmentRevoke punishmentRevoke);
 
     Logger getLogger();
 

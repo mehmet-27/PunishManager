@@ -41,19 +41,19 @@ public class AdminCommand extends BaseCommand {
     private ConfigManager configManager;
 
     @CommandCompletion("@players Reason")
-    @Description("{@@admin.description}")
+    @Description("{@@punishmanager.admin.description}")
     @Subcommand("%admin")
     public void admin(CommandIssuer issuer) {
 
     }
 
-    @Description("{@@admin.description}")
+    @Description("{@@punishmanager.admin.description}")
     @Subcommand("%admin")
     public class AdminSubCommands extends BaseCommand {
 
         @Subcommand("%import")
         @CommandCompletion("AdvancedBan")
-        @Description("{@@admin.import.description}")
+        @Description("{@@punishmanager.admin.import.description}")
         public void importC(CommandIssuer issuer, String pluginName) {
             UUID issuerUuid = issuer.isPlayer() ? issuer.getUniqueId() : null;
             SupportedPlugins plugin;

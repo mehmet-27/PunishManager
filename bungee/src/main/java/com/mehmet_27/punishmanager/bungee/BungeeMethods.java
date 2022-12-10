@@ -3,6 +3,7 @@ package com.mehmet_27.punishmanager.bungee;
 import com.mehmet_27.punishmanager.MethodProvider;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.bungee.events.PunishEvent;
+import com.mehmet_27.punishmanager.bungee.events.PunishRevokeEvent;
 import com.mehmet_27.punishmanager.bungee.inventory.InventoryDrawer;
 import com.mehmet_27.punishmanager.bungee.inventory.inventories.MainFrame;
 import com.mehmet_27.punishmanager.bungee.inventory.inventories.PunishFrame;
@@ -11,6 +12,7 @@ import com.mehmet_27.punishmanager.managers.StorageManager;
 import com.mehmet_27.punishmanager.objects.OfflinePlayer;
 import com.mehmet_27.punishmanager.objects.Platform;
 import com.mehmet_27.punishmanager.objects.Punishment;
+import com.mehmet_27.punishmanager.objects.PunishmentRevoke;
 import com.mehmet_27.punishmanager.utils.Utils;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -99,6 +101,11 @@ public class BungeeMethods implements MethodProvider {
     @Override
     public void callPunishEvent(Punishment punishment) {
         getPlugin().getProxy().getPluginManager().callEvent(new PunishEvent(punishment));
+    }
+
+    @Override
+    public void callPunishRevokeEvent(PunishmentRevoke punishmentRevoke) {
+        getPlugin().getProxy().getPluginManager().callEvent(new PunishRevokeEvent(punishmentRevoke));
     }
 
     @Override

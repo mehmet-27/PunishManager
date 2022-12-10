@@ -41,23 +41,29 @@ check-command-show-ip-require-perm: false
 templates:
   1:
     type: MUTE
+    slot: 18
     reason: 'Test'
   2:
     type: TEMPMUTE
+    slot: 19
     duration: 1d
     reason: 'Test'
   3:
     type: BAN
+    slot: 20
     reason: 'Test'
   4:
     type: TEMPBAN
+    slot: 21
     duration: 1d
     reason: 'Test'
   5:
     type: IPBAN
+    slot: 22
     reason: 'Test'
   6:
     type: KICK
+    slot: 23
     reason: 'Test'
 
 discord:
@@ -74,6 +80,9 @@ discord:
       mute: true
       tempban: true
       tempmute: true
+      unban: true
+      unmute: true
+      unpunish: true
 
 # Use %ip% variable for player's ip address
 apis:

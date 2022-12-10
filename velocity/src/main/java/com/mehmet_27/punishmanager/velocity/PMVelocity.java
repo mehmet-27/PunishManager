@@ -4,10 +4,7 @@ import com.google.inject.Inject;
 import com.mehmet_27.punishmanager.PunishManager;
 import com.mehmet_27.punishmanager.managers.ConfigManager;
 import com.mehmet_27.punishmanager.velocity.inventory.InventoryController;
-import com.mehmet_27.punishmanager.velocity.listeners.ChatListener;
-import com.mehmet_27.punishmanager.velocity.listeners.CommandListener;
-import com.mehmet_27.punishmanager.velocity.listeners.ConnectionListener;
-import com.mehmet_27.punishmanager.velocity.listeners.PunishListener;
+import com.mehmet_27.punishmanager.velocity.listeners.*;
 import com.mehmet_27.punishmanager.velocity.managers.PMVelocityCommandManager;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
@@ -65,6 +62,7 @@ public class PMVelocity {
         server.getEventManager().register(this, new ChatListener());
         server.getEventManager().register(this, new CommandListener(this));
         server.getEventManager().register(this, new PunishListener(this));
+        server.getEventManager().register(this, new PunishRevokeListener(this));
 
         inventoryController = new InventoryController();
 
@@ -73,7 +71,7 @@ public class PMVelocity {
     }
 
     @Subscribe
-    public void onDisable(ProxyShutdownEvent event){
+    public void onDisable(ProxyShutdownEvent event) {
         PunishManager.getInstance().onDisable();
     }
 

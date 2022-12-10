@@ -1,0 +1,16 @@
+{
+  "type": "",
+  "title": "Punish Revoked",
+  "description": "`%player%`'s mute removed by `%operator%`.",
+  "color": 5540790,
+  "footer": {
+    "icon_url": "https://i.imgur.com/JhEluGV.png",
+    "text": "PunishManager"
+  },
+  "fields": [
+    {
+      "name": "Reason",
+      "value": "`%reason%`"
+    }
+  ]
+}
