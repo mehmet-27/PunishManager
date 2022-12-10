@@ -85,26 +85,8 @@ gui:
         - '&6Reason: &e%reason%'
         - '&6Duration: &e%duration%'
 
-commandReplacements:
-  ban: 'ban'
-  tempban: 'tempban'
-  ipban: 'ipban'
-  mute: 'mute'
-  tempmute: 'tempmute'
-  kick: 'kick'
-  unban: 'unban'
-  unmute: 'unmute'
-  unpunish: 'unpunish'
-  punish: 'punish'
-  check: 'check'
-  changereason: 'changereason'
-  admin: 'admin'
-  reload: 'reload'
-  import: 'import'
-  about: 'about'
-  help: 'help'
-
 ban:
+  name: 'ban'
   punished: '&a%player% successfully banned.'
   alreadyPunished: '&e%player% is already banned.'
   layout:
@@ -119,6 +101,7 @@ ban:
   announce: '&a%player% &ebanned by &a%operator% &edue to &a%reason%.'
   description: 'Ban a player.'
 tempban:
+  name: 'tempban'
   punished: '&a%player% successfully banned.'
   alreadyPunished: '&e%player% is already banned.'
   layout:
@@ -134,6 +117,7 @@ tempban:
   announce: '&a%player% &ewas banned by &a%operator% &efor &a%duration% &edue to &a%reason%.'
   description: 'Temporarily bans a player.'
 ipban:
+  name: 'ipban'
   punished: '&a%player% successfully banned.'
   alreadyPunished: '&e%player% is already banned.'
   layout:
@@ -148,6 +132,7 @@ ipban:
   announce: '&a%player% &ebanned by &a%operator% &edue to &a%reason%.'
   description: 'Bans a player''s ip address.'
 kick:
+  name: 'kick'
   punished: '&a%player% successfully kicked.'
   notOnline: '&e%player% is not online.'
   layout:
@@ -158,6 +143,7 @@ kick:
   description: 'Kicks a player from the server.'
   announce: '&a%player% &ekicked by &a%operator% &edue to &a%reason%.'
 mute:
+  name: 'mute'
   punished: '&a%player% successfully muted.'
   alreadyPunished: '&e%player% is already muted.'
   layout:
@@ -165,6 +151,7 @@ mute:
   announce: '&a%player% &emuted by &a%operator% &edue to &a%reason%.'
   description: 'Mute a player.'
 tempmute:
+  name: 'tempmute'
   punished: '&a%player% successfully muted.'
   alreadyPunished: '&e%player% is already muted.'
   layout:
@@ -172,18 +159,22 @@ tempmute:
   announce: '&a%player% &ewas muted by &a%operator% &efor &a%duration% &edue to &a%reason%.'
   description: 'Temporarily mutes a player.'
 unban:
+  name: 'unban'
   notPunished: '&e%player% is not banned.'
   done: '&a%player%''s ban has been removed.'
   description: 'Removes a player''s ban.'
 unmute:
+  name: 'unmute'
   notPunished: '&e%player% is not muted.'
   done: '&a%player%''s mute has been removed.'
   description: 'Removes a player''s mute.'
 unpunish:
+  name: 'unpunish'
   notPunished: '&e%player% is not punished.'
   done: '&a%player%''s punishes has been removed.'
   description: 'Removes all punishes from a player.'
 check:
+  name: 'check'
   checking: '&eChecking &a%player% &7(%online%&7)'
   playerNotFound: '&c%player% not found!'
   uuid: '&eUUID: &a%uuid%'
@@ -204,8 +195,10 @@ check:
 punishmanager:
   description: 'The main command of the plugin.'
   admin:
+    name: 'admin'
     description: 'Admin command.'
     import:
+      name: 'import'
       description: 'Import punishes from other plugins.'
       start: '&aImport started.'
       end: '&aImport finished.'
@@ -218,11 +211,20 @@ punishmanager:
       tookMs: '&aImporting the punishes took %long% ms.'
       imported: '&aTotal %total% punishes imported.'
     reload:
+      name: 'reload'
       description: 'Reloads the plugin.'
       done: '&aAll configuration files have been reloaded.'
   help:
+    name: 'help'
+    description: 'Help command.'
+  about:
+    name: 'about'
     description: 'Help command.'
 changereason:
+  name: 'changereason'
   description: 'Changes the reason for a punish.'
   punishmentNotFound: '&eSearched punishment not found.'
   done: '&aThe reason for the &e#%id% &apunish has been changed to &e%reason%&a.'
+punish:
+  name: 'punish'
+  description: 'Punish a player via GUI.'
