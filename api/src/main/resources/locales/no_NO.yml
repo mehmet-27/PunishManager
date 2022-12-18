@@ -4,6 +4,7 @@
 #%operator% -> Operator of punishment.
 #%player% -> Name of the player being punished.
 main:
+  prefix: '&6PunishManager'
   exempt-player: 'Du kan ikke straffe denne spilleren.'
   defaultReason: 'ingen'
   not-on-yourself: 'Du kan ikke bruke denne kommandoen på deg selv!'
@@ -11,6 +12,8 @@ main:
   setlanguage: '&aDitt språk er satt til {0}.'
   setdefaultlanguage: '&aStandardspråket for serveren er satt til {0}.'
   mustInteger: '&cVennligst angi en gyldig verdi.'
+  online: '&aOnline'
+  offline: '&8Offline'
   timelayout:
     #Variables to be used when showing the duration of the punishment.
     year: '%y% år'
@@ -21,18 +24,30 @@ main:
     minute: '%m% minutt(er)'
     second: '%s% sekund(er)'
 gui:
+  clickNoPerm: '&cDu har ikke tilgang til dette.'
   backbutton:
     name: '&7Tilbake'
   main:
+    title: '&6&lPunishManager GUI'
     languageselector:
       name: '&eSpråkvelger'
+      lore:
+        - '&7'
+        - '&eVelg språket for pluginen for deg selv.'
     managepunishments:
       name: '&eBehandle straffer'
+      lore:
+        - '&7'
+        - '&eAdministrere alle eksisterende straffer bare ved å klikke.'
     adminpanel:
       name: '&eAdmin Panel'
+      lore:
+        - '&7'
+        - '&eBehandle plugin via en gui.'
   languageselector:
     title: '&eSpråk velger - Nåværende: &8{0}'
   adminpanel:
+    title: '&eAdmin Panel'
     reload:
       name: '&aLast alle konfigurasjonsfiler på nytt'
   managepunishments:
@@ -52,8 +67,25 @@ gui:
         - '&6Operatør: &e%operator%'
         - '&6Ip: &e%ip%'
         - '&7'
-        - '&7Left click to &eremove &7the punish.'
+        - '&7Venstreklikk for å &efjerne &7strraffen.'
+  confirmation:
+    title: '&eBekreftelse'
+    confirm:
+      name: '&7Klikk her for å &aBekrefte'
+    return:
+      name: '&7Klikk her for å &cReturnere'
+  punish:
+    title: '&6Straff &e%player%'
+    info:
+      name: '&bSpiller &3%player%'
+    template:
+      name: '&bMal &3%template%'
+      lore:
+        - '&6Type: &e%type%'
+        - '&6Begrunnelse: &e%reason%'
+        - '&6Varighet: &e%duration%'
 ban:
+  name: 'ban'
   punished: '&En%player% ble utestengt.'
   alreadyPunished: '&e%player% er allerede utestengt.'
   layout:
@@ -68,6 +100,7 @@ ban:
   announce: '&a%player% &ebannet av &a%operator% &egrunnet: &a%reason%.'
   description: 'Utestenger en spiller.'
 tempban:
+  name: 'tempban'
   punished: '&En%player% ble utestengt.'
   alreadyPunished: '&e%player% er allerede utestengt.'
   layout:
@@ -83,6 +116,7 @@ tempban:
   announce: '&a%player% &eble utestengt av &a%operator% &efor &a%duration% &efor: &a%reason%.'
   description: 'Banner en spiller midlertidig.'
 ipban:
+  name: 'ipban'
   punished: '&a%player% ble utestengt.'
   alreadyPunished: '&e%player% er allerede utestengt.'
   layout:
@@ -97,6 +131,7 @@ ipban:
   announce: '&a%player% &eble utestengt av &a%operator% &efor: &a%reason%.'
   description: 'Utestenger en spillers IP-adresse.'
 kick:
+  name: 'kick'
   punished: '&a%player% ble kastet ut.'
   notOnline: '&e%player% er ikke pålogget.'
   layout:
@@ -105,7 +140,9 @@ kick:
     - '&6Du sparket fra denne serveren.'
     - '&6Årsak: &a%reason%'
   description: 'Sparker en spiller ut fra serveren.'
+  announce: '&a%player% &ekicket av &a%operator% &edue til &a%reason%.'
 mute:
+  name: 'mute'
   punished: '&a%player% ble dempet.'
   alreadyPunished: '&e%player% er allerede dempet.'
   layout:
@@ -113,6 +150,7 @@ mute:
   announce: '&a%player% &edempet av &a%operator% &efor: &a%reason%.'
   description: 'Demp en spiller.'
 tempmute:
+  name: 'tempmute'
   punished: '&a%player% ble dempet.'
   alreadyPunished: '&e%player% er allerede dempet.'
   layout:
