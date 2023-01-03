@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.mehmet_27.punishmanager</groupId>
+        <groupId>dev.mehmet27.punishmanager</groupId>
         <artifactId>PunishManager</artifactId>
-        <version>1.4.7</version>
+        <version>1.4.8</version>
     </parent>
 
     <artifactId>PunishManager-Bungee</artifactId>
@@ -30,11 +30,11 @@
                             <relocations>
                                 <relocation>
                                     <pattern>co.aikar.commands</pattern>
-                                    <shadedPattern>com.mehmet_27.punishmanager.libraries.acf</shadedPattern>
+                                    <shadedPattern>dev.mehmet27.punishmanager.libraries.acf</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>co.aikar.locales</pattern>
-                                    <shadedPattern>com.mehmet_27.punishmanager.libraries.locales</shadedPattern>
+                                    <shadedPattern>dev.mehmet27.punishmanager.libraries.locales</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -83,7 +83,7 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.mehmet_27.punishmanager</groupId>
+            <groupId>dev.mehmet27.punishmanager</groupId>
             <artifactId>PunishManager-Api</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>

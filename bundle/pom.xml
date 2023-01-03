@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.mehmet_27.punishmanager</groupId>
+        <groupId>dev.mehmet27.punishmanager</groupId>
         <artifactId>PunishManager</artifactId>
-        <version>1.4.7</version>
+        <version>1.4.8</version>
     </parent>
 
     <artifactId>PunishManager-Bundle</artifactId>
@@ -15,19 +15,19 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.mehmet_27.punishmanager</groupId>
+            <groupId>dev.mehmet27.punishmanager</groupId>
             <artifactId>PunishManager-Bukkit</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>com.mehmet_27.punishmanager</groupId>
+            <groupId>dev.mehmet27.punishmanager</groupId>
             <artifactId>PunishManager-Bungee</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>com.mehmet_27.punishmanager</groupId>
+            <groupId>dev.mehmet27.punishmanager</groupId>
             <artifactId>PunishManager-Velocity</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
@@ -46,10 +46,10 @@
                             <pattern>com.zaxxer.hikari</pattern>
                             <shadedPattern>${project.groupId}.lib.com.zaxxer.hikari</shadedPattern>
                         </relocation>
-                        <relocation>
+                        <!--<relocation>
                             <pattern>net.dv8tion.jda</pattern>
                             <shadedPattern>${project.groupId}.lib.net.dv8tion.jda</shadedPattern>
-                        </relocation>
+                        </relocation>-->
                         <relocation>
                             <pattern>org.h2</pattern>
                             <shadedPattern>${project.groupId}.lib.org.h2</shadedPattern>
