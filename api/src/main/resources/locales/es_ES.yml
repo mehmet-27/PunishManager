@@ -4,12 +4,16 @@
 #%operator% -> Operator of punishment.
 #%player% -> Name of the player being punished.
 main:
+  prefix: '&6PunishManager'
   exempt-player: 'No puedes castigar a este jugador.'
-  not-on-yourself: '¡No puedes usar este comando en ti mismo!'
-  not-logged-server: '&cNo puedes castigar a alguien que no ha estado en el servidor antes.'
+  defaultReason: 'ninguno'
+  not-on-yourself: '¡No puedes usar este comando en tí mismo!'
+  not-logged-server: '&cNo puedes castigar a alguien que no haya estado antes en el servidor.'
   setlanguage: '&aSu idioma está establecido en {0}.'
-  setdefaultlanguage: '&aEl idioma predeterminado para el servidor se establece en {0}.'
+  setdefaultlanguage: '&aEl idioma predeterminado para el servidor está en {0}.'
   mustInteger: '&cIntroduzca un valor entero válido.'
+  online: '&aEn línea'
+  offline: '&8Desconectado'
   timelayout:
     #Variables to be used when showing the duration of the punishment.
     year: '%y% año(s)'
@@ -20,15 +24,26 @@ main:
     minute: '%m% minuto(s)'
     second: '%s% segundo(s)'
 gui:
+  clickNoPerm: '&cNo tienes permisos para usar eso.'
   backbutton:
     name: '&7Atrás'
   main:
+    title: '&6&lPunishManager GUI'
     languageselector:
-      name: '&eSelector de idioma'
+      name: '&eMenú de idiomas'
+      lore:
+        - '&7'
+        - '&eSelecciona el idioma apropiado para ti.'
     managepunishments:
       name: '&eAdministrar castigos'
+      lore:
+        - '&7'
+        - '&eGestiona todos los castigos disponibles con un click.'
     adminpanel:
       name: '&ePanel de administrador'
+      lore:
+        - '&7'
+        - '&eAdministra el plugin mediante una gui.'
   languageselector:
     title: '&eSelector de idioma - Actual: &8{0}'
   adminpanel:
@@ -59,7 +74,18 @@ gui:
       name: '&7Haga clic aquí para &aconfirmar'
     return:
       name: '&7Pulse aquí para &cvolver'
+  punish:
+    title: '&6Castigar a &e%player%'
+    info:
+      name: '&bJugador &3%player%'
+    template:
+      name: '&bPlantilla &3%template%'
+      lore:
+        - '&6Tipo: &e%type%'
+        - '&6Razón: &e%reason%'
+        - '&6Duración: &e%duration%'
 ban:
+  name: 'ban'
   punished: '&a%player% baneado exitosamente.'
   alreadyPunished: '&e%player% ya está baneado.'
   layout:
@@ -74,6 +100,7 @@ ban:
   announce: '&a%player% &ebaneado por &a%operator% &edebido a &a%reason%.'
   description: 'Banear a un jugador.'
 tempban:
+  name: 'tempban'
   punished: '&a%player% baneado exitosamente.'
   alreadyPunished: '&e%player% ya está baneado.'
   layout:
@@ -82,19 +109,20 @@ tempban:
     - '&6Fuiste baneado de este servidor.'
     - '&2Operador: &a%operator%'
     - '&2Razón: &a%reason%'
-    - '&2Duration: &a%duration%'
+    - '&6Duración: &e%duration%'
     - '&eContacto & Support'
     - "&6Web &7» &epróximamente"
     - "&6Discord &7» &epróximamente"
   announce: '&a%player% &fue prohibido por &a%operator% &edurante &a%duration% &edu por &a%motivo%.'
   description: 'Banea temporalmente a un jugador.'
 ipban:
+  name: 'ipban'
   punished: '&a%player% baneado exitosamente.'
   alreadyPunished: '&e%player% ya está baneado.'
   layout:
     - '%prefix%'
     - '&7'
-    - '&6Fuiste baneado de este servidor.'
+    - '&6Fuiste expulsado de este servidor.'
     - '&2Operador: &a%operator%'
     - '&2Razón: &a%reason%'
     - '&eContacto & Support'
@@ -103,6 +131,7 @@ ipban:
   announce: '&a%player% &ebaneado por &a%operator% &edebido a &a%reason%.'
   description: 'Baneo de dirección IP de un jugador.'
 kick:
+  name: 'kick'
   punished: '&a%player% expulsado con éxito.'
   notOnline: '&e%player% no está en línea.'
   layout:
@@ -111,7 +140,9 @@ kick:
     - '&6Fuiste expulsado de este servidor.'
     - '&2Razón: &a%reason%'
   description: 'expulsa a un jugador del servidor.'
+  announce: '&a%player% &efue expulsado por &a%operator% &edebido a &a%reason%.'
 mute:
+  name: 'mute'
   punished: '&a%player% silenciado con éxito.'
   alreadyPunished: '&e%player% ya está silenciado.'
   layout:
@@ -119,6 +150,7 @@ mute:
   announce: '&a%player% &efue silenciado por &a%operator% &edebido a &a%reason%.'
   description: 'Silenciar a un jugador.'
 tempmute:
+  name: 'tempmute'
   punished: '&a%player% silenciado con éxito.'
   alreadyPunished: '&e%player% ya está silenciado.'
   layout:
@@ -126,32 +158,72 @@ tempmute:
   announce: '&a%player% &efue silenciado por &a%operator% &epor &a%duration% &edebido a &a%reason%.'
   description: 'Temporalmente silencia a un jugador.a'
 unban:
+  name: 'unban'
   notPunished: '&e%player% no está baneado.'
   done: '&aSe eliminó la sanción de %player%'
   description: 'Elimina la sanción de un jugador.'
 unmute:
+  name: 'unmute'
   notPunished: '&e%player% no está silenciado.'
   done: 'Se eliminó el silenciamiento de &a%player%.'
   description: 'Elimina el silencio de un jugador.'
 unpunish:
+  name: 'unpunish'
   notPunished: '&e%player% no está castigado.'
   done: '&aSe han eliminado los castigos de %player%'
   description: 'Elimina todos los castigos de un jugador.'
 check:
+  name: 'check'
+  checking: '&eRevisando a &a%player% &7(%online%&7)'
   playerNotFound: '&c¡%player% no encontrado!'
+  uuid: '&eUUID: &a%uuid%'
+  ip: '&eIP: &a%ip%'
+  country: '&ePaís: &a%country%'
   language: '&eIdioma: &a%language%'
   banStatus: '&eEstado de baneo: &c%status%'
   banReason: '&e-> Motivo de baneo: &c%reason%'
   banOperator: '&e-> Baneado por: &c%operator%'
+  banServer: '&e-> Servidor baneado: &c%server%'
   muteStatus: '&eEstado de mute: &c%status%'
   muteReason: '&e-> Motivo de mute: &c%reason%'
   muteOperator: '&e-> Silenciado por: &c%operator%'
+  muteServer: '&e-> Servidor muteado: &c%server%'
   punishId: '&e-> Id de castigo: &c%id%'
   notPunished: '&aSin castigos'
   description: 'Comprueba el estado actual de un jugador.'
 punishmanager:
   description: 'Comando principal del complemento.'
+  admin:
+    name: 'admin'
+    description: 'Comandos de administrador.'
+    import:
+      name: 'import'
+      description: 'Importar castigos de otros plugins.'
+      start: '&aImportación iniciada.'
+      end: '&aImportación terminada.'
+      connecting: '&aConectando a la base de datos...'
+      fileCreated: '&eimport.yml ha sido creado. Por favor, edite correctamente y vuelva a intentarlo.'
+      nullConfiguration: '&cLa configuración de importación es incorrecta.'
+      unsupportedPlugin: '&eEste plugin no está soportado actualmente. Si hay un plugin que desea soportar, puede ponerse en contacto conmigo.'
+      unsupportedPunishType: '&eEl castigo ha sido omitido porque no está disponible: %type%'
+      found: '&aTotal de %total% castigos encontrados.'
+      tookMs: '&aLa improtación de los castigos tomó %long% ms.'
+      imported: '&aTotal de %total% castigos importados.'
+    reload:
+      name: 'reload'
+      description: 'Recarga la configuración del plugin.'
+      done: '&aTodos los archivos de configuración han sido recargados.'
+  help:
+    name: 'help'
+    description: 'Comando de ayuda.'
+  about:
+    name: 'about'
+    description: 'Comando de ayuda.'
 changereason:
+  name: 'changereason'
   description: 'Cambia el motivo de un castigo.'
   punishmentNotFound: '&eCastigo buscado no encontrado.'
   done: '&aEl motivo de &e#%id% &acastigar se ha cambiado a &e%reason%&a.'
+punish:
+  name: 'punish'
+  description: 'Castigar a un jugador a través de GUI.'

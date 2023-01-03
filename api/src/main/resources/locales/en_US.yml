@@ -50,6 +50,10 @@ gui:
     title: '&eAdmin Panel'
     reload:
       name: '&aReload all configuration files'
+    defaultlanguageselector:
+      name: '&eSet default language for server.'
+  defaultlanguageselector:
+    title: '&eDef Lang Selector - Current: &8{0}'
   managepunishments:
     title: '&eManage Punishments - Total &6{0}'
     next:

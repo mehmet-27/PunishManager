@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.mehmet_27.punishmanager</groupId>
+    <groupId>dev.mehmet27.punishmanager</groupId>
     <artifactId>PunishManager</artifactId>
-    <version>1.4.7</version>
+    <version>1.4.8</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -54,19 +54,19 @@
                             <relocations>
                                 <relocation>
                                     <pattern>com.zaxxer.hikari</pattern>
-                                    <shadedPattern>com.mehmet_27.punishmanager.libraries.hikari</shadedPattern>
+                                    <shadedPattern>dev.mehmet27.punishmanager.libraries.hikari</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>net.dv8tion.jda</pattern>
-                                    <shadedPattern>com.mehmet_27.punishmanager.libraries.jda</shadedPattern>
+                                    <shadedPattern>dev.mehmet27.punishmanager.libraries.jda</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>org.h2</pattern>
-                                    <shadedPattern>com.mehmet_27.punishmanager.libraries.h2</shadedPattern>
+                                    <shadedPattern>dev.mehmet27.punishmanager.libraries.h2</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>org.bstats</pattern>
-                                    <shadedPattern>com.mehmet_27.punishmanager.libraries.bstats</shadedPattern>
+                                    <shadedPattern>dev.mehmet27.punishmanager.libraries.bstats</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
