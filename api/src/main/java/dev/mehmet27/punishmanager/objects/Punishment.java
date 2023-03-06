@@ -17,7 +17,7 @@ public class Punishment {
     private final ConfigManager configManager = PunishManager.getInstance().getConfigManager();
     private final long start;
     private final long end;
-    private String playerName;
+    private @Nullable String playerName;
     private String reason;
     private String operator;
     private String server;
@@ -29,11 +29,11 @@ public class Punishment {
     UUID operatorUUID;
     private final int id;
 
-    public Punishment(String playerName, UUID uuid, @Nullable String ip, PunishType punishType, String reason, String operator, @Nullable UUID operatorUUID, String server, int id) {
+    public Punishment(@Nullable String playerName, UUID uuid, @Nullable String ip, PunishType punishType, String reason, String operator, @Nullable UUID operatorUUID, String server, int id) {
         this(playerName, uuid, ip, punishType, reason, operator, operatorUUID, server, new Timestamp(System.currentTimeMillis()).getTime(), -1, id);
     }
 
-    public Punishment(String playerName, UUID uuid, @Nullable String ip, PunishType punishType, String reason, String operator, @Nullable UUID operatorUUID, String server, long start, long end, int id) {
+    public Punishment(@Nullable String playerName, UUID uuid, @Nullable String ip, PunishType punishType, String reason, String operator, @Nullable UUID operatorUUID, String server, long start, long end, int id) {
         this.playerName = playerName;
         this.uuid = uuid;
         this.ip = ip;
@@ -91,11 +91,11 @@ public class Punishment {
         this.reason = reason;
     }
 
-    public String getPlayerName() {
+    public @Nullable String getPlayerName() {
         return playerName;
     }
 
-    public void setPlayerName(String player) {
+    public void setPlayerName(@Nullable String player) {
         this.playerName = player;
     }
 

@@ -1,13 +1,10 @@
 package dev.mehmet27.punishmanager;
 
-import dev.mehmet27.punishmanager.dependencies.Dependency;
-import dev.mehmet27.punishmanager.dependencies.DependencyManager;
 import dev.mehmet27.punishmanager.managers.CommandManager;
 import dev.mehmet27.punishmanager.managers.ConfigManager;
 import dev.mehmet27.punishmanager.managers.DiscordManager;
 import dev.mehmet27.punishmanager.managers.StorageManager;
 import dev.mehmet27.punishmanager.objects.OfflinePlayer;
-import dev.mehmet27.punishmanager.objects.Platform;
 import dev.mehmet27.punishmanager.utils.UpdateChecker;
 
 import java.io.InputStream;
@@ -24,7 +21,6 @@ public class PunishManager {
     private MethodProvider methods;
 
     private ConfigManager configManager;
-    private DependencyManager dependencyManager;
     private StorageManager storageManager;
     private CommandManager commandManager;
     private DiscordManager discordManager;
@@ -45,13 +41,6 @@ public class PunishManager {
         methods.getLogger().info("Platform: " + methods.getPlatform().getFriendlyName());
         this.configManager = new ConfigManager(this);
         configManager.setup();
-        this.dependencyManager = new DependencyManager();
-        // Download protocolize
-        if (methods.getPlatform().equals(Platform.BUNGEECORD)) {
-            dependencyManager.downloadDependency(Dependency.PROTOCOLIZE_BUNGEECORD, methods.getPluginsFolder().resolve(Dependency.PROTOCOLIZE_BUNGEECORD.getFileName()));
-        } else if (methods.getPlatform().equals(Platform.VELOCITY)) {
-            dependencyManager.downloadDependency(Dependency.PROTOCOLIZE_VELOCITY, methods.getPluginsFolder().resolve(Dependency.PROTOCOLIZE_VELOCITY.getFileName()));
-        }
         this.storageManager = new StorageManager();
         this.offlinePlayers = storageManager.getAllOfflinePlayers();
         this.allPlayerNames = offlinePlayers.isEmpty() ? new ArrayList<>() : offlinePlayers.values().stream().map(OfflinePlayer::getName).collect(Collectors.toList());
@@ -81,10 +70,6 @@ public class PunishManager {
 
     public ConfigManager getConfigManager() {
         return configManager;
-    }
-
-    public DependencyManager getDependencyManager() {
-        return dependencyManager;
     }
 
     public StorageManager getStorageManager() {

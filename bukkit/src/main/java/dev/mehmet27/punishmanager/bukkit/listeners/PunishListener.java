@@ -13,6 +13,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import java.util.Locale;
+import java.util.Objects;
 import java.util.UUID;
 
 public class PunishListener implements Listener {
@@ -80,6 +81,17 @@ public class PunishListener implements Listener {
                 player.sendMessage(Utils.getLayout(punishment));
             } else if (punishment.getPunishType().equals(Punishment.PunishType.KICK)) {
                 player.kickPlayer(Utils.getLayout(punishment));
+            }
+        } else {
+            if (punishment.getPunishType().equals(Punishment.PunishType.IPBAN)) {
+                if (!punishManager.getBannedIps().contains(punishment.getIp())) {
+                    punishManager.getBannedIps().add(punishment.getIp());
+                }
+                plugin.getServer().getOnlinePlayers().forEach(ipPlayer -> {
+                    if (Objects.requireNonNull(ipPlayer.getAddress()).getHostName().equals(punishment.getIp())) {
+                        ipPlayer.kickPlayer(Utils.getLayout(punishment));
+                    }
+                });
             }
         }
 

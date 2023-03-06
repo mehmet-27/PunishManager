@@ -29,7 +29,7 @@ public class PMBukkit extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ChatListener(), this);
         getServer().getPluginManager().registerEvents(new CommandListener(this), this);
         getServer().getPluginManager().registerEvents(new PunishListener(this), this);
-        getServer().getPluginManager().registerEvents(new PunishRevokeListener(this), this);
+        getServer().getPluginManager().registerEvents(new PunishRevokeListener(), this);
         getServer().getPluginManager().registerEvents(new InventoryController(), this);
     }
 

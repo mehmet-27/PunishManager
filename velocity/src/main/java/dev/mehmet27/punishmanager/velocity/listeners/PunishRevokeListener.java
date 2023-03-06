@@ -7,22 +7,15 @@ import dev.mehmet27.punishmanager.managers.DiscordManager;
 import dev.mehmet27.punishmanager.objects.Punishment;
 import dev.mehmet27.punishmanager.objects.PunishmentRevoke;
 import dev.mehmet27.punishmanager.utils.Utils;
-import dev.mehmet27.punishmanager.velocity.PMVelocity;
 import dev.mehmet27.punishmanager.velocity.events.PunishRevokeEvent;
-import net.kyori.adventure.text.Component;
 
 import java.util.Locale;
 
 import static dev.mehmet27.punishmanager.objects.Punishment.PunishType.NONE;
 
 public class PunishRevokeListener {
-    private final PMVelocity plugin;
     private final PunishManager punishManager = PunishManager.getInstance();
     private final DiscordManager discordManager = punishManager.getDiscordManager();
-
-    public PunishRevokeListener(PMVelocity plugin) {
-        this.plugin = plugin;
-    }
 
     @Subscribe(order = PostOrder.FIRST)
     public void onPunish(PunishRevokeEvent event) {
@@ -59,12 +52,6 @@ public class PunishRevokeListener {
         String path = punishmentRevoke.getRevokeType().name().toLowerCase(Locale.ENGLISH) + ".done";
         Utils.sendText(punishmentRevoke.getOperatorUUID(), punishmentRevoke.getPlayerName(), path);
 
-        //Sending to punish announcement
-        String announcement = event.getAnnounceMessage();
-        if (announcement != null && !announcement.isEmpty()) {
-            announcement = Utils.replacePunishmentRevokePlaceholders(announcement, punishmentRevoke);
-            plugin.getServer().sendMessage(Component.text(announcement));
-        }
         discordManager.sendRevokeEmbed(punishmentRevoke);
     }
 }

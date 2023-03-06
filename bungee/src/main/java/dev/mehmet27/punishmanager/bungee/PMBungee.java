@@ -33,7 +33,7 @@ public final class PMBungee extends Plugin {
         getProxy().getPluginManager().registerListener(this, new ConnectionListener(this));
         getProxy().getPluginManager().registerListener(this, new ChatListener(this));
         getProxy().getPluginManager().registerListener(this, new PunishListener(this));
-        getProxy().getPluginManager().registerListener(this, new PunishRevokeListener(this));
+        getProxy().getPluginManager().registerListener(this, new PunishRevokeListener());
 
         inventoryController = new InventoryController();
     }

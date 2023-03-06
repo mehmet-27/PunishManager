@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 @Plugin(
         id = "punishmanager",
         name = "PunishManager",
-        version = "1.4.8",
+        version = "1.4.10",
         description = "Advanced punish management plugin.",
         authors = {"Mehmet_27"}
 )
@@ -62,7 +62,7 @@ public class PMVelocity {
         server.getEventManager().register(this, new ChatListener());
         server.getEventManager().register(this, new CommandListener(this));
         server.getEventManager().register(this, new PunishListener(this));
-        server.getEventManager().register(this, new PunishRevokeListener(this));
+        server.getEventManager().register(this, new PunishRevokeListener());
 
         inventoryController = new InventoryController();
 
