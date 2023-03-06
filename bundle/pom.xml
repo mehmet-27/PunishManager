@@ -7,7 +7,7 @@
     <parent>
         <groupId>dev.mehmet27.punishmanager</groupId>
         <artifactId>PunishManager</artifactId>
-        <version>1.4.8</version>
+        <version>1.4.10</version>
     </parent>
 
     <artifactId>PunishManager-Bundle</artifactId>

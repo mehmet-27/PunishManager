@@ -81,6 +81,17 @@ public class PunishListener {
             } else if (punishment.getPunishType().equals(Punishment.PunishType.KICK)) {
                 player.disconnect(Component.text((Utils.getLayout(punishment))));
             }
+        } else {
+            if (punishment.getPunishType().equals(Punishment.PunishType.IPBAN)) {
+                if (!punishManager.getBannedIps().contains(punishment.getIp())) {
+                    punishManager.getBannedIps().add(punishment.getIp());
+                }
+                plugin.getServer().getAllPlayers().forEach(ipPlayer -> {
+                    if (ipPlayer.getRemoteAddress().getHostName().equals(punishment.getIp())) {
+                        ipPlayer.disconnect(Component.text(Utils.getLayout(punishment)));
+                    }
+                });
+            }
         }
 
         //Sending to punish announcement

@@ -11,6 +11,7 @@ import dev.mehmet27.punishmanager.importing.AdvancedBanPunishmentType;
 import dev.mehmet27.punishmanager.importing.SupportedPlugins;
 import dev.mehmet27.punishmanager.managers.ConfigManager;
 import dev.mehmet27.punishmanager.managers.StorageManager;
+import dev.mehmet27.punishmanager.objects.Platform;
 import dev.mehmet27.punishmanager.objects.Punishment;
 import dev.mehmet27.punishmanager.storage.DBCore;
 import dev.mehmet27.punishmanager.storage.MySQLCore;
@@ -52,7 +53,7 @@ public class AdminCommand extends BaseCommand {
     public class AdminSubCommands extends BaseCommand {
 
         @Subcommand("%import")
-        @CommandCompletion("AdvancedBan")
+        @CommandCompletion("AdvancedBan") //TODO add vanila
         @Description("{@@punishmanager.admin.import.description}")
         public void importC(CommandIssuer issuer, String pluginName) {
             UUID issuerUuid = issuer.isPlayer() ? issuer.getUniqueId() : null;
@@ -154,6 +155,12 @@ public class AdminCommand extends BaseCommand {
                 Utils.sendText(issuerUuid, "punishmanager.admin.import.tookMs", message ->
                         message.replace("%long%", String.valueOf(diff)));
                 Utils.sendText(issuerUuid, "punishmanager.admin.import.end");
+            }
+            if (plugin.equals(SupportedPlugins.VANILLA)){
+                if (!punishManager.getMethods().getPlatform().equals(Platform.BUKKIT_SPIGOT)){
+                    Utils.sendText(issuerUuid, "punishmanager.admin.import.wrong-platform");
+                    return;
+                }
             }
 
             /*if (plugin.equals(SupportedPlugins.LITEBANS)) {

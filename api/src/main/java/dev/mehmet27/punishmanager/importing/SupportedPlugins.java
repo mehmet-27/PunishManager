@@ -1,5 +1,5 @@
 package dev.mehmet27.punishmanager.importing;
 
 public enum SupportedPlugins {
-    ADVANCEDBAN//, LITEBANS
+    ADVANCEDBAN, VANILLA//, LITEBANS
 }

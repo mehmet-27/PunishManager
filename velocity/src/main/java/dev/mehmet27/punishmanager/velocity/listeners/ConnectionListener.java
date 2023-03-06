@@ -1,5 +1,6 @@
 package dev.mehmet27.punishmanager.velocity.listeners;
 
+import com.velocitypowered.api.event.PostOrder;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.connection.LoginEvent;
@@ -13,8 +14,9 @@ import dev.mehmet27.punishmanager.utils.Utils;
 import dev.mehmet27.punishmanager.velocity.PMVelocity;
 import net.kyori.adventure.text.Component;
 
-import java.util.List;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+import java.util.UUID;
 
 public class ConnectionListener {
 
@@ -22,18 +24,15 @@ public class ConnectionListener {
     private final PunishManager punishManager = PunishManager.getInstance();
     private final StorageManager storageManager = punishManager.getStorageManager();
 
-    private final List<String> bannedIps = punishManager.getBannedIps();
-
     public ConnectionListener(PMVelocity plugin) {
         this.plugin = plugin;
     }
 
 
-    @Subscribe
+    @Subscribe(order = PostOrder.FIRST)
     public void onLogin(LoginEvent event) {
         Player connection = event.getPlayer();
         if (!connection.isActive()) return;
-        connection.getRemoteAddress();
         OfflinePlayer player = new OfflinePlayer(
                 connection.getUniqueId(),
                 connection.getUsername(),
@@ -49,21 +48,22 @@ public class ConnectionListener {
                 punishManager.getAllPlayerNames().add(player.getName());
             }
         } else {
+            punishManager.getOfflinePlayers().replace(player.getUniqueId(), player);
             storageManager.updatePlayerName(player);
             storageManager.updatePlayerIp(player);
             plugin.getCommandManager().setIssuerLocale(connection,
                     punishManager.getOfflinePlayers().get(player.getUniqueId()).getLocale());
         }
-
+        if (punishManager.getBannedIps().contains(player.getPlayerIp())) {
+            Punishment ipBan = storageManager.getBan(UUID.nameUUIDFromBytes(player.getPlayerIp().getBytes(StandardCharsets.UTF_8)));
+            punishManager.debug("This player's IP address is banned: " + player.getName() + " IP: " + player.getPlayerIp());
+            connection.disconnect(Component.text(Utils.getLayout(ipBan)));
+            return;
+        }
         Punishment punishment = storageManager.getBan(player.getUniqueId());
         if (punishment == null) return;
         if (punishment.isExpired()) {
             storageManager.unPunishPlayer(punishment);
-            return;
-        }
-        if (bannedIps.contains(player.getPlayerIp())) {
-            punishManager.debug("This player's IP address is banned: " + player.getName() + " IP: " + player.getPlayerIp());
-            connection.disconnect(Component.text(Utils.getLayout(punishment)));
             return;
         }
         connection.disconnect(Component.text(Utils.getLayout(punishment)));

@@ -13,8 +13,10 @@ import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
+import net.md_5.bungee.event.EventPriority;
 
-import java.util.List;
+import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 public class ConnectionListener implements Listener {
 
@@ -22,14 +24,11 @@ public class ConnectionListener implements Listener {
     private final PunishManager punishManager = PunishManager.getInstance();
     private final StorageManager storageManager = punishManager.getStorageManager();
 
-    private final List<String> bannedIps = punishManager.getBannedIps();
-
     public ConnectionListener(PMBungee plugin) {
         this.plugin = plugin;
     }
 
-    //TODO: punishManager.getOfflinePlayers().replace(player.getUniqueId().toString(), new OfflinePlayer(player));
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onLogin(LoginEvent event) {
         PendingConnection connection = event.getConnection();
         if (!connection.isConnected()) return;
@@ -48,20 +47,21 @@ public class ConnectionListener implements Listener {
                 punishManager.getAllPlayerNames().add(player.getName());
             }
         } else {
+            punishManager.getOfflinePlayers().replace(player.getUniqueId(), player);
             storageManager.updatePlayerName(player);
             storageManager.updatePlayerIp(player);
         }
-
+        if (punishManager.getBannedIps().contains(player.getPlayerIp())) {
+            Punishment ipBan = storageManager.getBan(UUID.nameUUIDFromBytes(player.getPlayerIp().getBytes(StandardCharsets.UTF_8)));
+            punishManager.debug("This player's IP address is banned: " + player.getName() + " IP: " + player.getPlayerIp());
+            event.setCancelReason(TextComponent.fromLegacyText(Utils.getLayout(ipBan)));
+            event.setCancelled(true);
+            return;
+        }
         Punishment punishment = storageManager.getBan(player.getUniqueId());
         if (punishment == null) return;
         if (punishment.isExpired()) {
             storageManager.unPunishPlayer(punishment);
-            return;
-        }
-        if (bannedIps.contains(player.getPlayerIp())) {
-            PunishManager.getInstance().debug("This player's IP address is banned: " + player.getName() + " IP: " + player.getPlayerIp());
-            event.setCancelReason(TextComponent.fromLegacyText(Utils.getLayout(punishment)));
-            event.setCancelled(true);
             return;
         }
         event.setCancelReason(TextComponent.fromLegacyText(Utils.getLayout(punishment)));

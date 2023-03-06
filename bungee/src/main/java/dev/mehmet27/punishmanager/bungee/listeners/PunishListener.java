@@ -14,6 +14,7 @@ import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
 
 import java.util.Locale;
+import java.util.Objects;
 import java.util.UUID;
 
 public class PunishListener implements Listener {
@@ -81,6 +82,17 @@ public class PunishListener implements Listener {
                 player.sendMessage(TextComponent.fromLegacyText(Utils.getLayout(punishment)));
             } else if (punishment.getPunishType().equals(Punishment.PunishType.KICK)) {
                 player.disconnect(TextComponent.fromLegacyText(Utils.getLayout(punishment)));
+            }
+        } else {
+            if (punishment.getPunishType().equals(Punishment.PunishType.IPBAN)) {
+                if (!punishManager.getBannedIps().contains(punishment.getIp())) {
+                    punishManager.getBannedIps().add(punishment.getIp());
+                }
+                plugin.getProxy().getPlayers().forEach(ipPlayer -> {
+                    if (ipPlayer.getSocketAddress().toString().substring(1).split(":")[0].equals(punishment.getIp())) {
+                        ipPlayer.disconnect(TextComponent.fromLegacyText(Utils.getLayout(punishment)));
+                    }
+                });
             }
         }
 
