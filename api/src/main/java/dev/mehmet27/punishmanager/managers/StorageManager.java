@@ -45,7 +45,7 @@ public class StorageManager {
                     " id BIGINT(20) NOT NULL auto_increment," +
                     " name VARCHAR(16)," +
                     " uuid VARCHAR(72)," +
-                    " ip VARCHAR(25)," +
+                    " ip VARCHAR(39)," +
                     " reason VARCHAR(255)," +
                     " operator VARCHAR(16)," +
                     " operator_uuid VARCHAR(72) DEFAULT 'CONSOLE' NOT NULL," +
@@ -61,7 +61,7 @@ public class StorageManager {
                     " id BIGINT(20) NOT NULL auto_increment," +
                     " name VARCHAR(16)," +
                     " uuid VARCHAR(72)," +
-                    " ip VARCHAR(25)," +
+                    " ip VARCHAR(39)," +
                     " reason VARCHAR(255)," +
                     " operator VARCHAR(16)," +
                     " operator_uuid VARCHAR(72) DEFAULT 'CONSOLE' NOT NULL," +
@@ -76,7 +76,7 @@ public class StorageManager {
             String query = "CREATE TABLE IF NOT EXISTS punishmanager_players (" +
                     " uuid VARCHAR(72) NOT NULL," +
                     " name VARCHAR(16)," +
-                    " ip VARCHAR(25)," +
+                    " ip VARCHAR(39)," +
                     " language VARCHAR(10)," +
                     " first_login LONGTEXT NOT NULL," +
                     " last_login LONGTEXT NOT NULL," +
