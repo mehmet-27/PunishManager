@@ -7,7 +7,7 @@
     <parent>
         <artifactId>PunishManager</artifactId>
         <groupId>dev.mehmet27.punishmanager</groupId>
-        <version>1.4.10</version>
+        <version>1.4.11</version>
     </parent>
 
     <artifactId>PunishManager-Bukkit</artifactId>
