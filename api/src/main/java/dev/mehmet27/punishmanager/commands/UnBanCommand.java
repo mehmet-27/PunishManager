@@ -5,7 +5,6 @@ import co.aikar.commands.CommandIssuer;
 import co.aikar.commands.annotation.*;
 import dev.mehmet27.punishmanager.objects.Punishment;
 import dev.mehmet27.punishmanager.objects.PunishmentRevoke;
-import dev.mehmet27.punishmanager.utils.Utils;
 
 import java.util.Locale;
 
@@ -20,6 +19,6 @@ public class UnBanCommand extends BaseCommand {
     @Description("{@@unban.description}")
     @CommandAlias("%unban")
     public void unBan(CommandIssuer sender, @Name("Player|Ip") String target, @Optional @Name("Reason") @Default("none") String reason) {
-        Utils.handleCommands(sender, target, reason, ERROR_MESSAGE, Punishment.PunishType.NONE, PunishmentRevoke.RevokeType.UNBAN);
+        PunishManagerCommand.handleCommands(sender, target, reason, ERROR_MESSAGE, Punishment.PunishType.NONE, PunishmentRevoke.RevokeType.UNBAN);
     }
 }

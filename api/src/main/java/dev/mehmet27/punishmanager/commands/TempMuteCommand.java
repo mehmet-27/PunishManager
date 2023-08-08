@@ -19,6 +19,6 @@ public class TempMuteCommand extends BaseCommand {
         long start = System.currentTimeMillis();
         long end = start + Utils.convertToMillis(time);
 
-        Utils.handleCommands(sender, player.getName(), reason, null, Punishment.PunishType.TEMPMUTE, PunishmentRevoke.RevokeType.UNMUTE, start, end);
+        PunishManagerCommand.handleCommands(sender, player.getName(), reason, null, Punishment.PunishType.TEMPMUTE, PunishmentRevoke.RevokeType.UNMUTE, start, end);
     }
 }
