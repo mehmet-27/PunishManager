@@ -1,5 +1,6 @@
 package dev.mehmet27.punishmanager.utils;
 
+import co.aikar.commands.CommandIssuer;
 import co.aikar.commands.InvalidCommandArgument;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -10,11 +11,13 @@ import dev.mehmet27.punishmanager.objects.OfflinePlayer;
 import dev.mehmet27.punishmanager.objects.Punishment;
 import dev.mehmet27.punishmanager.objects.PunishmentRevoke;
 import org.apache.commons.io.IOUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -27,6 +30,9 @@ public class Utils {
     public static final char COLOR_CHAR = '§';
     public static final String ALL_CODES = "0123456789AaBbCcDdEeFfKkLlMmNnOoRrXx";
     public static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + COLOR_CHAR + "[0-9A-FK-ORX]");
+
+    private static final String IPV4 = "^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(\\.(?!$)|$)){4}$";
+    private static final Pattern IPV4_PATTERN = Pattern.compile(IPV4);
 
     public static String replacePunishmentPlaceholders(String message, Punishment punishment) {
         return message.replace("%reason%", punishment.getReason())
@@ -43,6 +49,7 @@ public class Utils {
                 .replace("%startMillis%", String.valueOf(punishment.getStart()))
                 .replace("%endMillis%", String.valueOf(punishment.getEnd()));
     }
+
     public static String replacePunishmentRevokePlaceholders(String message, PunishmentRevoke punishmentRevoke) {
         return message.replace("%reason%", punishmentRevoke.getReason())
                 .replace("%operator%", punishmentRevoke.getOperator())
@@ -81,7 +88,7 @@ public class Utils {
         return layout;
     }
 
-    public static String getLayout(Punishment punishment) {
+    public static String getLayout(@NotNull Punishment punishment) {
         String path = punishment.getPunishType().toString().toLowerCase(Locale.ENGLISH) + ".layout";
         return TextComponentBuilder(PunishManager.getInstance().getConfigManager().getStringList(path, punishment.getUuid()), punishment);
     }
@@ -202,6 +209,84 @@ public class Utils {
             return true;
         } catch (NumberFormatException e) {
             return false;
+        }
+    }
+
+    public static void handleCommands(@NotNull CommandIssuer sender, @NotNull String target,
+                                      @Nullable String reason, @Nullable String errorMsg,
+                                      @Nullable Punishment.PunishType punishType,
+                                      @Nullable PunishmentRevoke.RevokeType revokeType) {
+        handleCommands(sender, target, reason, errorMsg, punishType, revokeType, new Timestamp(System.currentTimeMillis()).getTime(), -1);
+    }
+
+    /**
+     * Handles the ban or unbanning of a target entity, which could be an IP address, UUID, or player name.
+     * Depending on the specified parameters, this method can either apply a punishment or revoke an existing punishment.
+     *
+     * @param sender     The command issuer who triggered the ban/unban action.
+     * @param target     The target of the ban/unban action, which could be an IP address, UUID, or player name.
+     * @param reason     The reason for the ban/unban action. It can be null if no specific reason is provided.
+     * @param errorMsg   The error message to be displayed if the target cannot be found. Used for informing the sender about errors.
+     * @param punishType The type of punishment to apply
+     */
+    public static void handleCommands(@NotNull CommandIssuer sender, @NotNull String target,
+                                      @Nullable String reason, @Nullable String errorMsg,
+                                      @Nullable Punishment.PunishType punishType,
+                                      @Nullable PunishmentRevoke.RevokeType revokeType,
+                                      long start, long end) {
+        String server = "ALL";
+        UUID targetUuid;
+        String targetName = target;
+        String targetIp = target;
+
+        String operator = "CONSOLE";
+        UUID operatorUuid = null;
+        if (sender.isPlayer()) {
+            operatorUuid = sender.getUniqueId();
+            operator = PunishManager.getInstance().getStorageManager().getOfflinePlayer(operatorUuid).getName();
+        }
+
+        // Is `target` an IP address?
+        Matcher matcher = IPV4_PATTERN.matcher(target);
+        OfflinePlayer player;
+        if (matcher.matches()) {
+            targetUuid = UUID.nameUUIDFromBytes(target.getBytes(StandardCharsets.UTF_8));
+        } else {
+            // `target` might be a UUID or player name then
+            try {
+                targetUuid = UUID.fromString(target);
+                player = PunishManager.getInstance().getOfflinePlayers().get(targetUuid);
+            } catch (IllegalArgumentException ignored) {
+                player = PunishManager.getInstance().getStorageManager().getOfflinePlayer(target);
+            }
+
+            if (player == null) {
+                if (errorMsg != null) {
+                    Utils.sendText(operatorUuid, errorMsg);
+                }
+                return;
+            }
+
+            if (punishType == Punishment.PunishType.IPBAN) {
+                targetUuid = UUID.nameUUIDFromBytes(player.getPlayerIp().getBytes(StandardCharsets.UTF_8));
+            } else {
+                targetUuid = player.getUniqueId();
+            }
+
+            targetName = player.getName();
+            targetIp = player.getPlayerIp();
+
+            if (PunishManager.getInstance().getMethods().isOnline(targetUuid)) {
+                server = PunishManager.getInstance().getMethods().getServer(targetUuid);
+            }
+        }
+
+        if (punishType == Punishment.PunishType.NONE) {
+            PunishmentRevoke punishmentRevoke = new PunishmentRevoke(targetName, targetUuid, revokeType, reason, operator, operatorUuid, System.currentTimeMillis(), -1);
+            PunishManager.getInstance().getMethods().callPunishRevokeEvent(punishmentRevoke);
+        } else {
+            Punishment punishment = new Punishment(targetName, targetUuid, targetIp, punishType, reason, operator, operatorUuid, server, start, end, -1);
+            PunishManager.getInstance().getMethods().callPunishEvent(punishment);
         }
     }
 }

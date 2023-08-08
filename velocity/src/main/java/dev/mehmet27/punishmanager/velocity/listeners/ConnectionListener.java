@@ -18,6 +18,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.UUID;
 
+import static net.kyori.adventure.text.Component.text;
+
 public class ConnectionListener {
 
     private final PMVelocity plugin;
@@ -27,7 +29,6 @@ public class ConnectionListener {
     public ConnectionListener(PMVelocity plugin) {
         this.plugin = plugin;
     }
-
 
     @Subscribe(order = PostOrder.FIRST)
     public void onLogin(LoginEvent event) {
@@ -54,19 +55,25 @@ public class ConnectionListener {
             plugin.getCommandManager().setIssuerLocale(connection,
                     punishManager.getOfflinePlayers().get(player.getUniqueId()).getLocale());
         }
+
         if (punishManager.getBannedIps().contains(player.getPlayerIp())) {
-            Punishment ipBan = storageManager.getBan(UUID.nameUUIDFromBytes(player.getPlayerIp().getBytes(StandardCharsets.UTF_8)));
+            Punishment ipBan = storageManager.getIpBan(UUID.nameUUIDFromBytes(player.getPlayerIp().getBytes(StandardCharsets.UTF_8)));
             punishManager.debug("This player's IP address is banned: " + player.getName() + " IP: " + player.getPlayerIp());
-            connection.disconnect(Component.text(Utils.getLayout(ipBan)));
-            return;
+
+            if (ipBan != null) {
+                connection.disconnect(Component.text(Utils.getLayout(ipBan)));
+                return;
+            }
         }
+
         Punishment punishment = storageManager.getBan(player.getUniqueId());
         if (punishment == null) return;
         if (punishment.isExpired()) {
             storageManager.unPunishPlayer(punishment);
             return;
         }
-        connection.disconnect(Component.text(Utils.getLayout(punishment)));
+
+        connection.disconnect(text(Utils.getLayout(punishment)));
     }
 
     @Subscribe
