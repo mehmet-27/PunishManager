@@ -4,6 +4,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandIssuer;
 import co.aikar.commands.annotation.*;
 import dev.mehmet27.punishmanager.objects.PunishmentRevoke;
+import dev.mehmet27.punishmanager.utils.Utils;
 
 import java.util.Locale;
 
@@ -19,6 +20,6 @@ public class IpBanCommand extends BaseCommand {
     @Description("{@@ipban.description}")
     @CommandAlias("%ipban")
     public void banIp(CommandIssuer sender, @Name("Target") String target, @Optional @Name("Reason") String reason) {
-        PunishManagerCommand.handleCommands(sender, target, reason, ERROR_MESSAGE, IPBAN, PunishmentRevoke.RevokeType.UNBAN);
+        Utils.handleCommands(sender, target, reason, ERROR_MESSAGE, IPBAN, PunishmentRevoke.RevokeType.UNBAN);
     }
 }

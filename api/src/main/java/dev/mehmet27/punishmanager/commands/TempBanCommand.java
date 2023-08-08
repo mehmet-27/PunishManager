@@ -19,6 +19,6 @@ public class TempBanCommand extends BaseCommand {
         long start = System.currentTimeMillis();
         long end = start + Utils.convertToMillis(time);
 
-        PunishManagerCommand.handleCommands(sender, player.getName(), reason, null, Punishment.PunishType.TEMPBAN, PunishmentRevoke.RevokeType.UNBAN, start, end);
+        Utils.handleCommands(sender, player.getName(), reason, null, Punishment.PunishType.TEMPBAN, PunishmentRevoke.RevokeType.UNBAN, start, end);
     }
 }

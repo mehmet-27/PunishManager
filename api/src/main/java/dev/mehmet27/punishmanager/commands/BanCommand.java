@@ -5,6 +5,7 @@ import co.aikar.commands.CommandIssuer;
 import co.aikar.commands.annotation.*;
 import dev.mehmet27.punishmanager.objects.OfflinePlayer;
 import dev.mehmet27.punishmanager.objects.PunishmentRevoke;
+import dev.mehmet27.punishmanager.utils.Utils;
 
 import static dev.mehmet27.punishmanager.objects.Punishment.PunishType.BAN;
 
@@ -16,6 +17,6 @@ public class BanCommand extends BaseCommand {
     @Description("{@@ban.description}")
     @CommandAlias("%ban")
     public void ban(CommandIssuer sender, @Conditions("other_player") @Name("Player") OfflinePlayer player, @Optional @Name("Reason") @Default("none") String reason) {
-        PunishManagerCommand.handleCommands(sender, player.getName(), reason, null, BAN, PunishmentRevoke.RevokeType.UNBAN);
+        Utils.handleCommands(sender, player.getName(), reason, null, BAN, PunishmentRevoke.RevokeType.UNBAN);
     }
 }
