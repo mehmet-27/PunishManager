@@ -220,14 +220,17 @@ public class Utils {
     }
 
     /**
-     * Handles the ban or unbanning of a target entity, which could be an IP address, UUID, or player name.
-     * Depending on the specified parameters, this method can either apply a punishment or revoke an existing punishment.
+     * Handles various punishment actions, such as banning, muting, and unbanning of a target entity.
+     * Depending on the specified parameters, this method can apply punishments (ban, mute) or revoke existing punishments (unban, unmute).
      *
-     * @param sender     The command issuer who triggered the ban/unban action.
-     * @param target     The target of the ban/unban action, which could be an IP address, UUID, or player name.
-     * @param reason     The reason for the ban/unban action. It can be null if no specific reason is provided.
-     * @param errorMsg   The error message to be displayed if the target cannot be found. Used for informing the sender about errors.
-     * @param punishType The type of punishment to apply
+     * @param sender      The command issuer who triggered the punishment action.
+     * @param target      The target of the punishment action, which could be an IP address, UUID, or player name.
+     * @param reason      The reason for the punishment action. It can be null if no specific reason is provided.
+     * @param errorMsg    The error message to be displayed if the target cannot be found. Used for informing the sender about errors.
+     * @param punishType  The type of punishment to apply (ban, mute, none for revoke actions).
+     * @param revokeType  The type of punishment revocation (unban, unmute). It can be null for other punishment actions.
+     * @param start       The start time of the punishment.
+     * @param end         The end time of the punishment.
      */
     public static void handleCommands(@NotNull CommandIssuer sender, @NotNull String target,
                                       @Nullable String reason, @Nullable String errorMsg,
