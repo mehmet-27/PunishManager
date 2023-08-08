@@ -18,8 +18,10 @@ public class PunishmentBuilder {
     private @Nullable OfflinePlayer target;
     private OfflinePlayer operator = new OfflinePlayer(null, "CONSOLE", null, null);
     private String server = "ALL";
-    private long start = new Timestamp(System.currentTimeMillis()).getTime(), end = -1;
-    private String reason, errorMsg;
+    private long start = new Timestamp(System.currentTimeMillis()).getTime();
+    private long end = -1;
+    private String reason;
+    private String errorMsg;
 
     public PunishmentBuilder(PunishManager manager) {
         this.manager = manager;
