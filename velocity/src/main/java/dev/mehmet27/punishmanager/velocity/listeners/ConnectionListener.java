@@ -12,7 +12,6 @@ import dev.mehmet27.punishmanager.objects.OfflinePlayer;
 import dev.mehmet27.punishmanager.objects.Punishment;
 import dev.mehmet27.punishmanager.utils.Utils;
 import dev.mehmet27.punishmanager.velocity.PMVelocity;
-import net.kyori.adventure.text.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
@@ -61,7 +60,7 @@ public class ConnectionListener {
             punishManager.debug("This player's IP address is banned: " + player.getName() + " IP: " + player.getPlayerIp());
 
             if (ipBan != null) {
-                connection.disconnect(Component.text(Utils.getLayout(ipBan)));
+                connection.disconnect(text(Utils.getLayout(ipBan)));
                 return;
             }
         }

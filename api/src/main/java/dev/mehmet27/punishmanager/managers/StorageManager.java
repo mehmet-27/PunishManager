@@ -323,10 +323,8 @@ public class StorageManager {
         List<String> ips = new ArrayList<>();
         try (Connection connection = core.getDataSource().getConnection()) {
             ResultSet result = connection.createStatement().executeQuery(query);
-            if (result.next()) {
-                if (result.getString("type").equals(IPBAN.name())) {
-                    ips.add(result.getString("ip"));
-                }
+            if (result.next() && result.getString("type").equals(IPBAN.name())) {
+                ips.add(result.getString("ip"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

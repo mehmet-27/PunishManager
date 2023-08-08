@@ -4,15 +4,11 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandIssuer;
 import co.aikar.commands.annotation.*;
 import dev.mehmet27.punishmanager.PunishManager;
-import dev.mehmet27.punishmanager.managers.StorageManager;
 import dev.mehmet27.punishmanager.objects.OfflinePlayer;
 
 @CommandAlias("%punishmanager")
 @CommandPermission("punishmanager.command.punish")
 public class PunishCommand extends BaseCommand {
-
-    @Dependency
-    private StorageManager storageManager;
 
     @Dependency
     private PunishManager punishManager;
