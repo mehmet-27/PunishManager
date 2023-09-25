@@ -6,20 +6,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.sql.Timestamp;
 import java.time.*;
-import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Punishment {
-    private static final int YEAR = 60 * 60 * 24 * 7 * 4 * 12;
-    private static final int MONTH = 60 * 60 * 24 * 7 * 4;
-    private static final int WEEK = 60 * 60 * 24 * 7;
-    private static final int DAY = 60 * 60 * 24;
-    private static final int HOUR = 60 * 60;
-    private static final int MINUTE = 60;
     private final ConfigManager configManager = PunishManager.getInstance().getConfigManager();
     private final long start;
     private final long end;
