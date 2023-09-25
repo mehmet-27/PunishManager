@@ -5,7 +5,13 @@ import dev.mehmet27.punishmanager.managers.ConfigManager;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.Timestamp;
+import java.time.*;
+import java.util.AbstractMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Punishment {
     private static final int YEAR = 60 * 60 * 24 * 7 * 4 * 12;
@@ -144,12 +150,11 @@ public class Punishment {
         return end;
     }
 
-    public String getDuration(UUID uuid) {
+    public String getDuration(@Nullable UUID uuid) {
         if (getEnd() == -1) {
             return "permanent";
         }
-        long currentTime = new Timestamp(System.currentTimeMillis()).getTime();
-        long diff = (getEnd() - currentTime) / 1000 + 1;
+
         //Getting time formats
         String yearFormat = configManager.getMessage("main.timelayout.year", uuid);
         String monthFormat = configManager.getMessage("main.timelayout.month", uuid);
@@ -159,100 +164,47 @@ public class Punishment {
         String minuteFormat = configManager.getMessage("main.timelayout.minute", uuid);
         String secondFormat = configManager.getMessage("main.timelayout.second", uuid);
 
-        String years = String.valueOf(diff / 60 / 60 / 24 / 7 / 4 / 12);
-        String months = String.valueOf(diff / 60 / 60 / 24 / 7 / 4 % 12);
-        String weeks = String.valueOf(diff / 60 / 60 / 24 / 7 % 4);
-        String days = String.valueOf(diff / 60 / 60 / 24 % 7);
-        String hours = String.valueOf(diff / 60 / 60 % 24);
-        String minutes = String.valueOf(diff / 60 % 60);
-        String seconds = String.valueOf(diff % 60);
+        Instant now = Instant.now();
+        Instant past = Instant.ofEpochMilli(getEnd());
 
-        // show short
-        if (diff % YEAR == 0) {
-            return String.format("%s", yearFormat).
-                    replaceAll("%y%", years);
+        LocalDate pastDate = past.atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate nowDate = now.atZone(ZoneId.systemDefault()).toLocalDate();
+
+        Period period = Period.between(pastDate, nowDate);
+        Duration duration = Duration.between(past, now);
+
+        int years = period.getYears();
+        int months = period.getMonths();
+        int days = period.getDays();
+        int weeks = days / 7;
+        long hours = duration.toHours() % 24;
+        long minutes = duration.toMinutes() % 60;
+        long seconds = duration.getSeconds() % 60;
+
+        StringBuilder durationFormat = new StringBuilder();
+        if (years > 0) {
+            durationFormat.append(yearFormat.replaceAll("%y%", String.valueOf(years))).append(" ");
         }
-        // years
-        if (diff > YEAR) {
-            return String.format("%s %s %s %s %s %s %s", yearFormat, monthFormat, weekFormat, dayFormat, hourFormat, minuteFormat, secondFormat).
-                    replaceAll("%y%", years).
-                    replaceAll("%mo%", months).
-                    replaceAll("%w%", weeks).
-                    replaceAll("%d%", days).
-                    replaceAll("%h%", hours).
-                    replaceAll("%m%", minutes).
-                    replaceAll("%s%", seconds);
+        if (months > 0) {
+            durationFormat.append(monthFormat.replaceAll("%mo%", String.valueOf(months))).append(" ");
         }
-        // show short
-        else if (diff % MONTH == 0) {
-            return String.format("%s", monthFormat).
-                    replaceAll("%mo%", months);
+        if (weeks > 0) {
+            durationFormat.append(weekFormat.replaceAll("%w%", String.valueOf(weeks))).append(" ");
         }
-        // months
-        if (diff > MONTH) {
-            return String.format("%s %s %s %s %s %s", monthFormat, weekFormat, dayFormat, hourFormat, minuteFormat, secondFormat).
-                    replaceAll("%mo%", months).
-                    replaceAll("%w%", weeks).
-                    replaceAll("%d%", days).
-                    replaceAll("%h%", hours).
-                    replaceAll("%m%", minutes).
-                    replaceAll("%s%", seconds);
+        if (days > 0) {
+            durationFormat.append(dayFormat.replaceAll("%d%", String.valueOf(days))).append(" ");
         }
-        // show short
-        else if (diff % WEEK == 0) {
-            return String.format("%s", weekFormat).
-                    replaceAll("%w%", weeks);
+        if (hours > 0) {
+            durationFormat.append(hourFormat.replaceAll("%h%", String.valueOf(hours))).append(" ");
         }
-        // weeks
-        else if (diff > WEEK) {
-            return String.format("%s %s %s %s %s", weekFormat, dayFormat, hourFormat, minuteFormat, secondFormat).
-                    replaceAll("%w%", weeks).
-                    replaceAll("%d%", days).
-                    replaceAll("%h%", hours).
-                    replaceAll("%m%", minutes).
-                    replaceAll("%s%", seconds);
+        if (minutes > 0) {
+            durationFormat.append(minuteFormat.replaceAll("%m%", String.valueOf(minutes))).append(" ");
         }
-        // show short
-        else if (diff % DAY == 0) {
-            return String.format("%s", dayFormat).
-                    replaceAll("%d%", days);
+        if (seconds > 0) {
+            durationFormat.append(secondFormat.replaceAll("%s%", String.valueOf(seconds)));
         }
-        // days
-        else if (diff > DAY) {
-            return String.format("%s %s %s %s", dayFormat, hourFormat, minuteFormat, secondFormat).
-                    replaceAll("%d%", days).
-                    replaceAll("%h%", hours).
-                    replaceAll("%m%", minutes).
-                    replaceAll("%s%", seconds);
-        }
-        // show short
-        else if (diff % HOUR == 0) {
-            return String.format("%s", hourFormat).
-                    replaceAll("%h%", hours);
-        }
-        // hours
-        else if (diff > HOUR) {
-            return String.format("%s %s %s", hourFormat, minuteFormat, secondFormat).
-                    replaceAll("%h%", hours).
-                    replaceAll("%m%", minutes).
-                    replaceAll("%s%", seconds);
-        }
-        // show short
-        else if (diff % MINUTE == 0) {
-            return String.format("%s", minuteFormat).
-                    replaceAll("%m%", minutes);
-        }
-        // minutes
-        else if (diff > MINUTE) {
-            return String.format("%s %s", minuteFormat, secondFormat).
-                    replaceAll("%m%", minutes).
-                    replaceAll("%s%", seconds);
-        }
-        // seconds
-        else {
-            return String.format("%s", secondFormat).
-                    replaceAll("%s%", seconds);
-        }
+
+        return durationFormat.toString();
     }
 
     public String getDuration() {
