@@ -138,6 +138,7 @@ public class Utils {
         if (foundHours) {
             hours = Integer.parseInt(hoursMatcher.group(1).substring(0, hoursMatcher.group(1).length() - 1));
         }
+        // fixme: it conflicts with month regex
         if (foundMinutes) {
             minutes = Integer.parseInt(minutesMatcher.group(1).substring(0, minutesMatcher.group(1).length() - 1));
         }

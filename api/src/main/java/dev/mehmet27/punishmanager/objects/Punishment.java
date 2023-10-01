@@ -6,6 +6,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.sql.Timestamp;
 import java.time.*;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class Punishment {
@@ -153,47 +156,47 @@ public class Punishment {
         String minuteFormat = configManager.getMessage("main.timelayout.minute", uuid);
         String secondFormat = configManager.getMessage("main.timelayout.second", uuid);
 
-        Instant now = Instant.now();
-        Instant past = Instant.ofEpochMilli(getEnd());
+        ZonedDateTime now = Instant.now().atZone(ZoneId.systemDefault());
+        ZonedDateTime end = Instant.ofEpochMilli(getEnd()).atZone(ZoneId.systemDefault());
 
-        LocalDate pastDate = past.atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate nowDate = now.atZone(ZoneId.systemDefault()).toLocalDate();
+        Duration duration = Duration.between(now, end);
 
-        Period period = Period.between(pastDate, nowDate);
-        Duration duration = Duration.between(past, now);
+        long days = duration.toDays();
+        long weeks = ChronoUnit.WEEKS.between(now, end);
+        days -= weeks * 7;
+        long months = ChronoUnit.MONTHS.between(now, end);
+        weeks -= months * 4;
+        long years = ChronoUnit.YEARS.between(now, end);
+        months -= years * 12;
 
-        int years = period.getYears();
-        int months = period.getMonths();
-        int days = period.getDays();
-        int weeks = days / 7;
         long hours = duration.toHours() % 24;
         long minutes = duration.toMinutes() % 60;
         long seconds = duration.getSeconds() % 60;
 
-        StringBuilder durationFormat = new StringBuilder();
+        List<String> durations = new ArrayList<>();
         if (years > 0) {
-            durationFormat.append(yearFormat.replaceAll("%y%", String.valueOf(years))).append(" ");
+            durations.add(yearFormat.replaceAll("%y%", String.valueOf(years)));
         }
         if (months > 0) {
-            durationFormat.append(monthFormat.replaceAll("%mo%", String.valueOf(months))).append(" ");
+            durations.add(monthFormat.replaceAll("%mo%", String.valueOf(months)));
         }
         if (weeks > 0) {
-            durationFormat.append(weekFormat.replaceAll("%w%", String.valueOf(weeks))).append(" ");
+            durations.add(weekFormat.replaceAll("%w%", String.valueOf(weeks)));
         }
         if (days > 0) {
-            durationFormat.append(dayFormat.replaceAll("%d%", String.valueOf(days))).append(" ");
+            durations.add(dayFormat.replaceAll("%d%", String.valueOf(days)));
         }
         if (hours > 0) {
-            durationFormat.append(hourFormat.replaceAll("%h%", String.valueOf(hours))).append(" ");
+            durations.add(hourFormat.replaceAll("%h%", String.valueOf(hours)));
         }
         if (minutes > 0) {
-            durationFormat.append(minuteFormat.replaceAll("%m%", String.valueOf(minutes))).append(" ");
+            durations.add(minuteFormat.replaceAll("%m%", String.valueOf(minutes)));
         }
         if (seconds > 0) {
-            durationFormat.append(secondFormat.replaceAll("%s%", String.valueOf(seconds)));
+            durations.add(secondFormat.replaceAll("%s%", String.valueOf(seconds)));
         }
 
-        return durationFormat.toString();
+        return String.join(" ", durations);
     }
 
     public String getDuration() {
