@@ -10,6 +10,7 @@ import dev.mehmet27.punishmanager.objects.OfflinePlayer;
 import dev.mehmet27.punishmanager.objects.Punishment;
 import dev.mehmet27.punishmanager.objects.PunishmentRevoke;
 import org.apache.commons.io.IOUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -28,6 +29,9 @@ public class Utils {
     public static final String ALL_CODES = "0123456789AaBbCcDdEeFfKkLlMmNnOoRrXx";
     public static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + COLOR_CHAR + "[0-9A-FK-ORX]");
 
+    private static final String IPV4 = "^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(\\.(?!$)|$)){4}$";
+    public static final Pattern IPV4_PATTERN = Pattern.compile(IPV4);
+
     public static String replacePunishmentPlaceholders(String message, Punishment punishment) {
         return message.replace("%reason%", punishment.getReason())
                 .replace("%duration%", punishment.getDuration(punishment.getOperatorUUID()))
@@ -43,6 +47,7 @@ public class Utils {
                 .replace("%startMillis%", String.valueOf(punishment.getStart()))
                 .replace("%endMillis%", String.valueOf(punishment.getEnd()));
     }
+
     public static String replacePunishmentRevokePlaceholders(String message, PunishmentRevoke punishmentRevoke) {
         return message.replace("%reason%", punishmentRevoke.getReason())
                 .replace("%operator%", punishmentRevoke.getOperator())
@@ -81,7 +86,7 @@ public class Utils {
         return layout;
     }
 
-    public static String getLayout(Punishment punishment) {
+    public static String getLayout(@NotNull Punishment punishment) {
         String path = punishment.getPunishType().toString().toLowerCase(Locale.ENGLISH) + ".layout";
         return TextComponentBuilder(PunishManager.getInstance().getConfigManager().getStringList(path, punishment.getUuid()), punishment);
     }
