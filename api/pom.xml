@@ -40,9 +40,9 @@
             <version>2.7</version>
         </dependency>
         <dependency>
-            <groupId>com.github.DV8FromTheWorld</groupId>
+            <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>88e4c22</version>
+            <version>5.0.0-alpha.22</version>
             <exclusions>
                 <exclusion>
                     <groupId>club.minnced</groupId>

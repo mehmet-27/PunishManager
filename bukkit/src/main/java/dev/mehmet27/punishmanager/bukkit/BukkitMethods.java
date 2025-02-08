@@ -17,6 +17,7 @@ import dev.mehmet27.punishmanager.utils.Utils;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SingleLineChart;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
@@ -64,15 +65,19 @@ public class BukkitMethods implements MethodProvider {
     }
 
     @Override
+    @Nullable
     public Player getPlayer(UUID uuid) {
         return getPlugin().getServer().getPlayer(uuid);
     }
 
     @Override
-    public String getPlayerIp(UUID uuid) {
+    public String getPlayerIp(@NotNull UUID uuid) {
         Player player = getPlayer(uuid);
         StorageManager storageManager = PunishManager.getInstance().getStorageManager();
-        return player != null && player.isOnline() ? Objects.requireNonNull(player.getAddress()).getHostName() : storageManager.getOfflinePlayer(uuid).getPlayerIp();
+
+        return player != null && player.isOnline() ?
+                Objects.requireNonNull(player.getAddress()).getHostString() :
+                storageManager.getOfflinePlayer(uuid).getPlayerIp();
     }
 
     @Override
@@ -127,7 +132,7 @@ public class BukkitMethods implements MethodProvider {
 
     @Override
     public String getServer(UUID uuid) {
-        return getPlayer(uuid).getServer().getName();
+        return Objects.requireNonNull(getPlayer(uuid)).getServer().getName();
     }
 
     @Override
@@ -153,7 +158,8 @@ public class BukkitMethods implements MethodProvider {
     @Override
     public void kickPlayer(UUID uuid, String message) {
         Player onlinePlayer = getPlayer(uuid);
-        if (onlinePlayer.isOnline()) {
+
+        if (onlinePlayer != null && onlinePlayer.isOnline()) {
             onlinePlayer.kickPlayer(message);
         }
     }
