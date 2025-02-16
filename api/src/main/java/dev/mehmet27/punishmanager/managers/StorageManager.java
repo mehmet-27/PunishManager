@@ -8,14 +8,16 @@ import dev.mehmet27.punishmanager.objects.Punishment;
 import dev.mehmet27.punishmanager.storage.DBCore;
 import dev.mehmet27.punishmanager.storage.H2Core;
 import dev.mehmet27.punishmanager.storage.MySQLCore;
+import org.jetbrains.annotations.Nullable;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.logging.Level;
 
 import static dev.mehmet27.punishmanager.objects.Punishment.PunishType;
-import static dev.mehmet27.punishmanager.objects.Punishment.PunishType.IPBAN;
+import static dev.mehmet27.punishmanager.objects.Punishment.PunishType.*;
 
 public class StorageManager {
 
@@ -210,10 +212,11 @@ public class StorageManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 
-    public OfflinePlayer getOfflinePlayer(String wantedPlayer) {
+    public @Nullable OfflinePlayer getOfflinePlayer(String wantedPlayer) {
         String query = String.format("SELECT * FROM punishmanager_players WHERE name = '%s'", wantedPlayer);
         try (Connection connection = core.getDataSource().getConnection()) {
             ResultSet result = connection.createStatement().executeQuery(query);
@@ -249,18 +252,23 @@ public class StorageManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return new HashMap<>();
     }
 
-    public Punishment getBan(UUID wantedPlayer) {
-        return getPunishment(wantedPlayer, "BAN");
+    public @Nullable Punishment getBan(UUID wantedPlayer) {
+        return getPunishment(wantedPlayer, BAN);
     }
 
-    public Punishment getMute(UUID wantedPlayer) {
-        return getPunishment(wantedPlayer, "MUTE");
+    public @Nullable Punishment getIpBan(UUID wantedPlayer) {
+        return getPunishment(wantedPlayer, IPBAN);
     }
 
-    public Punishment getPunishment(UUID playerUuid, String type) {
+    public @Nullable Punishment getMute(UUID wantedPlayer) {
+        return getPunishment(wantedPlayer, MUTE);
+    }
+
+    public @Nullable Punishment getPunishment(UUID playerUuid, PunishType type) {
         String query = String.format("SELECT * FROM punishmanager_punishments WHERE uuid = '%s'", playerUuid.toString());
         List<Punishment> punishments = new ArrayList<>();
         try (Connection connection = core.getDataSource().getConnection()) {
@@ -277,16 +285,22 @@ public class StorageManager {
                 long end = result.getLong("end");
                 int id = result.getInt("id");
                 PunishType punishType = PunishType.valueOf(result.getString("type"));
+
                 punishments.add(new Punishment(playerName, uuid, ip, punishType, reason, operator, operator_uuid, server, start, end, id));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException exception) {
+            punishManager.getLogger().log(Level.SEVERE, exception.getMessage(), exception);
         }
+
         for (Punishment punishment : punishments) {
-            if (punishment.getPunishType().toString().contains(type.toUpperCase())) {
+            // Todo: it's ambiguous.
+            // What if I want to unban only by IP and not by name?
+            // (imagine the situation, where 2 players have the same IP)
+            if (punishment.getPunishType().toString().contains(type.name())) {
                 return punishment;
             }
         }
+
         return null;
     }
 
@@ -300,6 +314,7 @@ public class StorageManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return false;
     }
 
@@ -308,10 +323,8 @@ public class StorageManager {
         List<String> ips = new ArrayList<>();
         try (Connection connection = core.getDataSource().getConnection()) {
             ResultSet result = connection.createStatement().executeQuery(query);
-            if (result.next()) {
-                if (result.getString("type").equals("IPBAN")) {
-                    ips.add(result.getString("ip"));
-                }
+            if (result.next() && result.getString("type").equals(IPBAN.name())) {
+                ips.add(result.getString("ip"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
