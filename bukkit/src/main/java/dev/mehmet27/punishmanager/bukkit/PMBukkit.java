@@ -5,6 +5,7 @@ import dev.mehmet27.punishmanager.bukkit.inventory.InventoryController;
 import dev.mehmet27.punishmanager.bukkit.listeners.*;
 import dev.mehmet27.punishmanager.bukkit.managers.PMBukkitCommandManager;
 import dev.mehmet27.punishmanager.managers.ConfigManager;
+import dev.mehmet27.punishmanager.managers.LibraryManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class PMBukkit extends JavaPlugin {
@@ -16,6 +17,15 @@ public class PMBukkit extends JavaPlugin {
 
     public static PMBukkit getInstance() {
         return instance;
+    }
+
+    @Override
+    public void onLoad() {
+        LibraryManager libraryManager = new LibraryManager(getDescription().getName(), getLogger(), getDataFolder().toPath());
+        if (!libraryManager.init()) {
+            getLogger().severe("The libraries could not be loaded.");
+            //getServer().getPluginManager().disablePlugin(this);
+        }
     }
 
     @Override

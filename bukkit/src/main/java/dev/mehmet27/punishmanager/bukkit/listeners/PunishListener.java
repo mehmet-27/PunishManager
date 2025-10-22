@@ -32,6 +32,12 @@ public class PunishListener implements Listener {
     public void onPunish(PunishEvent event) {
         Punishment punishment = event.getPunishment();
 
+        if (configManager.getExemptPlayers().contains(punishment.getPlayerName())) {
+            UUID operatorUUID = punishment.getOperatorUUID();
+            punishManager.getMethods().sendMessage(operatorUUID, configManager.getMessage("main.exempt-player", operatorUUID));
+            return;
+        }
+
         if (!punishment.getPunishType().equals(Punishment.PunishType.KICK)) {
             if (punishment.getPunishType().isBan()) {
                 Punishment oldBan = punishManager.getStorageManager().getBan(punishment.getUuid());
@@ -55,12 +61,6 @@ public class PunishListener implements Listener {
             }
         }
 
-        if (configManager.getExemptPlayers().contains(punishment.getPlayerName())) {
-            UUID operatorUUID = punishment.getOperatorUUID();
-            punishManager.getMethods().sendMessage(operatorUUID, configManager.getMessage("main.exempt-player", operatorUUID));
-            return;
-        }
-
         //Adding punish to database
         if (!punishment.getPunishType().equals(Punishment.PunishType.KICK)) {
             punishManager.getStorageManager().addPunishToPunishments(punishment);
@@ -77,7 +77,7 @@ public class PunishListener implements Listener {
         if (player != null && player.isOnline()) {
             if (punishment.isBanned()) {
                 player.kickPlayer(Utils.getLayout(punishment));
-            } else if (punishment.isMuted()) {
+            } else if (punishment.isMuted() || punishment.isWarned()) {
                 player.sendMessage(Utils.getLayout(punishment));
             } else if (punishment.getPunishType().equals(Punishment.PunishType.KICK)) {
                 player.kickPlayer(Utils.getLayout(punishment));

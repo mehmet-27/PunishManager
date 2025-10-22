@@ -155,6 +155,13 @@ mute:
     - '&eYou were muted by &a%operator% &edue to the &a%reason%&e.'
   announce: '&a%player% &emuted by &a%operator% &edue to &a%reason%.'
   description: 'Mute a player.'
+warn:
+  name: 'warn'
+  punished: '&a%player% successfully warned.'
+  layout:
+    - '&eYou were warned by &a%operator% &edue to the &a%reason%&e.'
+  announce: ''
+  description: 'Warn a player.'
 tempmute:
   name: 'tempmute'
   punished: '&a%player% successfully muted.'
@@ -163,6 +170,16 @@ tempmute:
     - '&eYou were muted by &a%operator% &efor &a%duration% &edue to the &a%reason%&e.'
   announce: '&a%player% &ewas muted by &a%operator% &efor &a%duration% &edue to &a%reason%.'
   description: 'Temporarily mutes a player.'
+unwarn:
+  name: 'unwarn'
+  notFound: '&eNo warn found with the given id.'
+  done: '&a%player%''s warn has been removed.'
+  description: 'Removes a player''s warn.'
+clearwarns:
+  name: 'clearwarns'
+  notPunished: '&e%player% is not warned.'
+  done: '&a%player%''s all warns has been removed.'
+  description: 'Removes player''s all warns.'
 unban:
   name: 'unban'
   notPunished: '&e%player% is not banned.'
@@ -178,6 +195,13 @@ unpunish:
   notPunished: '&e%player% is not punished.'
   done: '&a%player%''s punishes has been removed.'
   description: 'Removes all punishes from a player.'
+warns:
+  name: 'warns'
+  checking: '&eChecking &a%player% &7(%online%&7)'
+  playerNotFound: '&c%player% not found!'
+  notPunished: '&eNo warn found for &a%player%&e.'
+  layout: '&aId: &e%id%&a, Reason: &e%reason%'
+  description: 'See players warns.'
 check:
   name: 'check'
   checking: '&eChecking &a%player% &7(%online%&7)'

@@ -17,6 +17,7 @@ import dev.mehmet27.punishmanager.velocity.events.PunishRevokeEvent;
 import dev.mehmet27.punishmanager.velocity.inventory.InventoryDrawer;
 import dev.mehmet27.punishmanager.velocity.inventory.inventories.MainFrame;
 import dev.mehmet27.punishmanager.velocity.inventory.inventories.PunishFrame;
+import dev.simplix.protocolize.api.Protocolize;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.Nullable;
 

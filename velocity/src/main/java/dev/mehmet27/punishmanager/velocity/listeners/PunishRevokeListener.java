@@ -37,6 +37,24 @@ public class PunishRevokeListener {
             }
             punishManager.getStorageManager().unPunishPlayer(punishment);
         }
+        if (punishmentRevoke.getRevokeType().equals(PunishmentRevoke.RevokeType.CLEARWARNS)) {
+            Punishment punishment = punishManager.getStorageManager().getWarn(punishmentRevoke.getUuid());
+            if (punishment == null || !punishment.isWarned()) {
+                Utils.sendText(punishmentRevoke.getOperatorUUID(), punishmentRevoke.getPlayerName(), "clearwarns.notPunished");
+                return;
+            }
+            punishManager.getStorageManager().unPunishPlayer(punishment);
+        }
+        if (punishmentRevoke.getRevokeType().equals(PunishmentRevoke.RevokeType.UNWARN)) {
+            Punishment punishment = punishManager.getStorageManager().getPunishmentWithId(punishmentRevoke.getId());
+            if (punishment == null || !punishment.isWarned()) {
+                Utils.sendText(punishmentRevoke.getOperatorUUID(), "unwarn.notFound");
+                return;
+            }
+            punishmentRevoke.setPlayerName(punishment.getPlayerName());
+            punishmentRevoke.setUuid(punishment.getUuid());
+            punishManager.getStorageManager().unPunishWithId(punishment.getId());
+        }
         if (punishmentRevoke.getRevokeType().equals(PunishmentRevoke.RevokeType.UNPUNISH)) {
             Punishment punishment = punishManager.getStorageManager().getPunishment(punishmentRevoke.getUuid());
             if (punishment == null || punishment.getPunishType().equals(NONE)) {

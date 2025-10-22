@@ -48,7 +48,7 @@ public class DefaultLanguageSelector extends UIFrame {
                     .slot(i + 9)
                     .build();
             component.setListener(ClickType.LEFT_CLICK, () -> {
-                String name = Utils.stripColor(component.getItem().displayName(true));
+                String name = Utils.stripColor(component.getItem().displayName().asLegacyText());
                 Locale newLocale = Utils.stringToLocale(name);
 
                 Path path = PunishManager.getInstance().getMethods().getDataFolder().resolve("config.yml");

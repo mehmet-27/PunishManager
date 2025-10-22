@@ -6,6 +6,7 @@ import dev.mehmet27.punishmanager.bungee.inventory.inventories.ConfirmationFrame
 import dev.mehmet27.punishmanager.utils.Utils;
 import dev.simplix.protocolize.api.ClickType;
 import dev.simplix.protocolize.api.Protocolize;
+import dev.simplix.protocolize.api.chat.ChatElement;
 import dev.simplix.protocolize.api.inventory.InventoryClick;
 import dev.simplix.protocolize.api.inventory.InventoryClose;
 import dev.simplix.protocolize.api.item.ItemStack;
@@ -13,10 +14,7 @@ import dev.simplix.protocolize.api.player.ProtocolizePlayer;
 import dev.simplix.protocolize.data.inventory.InventoryType;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class InventoryController {
 
@@ -70,7 +68,7 @@ public class InventoryController {
             ItemStack currentItem = (ItemStack) click.clickedItem();
             if (currentItem == null) return;
 
-            click.clickedItem().lore(Collections.singletonList(Utils.color("&7Loading...")), true);
+            click.clickedItem().lore(Collections.singletonList(ChatElement.ofLegacyText(Utils.color("&7Loading..."))));
             finalListener.run();
         });
     }

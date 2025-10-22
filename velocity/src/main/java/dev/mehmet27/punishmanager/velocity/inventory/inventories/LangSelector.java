@@ -46,7 +46,7 @@ public class LangSelector extends UIFrame {
                     .slot(i)
                     .build();
             component.setListener(ClickType.LEFT_CLICK, () -> {
-                String name = Utils.stripColor(component.getItem().displayName(true));
+                String name = Utils.stripColor(component.getItem().displayName().asLegacyText());
                 Locale newLocale = Utils.stringToLocale(name);
                 punishManager.getStorageManager().updateLanguage(getViewer().getUniqueId(), newLocale);
                 punishManager.getOfflinePlayers().get(getViewer().getUniqueId()).setLocale(newLocale);

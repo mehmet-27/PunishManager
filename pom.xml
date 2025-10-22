@@ -6,7 +6,7 @@
 
     <groupId>dev.mehmet27.punishmanager</groupId>
     <artifactId>PunishManager</artifactId>
-    <version>1.4.11</version>
+    <version>1.4.12</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -51,22 +51,53 @@
                         </goals>
                         <configuration>
                             <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
+                            <artifactSet>
+                                <includes>
+                                    <include>dev.mehmet27.punishmanager:*</include>
+                                    <include>io.github.slimjar:*</include>
+                                    <include>co.aikar:*</include>
+                                </includes>
+                            </artifactSet>
                             <relocations>
                                 <relocation>
+                                    <pattern>io.github.slimjar</pattern>
+                                    <shadedPattern>${project.groupId}.libs.slimjar</shadedPattern>
+                                </relocation>
+                                <relocation>
                                     <pattern>com.zaxxer.hikari</pattern>
-                                    <shadedPattern>dev.mehmet27.punishmanager.libraries.hikari</shadedPattern>
+                                    <shadedPattern>${project.groupId}.libs.hikari</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>net.dv8tion.jda</pattern>
-                                    <shadedPattern>dev.mehmet27.punishmanager.libraries.jda</shadedPattern>
+                                    <shadedPattern>${project.groupId}.libs.jda</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>org.h2</pattern>
-                                    <shadedPattern>dev.mehmet27.punishmanager.libraries.h2</shadedPattern>
+                                    <shadedPattern>${project.groupId}.libs.h2</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>org.bstats</pattern>
-                                    <shadedPattern>dev.mehmet27.punishmanager.libraries.bstats</shadedPattern>
+                                    <shadedPattern>${project.groupId}.libs.bstats</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.yaml.snakeyaml</pattern>
+                                    <shadedPattern>${project.groupId}.libs.snakeyaml</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>co.aikar.commands</pattern>
+                                    <shadedPattern>${project.groupId}.libs.acf-commands</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>co.aikar.locales</pattern>
+                                    <shadedPattern>${project.groupId}.libs.acf-locales</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.commons.lang3</pattern>
+                                    <shadedPattern>${project.groupId}.libs.commons-lang3</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.commons.collections4</pattern>
+                                    <shadedPattern>${project.groupId}.libs.commons-collections4</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -106,6 +137,16 @@
             <artifactId>junit-jupiter</artifactId>
             <version>5.8.2</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.12.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.4</version>
         </dependency>
     </dependencies>
 </project>

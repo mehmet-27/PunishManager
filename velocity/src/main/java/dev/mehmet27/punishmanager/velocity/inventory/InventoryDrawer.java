@@ -3,6 +3,7 @@ package dev.mehmet27.punishmanager.velocity.inventory;
 import dev.mehmet27.punishmanager.PunishManager;
 import dev.mehmet27.punishmanager.velocity.PMVelocity;
 import dev.simplix.protocolize.api.Protocolize;
+import dev.simplix.protocolize.api.chat.ChatElement;
 import dev.simplix.protocolize.api.inventory.Inventory;
 import dev.simplix.protocolize.data.inventory.InventoryType;
 
@@ -42,7 +43,7 @@ public class InventoryDrawer {
 
     private static Inventory prepareInventory(UIFrame frame) {
         Inventory inventory = new Inventory(InventoryType.chestInventoryWithSize(frame.getSize()));
-        inventory.title(frame.getTitle());
+        inventory.title(ChatElement.ofLegacyText(frame.getTitle()));
         long start = System.currentTimeMillis();
         setComponents(inventory, frame);
 

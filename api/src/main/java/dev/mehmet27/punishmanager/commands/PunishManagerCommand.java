@@ -21,7 +21,9 @@ public class PunishManagerCommand extends BaseCommand {
     @Conditions("requireProtocolize")
     public void punishManager(CommandIssuer sender) {
         //Main GUI
-        if (!sender.isPlayer()) return;
+        if (!sender.isPlayer()) {
+            return;
+        }
         Object player = punishManager.getMethods().getPlayer(sender.getUniqueId());
         punishManager.getMethods().openMainInventory(player);
     }

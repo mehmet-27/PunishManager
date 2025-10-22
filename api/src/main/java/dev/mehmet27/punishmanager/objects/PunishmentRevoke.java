@@ -86,7 +86,7 @@ public class PunishmentRevoke {
     }
 
     public enum RevokeType {
-        UNBAN, UNMUTE, UNPUNISH;
+        UNBAN, UNMUTE, CLEARWARNS, UNWARN, UNPUNISH;
     }
 
     public int getId() {

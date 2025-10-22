@@ -130,6 +130,13 @@ public class Punishment {
         return false;
     }
 
+    public boolean isWarned() {
+        if (punishType.name().contains("WARN")) {
+            return true;//return !isExpired();
+        }
+        return false;
+    }
+
     public boolean isExpired() {
         if (getEnd() == -1) {
             return false;
@@ -261,7 +268,7 @@ public class Punishment {
 
 
     public enum PunishType {
-        BAN, KICK, MUTE, TEMPMUTE, TEMPBAN, IPBAN, NONE;
+        BAN, IPBAN, KICK, MUTE, WARN, TEMPMUTE, TEMPBAN, TEMPIPBAN, TEMPWARN, NONE;
 
         public boolean isTemp() {
             return name().contains("TEMP");
@@ -269,6 +276,10 @@ public class Punishment {
 
         public boolean isMute() {
             return name().contains("MUTE");
+        }
+
+        public boolean isWarn() {
+            return name().contains("WARN");
         }
 
         public boolean isBan() {

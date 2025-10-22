@@ -7,6 +7,7 @@ import dev.mehmet27.punishmanager.velocity.PMVelocity;
 import dev.mehmet27.punishmanager.velocity.inventory.inventories.ConfirmationFrame;
 import dev.simplix.protocolize.api.ClickType;
 import dev.simplix.protocolize.api.Protocolize;
+import dev.simplix.protocolize.api.chat.ChatElement;
 import dev.simplix.protocolize.api.inventory.InventoryClick;
 import dev.simplix.protocolize.api.inventory.InventoryClose;
 import dev.simplix.protocolize.api.item.ItemStack;
@@ -71,7 +72,7 @@ public class InventoryController {
             ItemStack currentItem = (ItemStack) click.clickedItem();
             if (currentItem == null) return;
 
-            click.clickedItem().lore(Collections.singletonList(Utils.color("&7Loading...")), true);
+            click.clickedItem().lore(Collections.singletonList(ChatElement.ofLegacyText(Utils.color("&7Loading..."))));
             finalListener.run();
         }).schedule();
     }

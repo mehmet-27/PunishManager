@@ -78,7 +78,7 @@ public class PunishListener implements Listener {
         if (player != null && player.isConnected()) {
             if (punishment.isBanned()) {
                 player.disconnect(TextComponent.fromLegacyText(Utils.getLayout(punishment)));
-            } else if (punishment.isMuted()) {
+            } else if (punishment.isMuted() || punishment.isWarned()) {
                 player.sendMessage(TextComponent.fromLegacyText(Utils.getLayout(punishment)));
             } else if (punishment.getPunishType().equals(Punishment.PunishType.KICK)) {
                 player.disconnect(TextComponent.fromLegacyText(Utils.getLayout(punishment)));

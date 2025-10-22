@@ -5,9 +5,9 @@ import co.aikar.locales.MessageKey;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import dev.mehmet27.punishmanager.PunishManager;
-import dev.mehmet27.punishmanager.configuration.Configuration;
-import dev.mehmet27.punishmanager.configuration.ConfigurationProvider;
-import dev.mehmet27.punishmanager.configuration.YamlConfiguration;
+import dev.mehmet27.punishmanager.configuration.InvalidConfigurationException;
+import dev.mehmet27.punishmanager.configuration.file.FileConfiguration;
+import dev.mehmet27.punishmanager.configuration.file.YamlConfiguration;
 import dev.mehmet27.punishmanager.managers.CommandManager;
 import dev.mehmet27.punishmanager.managers.ConfigManager;
 import dev.mehmet27.punishmanager.managers.StorageManager;
@@ -171,12 +171,17 @@ public class PMVelocityCommandManager extends VelocityCommandManager implements 
     }
 
     public void loadYamlLanguageFile(File file, Locale locale) throws IOException {
-        Configuration configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
+        FileConfiguration configuration = new YamlConfiguration();
+        try {
+            configuration.load(file);
+        } catch (InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
         this.loadLanguage(configuration, locale);
     }
 
-    public void loadLanguage(Configuration config, Locale locale) {
-        Iterator<String> var4 = config.getKeys().iterator();
+    public void loadLanguage(FileConfiguration config, Locale locale) {
+        Iterator<String> var4 = config.getKeys(false).iterator();
 
         while (true) {
             String key;

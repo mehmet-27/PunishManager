@@ -1,9 +1,11 @@
 package dev.mehmet27.punishmanager.velocity.inventory;
 
+import dev.simplix.protocolize.api.chat.ChatElement;
 import dev.simplix.protocolize.api.item.ItemStack;
 import dev.simplix.protocolize.data.ItemType;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UIComponentImpl extends UIComponent {
 
@@ -34,7 +36,7 @@ public class UIComponentImpl extends UIComponent {
         }
 
         public Builder name(String displayName) {
-            component.getItem().displayName(displayName);
+            component.getItem().displayName(ChatElement.ofLegacyText(displayName));
             return this;
         }
 
@@ -50,7 +52,7 @@ public class UIComponentImpl extends UIComponent {
 
         public UIComponent build() {
             if (lore != null) {
-                component.getItem().lore(lore, true);
+                component.getItem().lore(lore.stream().map(ChatElement::ofLegacyText).collect(Collectors.toList()));
             }
             return component;
         }

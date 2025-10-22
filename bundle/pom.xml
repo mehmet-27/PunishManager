@@ -7,7 +7,7 @@
     <parent>
         <groupId>dev.mehmet27.punishmanager</groupId>
         <artifactId>PunishManager</artifactId>
-        <version>1.4.11</version>
+        <version>1.4.12</version>
     </parent>
 
     <artifactId>PunishManager-Bundle</artifactId>
@@ -42,22 +42,6 @@
                 <version>3.2.4</version>
                 <configuration>
                     <relocations>
-                        <relocation>
-                            <pattern>com.zaxxer.hikari</pattern>
-                            <shadedPattern>${project.groupId}.lib.com.zaxxer.hikari</shadedPattern>
-                        </relocation>
-                        <!--<relocation>
-                            <pattern>net.dv8tion.jda</pattern>
-                            <shadedPattern>${project.groupId}.lib.net.dv8tion.jda</shadedPattern>
-                        </relocation>-->
-                        <relocation>
-                            <pattern>org.h2</pattern>
-                            <shadedPattern>${project.groupId}.lib.org.h2</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>org.bstats</pattern>
-                            <shadedPattern>${project.groupId}.lib.org.bstats</shadedPattern>
-                        </relocation>
                     </relocations>
                     <transformers>
                         <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>

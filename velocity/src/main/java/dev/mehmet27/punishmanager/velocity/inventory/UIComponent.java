@@ -40,4 +40,6 @@ public abstract class UIComponent {
     public boolean isConfirmationRequired(ClickType click) {
         return confirmationRequired.contains(click);
     }
+
+
 }

@@ -7,7 +7,7 @@
     <parent>
         <groupId>dev.mehmet27.punishmanager</groupId>
         <artifactId>PunishManager</artifactId>
-        <version>1.4.11</version>
+        <version>1.4.12</version>
     </parent>
 
     <artifactId>PunishManager-Bungee</artifactId>
@@ -27,16 +27,6 @@
                         </goals>
                         <configuration>
                             <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
-                            <relocations>
-                                <relocation>
-                                    <pattern>co.aikar.commands</pattern>
-                                    <shadedPattern>dev.mehmet27.punishmanager.libraries.acf</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>co.aikar.locales</pattern>
-                                    <shadedPattern>dev.mehmet27.punishmanager.libraries.locales</shadedPattern>
-                                </relocation>
-                            </relocations>
                         </configuration>
                     </execution>
                 </executions>
@@ -73,7 +63,7 @@
         <dependency>
             <groupId>dev.simplix</groupId>
             <artifactId>protocolize-api</artifactId>
-            <version>2.2.2</version>
+            <version>2.3.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

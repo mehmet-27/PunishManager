@@ -1,3 +1,5 @@
 files:
-  - source: /api/src/main/resources/locales/en_US.yml
-  - translation: /api/src/main/resources/locales/%locale_with_underscore%.%file_extension%
+  - source: '/api/src/main/resources/locales/en_US.yml'
+    translation: '/api/src/main/resources/locales/%locale_with_underscore%.%file_extension%'
+project_id: '511144'
+api_token: '157535da1f46413198a3607ba8eac3797bfab045afaea22ffa349bf64528a6c2412ba6ffc475bfa7'
